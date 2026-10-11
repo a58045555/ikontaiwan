@@ -2206,7 +2206,7 @@ function drawSprite(cv,view,belt,hair){
 
 /* ===== UI ===== */
 let G=null;
-const KEY='kyokushin-life-v32';
+const KEY='kyokushin-life-v33';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
