@@ -1,0 +1,2444 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="以極真空手道中村道場台灣支部為藍本的空手道人生模擬遊戲。從十六歲入門，一路練到黑帶、全日本、世界大賽，甚至成為台灣支部長。">
+<meta property="og:title" content="極真人生・中村道場台灣支部篇">
+<meta property="og:description" content="抽稽古牌、比賽、升段審查、當內弟子、開道場。你的空手道人生會走到哪裡？">
+<meta property="og:image" content="icon-512.png">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#141933">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<style>html,body{margin:0;background:#141933}</style>
+</head>
+<body>
+<title>極真人生</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Press+Start+2P&display=swap">
+<style>
+/* Layout: night-sky frame holding cream pixel-cornered windows — hero card with portrait, ability grid with rank bonus, dojo strip, then the dialog. Battle: painted dojo stage, HUDs, message box, 2×2 move menu. Single committed theme. */
+:root{
+  --bg1:#141933; --bg2:#222a52; --paper:#f3ecdc; --paper2:#e7dcc4; --card:#faf5ea; --ink:#2b2740; --ink2:#4c4762; --muted:#706a84; --soft:#d2c7ad;
+  --track:#ddd2b9; --hover:#f7efdc; --sel:#f8e8c4; --hl:#fdf8ee; --head:#f3ecdc; --headsub:#a3abd6; --chipbg:rgba(255,255,255,.08); --chipfg:#c5cbef; --chipline:rgba(255,255,255,.18);
+  --coral:#d9585a; --gold:#e3aa45; --teal:#3a9d90; --sky:#5a88e0; --green:#47b062; --yellow:#eebd4e; --red:#cf4c49; --plum:#6b4a8a;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-px:"Press Start 2P",ui-monospace,monospace;
+  color-scheme:dark;
+}
+:root[data-pal="dusk"]{--bg1:#16181d;--bg2:#1f232a;--paper:#2a2f38;--paper2:#333944;--card:#30353f;--ink:#e2dccf;--ink2:#cfc8ba;--muted:#a19a8d;--soft:#474e5b;--track:#3d434e;--hover:#363c47;--sel:#3d3a32;--hl:#353a44;--head:#e2dccf;--headsub:#9aa1b0;--coral:#d8706d;--sky:#6f93d6;--green:#5aae72}
+:root[data-pal="sepia"]{--bg1:#d6c9ad;--bg2:#cbbb98;--paper:#f0e4cb;--paper2:#e4d5b6;--card:#f5ead4;--ink:#3a3124;--ink2:#54493a;--muted:#7a6d58;--soft:#c9b994;--track:#d9caa8;--hover:#f2e3c4;--sel:#ecd8ae;--hl:#f9f0de;--head:#3a3124;--headsub:#6b5e48;--chipbg:rgba(58,49,36,.07);--chipfg:#3a3124;--chipline:rgba(58,49,36,.25);color-scheme:light}
+:root[data-pal="green"]{--bg1:#22332a;--bg2:#2c4136;--paper:#e2ebdb;--paper2:#d2dfc9;--card:#ebf2e5;--ink:#22302a;--ink2:#3e4c44;--muted:#5d6e63;--soft:#b6c7ac;--track:#c9d8bf;--hover:#e5efdd;--sel:#dbe9c9;--hl:#f3f8ee;--head:#e2ebdb;--headsub:#a5c0ad}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--bg1)}
+body{color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65;min-height:100vh;background:var(--bg1)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(1px 1px at 12% 8%,#fff8 50%,transparent 51%),radial-gradient(1px 1px at 72% 14%,#fff6 50%,transparent 51%),radial-gradient(1.5px 1.5px at 40% 30%,#fff5 50%,transparent 51%),radial-gradient(1px 1px at 88% 44%,#fff6 50%,transparent 51%),radial-gradient(1px 1px at 22% 62%,#fff4 50%,transparent 51%),radial-gradient(1px 1px at 60% 80%,#fff5 50%,transparent 51%),linear-gradient(var(--bg1),var(--bg2))}
+.app{max-width:480px;margin:0 auto;padding-inline:16px;padding-block:18px 48px;display:flex;flex-direction:column;gap:18px}
+.stack{display:flex;flex-direction:column;gap:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+
+.px{position:relative;background:var(--paper);margin:3px;padding:16px;
+  box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),inset 0 3px 0 0 var(--hl),inset 0 -3px 0 0 var(--paper2),0 9px 0 0 rgba(0,0,0,.28)}
+.wt{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.wt h3{margin:0;font-size:13px;font-weight:700;letter-spacing:.14em;color:var(--muted)}
+.wt .tag{font-size:12px;color:var(--muted);text-align:right}
+.wt .tag b{color:var(--ink);font-weight:700}
+
+.top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:center;gap:12px}
+.seal{display:grid;place-items:center;width:40px;height:40px;font-weight:900;font-size:13px;line-height:1.1;text-align:center;background:var(--coral);color:#fff;box-shadow:3px 4px 0 rgba(0,0,0,.35)}
+.brand h1{margin:0;font-size:27px;line-height:1.1;font-weight:900;color:var(--head);letter-spacing:.08em;text-shadow:2px 2px 0 var(--coral),4px 4px 0 rgba(0,0,0,.25)}
+.brand small{display:block;font-size:12px;color:var(--headsub);letter-spacing:.14em;margin-top:5px}
+.topbtns{display:flex;gap:8px;align-items:center}
+.chipbtn{border:0;background:var(--chipbg);color:var(--chipfg);padding:7px 10px;font-size:12px;box-shadow:0 0 0 2px var(--chipline)}
+.chipbtn.px8{font-family:var(--f-px);font-size:8px}
+.chipbtn b{color:var(--gold);font-weight:400}
+
+/* hero */
+.hero{display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}
+.portrait{width:92px;height:104px;background:radial-gradient(circle at 50% 38%,#fff6dd 0 30%,#ead9b5 60%,#d9c194);box-shadow:0 0 0 3px var(--ink),inset 0 -14px 0 #c9955f;display:grid;place-items:end center;overflow:hidden}
+.portrait canvas{width:80px;height:100px;image-rendering:pixelated;margin-bottom:-6px}
+.hinfo{min-width:0;display:grid;gap:7px}
+.hname{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-width:0}
+.hname b{font-size:20px;font-weight:900;letter-spacing:.06em;line-height:1.2;overflow-wrap:anywhere}
+.beltpill{display:inline-flex;align-items:center;gap:5px;padding:1px 9px;font-size:12.5px;font-weight:700;background:var(--belt);color:var(--bfg);box-shadow:0 0 0 2px var(--ink);white-space:nowrap}
+.beltpill i{display:block;width:4px;height:12px;background:var(--gold)}
+.hsub{font-size:12.5px;color:var(--muted);line-height:1.5}
+.hnums{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.hnums div{background:var(--paper2);padding:5px 4px;text-align:center;min-width:0}
+.hnums span{display:block;font-size:10.5px;color:var(--muted);line-height:1.4}
+.hnums b{display:block;font-family:var(--f-px);font-weight:400;font-size:8.5px;line-height:2;white-space:nowrap}
+
+/* bars */
+.bar{position:relative;height:10px;background:var(--track);box-shadow:0 0 0 2px var(--ink);overflow:hidden}
+.bar>i{position:absolute;inset:0 auto 0 0;background:var(--sky);box-shadow:inset 0 3px 0 rgba(255,255,255,.35)}
+.bar>u{position:absolute;top:0;bottom:0;background:var(--gold);box-shadow:inset 0 3px 0 rgba(255,255,255,.4)}
+.bar>s{position:absolute;inset:0 0 0 auto;background:repeating-linear-gradient(135deg,var(--red) 0 3px,var(--track) 3px 6px)}
+.bar::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 9px,rgba(38,34,59,.16) 9px 10px)}
+.bar.g>i{background:var(--green)} .bar.y>i{background:var(--yellow)} .bar.r>i{background:var(--red)}
+.bar.t>i{background:var(--teal)} .bar.sm{height:7px}
+.sgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 16px}
+.srow{display:grid;grid-template-columns:2.4em 1fr 2.2em;align-items:center;gap:8px;font-size:13px}
+.srow .lab{color:var(--muted);font-weight:500}
+.srow .val{font-family:var(--f-px);font-size:8.5px;text-align:right}
+.srow.full{grid-column:1/-1}
+.legendrow{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legendrow i{display:inline-block;width:10px;height:8px;margin-right:4px;vertical-align:0;box-shadow:0 0 0 1.5px var(--ink)}
+.moveline{margin-top:8px;font-size:12px;color:var(--muted)}
+.moveline b{color:var(--ink);font-weight:500}
+.attrs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.attr{display:grid;gap:4px;font-size:11.5px;color:var(--muted);min-width:0}
+.attr b{font-family:var(--f-px);font-weight:400;font-size:8.5px;color:var(--ink)}
+.ledger{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;text-align:center;margin-bottom:10px}
+.ledger div{background:var(--paper2);padding:4px}
+.ledger span{display:block;font-size:10.5px;color:var(--muted)}
+.ledger b{font-family:var(--f-px);font-weight:400;font-size:9px;line-height:2}
+.reqs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.req{font-size:11.5px;padding:1px 7px;background:var(--card);box-shadow:0 0 0 1.5px var(--soft);color:var(--muted)}
+.req.ok{color:#2f8a4a;box-shadow:0 0 0 1.5px #8fd0a2}
+
+/* dialog */
+.card{display:flex;flex-direction:column;gap:12px}
+.eyebrow{display:inline-flex;align-self:flex-start;align-items:center;gap:6px;font-size:14px;font-weight:700;line-height:1.5;color:var(--ink);background:var(--paper2);padding:3px 10px;box-shadow:0 0 0 2px var(--soft)}
+.card h2{margin:-4px 0 0;font-size:21px;font-weight:900;line-height:1.35;letter-spacing:.04em;text-wrap:balance;display:flex;align-items:center;gap:9px}
+.card h2::before{content:"";width:8px;height:8px;background:var(--coral);box-shadow:3px 3px 0 var(--ink);flex:none}
+.lines{display:flex;flex-direction:column;gap:6px;background:var(--paper2);padding:10px 12px;font-size:14px;color:var(--ink2)}
+.lines b{color:var(--ink);font-weight:700}
+.q{margin:0;font-size:15px}
+.q b{font-weight:700;color:var(--coral)}
+.opts{display:flex;flex-direction:column;gap:11px;margin-top:2px}
+.opt{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:1px;width:calc(100% - 6px);margin:0 3px;text-align:left;background:var(--card);border:0;padding:10px 14px 10px 30px;
+  box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),0 7px 0 0 var(--soft);transition:transform .08s}
+.opt::before{content:"▶";position:absolute;left:11px;top:12px;font-size:11px;color:var(--coral);opacity:.25}
+.opt:hover{background:var(--hover)}
+.opt:hover::before,.opt:focus-visible::before{opacity:1}
+.opt:active{transform:translateY(3px)}
+.opt .l{font-size:15.5px;font-weight:700}
+.opt .s{font-size:12px;color:var(--muted)}
+.opt.primary{background:var(--coral);color:#fff;align-items:center;box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),0 7px 0 0 #8e2f3a}
+.opt.primary::before{color:#fff}
+.opt.primary .l{letter-spacing:.18em}
+.opt.danger .l{color:var(--red)}
+.opt:disabled{opacity:.42;cursor:not-allowed}
+.chip{display:inline-block;font-size:12px;font-weight:500;padding:0 6px;margin:1px 2px;white-space:nowrap;line-height:1.6;background:var(--card);box-shadow:0 0 0 1.5px currentColor}
+.chip.up{color:#2f8a4a} .chip.dn{color:var(--red)}
+.lbl{color:var(--ink);font-weight:700;margin-right:4px}
+.bad{color:var(--red)} .gold{color:#b5761a;font-weight:700} .good{color:#2f8a4a}
+.bout{display:grid;grid-template-columns:4.4em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
+.exrow{display:grid;grid-template-columns:6.6em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
+.bout .rd,.exrow .rd{font-size:12px;color:var(--muted)}
+.bout .op,.exrow .op{color:var(--ink);min-width:0}
+.bout .op em{font-style:normal;font-size:11px;color:#fff;background:var(--coral);padding:0 4px;margin-left:4px}
+.bout .res,.exrow .res{text-align:right;font-size:13px;font-weight:700}
+.bout.w .res,.exrow.w .res{color:#2f8a4a} .bout.l .res,.exrow.l .res{color:var(--red)}
+.tname{color:var(--ink);font-weight:900;border-bottom:3px solid var(--gold)}
+
+/* battle */
+.battle{display:flex;flex-direction:column;gap:16px}
+.scene{position:relative;height:266px;margin:3px;overflow:hidden;
+  box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),0 9px 0 0 rgba(0,0,0,.28);
+  background:linear-gradient(transparent 0 47%,#6e4a2e 47% 50%,transparent 50%),repeating-linear-gradient(90deg,#f2e2bf 0 46px,#e7d3a8 46px 48px) top/100% 47% no-repeat,linear-gradient(#d7a06a,#b7804d) bottom/100% 50% no-repeat}
+.scene::before{content:"";position:absolute;left:0;right:0;bottom:0;height:50%;background:repeating-linear-gradient(90deg,transparent 0 60px,rgba(80,48,24,.25) 60px 62px),repeating-linear-gradient(0deg,transparent 0 22px,rgba(80,48,24,.16) 22px 24px)}
+.scene .win{position:absolute;top:18px;width:44px;height:50px;background:linear-gradient(#9fd0ff,#d8ecff);box-shadow:0 0 0 3px #6e4a2e}
+.scene .win::after{content:"";position:absolute;left:50%;top:0;bottom:0;width:3px;margin-left:-1.5px;background:#6e4a2e}
+.scene .w1{left:calc(50% - 22px)}
+.scene .banner{position:absolute;right:12px;top:12px;width:26px;height:84px;background:var(--coral);color:#fff;font-size:12px;font-weight:900;writing-mode:vertical-rl;display:grid;place-items:center;letter-spacing:.2em;box-shadow:0 0 0 2px var(--ink)}
+.plat{position:absolute;border-radius:50%;background:rgba(60,32,14,.3)}
+.plat.foe{width:116px;height:20px;right:40px;top:126px}
+.plat.me{width:150px;height:26px;left:14px;bottom:12px}
+canvas.spr{position:absolute;image-rendering:pixelated;image-rendering:crisp-edges}
+canvas.spr.foe{width:96px;height:120px;right:50px;top:14px}
+canvas.spr.me{width:122px;height:152px;left:28px;bottom:14px}
+canvas.spr.hit{animation:hit .55s steps(2) 2}
+@keyframes hit{50%{opacity:.15;transform:translateX(4px)}}
+.hud{position:absolute;background:var(--paper);padding:6px 10px 7px;display:grid;gap:4px;min-width:0;
+  box-shadow:0 -2px 0 0 var(--ink),0 2px 0 0 var(--ink),-2px 0 0 0 var(--ink),2px 0 0 0 var(--ink),0 5px 0 0 rgba(0,0,0,.3)}
+.hud.foe{left:10px;top:12px;width:min(48%,210px)}
+.hud.me{right:10px;bottom:14px;width:min(50%,220px)}
+.hud .nm{display:flex;justify-content:space-between;gap:6px;font-size:14px;font-weight:700;line-height:1.25;white-space:nowrap}
+.hud .nm span:first-child{overflow:hidden;text-overflow:ellipsis;min-width:0}
+.hud .ty{font-size:11px;color:var(--muted);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hud .row{display:grid;grid-template-columns:2.2em 1fr;gap:6px;align-items:center;font-family:var(--f-px);font-size:7px;color:var(--plum)}
+.hud .num{font-family:var(--f-px);font-size:8px;text-align:right}
+.ki{display:flex;gap:3px;flex-wrap:wrap}
+.ki i{width:10px;height:10px;background:var(--track);box-shadow:0 0 0 2px var(--ink)}
+.ki i.on{background:var(--sky);box-shadow:0 0 0 2px var(--ink),inset 0 3px 0 rgba(255,255,255,.4)}
+.waza{color:var(--gold);font-size:13px;line-height:1.2;text-shadow:1px 1px 0 var(--ink)}
+.tbox{margin:3px;background:var(--paper);padding:10px 12px 12px;min-height:118px;font-size:14px;display:flex;flex-direction:column;gap:3px;
+  box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),inset 0 0 0 3px var(--paper),inset 0 0 0 5px var(--soft),0 9px 0 0 rgba(0,0,0,.28)}
+.tbox b{font-weight:700;color:var(--coral)}
+.tbox .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px;padding-bottom:6px;border-bottom:2px dashed var(--soft)}
+.pips{display:inline-flex;align-items:center;gap:4px}
+.pips em{font-style:normal;font-weight:700;color:var(--ink);margin-right:2px}
+.pips i{width:9px;height:9px;background:var(--track);box-shadow:0 0 0 2px var(--ink)}
+.pips i.on{background:var(--muted)} .pips i.now{background:var(--coral)}
+.ln{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 6px;padding:2px 0 2px 9px;border-left:4px solid transparent;line-height:1.5}
+.ln.me{border-color:var(--sky)} .ln.foe{border-color:var(--coral)} .ln.sys{color:var(--muted);font-size:13.5px}
+.ln b{color:var(--ink)!important}
+.dmg{font-family:var(--f-px);font-size:9px;color:var(--red)}
+.heal{font-family:var(--f-px);font-size:9px;color:#2f8a4a}
+.tg{display:inline-block;font-size:11px;font-weight:700;padding:0 5px;line-height:1.6;background:var(--paper2);color:var(--muted)}
+.tg.up{background:#dcf2e2;color:#2f8a4a} .tg.dn{background:var(--paper2);color:var(--muted)} .tg.crit{background:#fff0cc;color:#b5761a} .tg.waza{background:var(--gold);color:var(--ink)}
+.opt .l .tg{margin-left:6px;vertical-align:2px}
+.kic{display:inline-flex;gap:2px;vertical-align:-1px;margin-right:2px}
+.kic i{width:8px;height:8px;background:var(--sky);box-shadow:0 0 0 1.5px var(--ink)}
+.kic.free{font-size:10.5px;color:var(--muted)}
+.bhelp{margin:0;font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.6}
+.hud .ty b{color:var(--ink);font-weight:700}
+.hero.compact{grid-template-columns:68px minmax(0,1fr);gap:12px;padding:12px 14px}
+.hero.compact .portrait{width:68px;height:78px}
+.hero.compact .portrait canvas{width:60px;height:75px}
+.hero.compact .hname b{font-size:18px}
+.hero.compact .hsub{font-size:12px}
+.st7{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px 10px}
+.st7 .t{display:grid;grid-template-columns:auto 1fr;align-items:baseline;gap:2px 6px;min-width:0}
+.st7 .t span{font-size:11.5px;color:var(--muted)}
+.st7 .t b{font-family:var(--f-px);font-weight:400;font-size:9px;text-align:right}
+.st7 .t .bar{grid-column:1/-1;height:6px}
+.st7 .t.hpw{grid-column:span 2}
+.exline{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:10px;padding-top:9px;border-top:2px dashed var(--soft);font-size:12.5px;line-height:1.5}
+.exline button{border:0;background:none;color:var(--coral);font-size:12px;font-weight:700;white-space:nowrap;padding:0}
+details.more{padding:12px 14px}
+details.more>summary{cursor:pointer;font-weight:700;font-size:13.5px;letter-spacing:.08em;color:var(--muted);display:flex;justify-content:space-between;gap:8px;list-style:none}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary span{font-weight:400;font-size:11.5px;letter-spacing:0}
+details.more>summary::after{content:"＋";color:var(--coral)}
+details.more[open]>summary::after{content:"－"}
+details.more>div{margin-top:14px;padding-top:12px;border-top:2px dashed var(--soft)}
+.exs{display:flex;flex-direction:column;gap:5px;margin-top:6px;background:var(--card);padding:8px 10px;box-shadow:0 0 0 2px var(--soft)}
+.exd summary{cursor:pointer;font-size:13px;list-style:none;display:flex;justify-content:space-between;gap:8px}
+.exd summary::-webkit-details-marker{display:none}
+.exd summary::after{content:'明細 ＋';color:var(--coral);font-size:12px;white-space:nowrap}
+.exd[open] summary::after{content:'收起 －'}
+.exd .exs{margin-top:10px}
+.exh{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:13.5px}
+.exh b{font-weight:900}
+.exr{display:grid;grid-template-columns:5.6em 3.2em 1fr 2.4em;gap:2px 8px;align-items:center;font-size:12.5px}
+.exn{font-weight:700}
+.exv{font-family:var(--f-px);font-size:8.5px;white-space:nowrap}
+.exv small{font-family:var(--f-body);font-size:11px;color:var(--muted)}
+.exp{font-family:var(--f-px);font-size:8px;text-align:right}
+.exf{grid-column:1/-1;font-size:11px;color:var(--muted);margin-top:-3px}
+.exnote{margin:0;font-size:11px;color:var(--muted)}
+.injpill{display:inline-block;font-size:11.5px;font-weight:700;padding:0 7px;background:#fde3e1;color:var(--red);box-shadow:0 0 0 2px var(--red)}
+.moves{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 8px}
+.moves .opt{padding:8px 10px 8px 24px;width:auto}
+.moves .opt::before{left:8px;top:10px}
+.moves .opt .l{font-size:14px}
+.moves .opt .s{font-size:11px}
+.moves .wide{grid-column:1/-1;align-items:center}
+
+/* start + guide */
+.form{display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:8px;border:0;margin:0;padding:0;min-width:0}
+.field>legend,.field>label.t{font-size:12.5px;font-weight:700;letter-spacing:.12em;color:var(--muted);padding:0;margin-bottom:8px}
+.inp{width:calc(100% - 6px);margin:0 3px;font:inherit;font-size:16px;padding:9px 12px;border:0;background:var(--card);color:var(--ink);box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink)}
+.seg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;padding:3px}
+.seg.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.pickr{position:relative;display:flex;flex-direction:column;padding:8px 10px;cursor:pointer;min-width:0;background:var(--card);box-shadow:0 0 0 2px var(--ink)}
+.pickr input{position:absolute;opacity:0;pointer-events:none}
+.pickr b{font-size:14.5px}
+.pickr span{font-size:11.5px;color:var(--muted)}
+.pickr .fee{font-size:11.5px;color:var(--ink);font-weight:500}
+.pickr .stars{color:var(--coral);letter-spacing:.1em}
+.pickr .mbars{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px}
+.pickr .mbars i{height:5px;background:var(--track);position:relative;overflow:hidden}
+.pickr .mbars i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--teal)}
+.pickr:has(input:checked){background:var(--sel);box-shadow:0 0 0 3px var(--coral),4px 4px 0 3px var(--ink)}
+.seedrow{display:flex;gap:10px}
+.seedrow .inp{font-family:var(--f-px);font-size:11px;letter-spacing:.1em}
+.ghost{border:0;background:var(--card);padding:0 14px;white-space:nowrap;font-size:14px;font-weight:700;margin:3px;box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink)}
+.hint{font-size:12px;color:var(--muted);margin:0}
+.lead{margin:0;font-size:14.5px}
+.legend{font-size:11px;color:var(--muted);margin:-2px 0 0}
+.guide details{border-top:2px dashed var(--soft);padding:10px 0}
+.guide details:first-of-type{border-top:0;padding-top:0}
+.guide summary{cursor:pointer;font-weight:700;font-size:15px;list-style:none;display:flex;justify-content:space-between;gap:10px}
+.guide summary::-webkit-details-marker{display:none}
+.guide summary::after{content:"＋";color:var(--coral)}
+.guide details[open] summary::after{content:"－"}
+.guide p,.guide li{font-size:13.5px;color:var(--ink2);margin:6px 0 0}
+.guide ul{margin:4px 0 0;padding-left:1.2em}
+.guide b{color:var(--ink)}
+
+details.log{margin:3px;background:var(--paper);padding:10px 14px;box-shadow:0 -3px 0 0 var(--ink),0 3px 0 0 var(--ink),-3px 0 0 0 var(--ink),3px 0 0 0 var(--ink),0 9px 0 0 rgba(0,0,0,.28)}
+details.log summary{cursor:pointer;font-size:13px;font-weight:700;letter-spacing:.12em;color:var(--muted)}
+.log ol{list-style:none;margin:10px 0 4px;padding:0;display:flex;flex-direction:column;gap:5px;max-height:320px;overflow:auto}
+.log li{display:grid;grid-template-columns:5em 1fr;gap:8px;font-size:13px}
+.log li span{font-family:var(--f-px);font-size:7px;color:var(--muted);line-height:2.4}
+.log li.gold{color:#b5761a;font-weight:700} .log li.bad{color:var(--red)}
+.quit{margin-top:8px;font-size:12px;border:0;background:none;color:var(--muted);text-decoration:underline;padding:0}
+
+.end .ep{margin:0;font-size:28px;font-weight:900;color:var(--coral);letter-spacing:.06em;line-height:1.2}
+.endgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.endgrid div{background:var(--paper2);padding:7px 10px;min-width:0}
+.endgrid span{display:block;font-size:11.5px;color:var(--muted)}
+.endgrid b{font-size:15px}
+.titles{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.titles li::before{content:"★ ";color:var(--gold)}
+footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:380px){canvas.spr.me{width:104px;height:130px;left:14px}.hud.me{width:54%}.hud.foe{width:52%}.sgrid{gap:10px 12px}.hero{grid-template-columns:80px minmax(0,1fr)}.portrait{width:80px;height:92px}.portrait canvas{width:70px;height:88px}}
+
+:root[data-fs="l"] .app{zoom:1.12}
+.disp{display:flex;flex-direction:column;gap:10px}
+.swatches{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.sw{display:flex;align-items:center;gap:8px;border:0;background:var(--card);padding:8px 10px;box-shadow:0 0 0 2px var(--soft);font-size:13px;text-align:left}
+.sw i{width:26px;height:18px;flex:none;box-shadow:0 0 0 2px var(--ink)}
+.sw.on{box-shadow:0 0 0 3px var(--coral)}
+.fsrow{display:flex;gap:8px}
+.fsrow .sw{flex:1;justify-content:center}
+.hintline{font-size:12px;color:var(--coral);font-weight:700}
+.hintline.good{color:var(--green)}
+.tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.tabs button{border:0;background:var(--card);padding:7px 4px;font-size:12.5px;font-weight:700;color:var(--muted);box-shadow:0 0 0 2px var(--soft)}
+.tabs button.on{color:var(--ink);background:var(--sel);box-shadow:0 0 0 2px var(--ink)}
+#tabBody{margin-top:12px}
+#tabBody .wt{margin-bottom:8px}
+#tabBody>div+div{margin-top:14px;padding-top:12px;border-top:2px dashed var(--soft)}
+.brand h1{white-space:nowrap;font-size:24px}
+.brand small{white-space:nowrap}
+.top{flex-wrap:wrap;row-gap:8px}
+.topbtns{gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.chipbtn{white-space:nowrap;padding:6px 8px;font-size:12px}
+:root[data-pal="sepia"] .chipbtn b{color:var(--coral)}
+.ptsbar{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:-2px 0 10px;padding:6px 10px;background:var(--sel);box-shadow:0 0 0 2px var(--gold);font-size:13px}
+.ptsbar b{color:var(--ink)} .ptsbar span{font-size:11.5px;color:var(--muted)}
+.st7.alloc .t{border:0;background:var(--card);padding:4px 6px;box-shadow:0 0 0 2px var(--gold);cursor:pointer;font:inherit;color:inherit;text-align:left}
+.st7.alloc .t:active{transform:translateY(2px)}
+.st7 .t em{font-style:normal;color:var(--coral);font-weight:900}
+.hnums b{font-family:var(--f-body);font-size:15px;font-weight:900;line-height:1.5}
+.hnums span{font-size:11px}
+.hero2{display:flex;flex-direction:column;gap:10px;padding:12px 14px}
+.htop{display:grid;grid-template-columns:58px minmax(0,1fr);gap:12px;align-items:center}
+.htop .portrait{width:58px;height:66px}
+.htop .portrait canvas{width:52px;height:65px}
+.htop .hname b{font-size:18px}
+.htop .hsub{font-size:12px}
+.hero2 .hnums b{font-size:14px}
+.hero2 #stats{border-top:2px dashed var(--soft);padding-top:10px}
+.tgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 10px;padding:0 3px}
+.opt.ttile{width:auto;margin:0;padding:9px 10px 9px 10px;gap:5px}
+.opt.ttile::before{content:none}
+.ttile .tn{display:flex;align-items:center;gap:7px;font-weight:900;font-size:15px;width:100%}
+.ttile .tn i{font-style:normal;display:grid;place-items:center;width:24px;height:24px;color:#fff;font-size:13px;font-weight:900;box-shadow:0 0 0 2px var(--ink);flex:none}
+.ttile .tn em{margin-left:auto;font-style:normal;font-size:10.5px;font-weight:900;background:var(--gold);color:var(--ink);padding:0 5px}
+.ttile .tg2{display:flex;flex-wrap:wrap;gap:3px}
+.ttile .tg2 u{text-decoration:none;font-size:11.5px;font-weight:700;padding:0 5px;background:var(--paper2);color:var(--ink)}
+.ttile .tg2 u.k{background:var(--sel)}
+.ttile .tr{display:flex;flex-wrap:wrap;gap:3px 8px;font-size:11px;color:var(--muted)}
+.opt.ttile.rec{box-shadow:0 -3px 0 0 var(--gold),0 3px 0 0 var(--gold),-3px 0 0 0 var(--gold),3px 0 0 0 var(--gold),0 7px 0 0 var(--soft)}
+.xrow{display:flex;flex-wrap:wrap;gap:10px;padding:4px 3px 0}
+.bigrow{display:grid;gap:10px;margin:12px 3px 4px}
+.opt.bigopt{display:flex;flex-direction:row;align-items:center;gap:12px;text-align:left;width:calc(100% - 6px);padding:10px 14px;background:linear-gradient(90deg,rgba(242,194,79,.32),rgba(242,194,79,.08));box-shadow:0 -3px 0 0 var(--gold,#f2c24f),0 3px 0 0 var(--gold,#f2c24f),-3px 0 0 0 var(--gold,#f2c24f),3px 0 0 0 var(--gold,#f2c24f),0 7px 0 0 var(--soft,rgba(0,0,0,.2))}
+.opt.bigopt::before{display:none}
+.opt.bigopt>i{flex:0 0 auto;width:36px;height:36px;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:17px;background:var(--gold,#f2c24f);color:#26223b;box-shadow:0 0 0 2px #26223b}
+.opt.bigopt>span{display:flex;flex-direction:column;gap:2px;min-width:0}
+.opt.bigopt[disabled]{opacity:.6;background:var(--paper2,#efe6d2)}
+.opt.xbtn{width:auto;margin:0;padding:6px 12px;flex:1 1 auto;align-items:center}
+.opt.xbtn::before{content:none}
+.opt.xbtn .l{font-size:13px}
+.opt{padding:9px 12px 9px 28px}
+.opt .s{line-height:1.45}
+.ttile .rar{font-size:10px;font-weight:900;padding:0 5px;line-height:1.6;background:var(--paper2);color:var(--muted);box-shadow:0 0 0 2px var(--line, #26223b)}
+.ttile.r1 .rar{background:#3f6fd8;color:#fff}
+.ttile.r2 .rar{background:#f2c24f;color:#26223b}
+.ttile.r3 .rar{background:#d9534f;color:#fff}
+.ttile.r2{background:linear-gradient(180deg,rgba(242,194,79,.18),transparent 60%)}
+.ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
+.epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
+.epi b{display:block;font-size:12px;letter-spacing:.2em;color:var(--muted);margin-bottom:4px}
+.epi p{margin:0;line-height:1.8}
+.achgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ach{padding:8px 10px;background:var(--paper2,#efe6d2);box-shadow:0 0 0 2px #cfc4ab;opacity:.6}
+.ach.on{opacity:1;background:#fff6d8;box-shadow:0 0 0 2px #f2c24f}
+.ach b{display:block;font-size:14px}.ach span{font-size:11.5px;color:var(--muted)}
+.hist{margin:0;padding-left:20px;font-size:13.5px}.hist li{margin:6px 0}.hist span{display:block;font-size:12px;color:var(--muted)}
+a.opt{text-decoration:none;color:inherit}
+.badges{display:flex;flex-wrap:wrap;gap:5px;margin:5px 0 2px}
+.bdg{font-size:11.5px;font-weight:900;padding:1px 7px;line-height:1.6;box-shadow:0 0 0 2px #26223b;background:var(--paper2,#efe6d2);color:#26223b}
+.bdg.sp-kata{background:#2f8f83;color:#fff}.bdg.sp-kumite{background:#d9534f;color:#fff}.bdg.sp-all{background:#f2c24f}.bdg.sp-none{background:#ddd5c2}
+.bdg small{font-size:9px;margin-left:2px;opacity:.75}
+.bdg.tp{background:#e6f3ea;color:#25633a}.bdg.tn{background:#f6e3e3;color:#9a2f2f}
+.bdg.md-good{background:#f2c24f}.bdg.md-slump,.bdg.md-irr,.bdg.md-smug{background:#5a5470;color:#fff}
+.specline{display:block;margin:0 0 6px;font-size:13.5px;color:var(--ink)}
+.pickr .dtag{display:block;font-size:11.5px;color:var(--teal,#2f8f83);font-weight:700;margin:2px 0 0}
+.ttile .cs{display:block;font-size:11.5px;color:var(--muted);line-height:1.4;margin:2px 0 4px}
+.ttile .cmeta{display:flex;align-items:center;gap:6px;margin:4px 0 0}
+.ttile .lv{display:inline-block;font-size:10.5px;color:var(--teal);font-weight:900;white-space:nowrap}
+.ttile .lv .pg{margin-left:4px;color:var(--muted);font-weight:700}
+.ttile .lv .pp{display:inline-flex;gap:2px;margin-left:3px;vertical-align:1px}
+.ttile .lv .pp u{display:inline-block;width:6px;height:6px;background:var(--track,#ddd);box-shadow:0 0 0 1px var(--teal)}
+.ttile .lv .pp u.on{background:var(--teal)}
+.ttile .lv .mx{font-style:normal;margin-left:3px;color:var(--red,#d9534f)}
+.tipbox{display:block;margin:0 0 8px;padding:6px 8px;background:rgba(63,111,216,.12);box-shadow:inset 3px 0 0 #3f6fd8;font-size:13px;line-height:1.5}
+.opt .rtag{display:inline-block;margin-left:8px;font-style:normal;font-size:10.5px;font-weight:900;line-height:1.5;background:var(--gold);color:#26223b;padding:0 6px;vertical-align:2px;box-shadow:0 0 0 2px var(--ink)}
+.opt.isrec{box-shadow:0 -3px 0 0 var(--gold),0 3px 0 0 var(--gold),-3px 0 0 0 var(--gold),3px 0 0 0 var(--gold)}
+.opt.ttile{position:relative}
+.ttile .tn>span{white-space:nowrap;font-size:14.5px}
+.ttile .tn em{position:absolute;top:-11px;right:8px;margin:0;box-shadow:0 0 0 2px var(--ink)}
+.autopill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:1px 4px 1px 8px;background:var(--sel);color:var(--ink);box-shadow:0 0 0 2px var(--gold);margin:0 6px 4px 0}
+.autopill button{border:0;background:var(--coral);color:#fff;font-size:11px;font-weight:700;padding:1px 6px}
+</style>
+
+<div class="app">
+  <header class="top">
+    <div class="brand">
+      <span class="seal">押<br>忍</span>
+      <div><h1>極真人生</h1><small>中村道場台灣支部篇</small></div>
+    </div>
+    <div class="topbtns">
+      <button class="chipbtn" id="btnDisp" type="button">顯示</button>
+      <button class="chipbtn" id="btnGuide" type="button">遊戲說明</button>
+      <button class="chipbtn px8" id="seedChip" type="button" hidden>SEED <b id="seedVal"></b></button>
+    </div>
+  </header>
+
+  <section id="disp" class="px disp" hidden aria-label="顯示設定">
+    <div class="wt"><h3>配色</h3></div>
+    <div class="swatches" id="swatches"></div>
+    <div class="wt" style="margin:6px 0 0"><h3>字級</h3></div>
+    <div class="fsrow"><button class="sw" type="button" data-fs="n">標準</button><button class="sw" type="button" data-fs="l">放大</button></div>
+    <div class="wt" style="margin:6px 0 0"><h3>8-bit 音效</h3></div>
+    <div class="sndrow fsrow"><button class="sw" type="button" data-snd="0">關</button><button class="sw" type="button" data-snd="1">開</button></div>
+  </section>
+
+  <section id="guide" class="px guide" hidden aria-label="遊戲說明">
+    <div class="wt"><h3>遊戲說明</h3><button class="chipbtn" type="button" id="btnGuideClose" style="color:var(--ink);background:var(--paper2);box-shadow:0 0 0 2px var(--ink)">關閉</button></div>
+    <details open><summary>這是什麼遊戲</summary>
+      <p>你是十六歲、剛入門的空手道少年。每一回合是三個月（一季），稽古一年選兩次，一路練到黑帶、上全台和日本的大賽，最後也許能開自己的道場。<b>相同種子＋相同選擇＝相同人生</b>，可以把種子碼分享給朋友比較。</p></details>
+    <details open><summary>自動處理與「建議」</summary>
+      <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
+    <details><summary>量級與得意技</summary>
+      <ul><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
+    <details><summary>每一季會發生什麼</summary>
+      <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
+    <details><summary>修煉點（自行加點）</summary>
+      <p>升級 +3、大賽冠軍 +2、準優勝 +1、百人組手 +5。有點數時，能力卡上方會出現「可分配修煉點」，點一下任一項能力就 +1。適合拿來補審查不足的那一項。</p></details>
+    <details><summary>能力與段位加成</summary>
+      <p>力量、速度、耐力、技術、鍛體、抗性、鬥志七項。藍色是你練出來的，<b>金色是段位加成</b>，段位越高加越多，比賽時一起計算。<b>抗性</b>降低受傷機率和受傷的嚴重程度，也能減輕比賽中受到的傷害。體況越低越難發揮；紅色斜線是舊傷，會壓低體況上限。</p></details>
+    <details><summary>錢與生活</summary>
+      <ul><li>高中時家裡出錢；18 歲後要自己付<b>生活費、學費</b>，大學生另有學雜費。</li><li>打工都在<b>稽古抽牌</b>裡：<b>永山香腸・搬香腸</b>（薪水最好、順便練力量和耐力）、便利商店夜班、健身房櫃台、家教（大學生）。選了打工牌，這半年就去打工賺錢，稽古只剩一點點。存款越少，越容易抽到打工牌。</li><li><b>營養品</b>花錢，但能提高成長和體況回復。</li><li>道着、護具會耗損，報名費、講習會、審查費都要錢。負債超過 10 萬時，壓力會讓稽古效果打折。</li><li>主畫面的「每季」顯示預估收支，下面一行是明細。</li></ul></details>
+    <details><summary>稽古抽牌（一年兩次）</summary>
+      <p>每年上半年、下半年各從稽古牌庫抽 3 張，選 1 張練半年（兩季）。牌分 N、R、SR、傳說四種稀有度，越稀有效果越好；同一張牌練得越久越熟練：累積 3、7、12、18 季分別升到 Lv2～Lv5，每級效果 +5%，牌上的「x/y」是升級進度。牌庫裡也有<b>打工牌</b>（永山香腸搬香腸、便利商店夜班等），選了就是這半年去打工賺錢，新手模式也會出現。每間道場都有自己的特色牌；小港、楠梓、潮州每年可以換牌兩次。<b>休養</b>不用抽，隨時可選；每年可以花 2 點鬥志<b>換牌</b>一次。各道場、內弟子時期的牌庫都不一樣。審查有哪一項明顯不足時，抽到的三張裡一定至少有一張能補那一項，但要不要練它由你決定。事件、比賽、審查還是每季照常發生。下一季如果體況低於 35 或受傷，會自動改成休養或復健。</p></details>
+    <details><summary>受傷</summary>
+      <ul><li><b>輕傷</b>：稽古效果 ×0.8，大約三到六個月痊癒。</li><li><b>中度傷</b>：稽古效果 ×0.55，比賽開場體力較低。</li><li><b>重傷</b>：只能休養或復健，不能比賽、不能審查。</li><li>受傷時能力會直接下降（輕傷少、重傷多），中度以上的傷沒好之前每季還會再掉一點。</li><li>28 歲起速度開始衰退，30 歲耐力、33 歲力量、35 歲鍛體也會跟著下降；技術和鬥志不會。</li><li>選「休養」恢復最快，「復健」可以邊恢復邊練一點抗性。受傷沒好又受傷，傷勢會加重。</li></ul></details>
+    <details><summary>組手對戰</summary>
+      <ul><li>每回合從四招選一招。招式分突、下段、中段、上段，對手分力量型、技術型、速度型，打中弱點會「效果拔群」：力量型怕下段、技術型怕正拳、速度型怕中段。</li><li>大招要用「氣」，每回合回 1 點；息吹可以回氣。受け・反擊能擋下攻擊再反打。</li><li>一次打掉三成體力算<b>技有</b>，兩個技有就是一本。本戰 5 回合，平手打延長 3 回合，再平手比試割片數。</li><li>不想一招一招打，可以按「交給本能」自動打完。</li></ul></details>
+    <details><summary>型比賽</summary>
+      <p>每一輪選一個型演武。難度越高分數越高，但技術不夠時容易失誤。五位審判舉旗，拿到三支旗就晉級。</p></details>
+    <details><summary>講習會</summary>
+      <p>型、組手、體能講習會直接提升能力；審判講習會和指導員講習會累積資歷，對四段審查和開道場有幫助。大賽等級越高，講習會效果越好、費用越貴。<b>參加過講習會是日本大賽的條件之一。</b></p></details>
+    <details><summary>日本大賽資格</summary>
+      <ul><li>全日本選手權（型・組手分開計算）：茶帶以上、滿 18 歲、近一年全台該組別前二名、參加過講習會、名聲 15 以上（支部推薦）。</li><li>全日本體重別（只有組手）：條件同上。</li><li>世界大賽（四年一次）：茶帶以上，且近一年全日本八強、體重別前三，或全台冠軍。</li><li>當日本內弟子第二年起，可直接報名日本大賽。</li></ul></details>
+    <details><summary>18 歲的三條路</summary>
+      <ul><li><b>見習指導員</b>（藍帶以上）：津貼少，稽古效率 ×1.05，每年累積指導資歷，升上初段就直接成為指導員。20 歲服兵役。最快走上內弟子之路。</li><li><b>讀大學</b>：四年，要付學費，稽古效率 ×1，兵役延到畢業。每年上半年有大專盃，可以接家教。畢業後找工作薪水比較高，也可以回道場。</li><li><b>就業</b>：薪水最高、年資越久越高，但稽古效率 ×0.85。20 歲服兵役。最快存到開道場的錢，但要另外靠助教、講習或帶少年部取得指導員資格。</li><li>只有<b>指導員</b>才能報名內弟子選拔、開設自己的道場、成為師範代。</li></ul></details>
+    <details><summary>內弟子之路</summary>
+      <p><b>台灣支部內弟子選拔</b>每年年初舉行，一生最多報名 3 次。報名資格：初段以上並有指導員資格、20～28 歲、未婚（要住進支部）、近兩年出賽過全台選手權或參加過 2 次講習會、沒有重傷、沒有自己的道場。支部長審查分四項：基本・型、體力、組手、心・態度（鬥志、指導資歷、講習、出賽），四項都要過。入選後住進支部三年，成長加速、免學費。日本內弟子是住進本部宿舍三年（約一千日），結業後還要接受本部指派一年研修（留本部或派到海外分部），才能回台。結業後才能申請赴日成為<b>日本內弟子</b>（三年），回台後擔任指導員。</p></details>
+    <details><summary>升級審查</summary>
+      <p>基本・移動、型、體力測試、組手四項全部合格才能升級，不合格不退費。審查每年上半年、下半年各一次（時間到了也要等審查）。<b>三段以上要到日本本部審查</b>，每年下半年一次，另付旅費 4 萬（日本內弟子期間免旅費）。黑帶起組手改成 10／20／30 人連續組手。主畫面的「下一次升級」會列出每一項用到哪些能力、目前分數、合格線和通過機率。數值剛好達標大約五成機率通過，高出 8 分以上才算穩過。</p></details>
+    <details><summary>指導員資格（32 歲期限）</summary>
+      <p>32 歲前要取得指導員資格，否則以一般學員身分結束。條件是<b>初段以上</b>，再加上以下任一項：擔任少年部助教（稽古選單可申請）、參加指導員講習會、成為指導員（內弟子結業後）、開設自己的道場。</p></details>
+    <details><summary>支部長之路</summary>
+      <p>只有完成<b>日本內弟子</b>的人才有機會。回台後每半年可以處理「支部事務」：參加海外講習會、舉辦國際親善大賽、主辦亞洲杯、陪同代表隊出國。也會碰到外派系抹黑、挖角、會場抗議等事件，處理得好會提高本部評價。<br><b>台灣支部師範代</b>：三段以上、已有指導員資格、滿 30 歲、累積 4 年以上指導資歷（助教、指導員或經營道場），支部長就會任命。師範代每季有津貼，不一定要去過日本。<br><b>台灣支部長</b>：五個條件全部達成才會被任命——①日本內弟子結業（沒去日本修行就當不了支部長）②擔任過台灣支部師範代 ③四段 ④滿 40 歲 ⑤<b>本部評價（總部名聲）100</b>。「收支・資格」分頁有支部長條件清單。<br><b>本部評價</b>從日本內弟子結業時的 15 開始累積：支部事務（海外講習 +4、國際親善大賽 +5～8、亞洲杯 +12 或 −6、陪同代表隊 +4）、處理外派系抹黑和抗議、就任師範代 +5、弟子拿全台冠軍 +3、全日本體重別／全日本／世界奪冠 +3／+5／+10。每年會流失目前的 7%，所以要持續經營。等級：0～29 沒沒無聞、30～59 受到注意、60～99 受到信賴、100 以上支部長候選。42 歲引退後可以選「繼續擔任支部指導員」或經營道場，繼續拚支部長。當上支部長後，支部事務多了<b>推出周邊商品</b>：道着、T恤、毛巾、貼紙，之後每季都有商品收入，名聲越高賣越好，還能再加開新品線讓收入加倍。</p></details>
+    <details><summary>道場與學費</summary>
+      <p>開自己的道場要先通過<b>支部長審核</b>（指導員資格、初段、滿 24 歲、2 年以上指導資歷、存款 5 萬；審核看指導實績、人望、經營計畫），一年只能申請一次。道場以「台灣支部」的名義開設，學員的審查和比賽都跟著支部走，每半年把收入的一成＋1 萬交給支部，支部長也會來巡視。<br>九間道場的稽古牌庫不一樣，每間都有自己才抽得到的特色牌。道場也會隨著事件改變，例如換新器材、黑帶前輩回歸、學員之間的摩擦。高中時學費家裡出，之後要自己付。</p></details>
+    <details><summary>怎麼開自己的道場</summary>
+      <ul><li><b>時機</b>：現役時初段以上、滿 24 歲、不在內弟子期間、沒有重傷，稽古選單會出現「籌備開設自己的道場」；或引退時選「開設自己的道場」。</li>
+      <li><b>城市</b>：全台都能開。南部是支部的大本營，難度最低；高雄、台南市區人多但競爭大；嘉義、台中、花蓮、台北離開南部，支部支援少，難度更高。</li>
+      <li><b>場地</b>：市區店面、社區活動中心、學校社團合作。開辦費和租金會乘上城市的租金倍率；學校社團存款不夠也能開。</li>
+      <li><b>上繳金</b>：每半年要繳收入的一成再加 1 萬給本部。</li>
+      <li><b>失敗條件</b>：學員少於 6 人或虧損連續三期且存款不足，或負債超過 20 萬，道場就會結束營業。</li>
+      <li><b>名號加成</b>：拿過大賽冠軍再開道場，學員會慕名而來。世界冠軍：招生 ×1.5、學費 +20%、開幕多 15 名學員、弟子更強；全日本冠軍 ×1.3；全日本體重別 ×1.2；全台冠軍 ×1.1；百人組手再 ×1.25；支部長再 ×1.1。冠軍是開道場後才拿到的也會生效。</li>
+      <li>指導員講習會、助教經驗會提高指導品質；培養出 3 名黑帶弟子是五段審查的條件。</li></ul></details>
+    <details><summary>個性與狀態</summary>
+      <p>每個人入門時有兩個<b>個性</b>，由命運種子決定（開局最上面按「換一個」就會換），可能兩個都好、兩個都麻煩，或一好一壞。正面：天才、熱血、努力家、冷靜、鐵人、人望、大賽型、不屈、柔軟、怪力、天生腳快、研究型、好運、領袖氣質、節儉。麻煩的：玻璃心、懶散、衝動、怯場、易受傷、驕傲、怕痛、愛花錢、頑固、晚熟、情緒化、笨拙、暴躁、愛睡。「招式・型」分頁看得到每個個性的效果。<br><b>天才</b>非常少見（約 2%），而且七成會同時帶著<b>驕傲</b>；只有天才可以選<b>全能型</b>（沒有弱點、組手攻防 +4）。驕傲的人奪冠後八成會「自滿」（成長 ×0.85、比賽 −3），審查也 −2。<br><b>後天個性</b>：修行中達成條件會改變個性（最多同時 4 個）；如果原本有對應的壞個性，會先把它克服掉。<ul><li>體能・鍛體練 20 次以上且很少受傷 → 鐵人（克服易受傷）</li><li>基本・型練 26 次 → 研究型（克服笨拙）</li><li>組手練 26 次 → 熱血（克服怕痛）</li><li>落榜 3 次以上還是升上黑帶 → 不屈（克服玻璃心）</li><li>50 次稽古只休養 4 次以下 → 努力家（克服懶散、愛睡）</li><li>欠過錢後存回 10 萬 → 節儉（克服愛花錢）</li><li>入山修行 2 次 → 冷靜（克服情緒化、暴躁）</li><li>全日本大賽奪冠 → 大賽型（克服怯場）</li><li>自滿時吃敗仗 3 次 → 謙虛（克服驕傲）</li><li>指導滿 5 年 → 人望（克服頑固）</li><li>受傷 4 次 → 克服衝動</li><li>也會變壞：舊傷太多 → 易受傷；低潮 4 次以上 → 玻璃心</li></ul><br><b>狀態</b>會隨比賽、審查、受傷變化：奪冠會「絕好調」，早早輸球或落榜可能「低潮」，受傷可能「焦躁」，驕傲的人奪冠後會「自滿」。壞狀態會讓成長和比賽變差，選「休養」或過一陣子會恢復。</p></details>
+    <details><summary>支部長與分館</summary>
+      <p>當上台灣支部長後，「支部事務」多了<b>派弟子到其他地區開分館</b>。可派的人數＝自己道場的黑帶弟子＋每兩年指導資歷一人。每兩年最多開一間，要出開館支援金（越遠越貴），成功機率看地區難度、名聲和本部評價。分館每季上繳一點收入，學員太少可能關閉。台灣支部本身在南部，只要北、中、東也都有分館或自己的道場，就是<b>全台製霸</b>（名聲 +10、成就）。</p></details>
+    <details><summary>少年部與女子部</summary>
+      <p>自己的道場開了少年部後，可能出現「天才少年」：親自一對一帶，他成長得更快，先拿全台少年組，長大後有機會在全日本奪冠（成就「名伯樂」）。學員 20 人以上可以開設女子部，學員上限 +20，女子部選手有機會拿下全台女子組優勝。</p></details>
+    <details><summary>師兄與學弟</summary>
+      <p>入門時會有一位照顧你的師兄，二十歲以後會出現一位追著你學的學弟。他們的故事會在不同年紀接續出現；你怎麼對待他們，會影響之後的發展。每年一月也會有一段「年度回顧」。</p></details>
+    <details><summary>型與組手</summary>
+      <p>沒有固定路線，比賽時可以報型、組手或兩項都報。練了一段時間後，會依「基本・型」和「組手」牌的比例，成為<b>型熟手</b>（型比賽最多 +3.5）、<b>組手熟手</b>（組手攻擊最多 +9）或<b>全方位熟手</b>（兩邊都小加成），顯示在角色卡上。練越久加成越大。但審查四項都要考，基礎體能和組手、型都不能放掉。「招式・型」分頁會顯示你目前的稽古傾向。</p></details>
+  </section>
+
+  <section id="start" class="px card" aria-label="開始新人生">
+    <div class="hero">
+      <div class="portrait"><canvas id="startSpr"></canvas></div>
+      <div class="hinfo">
+        <div class="hname"><b id="startName">新人</b><span class="beltpill" style="--belt:#f6f4ee;--bfg:#26223b">白帶</span></div>
+        <p class="badges" id="startTraits"></p><p class="lead">十六歲，推開極真空手道中村道場台灣支部的木門。第一次玩可以先看右上角的「遊戲說明」。</p>
+      </div>
+    </div>
+    <form class="form" id="startForm">
+      <div class="field">
+        <label class="t" for="inSeed">命運種子（決定個性和人生）</label>
+        <div class="seedrow">
+          <input class="inp" id="inSeed" inputmode="numeric" maxlength="6" autocomplete="off">
+          <button class="ghost" type="button" id="btnReroll">換一個</button>
+        </div>
+        <p class="hint">按「換一個」會換個性。相同種子＋相同選擇＝相同人生。</p>
+      </div>
+      <div class="field">
+        <label class="t" for="inName">選手姓名</label>
+        <input class="inp" id="inName" maxlength="8" autocomplete="off">
+      </div>
+      <fieldset class="field">
+        <legend>入門道場</legend>
+        <p class="legend">每間道場的稽古內容都不一樣，會抽到只有那間道場才有的特色牌。</p>
+        <div class="seg two" id="homeSeg"></div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>量級</legend>
+        <div class="seg two" id="wcSeg"></div>
+        <p class="legend">實際的全日本體重別分五個量級。「無差別」是全台、全日本、世界大賽的組手，不分體重。</p>
+      </fieldset>
+      <fieldset class="field">
+        <legend>戰鬥風格</legend>
+        <div class="seg two" id="styleSeg"></div>
+      </fieldset>
+      <fieldset class="field">
+        <legend>得意技（習慣的招式）</legend>
+        <p class="legend">從上面戰鬥風格的招式裡挑一招。比賽一定會帶在身上，威力 ×1.2、命中 +8，越常用越熟練（最多再 +15%）；大招在白帶時還不穩。</p>
+        <div class="seg two" id="favSeg"></div>
+      </fieldset>
+      <div class="opts">
+        <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span></button>
+        <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
+        <button class="opt" type="button" id="btnAch"><span class="l">成就圖鑑・歷代紀錄</span><span class="s" id="achSub"></span></button>
+      </div>
+    </form>
+  </section>
+  <section id="achBox" class="px card" hidden aria-label="成就圖鑑"></section>
+
+  <section id="game" class="stack" hidden>
+    <div id="panels" class="stack">
+      <div class="px hero2">
+        <div class="htop">
+          <div class="portrait"><canvas id="heroSpr"></canvas></div>
+          <div class="hinfo">
+            <div class="hname"><b id="heroName"></b><span id="beltPill"></span></div>
+            <div class="hsub" id="profile"></div>
+            <div id="injSlot"></div>
+          </div>
+        </div>
+        <div class="hnums" id="vitals"></div>
+        <div id="stats"></div>
+      </div>
+    </div>
+    <article id="card" aria-live="polite"></article>
+    <section class="px more" id="moreBox" aria-label="詳細資料">
+      <div class="tabs" id="tabs"><button type="button" data-t="exam">審查</button><button type="button" data-t="skill">招式・型</button><button type="button" data-t="dojo">道場</button><button type="button" data-t="money">收支・資格</button></div>
+      <div id="tabBody" hidden></div>
+    </section>
+    <details class="log" id="logBox">
+      <summary>修行記錄</summary>
+      <ol id="log"></ol>
+      <button class="quit" type="button" id="btnQuit">放棄這段人生，回到首頁</button>
+    </details>
+  </section>
+
+  <section id="end" class="px card end" hidden></section>
+
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構</footer>
+</div>
+
+<script>
+/* ===== data ===== */
+const RANKS=['白帶','橙帶','藍帶','黃帶','綠帶','茶帶','初段','二段','三段','四段','五段'];
+const KYU=['無級','10–9級','8–7級','6–5級','4–3級','2–1級','黑帶','黑帶','黑帶','黑帶','黑帶'];
+const STATN={pow:'力量',spd:'速度',sta:'耐力',tec:'技術',con:'鍛體',res:'抗性',spi:'鬥志'};
+const DN={...STATN,hp:'體況',fame:'名聲',money:'存款'};
+const ROUTES={
+  dual:{n:'雙修',d:'型＋組手',stars:3,divs:['kata','kumite']},
+  kumite:{n:'組手專修',d:'只比組手',stars:2,divs:['kumite']},
+  kata:{n:'型專修',d:'只比型',stars:2,divs:['kata']}
+};
+const DIVN={kata:'型',kumite:'組手'};
+const STYLES={
+  low:{n:'下段踢型',d:'技術型・下段踢・膝蹴・踵落'},
+  high:{n:'上段踢型',d:'速度型・中段踢・上段踢・後迴旋・胴迴旋'},
+  punch:{n:'正拳型',d:'力量型・正拳・連打・膝蹴'},
+  all:{n:'全能型',d:'需要天才個性・沒有弱點・組手攻防 +4・正拳・下段・中段・上段'}
+};
+const WCLS={
+  ll:{n:'輕輕量級',kg:'−60kg',d:'速度↑↑ 技術↑ 力量↓↓ · 常常先出手、難被打中 · 無差別大賽最吃虧',open:-5,hp:-3,dodge:5,base:{spd:8,tec:2,pow:-6,con:-2}},
+  light:{n:'輕量級',kg:'−70kg',d:'速度↑ 力量↓ · 出手快、比較難被打中 · 無差別大賽吃虧',open:-3,hp:-1,dodge:3,base:{spd:5,tec:1,pow:-4,con:-1}},
+  middle:{n:'中量級',kg:'−80kg',d:'各項均衡 · 沒有明顯弱點',open:-1,hp:0,dodge:0,base:{}},
+  lh:{n:'輕重量級',kg:'−90kg',d:'力量↑ 鍛體↑ 速度↓ · 無差別略占優勢',open:1,hp:2,dodge:-2,base:{pow:3,con:2,spd:-3,tec:-1}},
+  heavy:{n:'重量級',kg:'+90kg',d:'力量↑↑ 鍛體↑ 速度↓↓ · 體力條最長、容易被打中 · 無差別占優勢',open:2,hp:4,dodge:-4,base:{pow:6,con:3,spd:-6,tec:-2}}
+};
+const ATTRN={coach:'指導',equip:'設備',partners:'對手',mood:'氛圍'};
+const HOMES={
+  pingtung:{n:'屏東道場',coach:86,equip:76,partners:82,mood:54,fee:1.2,pk:{kihon:1.06,kumite:1.06,exam:2,kata:1}},
+  zuoying:{n:'左營道場',coach:86,equip:78,partners:82,mood:52,fee:1.2,pk:{kihon:1.06,kumite:1.06,exam:2,kata:1}},
+  lingya:{n:'苓雅道場',coach:66,equip:62,partners:86,mood:60,fee:.7,pk:{kumite:1.2,battle:2}},
+  fengshan:{n:'鳳山道場',coach:74,equip:60,partners:66,mood:66,fee:.6,pk:{kihon:1.08,exam:2}},
+  zhutian:{n:'竹田道場',coach:74,equip:46,partners:56,mood:84,fee:.55,pk:{kihon:1.08,exam:2}},
+  tainan:{n:'台南道場',coach:60,equip:56,partners:74,mood:70,fee:.55,pk:{kumite:1.12,battle:1}},
+  xiaogang:{n:'小港道場',coach:56,equip:54,partners:58,mood:72,fee:.5,pk:{}},
+  nanzi:{n:'楠梓道場',coach:56,equip:58,partners:60,mood:70,fee:.5,pk:{}},
+  chaozhou:{n:'潮州道場',coach:56,equip:48,partners:54,mood:80,fee:.5,pk:{}}
+};
+const UCHI_HOME={n:'日本本部（內弟子）',coach:95,equip:82,partners:95,mood:40,fee:0,pk:{kihon:1.1,kumite:1.1,exam:3}};
+const PATHN={school:'高中生',uni:'大學生',job:'上班族',trainee:'見習指導員',twuchi:'台灣內弟子',uchi:'日本內弟子',inst:'指導員'};
+const SUR='陳林黃張李王吳劉蔡楊許鄭謝郭洪曾邱廖賴周'.split('');
+const GIV=['冠廷','承恩','柏翰','宇軒','家豪','俊傑','子豪','彥廷','品睿','振宇','建宏','育誠','韋翔','聖文','立昕','哲維','孟儒','冠宇'];
+const JS=['佐藤','鈴木','高橋','田中','山本','中村','小林','加藤','吉田','松本','井上','木村','清水','山口'];
+const JG=['健太','大地','翔','勇氣','拓海','蓮','隼人','剛','誠','龍之介','颯太','航平','直樹','力'];
+const WORLD=[['伊萬・索科洛夫','俄羅斯'],['馬特烏斯・科斯塔','巴西'],['達維特・貝里澤','喬治亞'],['阿圖爾・薩爾基相','亞美尼亞'],['揚・科瓦爾斯基','波蘭'],['盧卡斯・費雷拉','巴西'],['米哈伊爾・奧爾洛夫','哈薩克'],['托馬斯・范德堡','荷蘭'],['阿列克謝・莫羅佐夫','俄羅斯'],['卡里姆・哈達德','黎巴嫩']];
+const INJ=['脛骨挫傷','腳背骨裂','肋骨骨裂','膝蓋韌帶拉傷','手指骨折','鼻樑骨折','大腿肌肉撕裂','腰部扭傷'];
+const HAIR=['#3a3550','#26223b','#5d3a6e','#566c86','#7a4a2a'];
+const TRAIN={
+  kihon:{n:'基本・型',s:'基本、移動、型 · 技術↑↑ 速度↑ · 下次審查「型」加分',g:{tec:3.8,spd:1.2,spi:1.2},attr:'coach',inj:.02,hp:2,prep:1},
+  kumite:{n:'組手',s:'道場內實戰對打 · 技術↑ 速度↑ 力量↑ 鬥志↑ · 受傷風險高',g:{tec:2.2,spd:2.4,pow:1.8,spi:2,con:1,res:.8},attr:'partners',inj:.1,hp:-8},
+  taiso:{n:'體能・鍛體',s:'跑山、重量、踢沙包、互擊腹部 · 耐力↑↑ 力量↑ 鍛體↑ 抗性↑',g:{sta:3.6,pow:2,con:2.3,res:1.8},attr:'equip',inj:.05,hp:-9},
+  rest:{n:'休養',s:'伸展、治療 · 體況大幅回復 · 傷勢恢復加快',g:{spi:1},attr:'mood',inj:0,hp:30,wear:-1,heal:2},
+  rehab:{n:'復健',s:'帶傷做復健與輕量訓練 · 抗性↑ · 傷勢慢慢恢復',g:{res:1.8,spi:.8,tec:.6},attr:'mood',inj:0,hp:14,heal:1,cond:()=>!!S.injury},
+  yama:{n:'山籠修行',s:'入山獨自修行 · 鬥志↑↑ 全能力↑ · 花費 3 萬',g:{spi:6,sta:4,pow:2,tec:2,spd:1,con:2},attr:'none',inj:.05,hp:-8,cost:3,cond:()=>S.rank>=6&&S.money>=3}
+};
+/* ===== 稽古卡 ===== */
+const CARDS={
+  kb:{n:'基本稽古',fam:'kihon',r:0,m:1,s:'正拳、受け、移動，一千次'},
+  kido:{n:'移動稽古',fam:'kihon',r:0,m:1,g:{tec:3,spd:2.4,spi:1},s:'前進、後退、轉身，把腳步練穩'},
+  kkata:{n:'型的反覆',fam:'kihon',r:0,m:.85,km:1.2,s:'同一個型打到閉著眼也不會錯'},
+  kshi:{n:'師範一對一',fam:'kihon',r:1,m:1.4,km:1.2,s:'師範盯著你每一個動作'},
+  kdet:{n:'型的細部修正',fam:'kihon',r:1,m:1.05,km:1.5,cond:()=>S.rank>=3,s:'呼吸、眼神、停頓，一格一格修'},
+  kboss:{n:'支部長親自指導',fam:'kihon',r:2,m:1.8,km:1.4,s:'六段的眼睛，一眼就看穿你的毛病'},
+  myak:{n:'約束組手',fam:'kumite',r:0,m:.8,inj:.04,hp:-4,s:'先約好攻防，安全地練時機'},
+  mjis:{n:'實戰對打',fam:'kumite',r:0,m:1,s:'道場內全力對打'},
+  mblk:{n:'黑帶前輩組手',fam:'kumite',r:1,m:1.4,inj:.13,hp:-11,cond:()=>S.rank>=1,s:'被打得很慘，但進步最快'},
+  mdeg:{n:'出稽古',fam:'kumite',r:1,m:1.25,g:{spd:2.8,tec:2.6,pow:1.6,spi:2,res:.8},cond:()=>S.rank>=2,s:'到別的道場對打，見識不同的打法'},
+  mworld:{n:'世界四強的組手指導',fam:'kumite',r:2,m:1.6,g:{tec:3.4,spd:3,pow:1.6,spi:2,res:1},s:'世界四強的指導員親自帶你對打'},
+  trun:{n:'跑山',fam:'taiso',r:0,m:1,g:{sta:5.5,spi:1,con:1.5,res:.8},s:'步道衝上衝下，跑到腿軟'},
+  twt:{n:'重量訓練',fam:'taiso',r:0,m:1,g:{pow:4.8,con:2,sta:1.6,res:.6},s:'深蹲、硬舉、臥推'},
+  tbody:{n:'鍛體',fam:'taiso',r:0,m:1,g:{con:4.2,res:3.4,sta:1.2,pow:.6},s:'互擊腹部、踢脛骨、踢沙包'},
+  tcir:{n:'循環體能特訓',fam:'taiso',r:1,m:1.35,s:'全身一起操到極限'},
+  sgas:{n:'強化合宿',fam:'taiso',r:1,m:1.2,g:{sta:3,spi:3,tec:2,pow:1.5,con:1},cost:1,cond:()=>S.money>=1,s:'三天兩夜從早練到晚 · 花 1 萬'},
+  syama:{n:'山籠修行',fam:'yama',r:1,m:1,cond:()=>S.rank>=6&&S.money>=3,s:'入山獨自修行 · 花 3 萬'},
+  shyk:{n:'百人組手特訓',fam:'kumite',r:2,m:1.3,g:{sta:5,spi:5,con:2,pow:1.5},hp:-16,inj:.12,cond:()=>S.rank>=7,s:'一個下午連打三十人'},
+  w_saus:{n:'永山香腸・搬香腸',fam:'job',r:0,g:{pow:1.8,sta:1.2,con:.6},pay:3.4,hp:-7,inj:.02,s:'搬冷凍箱、上下貨 · 薪水最好 · 順便練力量和耐力'},
+  w_store:{n:'便利商店夜班',fam:'job',r:0,g:{spi:.6},pay:3,hp:-9,inj:0,s:'顧店、補貨 · 很傷體況'},
+  w_gym:{n:'健身房櫃台',fam:'job',r:0,g:{sta:1.2,pow:.8},pay:2.4,hp:-3,inj:0,cond:()=>S.age>=18,s:'櫃台兼帶課 · 不太累 · 順便練體能'},
+  w_tutor:{n:'家教',fam:'job',r:0,g:{tec:.4,spi:.6},pay:3.2,hp:-2,inj:0,cond:()=>S.path==='uni',s:'教國中生數學 · 輕鬆、薪水不錯'},
+  u_pt:{n:'屏東本部集訓',fam:'kumite',r:1,m:1.35,g:{pow:2.4,spd:2.2,tec:2.4,sta:1.6,spi:2,res:.8},inj:.1,hp:-10,uniq:'pingtung',s:'各道場的選手集合到屏東，一起練到天黑'},
+  u_zy:{n:'左營黑帶聯合稽古',fam:'kumite',r:1,m:1.35,g:{tec:2.8,spd:2.4,pow:2,spi:2.2,con:1,res:.8},inj:.1,hp:-10,uniq:'zuoying',s:'黑帶前輩輪流上場，一個接一個'},
+  u_lingya:{n:'苓雅實戰稽古',fam:'kumite',r:1,m:1.5,g:{pow:2.6,spd:2.4,tec:2,spi:2.4,con:1.2,res:1},inj:.12,hp:-10,uniq:'lingya',s:'苓雅的招牌，打到站不起來為止'},
+  u_feng:{n:'師範代的型講座',fam:'kihon',r:1,m:1.3,km:1.6,uniq:'fengshan',s:'師範代把每個型拆開來講'},
+  u_zhu:{n:'竹田田間晨跑',fam:'taiso',r:1,m:1.3,g:{sta:5,spi:2,con:2,res:1.2},inj:.01,hp:-4,uniq:'zhutian',s:'天剛亮，沿著田埂跑到太陽出來'},
+  u_tn:{n:'台南組手技術課',fam:'kumite',r:1,m:1.3,g:{tec:3.6,spd:2.6,spi:1.6,res:.8},inj:.06,hp:-6,uniq:'tainan',s:'距離、時機、閃身，練得非常細'},
+  u_xg:{n:'港邊沙灘特訓',fam:'taiso',r:1,m:1.3,g:{sta:4,pow:2.4,res:1.8,spi:1.2},uniq:'xiaogang',s:'在沙灘上跑步、踢腿，腳底磨到起水泡'},
+  u_nz:{n:'帶少年部',fam:'kihon',r:1,m:.9,g:{tec:2.2,spi:2.4},kids:1,uniq:'nanzi',s:'幫師範帶小朋友 · 累積指導資歷，指導員資格更容易'},
+  u_cz:{n:'師兄弟自主練',fam:'kumite',r:1,m:1.2,g:{tec:2,spd:2,pow:1.6,spi:3,con:1.2},inj:.05,hp:-6,uniq:'chaozhou',s:'下課後師兄弟留下來，互相盯到熄燈'},
+  snak:{n:'中村師範來台講習',fam:'kihon',r:3,m:1.6,g:{tec:3,spd:2,pow:2,sta:2,con:1.5,spi:3},km:1.3,s:'極真的傳奇站在你面前'}
+};
+const RARN=['N','R','SR','傳說'];
+const rerollMax=()=>Math.max(0,(['xiaogang','nanzi','chaozhou'].includes(S.setup.home)&&S.path!=='uchi'?2:1)+(hasT('lucky')?1:0)-(hasT('stubborn')?1:0));
+function rerollLeft(){const f=S.flags.rr||{};return rerollMax()-(f.y===S.year?f.n:0);}
+const CARD_W={w_saus:3,w_store:2,w_gym:2,w_tutor:2,u_pt:2.5,u_zy:2.5,u_lingya:2.5,u_feng:2.5,u_zhu:2.5,u_tn:2.5,u_xg:2.5,u_nz:3,u_cz:2.5,kb:10,kido:8,kkata:8,kshi:3,kdet:2.5,kboss:.25,myak:8,mjis:10,mblk:3,mdeg:2.5,mworld:0,trun:9,twt:9,tbody:8,tcir:3,sgas:1.5,syama:2.5,shyk:.8,snak:.25};
+const DECK_MOD={
+  pingtung:{mjis:1.5,mblk:1.9,kshi:1.3,kdet:1.2,tcir:1.2,kboss:6,myak:.8},
+  zuoying:{mjis:1.5,mblk:1.9,kshi:1.3,kdet:1.2,tcir:1.2,kboss:6,myak:.8},
+  lingya:{mjis:1.6,mblk:1.5,mdeg:1.3,myak:.8,kshi:.7,kdet:.7},
+  fengshan:{kshi:1.8,kdet:1.3,mblk:1.1},
+  zhutian:{kshi:1.8,kdet:1.3,mblk:1.1},
+  tainan:{mworld:1.4,mjis:1.2,mblk:1.1},
+  xiaogang:{kshi:1.7,mblk:.9,u_xg:1.4},nanzi:{kshi:1.7,mblk:.9,u_nz:1.3},chaozhou:{kshi:1.7,mblk:.9,u_cz:1.4}
+};
+const UCHI_NAME={kshi:'本部師範一對一',mblk:'本部黑帶組手',kboss:'館長親自指導',mjis:'本部實戰稽古'};
+function cardName(id){const c=CARDS[id];if(!c)return (TRAIN[id]||{}).n;return S.path==='uchi'&&UCHI_NAME[id]?UCHI_NAME[id]:c.n;}
+function cardW(id){
+  const c=CARDS[id];if(c.cond&&!c.cond())return 0;
+  const hk=S.setup.home;
+  if(c.uniq&&(c.uniq!==hk||S.path==='uchi'))return 0;
+  if(c.fam==='job'){if(!canWork()||S.path==='school'&&id!=='w_saus'&&id!=='w_store')return 0;return (CARD_W[id]||1)*(S.money<0?3:S.money<4?2:S.money>15?.4:1);}
+  let w=CARD_W[id]||0;
+  if(S.path==='uchi'){if(c.r>=1)w=Math.max(w,1)*2.5;if(id==='kboss')w=1.5;if(id==='mworld')w=0;}
+  else{const mod=(DECK_MOD[hk]||{})[id];if(mod!=null)w=(w||1)*mod*(CARD_W[id]?1:1);if(!CARD_W[id]&&mod==null)w=0;if(S.path==='twuchi'&&c.r>=1)w*=1.5;}
+  return w;
+}
+const cardCnt=id=>((S.clv||{})[id]||0);
+const LV_AT=[0,3,7,12,18];
+const cardLv=id=>{const c=cardCnt(id);let l=0;while(l<4&&c>=LV_AT[l+1])l++;return l;};
+function drawHand(){
+  const ids=Object.keys(CARDS);const hand=[];
+  for(let k=0;k<3;k++){const pool=ids.filter(i=>!hand.includes(i)).map(i=>[i,cardW(i)]).filter(x=>x[1]>0);if(!pool.length)break;
+    let t=pool.reduce((a,b)=>a+b[1],0),x=r()*t;let got=pool[pool.length-1][0];for(const [i,w] of pool){x-=w;if(x<=0){got=i;break;}}hand.push(got);}
+  const es=examStatus();
+  if(es){const w=es.parts.reduce((a,p,i)=>p.pr<es.parts[a].pr?i:a,0);
+    if(es.parts[w].pr<.8){const good=(w===3&&es.parts[3].kn)?['trun','tcir','tbody']:[['kb','kido','kshi'],['kkata','kdet','kshi','kb'],['trun','tcir','twt'],['mjis','mblk','myak','mdeg']][w];
+      if(!hand.some(i=>good.includes(i))){const cand=good.filter(i=>cardW(i)>0&&!hand.includes(i));if(cand.length)hand[2]=cand[Math.floor(r()*cand.length)];}}}
+  if(hand.includes('snak'))S.flags.legend=1;
+  return hand;
+}
+function TX(id){
+  if(TRAIN[id])return {...TRAIN[id],fam:id,km:1};
+  const c=CARDS[id];if(!c)return null;const b=TRAIN[c.fam];
+  const g={};const src=c.g||b.g;for(const k in src)g[k]=src[k]*c.m;
+  if(c.fam==='job')return {n:c.n,s:c.s,g:{...c.g},attr:'none',inj:c.inj||0,hp:c.hp,cost:0,prep:0,km:1,fam:'job',rar:0,card:1,pay:c.pay};
+  return {n:cardName(id),s:c.s,g,attr:b.attr,inj:c.inj!=null?c.inj:b.inj,hp:c.hp!=null?c.hp:b.hp,wear:b.wear,cost:c.cost||b.cost||0,prep:c.fam==='kihon'?1:0,km:c.km||1,fam:c.fam,rar:c.r,card:1};
+}
+const EXK=['','太極','太極','平安','平安','擊碎','安三','最破','征遠鎮','觀空','五十四步'];
+const KATA=EXK;
+const KATA_LIST=[
+  {n:'太極',d:1,rk:0},{n:'平安',d:2,rk:2},{n:'擊碎',d:3,rk:4},{n:'安三',d:4,rk:5},{n:'最破',d:5,rk:6},
+  {n:'征遠鎮',d:6,rk:7},{n:'臥龍',d:6,rk:7},{n:'觀空',d:7,rk:8},{n:'五十四步',d:8,rk:9}];
+const LOCS={
+  shop:{n:'市區店面',s:'曝光高、招生快，租金也高',cost:20,rent:9,st:10,cap:120,eq:50},
+  community:{n:'社區活動中心',s:'租金便宜，空間有限',cost:8,rent:4,st:7,cap:60,eq:30},
+  school:{n:'學校社團合作',s:'幾乎不用本錢，學員以學生為主',cost:3,rent:1.5,st:12,cap:40,eq:20,kids:1}
+};
+function prestige(){
+  const c=S.champ,P={m:1,st:0,fee:0,mood:0,dis:0,tags:[]};
+  if(c.world_kumite||c.world_kata){P.m*=1.5;P.st+=15;P.fee+=.2;P.mood+=15;P.dis+=6;P.tags.push('世界冠軍');}
+  else if(c.jp_kumite||c.jp_kata){P.m*=1.3;P.st+=8;P.fee+=.1;P.mood+=8;P.dis+=4;P.tags.push('全日本冠軍');}
+  else if(c.jpw_kumite){P.m*=1.2;P.st+=5;P.mood+=5;P.dis+=3;P.tags.push('全日本體重別冠軍');}
+  else if(S.twc.kumite||S.twc.kata){P.m*=1.1;P.st+=3;P.mood+=3;P.dis+=1;P.tags.push('全台冠軍');}
+  if(S.flags.hyaku){P.m*=1.25;P.st+=6;P.mood+=6;P.tags.push('百人組手');}
+  if(S.flags.shibucho){P.m*=1.1;P.tags.push('台灣支部長');}
+  return P;
+}
+function prestigeTxt(P){return P.tags.length?`${P.tags.join('・')}：招生 ×${P.m.toFixed(2)}${P.fee?`・學費 +${Math.round(P.fee*100)}%`:''}${P.st?`・開幕學員 +${P.st}`:''}`:'尚無名號加成（全台、全日本、世界冠軍或百人組手會讓招生更容易）';}
+const CITIES={
+  pingtung:{n:'屏東（東港、恆春）',short:'東港',area:'南部',comp:.2,demand:.8,rentM:.8,far:1,stars:1},
+  kaosub:{n:'高雄市郊（岡山、路竹）',short:'岡山',area:'南部',comp:.35,demand:1,rentM:1,far:1,stars:2},
+  tainanS:{n:'台南郊區（永康、新營）',short:'永康',area:'南部',comp:.3,demand:.9,rentM:.9,far:1,stars:2},
+  kaocity:{n:'高雄市區（三民、前鎮）',short:'三民',area:'南部都會',comp:.6,demand:1.5,rentM:1.4,far:1,stars:3},
+  tainanC:{n:'台南市區（東區、中西區）',short:'台南東區',area:'南部都會',comp:.55,demand:1.4,rentM:1.3,far:1,stars:3},
+  chiayi:{n:'嘉義',short:'嘉義',area:'跨出南部',comp:.3,demand:.9,rentM:.9,far:1.25,stars:3},
+  taichung:{n:'台中市區',short:'台中',area:'中部都會',comp:.65,demand:1.6,rentM:1.5,far:1.35,stars:4},
+  hualien:{n:'花蓮',short:'花蓮',area:'東部',comp:.15,demand:.6,rentM:.75,far:1.5,stars:4},
+  taipei:{n:'台北市區',short:'台北',area:'北部都會',comp:.8,demand:2,rentM:2,far:1.5,stars:5}
+};
+
+/* ===== battle data ===== */
+const MOVES={
+  tsuki:{n:'正拳中段突き',cat:'突',pw:40,acc:95,ki:0},
+  renda:{n:'正拳連打',cat:'突',pw:24,hits:2,acc:90,ki:1},
+  gedan:{n:'下段迴旋踢',cat:'下段',pw:35,acc:95,ki:0,leg:1},
+  chudan:{n:'中段迴旋踢',cat:'中段',pw:55,acc:85,ki:1},
+  hiza:{n:'中段膝蹴',cat:'中段',pw:58,acc:88,ki:1},
+  jodan:{n:'上段迴旋踢',cat:'上段',pw:85,acc:62,ki:2,crit:.1},
+  ushiro:{n:'後迴旋踢',cat:'上段',pw:100,acc:50,ki:2,crit:.1},
+  kakato:{n:'踵落',cat:'上段',pw:90,acc:56,ki:2,crit:.08},
+  dokaiten:{n:'胴迴旋踢',cat:'上段',pw:110,acc:42,ki:3,crit:.15},
+  uke:{n:'受け・反擊',cat:'受',pw:45,acc:100,ki:1,guard:1},
+  ibuki:{n:'息吹',cat:'息',pw:0,acc:0,ki:0,rest:1}
+};
+const EFF={power:{'下段':1.5,'突':.7},tech:{'突':1.5,'上段':.7},speed:{'中段':1.5,'下段':.7}};
+const TYPEN={power:'力量型',tech:'技術型',speed:'速度型',none:'全能型'};
+const WEAK={power:'怕下段',tech:'怕正拳',speed:'怕中段'};
+const STYLE_TYPE={punch:'power',low:'tech',high:'speed',all:'none'};
+const FOE_SETS={power:['renda','hiza','gedan','ibuki'],tech:['tsuki','chudan','uke','jodan'],speed:['jodan','ushiro','chudan','gedan']};
+const FAVS={
+  gedan:'下段・免氣・穩定削弱對手腳步，打力量型拔群',
+  tsuki:'突・免氣・最穩的基本技，打技術型拔群',
+  renda:'突・連打兩下，打技術型拔群',
+  chudan:'中段・打速度型拔群',
+  hiza:'中段・近身威力大，打速度型拔群',
+  jodan:'上段・一擊就可能技有，命中低',
+  ushiro:'上段・後迴旋，威力大、容易被看穿',
+  kakato:'上段・從上方劈下，會心率高',
+  dokaiten:'上段・捨身大技，命中最低、一中就倒'
+};
+const STYLE_FAV={low:['gedan','hiza','kakato'],high:['chudan','jodan','ushiro','dokaiten'],punch:['tsuki','renda','hiza'],all:['tsuki','gedan','chudan','jodan']};
+const favM=()=>Math.min(1,(S.favUse||0)/60);
+function favMove(key){const m=MOVES[key];if(!S||S.fav!==key)return m;const weak=S.rank<3&&m.ki>=2;return {...m,pw:Math.round(m.pw*(1.2+.15*favM())),acc:m.acc+(weak?-4:8)+Math.round(4*favM()),fav:1};}
+function moveset(){
+  const rk=S.rank;
+  const base={
+    low:['gedan','tsuki',rk>=6?'kakato':rk>=3?'hiza':'uke','ibuki'],
+    high:['chudan','tsuki',rk>=6?'ushiro':rk>=3?'jodan':'uke','ibuki'],
+    punch:[rk>=3?'renda':'tsuki','gedan',rk>=6?'hiza':'uke','ibuki'],
+    all:['tsuki','gedan',rk>=6?'jodan':rk>=3?'chudan':'uke','ibuki']
+  }[S.style].slice();
+  if(S.fav&&MOVES[S.fav]&&!base.includes(S.fav))base[1]=S.fav;
+  return base;
+}
+
+/* ===== engine ===== */
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+let S=null;
+const r=()=>S.r();
+const ri=(a,b)=>a+Math.floor(r()*(b-a+1));
+const pick=a=>a[Math.floor(r()*a.length)];
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const hpMax=()=>Math.max(10,100-S.wear);
+const twName=()=>pick(SUR)+pick(GIV);
+const jpName=()=>pick(JS)+' '+pick(JG);
+const homeNow=()=>S.path==='uchi'?UCHI_HOME:S.home;
+const pk=()=>homeNow().pk||{};
+const otherDojo=()=>pick(Object.values(HOMES).filter(h=>h.n!==S.home.n)).n;
+const rankB=()=>S.rank*1.3;
+const est=k=>k==='spi'?S.st.spi:Math.min(115,S.st[k]+rankB());
+const divs=()=>ROUTES[S.route].divs;
+
+function newState(setup){
+  const rnd=mulberry(setup.seed);
+  const H=HOMES[setup.home]||HOMES.pingtung;
+  S={setup,easy:true,fav:(STYLE_FAV[setup.style]||[]).includes(setup.fav)?setup.fav:((STYLE_FAV[setup.style]||[])[0]||null),r:rnd,name:setup.name,style:setup.style,wc:WCLS[setup.wc]?setup.wc:'middle',route:'dual',age:16,year:2026,q:0,turn:0,rank:0,
+    st:{},pot:{},hp:100,wear:0,fame:0,money:2,w:0,l:0,kw:0,kl:0,titles:[],log:[],scene:[],flags:{seminars:0,kataB:0},path:'school',used:{},
+    mult:1,serviceLeft:0,danYear:0,lastPromo:0,examFails:0,uchiStart:0,
+    qJ:{kata:-99,kumite:-99},qW:{kata:-99,kumite:-99},qWTW:{kata:-99,kumite:-99},twc:{kata:0,kumite:0},champ:{},
+    km:{'太極':20},kfocus:null,pts:0,hq:0,rivalW:0,rivalL:0,ending:null,forced:false,dojo:null,home:{n:H.n,fee:H.fee,pk:H.pk||{},coach:H.coach,equip:H.equip,partners:H.partners,mood:H.mood}};
+  for(const k of ['pow','spd','sta','tec','con','res']){S.pot[k]=Math.round(55+rnd()*44);S.st[k]=12+rnd()*12+((WCLS[S.wc]||WCLS.middle).base[k]||0);}
+  S.pot.spi=99;S.st.spi=20+rnd()*15;
+  S.traits=traitsFor(setup.seed);S.traits0=S.traits.slice();S.mood='normal';S.tAcq=[];if(S.style==='all'&&!S.traits.includes('genius')){S.style='low';if(!STYLE_FAV.low.includes(S.fav))S.fav='gedan';}
+  S.npc={sen:twName(),koh:twName()};
+  S.rival=twName();S.rivalDojo=otherDojo();S.rivalType=pick(['power','tech','speed']);S.rivalEdge=(r()-.4)*8;S.rivalHair=pick(HAIR);
+}
+function say(h){S.scene.push(h);}
+function tipAny(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key])return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>提示</b>　${t}</span>`;}
+function tipOnce(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key]||S.age>18)return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>新手提示</b>　${t}</span>`;}
+const PT_GAIN=1;
+const MODES={easy:{n:'新手模式',d:'錢、生活、加點、主練型自動處理，只做重要決定'},full:{n:'完整模式',d:'打工、營養品、修煉點、主練型都自己決定'}};
+const EZ=()=>!!(S&&S.easy);
+const TRAITS={
+  genius:{n:'天才',pos:1,d:'所有成長 ×1.15・可選全能型・極少出現，常伴隨驕傲'},
+  hot:{n:'熱血',pos:1,d:'鬥志成長 ×1.3・組手攻擊 +2'},
+  hard:{n:'努力家',pos:1,d:'稽古成長 ×1.08・體況消耗多一點'},
+  calm:{n:'冷靜',pos:1,d:'型比賽 +2・審查 +2'},
+  iron:{n:'鐵人',pos:1,d:'受傷機率 ×0.7'},
+  charm:{n:'人望',pos:1,d:'名聲 ×1.3・開道場審核加分'},
+  clutch:{n:'大賽型',pos:1,d:'全日本、世界大賽 +3'},
+  glass:{n:'玻璃心',pos:0,d:'輸球、落榜後容易陷入低潮'},
+  lazy:{n:'懶散',pos:0,d:'稽古成長 ×0.92・體況回復多一點'},
+  rash:{n:'衝動',pos:0,d:'受傷機率 ×1.25・會心一擊增加'},
+  nerve:{n:'怯場',pos:0,d:'全日本、世界大賽 −3'},
+  frail:{n:'易受傷',pos:0,d:'受傷機率 ×1.3'},
+  proud:{n:'驕傲',pos:0,d:'奪冠後很容易自滿（成長 ×0.85、比賽 −3）・審查 −2'},
+  wimp:{n:'怕痛',pos:0,d:'組手牌成長 ×0.9'},
+  grit:{n:'不屈',pos:1,d:'不會陷入低潮・落榜反而鬥志↑'},
+  flex:{n:'柔軟',pos:1,d:'型比賽 +1.5・受傷機率 ×0.85'},
+  strong:{n:'怪力',pos:1,d:'力量成長 ×1.2'},
+  swift:{n:'天生腳快',pos:1,d:'速度成長 ×1.2'},
+  study:{n:'研究型',pos:1,d:'型的修煉度成長 ×1.2'},
+  lucky:{n:'好運',pos:1,d:'每年多換牌 1 次'},
+  leader:{n:'領袖氣質',pos:1,d:'自己的道場招生 ×1.2'},
+  thrifty:{n:'節儉',pos:1,d:'生活費 ×0.8'},
+  spender:{n:'愛花錢',pos:0,d:'每季多花 0.6 萬'},
+  stubborn:{n:'頑固',pos:0,d:'換牌次數 −1・師範類的牌效果 ×0.9'},
+  late:{n:'晚熟',pos:0,d:'22 歲前成長 ×0.88，26 歲後 ×1.08'},
+  moody:{n:'情緒化',pos:0,d:'狀態好壞變化更劇烈、更久'},
+  clumsy:{n:'笨拙',pos:0,d:'演武失誤機率 ×1.4'},
+  temper:{n:'暴躁',pos:0,d:'輸球後容易焦躁・受傷機率 ×1.1'},
+  sleepy:{n:'愛睡',pos:0,d:'體況回復多一點・基本・型的牌成長 ×0.88'}
+};
+const TRAIT_X=[['iron','frail'],['hard','lazy'],['thrifty','spender'],['calm','temper'],['clutch','nerve'],['grit','glass'],['hot','lazy'],['calm','moody'],['swift','late'],['genius','late']];
+const TRAIT_W=k=>k==='genius'?.25:1;
+function wpick(rr,K){const t=K.reduce((a,k)=>a+TRAIT_W(k),0);let x=rr()*t;for(const k of K){x-=TRAIT_W(k);if(x<=0)return k;}return K[K.length-1];}
+function traitsFor(seed){const rr=mulberry((seed*2654435761)>>>0);const K=Object.keys(TRAITS).filter(k=>!TRAITS[k].acq);let a=wpick(rr,K);let b;
+  if(a==='genius'&&rr()<.7)return ['genius','proud'];
+  for(let i=0;i<50;i++){b=wpick(rr,K);if(b==='genius'&&rr()<.7){[a,b]=['genius','proud'];break;}if(b!==a&&!TRAIT_X.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a)))break;}return [a,b];}
+const hasT=k=>!!(S&&S.traits&&S.traits.includes(k));
+Object.assign(TRAITS,{humble:{n:'謙虛',pos:1,acq:1,d:'不會自滿・審查 +1'}});
+const ACQ=[
+  {id:'iron_t',need:()=>(S.trc||{}).taiso>=20&&(S.flags.injN||0)<=2,gain:'iron',cure:'frail',why:'體能・鍛體練了二十次以上而且很少受傷'},
+  {id:'study_t',need:()=>(S.trc||{}).kihon>=26,gain:'study',cure:'clumsy',why:'基本・型練了二十六次以上'},
+  {id:'hot_t',need:()=>(S.trc||{}).kumite>=26,gain:'hot',cure:'wimp',why:'組手練了二十六次以上'},
+  {id:'grit_t',need:()=>(S.flags.failTot||0)>=3&&S.rank>=6,gain:'grit',cure:'glass',why:'落榜三次以上還是繫上了黑帶'},
+  {id:'hard_t',need:()=>(S.flags.trainN||0)>=50&&(S.flags.restN||0)<=4,gain:'hard',cure:['lazy','sleepy'],why:'五十次稽古只休養四次以下'},
+  {id:'thrift_t',need:()=>S.flags.debtSeen&&S.money>=10,gain:'thrifty',cure:'spender',why:'欠過錢之後重新存到 10 萬'},
+  {id:'calm_t',need:()=>(S.flags.yamaN||0)>=2,gain:'calm',cure:['moody','temper'],why:'入山修行兩次'},
+  {id:'clutch_t',need:()=>!!(S.champ.jp_kumite||S.champ.jp_kata||S.champ.jpw_kumite),gain:'clutch',cure:'nerve',why:'在全日本大賽奪冠'},
+  {id:'humble_t',need:()=>(S.flags.smugLoss||0)>=3,gain:'humble',cure:'proud',why:'自滿的時候吃了三次敗仗'},
+  {id:'charm_t',need:()=>(S.flags.teachY||0)>=5,gain:'charm',cure:'stubborn',why:'指導學員滿五年'},
+  {id:'rash_t',need:()=>(S.flags.injN||0)>=4,gain:null,cure:'rash',why:'受傷四次，終於學會控制自己'},
+  {id:'frail_t',need:()=>S.wear>=25,gain:'frail',cure:null,bad:1,why:'舊傷累積太多'},
+  {id:'glass_t',need:()=>(S.flags.slumpN||0)>=4,gain:'glass',cure:null,bad:1,why:'一再陷入低潮'}
+];
+function traitCheck(){
+  S.tAcq=S.tAcq||[];S.flags.tDone=S.flags.tDone||{};
+  for(const a of ACQ){
+    if(S.flags.tDone[a.id]||!a.need())continue;
+    S.flags.tDone[a.id]=1;
+    const cures=[].concat(a.cure||[]).filter(k=>S.traits.includes(k));
+    if(cures.length){const k=cures[0];S.traits=S.traits.filter(x=>x!==k);say(`<span class="tg up">個性變化</span>${a.why}，你不再<b>${TRAITS[k].n}</b>了。`);log(`克服了「${TRAITS[k].n}」`,'gold');continue;}
+    if(a.gain&&!S.traits.includes(a.gain)&&S.traits.length<4&&!TRAIT_X.some(([x,y])=>(x===a.gain&&S.traits.includes(y))||(y===a.gain&&S.traits.includes(x)))){
+      if(a.bad&&hasT('iron')&&a.gain==='frail')continue;
+      S.traits.push(a.gain);S.tAcq.push(a.gain);{const tp=tipAny('acq','修行中達成某些條件，個性會改變：可能得到新個性，也可能克服先天的壞個性。條件寫在「遊戲說明」的「個性與狀態」。');if(tp)say(tp);}
+      say(`<span class="tg ${a.bad?'dn':'crit'}">${a.bad?'個性變化':'後天個性'}</span>${a.why}，你變得<b>${TRAITS[a.gain].n}</b>（${TRAITS[a.gain].d}）。`);log(`${a.bad?'變得':'獲得個性'}「${TRAITS[a.gain].n}」`,a.bad?'bad':'gold');}
+  }
+}
+const MOODS={good:{n:'絕好調',g:1.1,b:3},normal:{n:'普通',g:1,b:0},slump:{n:'低潮',g:.85,b:-3},irr:{n:'焦躁',g:.95,b:-1,inj:1.3},smug:{n:'自滿',g:.85,b:-3}};
+const moodNow=()=>MOODS[S.mood||'normal'];
+function setMood(k,why){if((S.mood||'normal')===k)return;if(k==='smug'&&hasT('humble'))k='good';if(k==='slump'){S.flags.slumpN=(S.flags.slumpN||0)+1;const tp=tipAny('slump','「低潮」會讓成長和比賽變差。選「休養」、過一陣子，或在低潮事件裡找師範談，都能走出來。');if(tp)say(tp);}if(k==='slump'&&hasT('grit')){say('輸了，但你只是更用力地綁緊腰帶。');return;}S.mood=k;if(k!=='normal')say(`<span class="tg ${k==='good'?'up':'dn'}">${MOODS[k].n}</span>${why||''}`);}
+function traitG(){return (hasT('genius')?1.15:1)*(hasT('hard')?1.08:1)*(hasT('lazy')?.92:1)*(hasT('late')?(S.age<22?.88:S.age>=26?1.08:1):1)*moodNow().g;}
+function bigT(T){return !!T&&['jp','jpw','world'].includes(T.id);}
+function clutchB(T){return bigT(T)?(hasT('clutch')?3:0)-(hasT('nerve')?3:0):0;}
+function trShare(){const t=S.trc||{};const n=(t.kihon||0)+(t.kumite||0)+(t.taiso||0);return n<2?{k:.33,m:.33}:{k:(t.kihon||0)/n,m:(t.kumite||0)/n};}
+function specInfo(){const t=S.trc||{};const k=t.kihon||0,m=t.kumite||0,n=k+m;
+  if(n<6)return {key:'none',n:'修行中',kb:0,mb:0,d:'還看不出擅長什麼'};
+  const ks=k/n,ex=Math.min(1,n/30);
+  if(ks>=.62)return {key:'kata',n:'型熟手',kb:3.5*ex,mb:0,d:`型比賽 +${(3.5*ex).toFixed(1)}`};
+  if(ks<=.38)return {key:'kumite',n:'組手熟手',kb:0,mb:9*ex,d:`組手攻擊 +${(9*ex).toFixed(1)}`};
+  return {key:'all',n:'全方位熟手',kb:2*ex,mb:3*ex,d:`型 +${(2*ex).toFixed(1)}・組手 +${(3*ex).toFixed(1)}`};}
+const kataSpec=()=>specInfo().kb;
+const kumiSpec=()=>specInfo().mb;
+function specLabel(){return specInfo().n;}
+function autoAlloc(){const ks=['pow','spd','sta','tec','con','res'];const got={};while(S.pts>0){const c=ks.filter(k=>S.st[k]<100);if(!c.length)break;const k=c.reduce((a,b)=>S.st[b]<S.st[a]?b:a);applyAlloc(k);got[k]=(got[k]||0)+1;}return Object.entries(got).map(([k,n])=>`${STATN[k]}+${n}`).join('、');}
+function award(n,why){S.pts=(S.pts||0)+n;if(EZ()){const t=autoAlloc();say(`<span class="tg crit">+${n} 修煉點</span>${why||''}・自動分配：${t}`);}else say(`<span class="tg crit">+${n} 修煉點</span>${why||''}`);}
+function applyAlloc(k){if(S&&S.pts>0&&STATN[k]&&S.st[k]<100){S.st[k]=Math.min(100,S.st[k]+PT_GAIN);S.pts--;return true;}return false;}
+const QN=['上半年','上半年','下半年','下半年'];
+function when(){return `${S.year} 年 ${QN[S.q]}・${S.age} 歲`;}
+const REC_KEEP=t=>t.startsWith('稽古方針')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
+function P(title,body,opts,kind){if(opts&&!REC_KEEP(title))opts.forEach(o=>{if(o.rec)o.rec=false;});const p={title,body,opts,eyebrow:when(),lines:S.scene,kind:kind||'choice'};S.scene=[];return p;}
+function log(t,cls){S.log.push({w:`${S.year}·${S.q<2?'上':'下'}`,t,cls:cls||''});}
+function ageF(){const a=S.age;return a<=17?1.1:a<=24?1:a<=28?.75:a<=32?.45:.22;}
+function grow(k,amt){const cur=S.st[k],pot=S.pot[k];const room=Math.max(0,(pot-cur)/pot);S.st[k]=clamp(cur+amt*.95*Math.pow(room,.5)*ageF()*S.mult*injG()*lifeG()*traitG()*(k==='spi'&&hasT('hot')?1.3:1)*(k==='pow'&&hasT('strong')?1.2:1)*(k==='spd'&&hasT('swift')?1.2:1)*(.75+r()*.5),0,100);}
+function bump(k,v){
+  if(k==='hp')S.hp=clamp(S.hp+v,0,hpMax());
+  else if(k==='money')S.money+=v;
+  else if(k==='fame')S.fame=Math.max(0,S.fame+v);
+  else if(k==='wear'){S.wear=clamp(S.wear+v,0,90);S.hp=Math.min(S.hp,hpMax());}
+  else S.st[k]=clamp(S.st[k]+v,0,100);
+}
+function fx(o){for(const k in o)bump(k,o[k]);}
+const val=k=>k in S.st?S.st[k]:S[k];
+function snap(){const o={};for(const k of ['pow','spd','sta','tec','con','res','spi','hp','fame','money'])o[k]=val(k);return o;}
+function diff(a){const out=[];for(const k in a){const d=Math.round(val(k))-Math.round(a[k]);if(d)out.push(`<span class="chip ${d>0?'up':'dn'}">${DN[k]} ${d>0?'+':'−'}${Math.abs(d)}${k==='money'?'萬':''}</span>`);}return out.join('');}
+function injMul(){return Math.max(.35,1.35-S.st.con/250-S.st.res/180)*(1.25-homeNow().mood/200)*(hasT('iron')?.7:1)*(hasT('frail')?1.3:1)*(hasT('rash')?1.25:1)*(hasT('flex')?.85:1)*(hasT('temper')?1.1:1)*(moodNow().inj||1);}
+const JOBS={
+  none:{n:'不打工',s:'全心稽古',pay:0,hp:0,g:1},
+  sausage:{n:'永山香腸・搬香腸',s:'搬冷凍箱、上下貨，順便練力量 · 每季 +2.2 萬 · 體況 −6 · 稽古 ×0.9 · 力量↑ 耐力↑',pay:2.2,hp:-6,g:.9,stat:{pow:.9,sta:.5},age:16},
+  store:{n:'便利商店夜班',s:'每季 +1.8 萬 · 體況 −8 · 稽古 ×0.9',pay:1.8,hp:-8,g:.9,age:16},
+  gym:{n:'健身房櫃台',s:'每季 +1.4 萬 · 體況 −3 · 稽古 ×0.95',pay:1.4,hp:-3,g:.95,age:18},
+  tutor:{n:'家教',s:'每季 +2 萬 · 體況 −2 · 稽古 ×0.93 · 限大學生',pay:2,hp:-2,g:.93,cond:()=>S.path==='uni'}
+};
+const NUTRI={
+  none:{n:'不吃營養品',s:'省錢',cost:0,g:1,hp:0},
+  basic:{n:'基本蛋白粉',s:'每季 0.5 萬 · 成長 ×1.05 · 體況回復 +2',cost:.5,g:1.05,hp:2},
+  full:{n:'完整營養補給',s:'每季 1.2 萬 · 成長 ×1.12 · 體況回復 +4',cost:1.2,g:1.12,hp:4}
+};
+const LIVING={school:0,uni:1.5,job:2.5,trainee:1.8,twuchi:.3,uchi:.5,inst:2};
+const canWork=()=>S.path!=='uchi'&&S.path!=='twuchi'&&S.serviceLeft<=0;
+const jobNow=()=>canWork()?JOBS[S.job||'none']:JOBS.none;
+const nutriNow=()=>NUTRI[S.nutri||'none'];
+function lifeG(){return jobNow().g*nutriNow().g*(S.money<-10?.85:1)*(S.flags.kid?.95:1);}
+function flow(serving){
+  const it=[];const base=S.path==='job'?jobPay():({school:.5,inst:2.5,trainee:2})[S.path]||0;
+  if(base)it.push([S.path==='job'?'薪水':S.path==='inst'?'指導員薪水':S.path==='trainee'?'見習津貼':'零用錢',S.dojo&&S.path==='job'?2:base]);
+  if(serving)it.push(['軍餉',.5]);
+  if(!serving&&LIVING[S.path])it.push(['生活費',-LIVING[S.path]*(hasT('thrifty')?.8:1)]);
+  if(!serving&&hasT('spender')&&S.path!=='school')it.push(['愛花錢',-.6]);
+  if(!serving&&(S.path==='uni'||S.path==='job'))it.push(['學費',-S.home.fee]);
+  if(S.path==='uni')it.push(['學雜費',-.75]);
+  const J=jobNow();if(J.pay)it.push(['打工',J.pay]);
+  const N=nutriNow();if(N.cost)it.push(['營養品',-N.cost]);
+  if(S.flags.married&&!serving)it.push(['家庭開銷',-1]);if(S.flags.kid&&!serving)it.push(['育兒',-1]);
+  if(S.rank>=1&&!serving)it.push(['道着護具',-(.15+S.rank*.03)]);
+  if(S.flags.teach)it.push(['助教',1.5]);if(S.flags.channel)it.push(['頻道',1]);
+  if(S.flags.sponsor)it.push(['贊助',3+S.fame*.025]);if(S.flags.shibucho)it.push(['支部長',3]);if(S.branches&&S.branches.length)it.push(['分館上繳',S.branches.reduce((a,b)=>a+.15+b.st*.01,0)]);else if(S.flags.shihandai)it.push(['師範代津貼',1.5]);if(S.flags.merch)it.push(['周邊商品',(.8+S.fame*.012)*S.flags.merch]);
+  let tot=it.reduce((a,b)=>a+b[1],0);
+  if(EZ()&&!S.dojo&&tot<1){it.push(['家人支援',+(1-tot).toFixed(2)]);tot=1;}
+  return {it,total:tot};
+}
+function jobPay(){return 3.4+(S.flags.degree?1.1:0)+Math.min(1,Math.max(0,S.year-(S.flags.jobStart||S.year))*.15);}
+function flowTxt(f){return f.it.map(([n,v])=>`${n} ${v>=0?'+':'−'}${Math.abs(v).toFixed(1)}`).join('、');}
+function* lifeSetup(msg){
+  if(EZ()){S.job='none';S.nutri='basic';say(`<span class="lbl">生活安排</span>${msg||''}新手模式：不固定打工、吃基本蛋白粉，錢不夠時家人會支援。想多賺錢可以選抽到的打工牌。`);return;}
+  S.job='none';
+  const f0=flow(false);
+  const cn=yield P('生活安排：營養',`${msg||''}目前每季收支約 <b>${f0.total>=0?'+':'−'}${Math.abs(f0.total).toFixed(1)} 萬</b>（${flowTxt(f0)||'無'}）。吃得好，練得才有效果。錢不夠時，就選抽到的<b>打工牌</b>去賺。`,Object.entries(NUTRI).map(([k,v])=>({id:k,label:v.n+(k===(S.nutri||'none')?'（目前）':''),sub:v.s,rec:k==='basic'})));
+  S.nutri=cn;
+  const f1=flow(false);
+  say(`<span class="lbl">生活安排</span>${NUTRI[cn].n}・每季收支約 ${f1.total>=0?'+':'−'}${Math.abs(f1.total).toFixed(1)} 萬`);
+}
+const INJSEV=['','輕傷','中度傷','重傷'];
+const INJGROW=[1,.85,.6,.3];
+function injure(sc){
+  const n=pick(INJ);let sev=1;
+  if(r()<.32*sc-S.st.res/250)sev++;
+  if(r()<.1*sc-S.st.res/400)sev++;
+  if(S.injury)sev=Math.max(sev,S.injury.sev)+(r()<.3?1:0);
+  sev=clamp(sev,1,3);
+  S.injury={n,sev,left:sev*2,fresh:1};
+  {const loss=[0,1,2.5,5][sev];const ks=pick([['pow','spd'],['spd','sta'],['sta','pow'],['spd','con']]);const lost=[];for(const k of ks){const d=Math.min(S.st[k]-5,loss*(.7+r()*.6));if(d>0){S.st[k]-=d;lost.push(`${STATN[k]}−${Math.max(1,Math.round(d))}`);}}S.injLost=lost.join(' ');}
+  S.hp=Math.max(5,S.hp-(5+sev*5));S.wear=Math.min(90,S.wear+sev);S.hp=Math.min(S.hp,hpMax());
+  log(`受傷：${n}（${INJSEV[sev]}）`,'bad');S.flags.injN=(S.flags.injN||0)+1;if(r()<.5&&!hasT('grit'))S.mood=hasT('glass')?'slump':'irr';return `${n}（${INJSEV[sev]}${sev===3?'，必須休養':''}）${S.injLost?`，能力下降：${S.injLost}`:''}`;
+}
+const injG=()=>S.injury?INJGROW[S.injury.sev]:1;
+const badlyHurt=()=>!!S.injury&&S.injury.sev>=3;
+const instOk=()=>S.rank>=6&&(S.path==='inst'||S.path==='trainee'||(S.flags.kidsHelp||0)>=3||!!S.flags.teach||(S.flags.coachLic||0)>=1||!!S.dojo||!!S.flags.shibucho);
+function rating(){return est('pow')*.25+est('spd')*.25+est('sta')*.25+est('tec')*.25+(est('con')-40)*.05;}
+function eff(T,b){return rating()*(.72+.28*Math.min(1,S.hp/80))+S.st.spi*.12+(T&&T.open?WCLS[S.wc].open:0)+(b||0);}
+function kataPow_old(){return est('tec')*.55+S.st.spi*.2+est('spd')*.1+est('sta')*.1+est('con')*.05+(S.route==='kata'?3:0)+S.flags.kataB+(pk().kata||0);}
+
+/* ===== qualification ===== */
+function jpReqs(div){
+  const uchi=S.path==='uchi'&&S.year-S.uchiStart>=1;
+  return [
+    {n:'茶帶以上',ok:S.rank>=5},
+    {n:'滿 18 歲',ok:S.age>=18},
+    {n:`全台${DIVN[div]}前二`,ok:uchi||S.qJ[div]>=S.year-1},
+    {n:'參加過講習會',ok:uchi||S.flags.seminars>=1},
+    {n:'名聲 15',ok:uchi||S.fame>=15}
+  ];
+}
+const jpOk=div=>jpReqs(div).every(x=>x.ok);
+const worldOk=div=>S.rank>=5&&(S.qW[div]>=S.year-1||S.qWTW[div]>=S.year-1);
+const TOURN=[
+  {id:'local',name:'台灣支部交流賽',short:'支部交流賽',q:0,base:28,rounds:3,kbase:18,kr:2,fame:2,prize:0,fee:.3,sem:.7,semFee:.5,open:true,kata:true,desc:'八個道場的年輕選手交流賽。',
+    can:d=>S.rank>=1&&S.age<=21&&S.path!=='uchi'},
+  {id:'jpw',name:'全日本體重別選手權',short:'全日本體重別',q:1,base:55,rounds:5,kbase:0,kr:0,fame:12,prize:10,fee:4,sem:1.5,semFee:3,open:false,kata:false,desc:'日本各地的強者，在同一量級裡分出高下。前三名可取得世界大賽資格。報名費含機票住宿。',
+    can:d=>d==='kumite'&&jpOk('kumite')},
+  {id:'tw',name:'全台極真空手道選手權',short:'全台選手權',q:2,base:52,rounds:4,kbase:50,kr:3,fame:6,prize:3,fee:.5,sem:1,semFee:1,open:true,kata:true,desc:'台灣極真最大的舞台。前兩名可取得全日本出賽資格之一，冠軍代表台灣出征世界。',
+    can:d=>S.rank>=3&&S.age>=16&&S.path!=='uchi'},
+  {id:'jp',name:'全日本選手權',short:'全日本',q:3,base:60,inc:2,rounds:6,kbase:80,kr:4,fame:18,prize:20,fee:4,sem:1.5,semFee:3,open:true,kata:true,desc:'型與無差別組手的最高舞台。八強可取得世界大賽資格。報名費含機票住宿。',
+    can:d=>S.year%4!==3&&jpOk(d)},
+  {id:'world',name:'全世界空手道選手權',short:'世界大賽',q:3,base:58,inc:2,rounds:7,kbase:83,kr:5,fame:35,prize:50,fee:8,sem:2,semFee:4,open:true,kata:true,desc:'四年一度，全世界的極真拳士齊聚東京。報名費含機票住宿。',
+    can:d=>S.year%4===3&&worldOk(d)}
+];
+const tDivs=T=>divs().filter(d=>(d==='kumite'||T.kata)&&T.can(d));
+function roundName(R,i){return i===R?'決賽':i===R-1?'準決賽':(i===R-2&&R>=4)?'八強戰':`第 ${i} 回戰`;}
+function placeName(R,i){const g=R-i;return g===0?'準優勝':g===1?'第三名':(g===2&&R>=4)?'八強':`${roundName(R,i)}敗退`;}
+function oppIdent(T){
+  if(T.id==='tw'||T.id==='local')return {name:twName(),sub:otherDojo()};
+  if((T.id==='world'&&r()<.6)||(T.id!=='world'&&r()>=.85)){const w=pick(WORLD);return {name:w[0],sub:w[1]};}
+  return {name:jpName(),sub:'日本'};
+}
+function makeOpp(T,i){
+  const R=T.rounds;
+  if(T.id==='tw'&&((i===R&&r()<.55)||(i===R-1&&r()<.2)))
+    return {name:S.rival,sub:S.rivalDojo,rival:true,type:S.rivalType,hair:S.rivalHair,belt:Math.max(S.rank,4),str:.5*(T.base+i*3)+.5*eff(T,0)+S.rivalEdge+(r()-.5)*6};
+  const id=oppIdent(T);
+  const belt=T.id==='local'?ri(1,4):T.id==='tw'?ri(3,6):ri(6,7);
+  return {...id,type:pick(['power','tech','speed']),hair:pick(HAIR),belt,str:T.base+i*(T.inc||3)+belt*1.3+(r()-.5)*10};
+}
+
+/* ===== battle engine ===== */
+function mkMe(){
+  const maxHp=Math.round(45+est('sta')*.5+est('con')*.3+est('res')*.1+((WCLS[S.wc]||{}).hp||0));const kiMax=3+Math.floor(est('sta')/25);
+  return {me:true,name:S.name,sub:homeNow().n,type:STYLE_TYPE[S.style],maxHp,hp:Math.round(maxHp*(.7+.3*Math.min(1,S.hp/80))*(S.injury?[1,.95,.85,.7][S.injury.sev]:1)),
+    atk:est('pow')*.75+S.st.spi*.2+18+(S.style==='all'?4:0)+(pk().battle||0)+kumiSpec()+(hasT('hot')?2:0)+moodNow().b*.8+clutchB(S.curT),def:est('con')*.5+est('sta')*.2+est('res')*.2+18+(S.style==='all'?4:0),spd:est('spd')+((WCLS[S.wc]||{}).dodge||0),tec:est('tec'),spi:S.st.spi,kiMax,ki:kiMax,waza:0,leg:0,moves:moveset(),belt:S.rank,hair:'#3a3550'};
+}
+function mkFoe(o){
+  const s=o.str,t=o.type;
+  const a=t==='power'?8:t==='speed'?-4:0,d=t==='power'?4:0,sp=t==='speed'?10:t==='power'?-8:0,te=t==='tech'?8:0;
+  const maxHp=Math.round(40+s*.8);const kiMax=3+Math.floor(s/25);
+  return {name:o.name,sub:o.sub,rival:o.rival,type:t,maxHp,hp:maxHp,atk:(s+a)*.8+14,def:(s+d)*.8+14,spd:s+sp,tec:s+te,spi:s,kiMax,ki:kiMax,waza:0,leg:0,moves:FOE_SETS[t],belt:o.belt,hair:o.hair};
+}
+function aiPick(f,o){
+  const ok=f.moves.filter(k=>MOVES[k].ki<=f.ki);
+  const w=ok.map(k=>{const m=MOVES[k];let x=2;
+    if(m.rest)x=(f.ki<=1?3:.4)+(f.hp<f.maxHp*.5?1:0);
+    else if(m.guard)x=1;
+    else{const em=(EFF[o.type]||{})[m.cat]||1;x+=m.pw>=80?1.5:0;x+=em>1?2:0;x-=em<1?1:0;if(f.me&&S.fav===k)x+=1.5;}
+    return Math.max(.2,x);});
+  let tot=w.reduce((a,b)=>a+b,0),x=r()*tot;
+  for(let i=0;i<ok.length;i++){x-=w[i];if(x<=0)return ok[i];}
+  return ok[0]||'ibuki';
+}
+function dmgCalc(att,def,m,crit,em){
+  let d=(m.pw*(att.atk/def.def))*.42+2;
+  if(m.cat==='下段')d*=1+def.leg*.12;
+  return Math.max(1,Math.round(d*em*(crit?1.5:1)*(.85+r()*.15)));
+}
+const LN=(cls,h)=>`<div class="ln ${cls}">${h}</div>`;
+function checkWaza(victim,attacker,d,L){
+  if(victim.hp>0&&d>=victim.maxHp*.3){attacker.waza++;L.push(LN('sys',`<span class="tg waza">技有！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個技有`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
+}
+function act(att,def,key,L,scout){
+  const m=att.me?favMove(key):MOVES[key];if(att.hp<=0||def.hp<=0)return;if(att.me&&m.fav)S.favUse=(S.favUse||0)+1;
+  const who=att.me?'me':'foe';const nm=esc(att.name);
+  if(m.rest){att.ki=Math.min(att.kiMax,att.ki+3);const h=Math.round(att.maxHp*.08);att.hp=Math.min(att.maxHp,att.hp+h);L.push(LN(who,`${nm}：<b>息吹</b> <span class="heal">+${h}</span><span class="tg">氣 +3</span>`));return;}
+  att.ki-=m.ki;
+  if(m.guard){att.guard=true;L.push(LN(who,`${nm}：<b>受け</b>，擺好架式等對方出手`));return;}
+  const hits=m.hits||1;let total=0;const notes=[];const extra=[];
+  for(let h=0;h<hits;h++){
+    if(att.hp<=0||def.hp<=0)break;
+    const acc=clamp((m.acc+(att.tec-def.spd)*.4+(scout&&att.me?5:0))/100,.25,1);
+    if(r()>acc){notes.push(`<span class="tg dn">${h?'第二擊落空':'被閃開'}</span>`);continue;}
+    const em=(EFF[def.type]||{})[m.cat]||1;
+    const crit=r()<.05+(att.me&&hasT('rash')?.05:0)+att.tec/1500+(m.crit||0)+(att.hp<att.maxHp*.3?att.spi/1000:0);
+    let d=dmgCalc(att,def,m,crit,em);
+    if(def.guard){
+      d=Math.round(d*.3);def.guard=false;def.blocked=1;
+      const cd=dmgCalc(def,att,MOVES.uke,false,1);att.hp=Math.max(0,att.hp-cd);att.flash=1;
+      extra.push(LN(def.me?'me':'foe',`${esc(def.name)}：<b>受け</b>擋下大半力道並反擊 <span class="dmg">−${cd}</span>`));
+      checkWaza(att,def,cd,extra);if(att.hp<=0&&!att.finisher)att.finisher='受け・反擊';
+    }
+    def.hp=Math.max(0,def.hp-d);total+=d;def.flash=1;
+    if(crit)notes.push('<span class="tg crit">會心一擊</span>');
+    if(em>1)notes.push('<span class="tg up">效果拔群</span>');else if(em<1)notes.push('<span class="tg dn">效果不佳</span>');
+    if(m.leg){def.leg=Math.min(5,def.leg+1);if(def.leg===3)notes.push('<span class="tg">對手腳步不穩</span>');}
+  }
+  L.push(LN(who,`${nm}：<b>${m.n}</b>${total>0?` <span class="dmg">−${total}</span>`:''}${notes.join('')}`));
+  L.push(...extra);
+  if(total>0)checkWaza(def,att,total,L);
+  if(def.hp<=0&&!def.finisher)def.finisher=m.n;
+}
+function snapF(f){const o={me:!!f.me,name:f.name,sub:f.sub,rival:!!f.rival,type:f.type,maxHp:f.maxHp,hp:f.hp,ki:f.ki,kiMax:f.kiMax,waza:f.waza,leg:f.leg,belt:f.belt,hair:f.hair,flash:!!f.flash};f.flash=0;return o;}
+function BP(me,foe,L,opts,title,info){return {kind:'battle',eyebrow:when(),title,info:info||{},me:snapF(me),foe:snapF(foe),lines:L.slice(),opts};}
+function moveOpts(me,foe){
+  const o=me.moves.map(k=>{const m=favMove(k);const em=(EFF[foe.type]||{})[m.cat]||1;
+    const tag=(m.fav?'<span class="tg crit">得意</span>':'')+(m.rest||m.guard?'':em>1?'<span class="tg up">拔群</span>':em<1?'<span class="tg dn">不佳</span>':'');
+    const ki=m.ki?`<span class="kic">${'<i></i>'.repeat(m.ki)}</span>`:'<span class="kic free">免氣</span>';
+    return {id:k,label:`${m.n}${tag}`,sub:m.rest?`${ki} 回 3 氣＋少量體力`:m.guard?`${ki} 擋下攻擊再反擊`:`${ki} ${m.cat}・威${m.pw}${m.hits?'×2':''}・命${m.acc}`,disabled:m.ki>me.ki};});
+  o.push({id:'auto',label:'交給本能',sub:'自動打完這一場',wide:1});
+  return o;
+}
+function* battle(T,opp,rn,quick){
+  const me=mkMe(),foe=mkFoe(opp);const start=me.hp;
+  let auto=quick,turn=1,limit=5,phase='本戰';const scout=!!S.flags.scout;
+  let L=[LN('sys',`${opp.rival?'<span class="tg waza">宿敵</span>':''}${esc(foe.name)}（${esc(foe.sub)}・${TYPEN[foe.type]}）站上了場。`),LN('sys','主審：「正面に礼！お互いに礼！始め！」'),LN('sys',`提示：${TYPEN[foe.type]}${WEAK[foe.type]}，招式上有「拔群」標記的打起來最痛。`)];
+  if(scout)L.push(LN('sys','你研究過對手的影片，命中率提高。'));
+  const ttl=()=>`${T.short} 組手 ${rn} · ${phase} ${phase==='本戰'?turn:turn-5}/${phase==='本戰'?5:3}`;
+  let result=null;
+  while(!result){
+    let mk;
+    if(auto)mk=aiPick(me,foe);
+    else{mk=yield BP(me,foe,L,moveOpts(me,foe),ttl(),{phase,turn,limit});if(mk==='auto'){auto=true;mk=aiPick(me,foe);}if(!MOVES[mk]||MOVES[mk].ki>me.ki)mk=aiPick(me,foe);}
+    const fk=aiPick(foe,me);L=[];
+    const mg=!!MOVES[mk].guard,fg=!!MOVES[fk].guard;
+    const meFirst=mg&&!fg?true:fg&&!mg?false:(me.spd*(1-.08*me.leg)+r()*6)>=(foe.spd*(1-.08*foe.leg)+r()*6);
+    if(meFirst){act(me,foe,mk,L,scout);act(foe,me,fk,L,false);}else{act(foe,me,fk,L,false);act(me,foe,mk,L,scout);}
+    if(me.guard&&!me.blocked)L.push('對手沒有正面攻來，你的架式落空了。');
+    if(foe.guard&&!foe.blocked)L.push(`${esc(foe.name)}的架式落空了。`);
+    me.guard=foe.guard=false;me.blocked=foe.blocked=0;
+    if(foe.hp<=0){result={win:true,method:foe.awase?'合技一本勝':`一本勝・${foe.finisher||''}`};L.push(LN('sys','<span class="tg waza">一本！</span>你贏了'));break;}
+    if(me.hp<=0){result={win:false,method:me.awase?'合技一本負':`一本負・${me.finisher||''}`};L.push(LN('sys','<span class="tg dn">一本……</span>你被擊倒了'));break;}
+    if(turn>=limit){
+      const pm=me.hp/me.maxHp,pf=foe.hp/foe.maxHp;
+      if(me.waza!==foe.waza){result={win:me.waza>foe.waza,method:(me.waza>foe.waza?'判定勝':'判定負')+'（技有）'};}
+      else if(phase==='本戰'){
+        if(Math.abs(pm-pf)>=.12)result={win:pm>pf,method:pm>pf?'判定勝':'判定負'};
+        else{phase='延長戰';limit+=3;L.push(LN('sys','<span class="tg crit">旗判定平手</span>進入延長戰！'));}
+      }else{
+        if(Math.abs(pm-pf)>=.04)result={win:pm>pf,method:pm>pf?'延長判定勝':'延長判定負'};
+        else{const a=Math.round(est('pow')/12)+ri(0,2),b=Math.round(opp.str/12)+ri(0,2);const win=a===b?r()<.5:a>b;
+          result={win,method:`試割判定${win?'勝':'負'} ${win?Math.max(a,b):Math.min(a,b)}–${win?Math.min(a,b):Math.max(a,b)}片`};L.push(LN('sys','<span class="tg crit">還是平手</span>以試割片數決定勝負'));}
+      }
+      if(result)L.push(LN('sys',`<span class="tg ${result.win?'up':'dn'}">${result.win?'勝利':'落敗'}</span>${result.method}`));
+    }
+    turn++;
+    me.ki=Math.min(me.kiMax,me.ki+1);foe.ki=Math.min(foe.kiMax,foe.ki+1);
+  }
+  if(!quick)yield BP(me,foe,L,[{id:'ok',label:result.win?'押忍！':'押忍……',wide:1}],`${T.short} 組手 ${rn} · ${result.win?'勝利':'落敗'}`,{phase:'結束',turn:0,limit:0});
+  if(result.win)S.w++;else S.l++;
+  const taken=Math.max(0,start-me.hp)/me.maxHp;
+  S.hp=Math.max(5,S.hp-taken*14);
+  let inj=null;if(r()<(taken*.14+(result.win?0:.03)+(S.hp<35?.05:0))*injMul())inj=injure(1);
+  return {win:result.win,method:result.method,inj};
+}
+function boutLine(rn,opp,res){return `<div class="bout ${res.win?'w':'l'}"><span class="rd">${rn}</span><span class="op">${esc(opp.name)}${opp.rival?'<em>宿敵</em>':''}</span><span class="res">${res.method}</span></div>`;}
+
+/* ===== 型比賽 ===== */
+const unlockedKata=()=>KATA_LIST.filter(k=>k.rk<=S.rank+1);
+const km=n=>S.km[n]||0;
+function focusKata(){const u=unlockedKata();if(S.kfocus&&u.some(k=>k.n===S.kfocus))return S.kfocus;const ex=EXK[Math.min(10,S.rank+1)];return u.some(k=>k.n===ex)?ex:u[u.length-1].n;}
+function kmGain(n,amt){const m=km(n);S.km[n]=clamp(m+amt*(1-m/110)*injG()*lifeG()*(hasT('study')?1.2:1),0,100);}
+function kataChoices(){return unlockedKata().slice(-5);}
+function kataScore(k){return (km(k.n)*.5+est('tec')*.25+S.st.spi*.1+k.d*2.5+kataSpec()+(hasT('calm')?2:0)+(hasT('flex')?1.5:0)+moodNow().b*.6+clutchB(S.curT)+S.flags.kataB+(pk().kata||0))*(.85+.15*Math.min(1,S.hp/80));}
+function kataPow(){const ch=kataChoices();return Math.max(...ch.map(kataScore));}
+function mistakeP(k){return clamp((.03+(k.d*11-km(k.n))/150)*(hasT('clumsy')?1.4:1),.02,.6);}
+const toPts=x=>clamp(5+x/22,5,9.95);
+function judge(x){const a=[0,1,2,3,4].map(()=>toPts(x)+(r()-.5)*.4).sort((p,q)=>p-q);return (a[1]+a[2]+a[3])/3;}
+function* kataRound(T,i,R,quick){
+  const id=oppIdent(T);const ch=kataChoices();
+  const oppK=KATA_LIST[clamp(Math.floor((T.kbase-10)/9)+ri(0,1),0,8)];
+  const exp=k=>kataScore(k)-mistakeP(k)*11;
+  let k;
+  if(quick)k=ch.reduce((a,b)=>exp(b)>exp(a)?b:a,ch[0]);
+  else{
+    const c=yield P(`${T.short}・型 ${roundName(R,i)}`,`型比賽只看評分：五位審判打分，去掉最高和最低取平均。比的是誰把型練得更透。對手 <b>${esc(id.name)}</b>（${esc(id.sub)}）將演武「${oppK.n}」。`,
+      ch.map(x=>({id:x.n,label:`「${x.n}」 修煉度 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)} · 預估 ${toPts(kataScore(x)).toFixed(1)} 分 · 失誤機率約 ${Math.round(mistakeP(x)*100)}%`})));
+    k=ch.find(x=>x.n===c)||ch[0];
+  }
+  let me=kataScore(k)+(r()-.5)*6;
+  const miss=r()<mistakeP(k);if(miss)me-=8+r()*6;
+  const op=T.kbase+i*3+oppK.d*1.5+(r()-.5)*10;
+  const a=judge(me),b=judge(op);const win=a===b?r()<.5:a>b;
+  if(win)S.kw++;else S.kl++;
+  S.hp=Math.max(5,S.hp-2);kmGain(k.n,1.5);
+  return {win,id,k,miss,a,b};
+}
+function* runDivision(T,div,quick){
+  const R=div==='kata'?T.kr:T.rounds;
+  S.curT=T;
+  say(`<span class="tname">${T.name}・${DIVN[div]}</span>`);
+  let place=null;
+  for(let i=1;i<=R;i++){
+    if(div==='kata'){
+      const res=yield* kataRound(T,i,R,quick);
+      say(`<div class="bout ${res.win?'w':'l'}"><span class="rd">${roundName(R,i)}</span><span class="op">${esc(res.id.name)}・演「${res.k.n}」${res.miss?'<em>失誤</em>':''}</span><span class="res">${res.a.toFixed(2)} : ${res.b.toFixed(2)}</span></div>`);
+      if(!res.win){place={lvl:R-i+1,name:placeName(R,i)};break;}
+    }else{
+      const opp=makeOpp(T,i);
+      if(T.open)opp.str-=WCLS[S.wc].open;
+      const res=yield* battle(T,opp,roundName(R,i),quick);
+      say(boutLine(roundName(R,i),opp,res));
+      if(opp.rival){res.win?S.rivalW++:S.rivalL++;}
+      if(res.inj)say(`<span class="bad">比賽中受傷：${res.inj}</span>`);
+      if(!res.win){place={lvl:R-i+1,name:placeName(R,i)};break;}
+      if(i<R&&S.hp<18){say('<span class="bad">傷勢太重，下一場棄權。</span>');S.l++;place={lvl:R-i,name:placeName(R,i+1)};break;}
+    }
+  }
+  if(!place)place={lvl:0,name:'優勝'};
+  const s0=snap();
+  const fm=([1,.55,.35,.2][place.lvl]??.06)*(div==='kata'?.8:1);
+  S.fame+=T.fame*fm*(hasT('charm')?1.3:1);S.curT=null;
+  if(place.lvl===0&&T.id!=='local')setMood(hasT('proud')&&r()<.8?'smug':'good',hasT('proud')?'奪冠之後，你開始覺得自己天下無敵。':'奪冠的感覺還在身體裡，練什麼都很順。');
+  else if(S.mood==='smug'&&place.lvl>=1){S.flags.smugLoss=(S.flags.smugLoss||0)+1;S.mood='normal';say('自滿的時候吃了敗仗，你稍微冷靜下來了。');}
+  else if(place.lvl>=R-1&&R>=3&&hasT('temper')&&r()<.5)setMood('irr','輸得不甘心，你在更衣室踢翻了垃圾桶。');
+  else if(place.lvl>=R-1&&R>=3&&r()<(hasT('glass')?.7:.25)*(hasT('moody')?1.5:1))setMood('slump','早早就輸了，你連續好幾天不想去道場。');
+  else if(place.lvl<=1&&T.id!=='local'&&hasT('moody')&&r()<.6)setMood('good','打得不錯，你整個人都亮了起來。');S.money+=T.prize*(div==='kata'?.6:1)*(place.lvl===0?1:place.lvl===1?.4:place.lvl===2?.15:0);
+  if(S.dojo&&place.lvl<=1)S.dojo.students=Math.min(S.dojo.cap,S.dojo.students+ri(3,8)*(place.lvl===0?2:1));
+  const label=`${T.short}（${DIVN[div]}）${place.name}`;
+  if(place.lvl===0){say(`<b class="gold">★ ${DIVN[div]}優勝！</b>${T.id==='world'?'東京的會場裡，有人揮著台灣的旗子。':''} ${diff(s0)}`);log(`${T.name}（${DIVN[div]}）優勝`,'gold');}
+  else{say(`<b>${DIVN[div]}：${place.name}</b> ${diff(s0)}`);log(`${T.name}（${DIVN[div]}）${place.name}`);}
+  if(place.lvl<=2)S.titles.push(`${S.year} ${label}`);
+  {const ap=(T.id==='local'?[1,0]:[2,1])[place.lvl]||0;if(ap)award(ap,'比賽經驗');}
+  if(T.id==='tw'){if(place.lvl<=1){S.qJ[div]=S.year;say(`全台${DIVN[div]}前二：達成全日本資格條件之一。`);}if(place.lvl===0){S.twc[div]++;S.qWTW[div]=S.year;}}
+  if(T.id==='jp'&&place.lvl<=3)S.qW[div]=S.year;
+  if(T.id==='jpw'&&place.lvl<=2)S.qW.kumite=S.year;
+  if(place.lvl===0&&T.id!=='local'&&T.id!=='tw')S.champ[`${T.id}_${div}`]=1;
+  if(place.lvl===0&&S.flags.uchiDone&&!S.flags.shibucho){const g={jpw:3,jp:5,world:10}[T.id]||0;if(g){S.hq=(S.hq||0)+g;say(`本部評價 +${g}（在${T.short}奪冠）`);}}
+}
+function* tourney(T){
+  const ds=tDivs(T);if(!ds.length)return false;
+  if(badlyHurt()){say(`<span class="bad">${S.injury.n}還沒好，無法參加${T.name}。</span>`);return false;}
+  const warn=`體況 ${Math.round(S.hp)}${S.hp<45?'，帶傷上場風險高':''}`;
+  const opts=[];
+  for(const d of ds)opts.push({id:d,label:`報名${DIVN[d]}`,sub:`報名費 ${T.fee} 萬 · ${d==='kata'?`${T.kr} 輪演武`:`${T.rounds} 場對戰`} · ${warn}`});
+  if(ds.length===2)opts.push({id:'both',label:'型、組手都報',sub:`報名費 ${+(T.fee*1.6).toFixed(1)} 萬 · 先型後組手，體力消耗大`});
+  opts.push({id:'skip',label:'跳過這場比賽',sub:'改做別的事'});
+  {let ri='skip';if(S.hp>=40&&S.money>=T.fee-6){const main=ds.includes('kata')&&(kataPow()-T.kbase)>(eff(T,0)-T.base-S.rank*1.3)?'kata':'kumite';ri=ds.includes(main)?main:ds[0];}
+   opts.forEach(o=>o.rec=o.id===ri);}
+  const sp=specInfo();
+  const c=yield P(T.name,`${sp.key!=='none'?`<span class="specline">你是<b>${sp.n}</b>：${sp.d}</span>`:''}${tipOnce('tourn','比賽要付報名費。可以只報一項、兩項都報，或跳過改做別的事。大賽之後會有講習會。')}${T.desc}`,opts);
+  if(c==='skip'){
+    const a=yield P('不出賽的這段時間','比賽那幾天，你要做什麼？',[
+      {id:'watch',label:'到場觀摩',sub:'看高手比賽 · 技術↑ · 下次審查「型」加分'},
+      {id:'staff',label:'擔任大會工作人員',sub:'名聲↑ · 小額工讀費'},
+      {id:'solo',label:'留在道場自主特訓',sub:'力量↑ 耐力↑'},
+      {id:'rest',label:'好好休息',sub:'體況大幅回復'}].map(o=>({...o,rec:o.id===(S.hp<60?'rest':'watch')})));
+    const s0=snap();
+    if(a==='watch'){grow('tec',2);S.flags.kataPrep=1;kmGain(focusKata(),3);}
+    if(a==='staff'){fx({fame:2,money:.5});S.flags.staff=(S.flags.staff||0)+1;}
+    if(a==='solo'){grow('pow',1.6);grow('sta',1.6);bump('hp',-4);}
+    if(a==='rest'){bump('hp',18);}
+    say(`跳過${T.name}，${({watch:'到場觀摩',staff:'擔任工作人員',solo:'自主特訓',rest:'好好休息'})[a]}。 ${diff(s0)}`);
+    return true;
+  }
+  const list=c==='both'?['kata','kumite']:[c];
+  const fee=c==='both'?+(T.fee*1.6).toFixed(1):T.fee;S.money-=fee;if(T.id==='tw')S.flags.twEntered=S.year;
+  let quick=true;
+  if(list.length){
+    const m=yield P(`${T.short}・出賽方式`,`已繳報名費 ${fee} 萬。`,[{id:'quick',label:'快速模式',sub:'自動比完，只看結果',rec:EZ()},{id:'go',label:'親自上場',sub:'每一回合、每一輪自己決定'}]);
+    quick=m==='quick';
+  }
+  for(const d of list)yield* runDivision(T,d,quick);
+  S.flags.scout=0;
+  return true;
+}
+const SEMINARS={
+  kata:{n:'型講習會',s:'主練的型修煉度↑↑ · 技術↑ 鬥志↑',run:m=>{grow('tec',2*m);grow('spi',1*m);kmGain(focusKata(),4*m);S.flags.kataB=Math.min(3,S.flags.kataB+.3*m);S.flags.kataPrep=1;}},
+  kumite:{n:'組手講習會',s:'速度↑ 力量↑ 技術↑',run:m=>{grow('spd',2*m);grow('pow',1.8*m);grow('tec',1.2*m);}},
+  body:{n:'體能講習會',s:'耐力↑ 鍛體↑',run:m=>{grow('sta',2.4*m);grow('con',2*m);}},
+  judge:{n:'審判講習會',s:'名聲↑ · 累積審判資歷',cond:()=>S.rank>=5,run:m=>{fx({fame:2*m});S.flags.judge=(S.flags.judge||0)+1;}},
+  coach:{n:'指導員講習會',s:'累積指導資歷 · 四段審查與道場指導品質↑',cond:()=>S.rank>=6,run:m=>{S.flags.coachLic=(S.flags.coachLic||0)+1;grow('tec',1*m);}}
+};
+function* seminar(T){
+  const poor=S.money<T.semFee;
+  const opts=Object.entries(SEMINARS).filter(([,v])=>!v.cond||v.cond()).map(([k,v])=>({id:k,label:v.n,sub:poor?`存款不足（需要 ${T.semFee} 萬，目前 ${Math.round(S.money)} 萬）`:`${v.s} · 報名費 ${T.semFee} 萬`,disabled:poor}));
+  opts.push({id:'no',label:'這次不參加',sub:''});
+  {const rc=examRec();let ri=poor?'no':rc?({kihon:'kata',taiso:'body',kumite:'kumite'})[rc.id]:(trShare().k>trShare().m?'kata':'kumite');   if(!poor&&!S.flags.instDone&&S.rank>=6&&!S.flags.teach&&S.age>=26)ri='coach';
+   opts.forEach(o=>o.rec=o.id===ri);}
+  const c=yield P(`${T.short}講習會`,`${poor?'<b>存款不夠，這次參加不了。</b>'+(EZ()?'':'可以在「生活」安排打工賺錢。'):''}比賽季結束，${T.short}之後舉辦講習會。等級越高的大會，講習效果越好。${S.flags.seminars?'':'<b>參加過講習會是日本大賽的條件之一。</b>'}`,opts);
+  if(c==='no'){say('沒有參加講習會。');return;}
+  const s0=snap();S.money-=T.semFee;SEMINARS[c].run(T.sem*.6);S.flags.seminars++;
+  say(`<span class="lbl">${SEMINARS[c].n}</span>${diff(s0)||'資歷 +1'}`);log(`參加${T.short}${SEMINARS[c].n}`);
+}
+
+/* ===== 升級審查 ===== */
+function examInfo(n){
+  const need=[0,18,24,30,35,41,49,57,64,72,76][n];
+  const gap=[0,2,2,2,4,4,4,8,12,16,20][n];
+  const age=[0,0,0,0,0,0,17,20,24,30,36][n];
+  const kumi=[0,0,0,0,0,0,10,20,30,0,0][n];
+  const fee=n<=5?.3:[0,0,0,0,0,0,1,2,3,4,5][n];
+  let extra=true,extraTxt='';
+  const exp=!!S.flags.teach||!!S.dojo||(S.flags.coachLic||0)>=1;
+  if(n===9){extra=S.fame>=35&&exp;extraTxt='需名聲 35 以上，並有指導少年部、指導員講習會或經營道場的資歷';}
+  if(n===10){extra=!!S.dojo&&(S.dojo.blacks>=3||S.fame>=70);extraTxt='需經營自己的道場，並培養出 3 名以上黑帶弟子（或名聲 70）';}
+  const abroad=n>=8;const travel=abroad&&S.path!=='uchi'?4:0;
+  return {need,gap,age,kumi,fee,extra,extraTxt,kata:KATA[n],abroad,travel};
+}
+function examParts(I){
+  return [
+    {n:'基本・移動',sc:S.st.tec*.7+S.st.spd*.3+(pk().exam||0)+(hasT('calm')?2:0)-(hasT('proud')?2:0)+(hasT('humble')?1:0)+moodNow().b*.5},
+    {n:'型',sc:S.st.tec*.35+S.st.spi*.2+km(I.kata)*.45+(S.flags.kataPrep?4:0)+(S.route==='kata'?3:0)+(pk().exam||0)},
+    {n:'體力測試',sc:S.st.sta*.6+S.st.pow*.25+S.st.con*.15},
+    {n:I.kumi?`${I.kumi}人組手`:'組手',sc:(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4*(.72+.28*Math.min(1,S.hp/80))+S.st.spi*.12-4-(S.route==='kata'?3:0)}
+  ];
+}
+function mark(m){return m>=6?'◎':m>=0?'○':m>=-6?'△':'✗';}
+const PARTF=['技術×0.7＋速度×0.3','指定型的修煉度×0.45＋技術×0.35＋鬥志×0.2','耐力×0.6＋力量×0.25＋鍛體×0.15','力・速・耐・技平均 × 體況＋鬥志'];
+function partP(sc,need){return clamp((sc+8-need)/16,0,1);}
+function kumiNP(n){const e=(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4;const pool=S.st.sta+S.st.spi*.5+S.st.con*.4+S.hp*.25;const cost=Math.max(1.5,4.8-(e-60)*.04);return clamp((pool/(cost*n)-.85)/.5,0,1)*clamp((e-38)/25,0,1);}
+function examGap(I){return (S.path==='uchi'||S.path==='twuchi')?Math.max(2,I.gap-2):I.gap;}
+function examStatus(){
+  const n=S.rank+1;if(n>10)return null;const I=examInfo(n);
+  const left=Math.max(0,examGap(I)-(S.turn-S.lastPromo));
+  const parts=examParts(I).map((p,i)=>{const kn=i===3&&I.kumi;return {n:p.n,sc:p.sc,need:I.need,kn,pr:kn?kumiNP(I.kumi):partP(p.sc,I.need),f:kn?'耐力、鬥志、鍛體決定撐幾人；力速耐技決定勝場（要過半）':PARTF[i]};});
+  return {n,I,left,ageOk:S.age>=I.age,parts,all:parts.reduce((a,p)=>a*p.pr,1)};
+}
+function examHTML(es,full){
+  if(!es)return '';
+  const conds=[es.left?`<span class="req">還要 ${es.left} 季</span>`:'<span class="req ok">✓ 可報考</span>'];
+  if(es.I.age)conds.push(`<span class="req${es.ageOk?' ok':''}">${es.ageOk?'✓':'·'} 滿 ${es.I.age} 歲</span>`);
+  if(!es.I.extra)conds.push(`<span class="req">· ${es.I.extraTxt}</span>`);
+  conds.push(`<span class="req">審查費 ${es.I.fee} 萬${es.I.travel?`＋旅費 ${es.I.travel} 萬`:''}</span>`,`<span class="req">${es.I.abroad?'日本本部審查・每年下半年':'審查每年上、下半年各一次'}</span>`);
+  return `<div class="exs">`+es.parts.map(p=>`<div class="exr"><span class="exn">${p.n}</span><span class="exv">${p.kn?'—':Math.round(p.sc)+'<small>/'+p.need+'</small>'}</span><div class="bar sm ${p.pr>.75?'g':p.pr>.35?'y':'r'}"><i style="width:${(p.pr*100).toFixed(0)}%"></i></div><span class="exp">${Math.round(p.pr*100)}%</span>${full?`<span class="exf">${p.f}</span>`:''}</div>`).join('')+
+    `<div class="reqs">${conds.join('')}</div>${full?'<p class="exnote">剛好達標約五成機率通過，高出 8 分以上才算穩過。</p>':''}</div>`;
+}
+const REC={0:{id:'kihon',n:'基本・型'},1:{id:'kihon',n:'基本・型'},2:{id:'taiso',n:'體能・鍛體'},3:{id:'kumite',n:'組手'}};
+function examRec(){const es=examStatus();if(!es)return null;const w=es.parts.reduce((a,p,i)=>p.pr<a.p.pr?{p,i}:a,{p:es.parts[0],i:0});if(w.p.pr>=.8)return null;const r0=w.i===3&&w.p.kn?{id:'taiso',n:'體能・鍛體'}:REC[w.i];return {...r0,part:w.p.n,why:w.i===1?`主練「${es.I.kata}」`:''};}
+function examSummary(es){
+  if(!es)return '';
+  const weak=es.parts.reduce((a,p)=>p.pr<a.pr?p:a,es.parts[0]);
+  const rc=examRec();
+  return `<b>${RANKS[es.n]}審查</b>・合格率 <b class="${es.all>.6?'good':es.all>.3?'':'bad'}">${Math.round(es.all*100)}%</b>${es.left?`・還要 ${es.left} 季`:''}${rc?`<br><span class="hintline">「${rc.part}」不足 → 多練「${rc.n}」${rc.why?'，'+rc.why:''}</span>`:'<br><span class="hintline good">各項都準備好了</span>'}`;
+}
+function kumiteN(n){
+  let pool=S.st.sta*1+S.st.spi*.5+S.st.con*.4+S.hp*.25;const e=(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4;let wins=0;
+  for(let i=1;i<=n;i++){pool-=3.2+r()*3.2-(e-60)*.04;if(r()<1/(1+Math.exp(-(e-55-i*.45)/8)))wins++;if(pool<=0&&i<n)return {done:false,at:i,wins};}
+  return {done:true,wins};
+}
+function* examPhase(){
+  const n=S.rank+1;if(n>10)return;
+  if(badlyHurt())return;
+  const I=examInfo(n);
+  if(I.abroad?S.q!==3:(S.q!==1&&S.q!==3))return;
+  if(S.turn-S.lastPromo<examGap(I)||S.age<I.age)return;
+  if(!I.extra){if(S.flags.extraNote!==n){S.flags.extraNote=n;say(`晉升${RANKS[n]}的條件：${I.extraTxt}。`);}return;}
+  const parts=examParts(I);const es=examStatus();
+  const c=yield P(`${RANKS[n]}審查`,`${tipOnce('exam','四項都要合格才升級，看下方每一項的通過機率。不夠的話先不考，回去練弱的那一項。')}${I.abroad?'<b>三段以上要到日本本部審查</b>，由本部的師範審核，每年下半年一次。':''}指定型「${I.kata}」，四項都要合格。合格率約 <b>${Math.round(es.all*100)}%</b>。${examHTML(es,false)}`,
+    [{id:'go',rec:es.all>=.5,label:I.abroad?'赴日本本部報考':'報考',sub:`審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''} · 不合格不退費 · 合格機率約 ${Math.round(es.all*100)}%`},{id:'no',rec:es.all<.5,label:'這次不考，再練一陣子',sub:(()=>{const rc=examRec();return rc?`「${rc.part}」不足，建議多練「${rc.n}」`:'各項都準備好了';})()}]);
+  if(c!=='go'){say(`這次沒有報考${RANKS[n]}審查。`);return;}
+  S.money-=I.fee+I.travel;
+  say(`<span class="tname">${RANKS[n]}審查${I.abroad?'・日本本部':''}</span>`);
+  let allOk=true;
+  for(let i=0;i<parts.length;i++){
+    const p=parts[i];
+    if(i===3&&I.kumi){
+      const res=kumiteN(I.kumi);const ok=res.done&&res.wins>=Math.ceil(I.kumi*.5);
+      say(`<div class="exrow ${ok?'w':'l'}"><span class="rd">${p.n}</span><span class="op">${res.done?`撐完 ${I.kumi} 人，${res.wins} 勝`:`在第 ${res.at} 人倒下`}</span><span class="res">${ok?'合格':'不合格'}</span></div>`);
+      if(!ok)allOk=false;
+    }else{
+      const sc=Math.round(p.sc+(r()-.5)*16);const ok=sc>=I.need;
+      say(`<div class="exrow ${ok?'w':'l'}"><span class="rd">${p.n}</span><span class="op">${sc} / 合格線 ${I.need}</span><span class="res">${ok?'合格':'不合格'}</span></div>`);
+      if(!ok)allOk=false;
+    }
+  }
+  if(I.kumi)fx({hp:-22,wear:1});else bump('hp',-5);
+  if(allOk){
+    S.rank=n;S.lastPromo=S.turn;S.flags.kataPrep=0;S.examFails=0;if(n>=6)S.danYear=S.year;S.mil=S.mil||{};if(n===6)S.mil.black=S.age;if(n===9)S.mil.yon=S.age;bump('spi',2);award(3,'升級');
+    {const nk=EXK[Math.min(10,n+1)];if(nk&&!S.km[nk]){S.km[nk]=5;}}
+    say(`<b class="gold">合格，晉升${RANKS[n]}</b>。${EXK[n+1]&&n<10?`下一個審查型是「${EXK[n+1]}」。`:''}段位加成提高到 +${rankB().toFixed(0)}。${n===6?'支部長親手替你繫上黑帶。':''}${n===3||n===6?' 學會了新招式！':''}`);
+    log(`${RANKS[n]}審查合格`,n>=6?'gold':'');
+  }else{
+    S.examFails++;S.flags.failTot=(S.flags.failTot||0)+1;bump('spi',S.examFails>=2?2:-1);if(hasT('grit'))bump('spi',2);else if(r()<(hasT('glass')?.8:.4))setMood('slump','落榜之後，你對自己失去信心。');
+    say(`<span class="bad">審查不合格。</span>${S.examFails>=2?'連續落榜，你反而更不服輸了。':'師範說：「下次再來。」'}`);
+    log(`${RANKS[n]}審查不合格`,'bad');
+  }
+}
+
+function* hyaku(){
+  const c=yield P('百人組手','支部長把你叫進辦公室：「要不要挑戰百人組手？」連續和一百名對手對打。能站到最後的人，世界上屈指可數。',
+    [{id:'go',rec:S.hp>=70,label:'押忍，我挑戰',sub:'成功即成為傳說 · 身體會付出很大代價'},{id:'no',rec:S.hp<70,label:'我還沒準備好',sub:'明年還會有機會'}]);
+  if(c!=='go'){say('支部長說：「等你準備好。」');return;}
+  let pool=est('sta')*1.85+S.st.spi*1.5+est('con')*.5+S.hp*.5+est('tec')*.3;const e=rating();let wins=0,at=100,done=true;
+  const ms={25:'第 25 人，呼吸還很穩。',50:'第 50 人，雙腿開始發抖，道場裡的人都安靜了。',75:'第 75 人，你已經看不清對手的臉，只剩下本能。'};
+  for(let i=1;i<=100;i++){
+    pool-=2.6+r()*2.6-(e-80)*.03;if(r()<1/(1+Math.exp(-(e-62-i*.12)/7)))wins++;
+    if(pool<=0&&i<100){done=false;at=i;break;}
+    if(ms[i])say(ms[i]);
+  }
+  const s0=snap();
+  if(done){
+    S.flags.hyaku=1;S.fame+=40;S.pts=(S.pts||0)+5;if(EZ())autoAlloc();S.wear=Math.min(90,S.wear+8);S.hp=Math.min(8,hpMax());
+    say(`第一百人倒下時，整座道場在吶喊。${wins} 勝，<b class="gold">百人組手完遂</b>。 ${diff(s0)}`);
+    S.titles.push(`${S.year} 百人組手完遂`);log('百人組手完遂','gold');
+  }else{
+    S.fame+=12;S.wear=Math.min(90,S.wear+5);S.hp=Math.min(12,hpMax());
+    say(`<span class="bad">第 ${at} 人。膝蓋撐不住了，你倒在道場中央。</span>沒有人笑你，所有人都站起來鼓掌。 ${diff(s0)}`);
+    log(`百人組手挑戰，止於第 ${at} 人`,'bad');
+  }
+}
+
+/* ===== 自己的道場 ===== */
+function dojoQ(){const d=S.dojo;return clamp(S.st.tec*.45+S.rank*4+d.mood*.2+(d.assist?6:0)+Math.min(10,(S.flags.coachLic||0)*4),0,100);}
+function dojoReqs(){return [
+  {n:'指導員資格',ok:!!S.flags.instDone},{n:'初段以上',ok:S.rank>=6},{n:'滿 24 歲',ok:S.age>=24},
+  {n:'指導資歷 2 年以上',ok:(S.flags.teachY||0)>=2},{n:'存款 5 萬以上',ok:S.money>=5}];}
+function dojoReview(){
+  const need=45;const parts=[
+    {n:'指導實績',sc:Math.min(30,(S.flags.teachY||0)*5)+S.rank*3+S.st.tec*.25,f:'指導資歷、段位、技術'},
+    {n:'人望',sc:S.fame*.5+S.st.spi*.35+(S.flags.shihandai?12:0)+(S.flags.uchiDone?8:0)+(hasT('charm')?10:0),f:'名聲、鬥志、師範代、內弟子經歷、個性'},
+    {n:'經營計畫',sc:Math.min(45,S.money*2.2)+(S.flags.degree?6:0)+(S.path==='job'?6:0)+Math.min(10,(S.flags.coachLic||0)*4),f:'存款、學歷或社會經驗、指導員講習'}
+  ].map(p=>({...p,need,pr:partP(p.sc,need)}));
+  return {parts,all:parts.reduce((a,p)=>a*p.pr,1)};
+}
+function* openDojo(){
+  if(!dojoReqs().every(x=>x.ok)){say(`開道場的條件還不夠：${dojoReqs().filter(x=>!x.ok).map(x=>x.n).join('、')}。`);return false;}
+  if(S.flags.openTry===S.year){say('今年已經申請過了，支部長要你明年再提。');return false;}
+  const es=dojoReview();
+  const a=yield P('開設道場：支部長審核',`在台灣支部，新道場要由支部長審核，通過後以「台灣支部」的名義開設，學員的審查、比賽都跟著支部走。一年只能申請一次。${examHTMLRows(es)}`,[
+    {id:'go',label:'向支部長提出申請',sub:`通過機率約 ${Math.round(es.all*100)}%`},{id:'no',label:'再準備一陣子',sub:''}]);
+  if(a!=='go'){say('你把企劃書收回抽屜。');return false;}
+  S.flags.openTry=S.year;let ok=true;say('<span class="tname">支部長審核</span>');
+  for(const p of es.parts){const pass=r()<p.pr;if(!pass)ok=false;say(`<div class="exrow ${pass?'w':'l'}"><span class="rd">${p.n}</span><span class="op">${Math.round(p.sc)} / ${p.need}</span><span class="res">${pass?'通過':'不足'}</span></div>`);}
+  if(!ok){say('<span class="bad">支部長看完企劃書，要你再累積一些經驗，明年再來。</span>');log('開設道場申請未通過','bad');return false;}
+  const cc=yield P('開設道場：選城市',`支部長審核通過，同意你以台灣支部的名義開設新道場。目前存款 ${Math.round(S.money)} 萬。<br>南部是支部的大本營；都會區人多但競爭大，離開南部後支部支援少，難度更高。`,
+    [...Object.entries(CITIES).map(([k,c])=>({id:k,rec:c.stars===Math.min(...Object.values(CITIES).map(x=>x.stars)),label:`${c.n}`,sub:`${c.area} · 難度 ${'★'.repeat(c.stars)} · 競爭 ${Math.round(c.comp*100)} · 市場 ×${c.demand} · 租金 ×${c.rentM}`})),{id:'no',label:'再等等',sub:'存夠錢再說'}]);
+  if(cc==='no'){say('你把企劃書收回抽屜。');return false;}
+  const C=CITIES[cc];
+  const cost=k=>Math.round(LOCS[k].cost*C.rentM*10)/10;
+  const opts=Object.entries(LOCS).filter(([k])=>S.money>=cost(k)||k==='school').map(([k,l])=>({id:k,label:l.n,sub:`${l.s} · 開辦 ${cost(k)} 萬 · 租金每半年 ${(l.rent*C.rentM).toFixed(1)} 萬 · 上限 ${Math.round(l.cap*C.demand)} 人`}));
+  {const ok=opts.filter(o=>S.money-cost(o.id)>=5);const best=(ok.length?ok:opts.filter(o=>o.id==='school')).reduce((a,o)=>!a||LOCS[o.id].cap>LOCS[a.id].cap?o:a,null);if(best)best.rec=true;}
+  opts.push({id:'no',label:'再想想',sub:''});
+  const PR=prestige();
+  const c=yield P(`開設道場：${C.short}`,`<b>名號加成</b>　${prestigeTxt(PR)}<br>在${C.n}要用什麼場地？每半年要繳收入一成＋1 萬給台灣支部（由支部統一上繳日本本部）。學員太少、連續虧損，道場會撐不下去。`,opts);
+  if(c==='no'){say('你把企劃書收回抽屜。');return false;}
+  const L=LOCS[c];S.money-=cost(c);
+  S.dojo={loc:c,city:cc,name:`台灣支部${C.short}道場`,students:Math.min(Math.round(L.cap*C.demand),L.st+PR.st),cap:Math.round(L.cap*C.demand),equip:L.eq,mood:Math.min(100,65+PR.mood),rent:+(L.rent*C.rentM).toFixed(1),fee:+(.9*(1+(C.demand-1)*.3)).toFixed(2),blacks:0,champs:0,peak:L.st,opened:S.year,kids:!!L.kids,assist:false,net:0,royalty:0,bad:0};
+  say(`<b class="gold">${esc(S.dojo.name)}</b>在${C.n}掛上了台灣支部的招牌。${PR.tags.length?`看到「${PR.tags[0]}」的名號，`:''}第一天來了 ${S.dojo.students} 個學員，你帶著他們喊出第一聲「押忍」。`);
+  log(`開設${S.dojo.name}（${C.area}・${L.n}）`,'gold');
+  return true;
+}
+function closeDojo(why){
+  const d=S.dojo;say(`<span class="bad">${esc(d.name)}${why}，只能結束營業。</span>`);log(`${d.name}結束營業`,'bad');
+  S.flags.closedDojo=d.name;S.flags.closedPeak=d.peak;S.flags.closedCity=d.city;S.fame=Math.max(0,S.fame-5);S.dojo=null;
+}
+function dojoTick(extraAdd){
+  const d=S.dojo,q=dojoQ();const before=d.students;const C=CITIES[d.city]||CITIES.kaosub;const PR=prestige();
+  const add=Math.round((S.fame*.02+q*.035+d.equip*.012)*(.4+r()*.8)*(1-C.comp*.75)*PR.m*(hasT('leader')?1.2:1)/Math.pow(C.far,1.6))+Math.round((extraAdd||0)*(1-C.comp*.45)/C.far);
+  const churn=Math.round(d.students*clamp(.24-q/800-d.mood/1200+C.comp*.08,.04,.3));
+  d.students=clamp(d.students+add-churn,0,d.cap);
+  const income=d.students*d.fee*(1+PR.fee);const royalty=1+income*.1;
+  const opx=2+d.students*.5;const net=income-d.rent-.5*C.far-royalty-opx;S.money+=net;d.net=net;d.royalty=royalty;
+  d.mood=Math.round(d.mood+(60-d.mood)*.15);
+  d.peak=Math.max(d.peak,d.students);
+  const dl=d.students-before;
+  say(`<span class="lbl">${esc(d.name)}</span>學員 ${d.students} 人（${dl>=0?'+':'−'}${Math.abs(dl)}）· 上繳支部 ${royalty.toFixed(1)} 萬 · 人事營運 ${opx.toFixed(1)} 萬 · 收支 <span class="${net>=0?'good':'bad'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)} 萬</span>`);
+  if(d.students<6||net<0)d.bad++;else d.bad=0;
+  if(d.bad===2)say('<span class="bad">經營警訊：已經連續兩期學員太少或虧損，再一期就可能撐不下去。</span>');
+  if(d.bad>=3&&S.money<15){closeDojo(d.students<6?'學員太少':'連續虧損、入不敷出');return;}
+  if(S.money<-20){closeDojo('負債太多');return;}
+  if(S.year!==d.lastYearly&&S.q>=2){d.lastYearly=S.year;
+    if(d.prodigy&&!d.prodigy.done){const pg=d.prodigy;pg.lv+=1+pg.c*.5+q/120+(r()-.3);
+      if(pg.lv>=4&&!pg.tw){pg.tw=1;S.fame+=2;say(`你帶大的${esc(pg.n)}拿下了<b>全台少年組優勝</b>。`);log(`${pg.n} 全台少年組優勝`);}
+      if(pg.lv>=8){pg.done=1;if(r()<.1+pg.c*.18+q/800){d.prodigyJp=1;S.flags.prodigyJp=1;S.fame+=8;if(S.flags.uchiDone)S.hq=(S.hq||0)+3;say(`<b class="gold">${esc(pg.n)}在全日本選手權奪冠！</b>他在頒獎台上找到你，深深一鞠躬。`);log(`弟子${pg.n} 全日本優勝`,'gold');S.titles.push(`${S.year} 弟子${pg.n}全日本優勝`);}
+        else{say(`${esc(pg.n)}在全日本選手權打進八強。他說：「下次一定。」`);}}}
+    if(d.women&&q>=55&&d.students>=40&&r()<.025+q/4000){S.flags.womenChamp=(S.flags.womenChamp||0)+1;S.fame+=2;const wn=twName();say(`女子部的${wn}拿下<b>全台女子組優勝</b>。`);log(`女子部${wn} 全台女子組優勝`);}
+    const exp=d.students*.006*(q/70);const nb=Math.floor(exp)+(r()<exp%1?1:0);
+    if(nb>0){d.blacks+=nb;say(`今年有 ${nb} 名弟子在支部審查通過初段，繫上了黑帶。`);log(`弟子 ${nb} 人晉升黑帶`);}
+    if(q>=60&&d.students>=20){S.fame+=1;if(S.flags.uchiDone)S.hq=(S.hq||0)+1;d.mood=Math.min(100,d.mood+3);say('支部長來道場巡視，在支部會議上點名表揚你的道場。');}
+    else if(q<45||d.mood<40){d.mood=Math.max(0,d.mood-4);say('<span class="bad">支部長來道場巡視，提醒你指導品質要再加強。</span>');}
+    if(d.students>=12){
+      const s2=30+PR.dis+q*.3+d.equip*.12+Math.min(10,(S.year-d.opened)*1.5)+(r()-.5)*16;
+      const nm=twName();
+      if(s2>=62){d.champs++;S.fame+=4;S.hq=(S.hq||0)+(S.flags.uchiDone?3:0);say(`你的弟子${nm}拿下<b class="gold">全台選手權優勝</b>！`);log(`弟子${nm} 全台優勝`,'gold');}
+      else if(s2>=56)say(`弟子${nm}在全台選手權拿到準優勝。`);
+      else if(s2>=50)say(`弟子${nm}在全台選手權打進四強。`);
+    }
+  }
+}
+const DOJO_EVENTS=[
+  {id:'prodigy',cond:()=>S.dojo.kids&&!S.dojo.prodigy,run:()=>{const nm=twName();return ev('天才少年',`少年部來了一個叫${nm}的十歲孩子，第一次踢沙包就踢得砰砰響。家長問你：「他真的有天分嗎？」`,
+    [{l:'親自一對一帶他',s:'他會成長得更快 · 名聲↑',do(){S.dojo.prodigy={n:nm,y:S.year,lv:0,c:1};S.fame+=1;log(`開始培養天才少年${nm}`);return `你在${nm}的道着上別了一個小小的徽章：「押忍」。`;}},
+     {l:'讓他跟著少年部一起練',s:'慢慢來',do(){S.dojo.prodigy={n:nm,y:S.year,lv:0,c:0};return '孩子每天都最早到道場。';}}]);}},
+  {id:'women',cond:()=>!S.dojo.women&&S.dojo.students>=20,run:()=>ev('女子部','好幾位女學員希望道場開設女子部，有專屬的時段和更衣室。',
+    [{l:'開設女子部',s:'花費 2 萬 · 學員上限 +20 · 學員↑',do(){S.money-=2;S.dojo.women=1;S.dojo.cap+=20;S.dojo.students+=6;log('開設女子部');return '第一堂女子部的課，來了九個人。';}},
+     {l:'時間還不夠，再說',s:'',do(){return '你把這件事記在筆記本上。';}}])},
+  {id:'parent',run:()=>ev('家長的抱怨','少年部有孩子在組手時流鼻血，家長在群組裡抱怨。',
+    [{l:'登門道歉，調整少年部課程',s:'口碑↑',do(){S.dojo.mood+=6;S.dojo.students=Math.max(0,S.dojo.students-1);return '家長看到你親自來，態度軟化了。';}},
+     {l:'說明這是空手道的一部分',s:'看運氣',do(){S.dojo.mood-=8;if(r()<.4){S.dojo.students=Math.max(0,S.dojo.students-4);return '有幾個家庭退出了。';}return '大部分家長表示理解。';}}])},
+  {id:'rival',run:()=>ev('對面開了拳館','新開的連鎖健身拳館打出「首月免費」。',
+    [{l:'辦免費體驗課迎戰',s:'花費 2 萬',do(){S.money-=2;if(dojoQ()>60){S.dojo.students+=4;return '體驗課的學員有一半留下來了。';}S.dojo.students=Math.max(0,S.dojo.students-3);return '體驗的人不少，留下的不多。';}},
+     {l:'專注在自己的學員身上',s:'口碑↑',do(){S.dojo.mood+=5;return '老學員說：「我們又不是來健身的。」';}}])},
+  {id:'rent',run:()=>ev('房東漲租','房東說下一期租金要調漲。',
+    [{l:'接受',s:'租金每半年 +1.5 萬',do(){S.dojo.rent+=1.5;return '你多接了幾堂成人班。';}},
+     {l:'搬到便宜一點的地方',s:'學員流失、設備受損',do(){S.dojo.rent=Math.max(1,S.dojo.rent-1);S.dojo.students=Math.round(S.dojo.students*.8);S.dojo.equip=Math.max(0,S.dojo.equip-10);return '搬家那天，弟子們扛著沙包走了三條街。';}}])},
+  {id:'media',run:()=>ev('電視台採訪','地方電視台想來拍一集「傳統武道」專題。',
+    [{l:'接受採訪',s:'名聲↑ 學員↑',do(){S.fame+=4;S.dojo.students+=6;return '節目播出後，詢問電話響個不停。';}},{l:'婉拒',s:'口碑↑',do(){S.dojo.mood+=2;return '你覺得道場不是拍給人看的。';}}])},
+  {id:'disciple',run:()=>ev('弟子的請求','最認真的弟子說，他想去日本當內弟子。',
+    [{l:'寫推薦信給支部長',s:'名聲↑ 口碑↑',do(){S.fame+=3;S.dojo.mood+=5;S.dojo.students=Math.max(0,S.dojo.students-1);log('推薦弟子赴日成為內弟子');return '送機那天，你想起十八歲的自己。';}},
+     {l:'留他在道場當助教',s:'之後學員比較不會流失',do(){S.dojo.assist=true;S.dojo.mood+=3;return '他第一次站在學員前面喊口令，聲音在發抖。';}}])}
+];
+function* manage(owner){
+  const d=S.dojo;const q=Math.round(dojoQ());
+  const opts=[{id:'normal',label:'照常經營',sub:'不額外花錢'}];
+  if(S.money>=3)opts.push({id:'promo',label:'招生宣傳',sub:'花費 3 萬 · 學員↑'});
+  if(S.money>=6&&d.equip<100)opts.push({id:'equip',label:'添購設備',sub:'花費 6 萬 · 設備↑ 招生更容易'});
+  opts.push({id:'teach',label:'親自加強指導',sub:'口碑↑ 學員比較不會流失'+(owner?'':' · 自己的稽古效果減少')});
+  if(!d.kids&&S.money>=2)opts.push({id:'kids',label:'開設少年部',sub:'花費 2 萬 · 學員上限 +30'});
+  if(d.students>=20&&S.money>=2)opts.push({id:'cup',label:'舉辦道場交流賽',sub:'花費 2 萬 · 名聲↑ 口碑↑'});
+  if(owner&&(S.age>=45||S.year-d.opened>=6))opts.push({id:'hand',label:'把道場交給弟子',sub:'結束這段人生',danger:true});
+  {const ri=d.students<d.cap*.5&&S.money>=3?'promo':!d.kids&&S.money>=2?'kids':d.equip<60&&S.money>=10?'equip':'teach';opts.forEach(o=>o.rec=o.id===ri);}
+  const c=yield P(owner?'道場主的日子':'道場經營',`<b>${esc(d.name)}</b>　學員 ${d.students}/${d.cap} · 設備 ${d.equip} · 口碑 ${d.mood} · 指導品質 ${q}。這半年把力氣花在哪？`,opts);
+  if(c==='hand')return 'hand';
+  let extra=0;
+  if(c==='promo'){S.money-=3;extra=Math.round(ri(5,12)*(1+S.fame/100));}
+  if(c==='equip'){S.money-=6;d.equip=Math.min(100,d.equip+15);}
+  if(c==='teach'){d.mood+=8;if(!owner)S.flags.teachHalf=1;}
+  if(c==='kids'){S.money-=2;d.kids=true;d.cap+=30;extra=8;log('開設少年部');}
+  if(c==='cup'){S.money-=2;S.fame+=3;d.mood+=6;extra=4;}
+  d.mood=clamp(d.mood,0,100);
+  dojoTick(extra);
+  if(!S.dojo)return 'closed';
+  if(r()<(owner?.4:.15)){const e=pick(DOJO_EVENTS.filter(x=>!x.cond||x.cond()));yield* e.run();S.dojo.mood=clamp(S.dojo.mood,0,100);S.dojo.students=clamp(S.dojo.students,0,S.dojo.cap);}
+}
+function yearTick(){
+  branchTick();
+  if(S.flags.uchiDone&&!S.flags.shibucho&&S.hq>0)S.hq=Math.max(0,S.hq*.9275);
+  if(S.flags.teach||S.path==='inst'||S.path==='trainee'||S.dojo||S.flags.staff2)S.flags.teachY=(S.flags.teachY||0)+1;
+}
+function* appointChecks(){
+  if(!S.flags.shihandai&&S.rank>=8&&S.flags.instDone&&S.age>=30&&(S.flags.teachY||0)>=4&&S.path!=='uchi'){
+    S.flags.shihandai=1;S.mil=S.mil||{};S.mil.shd=S.age;S.fame+=5;if(S.flags.uchiDone)S.hq+=5;S.titles.push(`${S.year} 就任台灣支部師範代`);log('就任台灣支部師範代','gold');
+    say('<b class="gold">支部長任命你為台灣支部師範代。</b>師範不在時，由你代理指導、主持稽古。每季有師範代津貼。');
+  }
+  if(S.flags.uchiDone&&S.flags.shihandai&&!S.flags.shibucho&&S.rank>=9&&S.age>=40&&S.hq>=100){
+    const c0=yield P('支部長任命','日本本部來信：考量你多年來擔任師範代、對台灣支部的貢獻，決定任命你為<b>台灣支部長</b>。',[{id:'yes',label:'押忍，接下重任',sub:'成就：台灣支部長 · 名聲大增 · 每季有支部收入'},{id:'no',label:'婉拒，覺得自己還不夠格',sub:'本部評價回到 80'}]);
+    if(c0==='yes'){S.flags.shibucho=1;S.mil=S.mil||{};S.mil.shibu=S.age;S.fame+=15;S.titles.push(`${S.year} 就任台灣支部長`);log('就任台灣支部長','gold');say('<b class="gold">你成為台灣支部長。</b>');}else{S.hq=80;say('你婉拒了任命。');}
+  }
+}
+function* staffMode(){
+  S.flags.staff2=1;S.path='inst';log('轉任專職指導員');say('你不再站上比賽場，改站在學員前面。');
+  while(true){
+    let ny=false;for(let k=0;k<2;k++){S.q=(S.q+1)%4;S.turn++;if(S.q===0){S.age++;S.year++;yearTick();ny=true;}}
+    if(ny)yield* appointChecks();
+    if(S.age>=60){say('六十歲。你把指導的棒子交給了後輩。');break;}
+    if(S.rank<10){const n=S.rank+1,I=examInfo(n);if(n<=9&&S.turn-S.lastPromo>=I.gap&&S.age>=I.age&&(n<9||I.extra)){S.rank=n;S.lastPromo=S.turn;S.danYear=S.year;say(`本部肯定你的指導實績，推薦晉升<b class="gold">${RANKS[n]}</b>。`);log(`推薦晉升${RANKS[n]}`,'gold');}}
+    {const f=flow(false);S.money+=f.total*2;}
+    if(ny&&S.flags.uchiDone&&S.rank>=6)yield* branchAffairs();
+    const c=yield P('指導員的日子',`${S.age} 歲${S.flags.shibucho?'・台灣支部長':S.flags.shihandai?'・台灣支部師範代':''}。這半年把力氣花在哪？`,[
+      {id:'teach',label:'專心帶道場的稽古',sub:'名聲↑ · 累積指導資歷'},
+      {id:'tour',label:'到各道場巡迴指導',sub:'花費 1 萬 · 名聲↑ · 本部評價 +2'},
+      {id:'end',label:'退下來，交給後輩',sub:'結束這段人生',danger:true}]);
+    if(c==='end'){say('你在最後一堂課後，向學員們深深一鞠躬。');break;}
+    if(c==='teach'){S.fame+=1.5;say('你把每個學員的毛病都記在筆記本上。');}
+    if(c==='tour'){S.money-=1;S.fame+=2;if(S.flags.uchiDone)S.hq+=2;say('你跑遍了南台灣的每一個道場。');}
+  }
+}
+function twReqs(){
+  return [
+    {n:'初段以上・指導員資格',ok:!!S.flags.instDone},
+    {n:'20～28 歲',ok:S.age>=20&&S.age<=28},
+    {n:'未婚（要住進支部）',ok:!S.flags.married},
+    {n:'近兩年出賽全台，或參加講習 2 次以上',ok:(S.flags.twEntered||-99)>=S.year-2||S.flags.seminars>=2},
+    {n:'報名未滿 3 次',ok:(S.flags.twTries||0)<3},
+    {n:'沒有重傷、沒有自己的道場',ok:!badlyHurt()&&!S.dojo}
+  ];
+}
+function twSel(){
+  const need=52;const hiK=Math.max(...unlockedKata().map(k=>km(k.n)));
+  const parts=[
+    {n:'基本・型',sc:S.st.tec*.55+hiK*.3+S.st.spd*.15,f:'技術、最熟的型、速度'},
+    {n:'體力',sc:S.st.sta*.6+S.st.con*.4,f:'耐力、鍛體'},
+    {n:'組手',sc:(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4*(.72+.28*Math.min(1,S.hp/80))+S.st.spi*.1,f:'力速耐技、體況'},
+    {n:'心・態度',sc:S.st.spi*.55+Math.min(16,(S.flags.teachY||0)*4)+Math.min(10,S.flags.seminars*2)+(S.flags.twEntered>=S.year-1?4:0),f:'鬥志、指導資歷、講習、出賽'}
+  ].map(p=>({...p,need,pr:partP(p.sc,need)}));
+  return {parts,all:parts.reduce((a,p)=>a*p.pr,1)};
+}
+function examHTMLRows(es){return `<div class="exs">`+es.parts.map(p=>`<div class="exr"><span class="exn">${p.n}</span><span class="exv">${Math.round(p.sc)}<small>/${p.need}</small></span><div class="bar sm ${p.pr>.75?'g':p.pr>.35?'y':'r'}"><i style="width:${(p.pr*100).toFixed(0)}%"></i></div><span class="exp">${Math.round(p.pr*100)}%</span><span class="exf">${p.f}</span></div>`).join('')+`</div>`;}
+function* uniCup(){
+  const div=trShare().k>trShare().m?'kata':'kumite';
+  const c=yield P('全國大專空手道錦標賽','大學的空手道社要組隊參加大專盃。對手大多是其他流派的大學生。',[
+    {id:'go',label:`代表學校出賽（${DIVN[div]}）`,sub:'名聲↑ · 拿名次有修煉點 · 體況↓'},
+    {id:'coach',label:'在場邊幫學弟妹加油、指導',sub:'鬥志↑ · 累積一點指導經驗'},
+    {id:'no',label:'專心道場的稽古',sub:''}]);
+  if(c==='no'){say('你沒有去大專盃。');return;}
+  if(c==='coach'){fx({spi:2});S.flags.kidsHelp=(S.flags.kidsHelp||0)+.5;say('你在場邊喊到沒聲音，學妹拿到了銅牌。');return;}
+  const sc=(div==='kata'?est('tec')*.7+S.st.spi*.2+km(focusKata())*.2:rating()+S.st.spi*.1)+(r()-.5)*16;
+  const pl=sc>=58?0:sc>=50?1:sc>=42?2:3;bump('hp',-6);
+  const nm=['優勝','準優勝','第三名','預賽落敗'][pl];S.fame+=[4,2.5,1.5,.5][pl];
+  if(pl<=2){S.titles.push(`${S.year} 大專盃（${DIVN[div]}）${nm}`);log(`大專盃（${DIVN[div]}）${nm}`,pl===0?'gold':'');}
+  say(`<span class="tname">大專盃・${DIVN[div]}</span><b>${nm}</b>`);
+  if(pl===0)award(1,'大專盃優勝');
+}
+function hqTier(){const h=S.hq||0;return h>=100?'支部長候選':h>=60?'受到信賴':h>=30?'受到注意':'沒沒無聞';}
+function shibuchoReqs(){return [{n:'日本內弟子結業',ok:!!S.flags.uchiDone},{n:'台灣支部師範代',ok:!!S.flags.shihandai},{n:'四段',ok:S.rank>=9},{n:'滿 40 歲',ok:S.age>=40},{n:`本部評價 100（目前 ${Math.round(S.hq||0)}・${hqTier()}）`,ok:(S.hq||0)>=100}];}
+function shibuchoGoal(){return '本部評價 100、四段、滿 40 歲，並已擔任台灣支部師範代';}
+function* ownerMode(){
+  log('成為全職道場主','gold');
+  say('你把選手時代的獎盃收進櫃子，從今天起，你是全職的道場主。');
+  while(true){
+    let ny=false;for(let k=0;k<2;k++){S.q=(S.q+1)%4;S.turn++;if(S.q===0){S.age++;S.year++;yearTick();ny=true;}}
+    if(ny)yield* appointChecks();
+    if(S.age>=62){say('六十二歲。你在年終審查後宣布，把道場交給最資深的弟子。');log('交棒給弟子');break;}
+    if(S.rank<10){const n=S.rank+1,I=examInfo(n);if(n>=8&&I.extra&&S.turn-S.lastPromo>=I.gap&&S.age>=I.age&&S.money>=4){S.money-=4;S.rank=n;S.lastPromo=S.turn;S.danYear=S.year;say(`你赴日本本部接受審查，本部肯定你的指導實績，晉升<b class="gold">${RANKS[n]}</b>。`);log(`日本本部審查晉升${RANKS[n]}`,'gold');}}
+    if(ny&&S.flags.uchiDone&&S.rank>=6)yield* branchAffairs();
+    {const inc=(S.flags.shibucho?3:0)+(S.flags.merch?(.8+S.fame*.012)*S.flags.merch:0)+(S.branches||[]).reduce((a,b)=>a+.15+b.st*.01,0)+(S.flags.sponsor?2:0);
+     const out=4+(S.flags.married?1:0)+(S.flags.kid?1:0);S.money+=2*(inc-out);}
+    const res=yield* manage(true);
+    if(res==='closed')return 'closed';
+    if(res==='hand'){say('你在最後一堂課後，把道場鑰匙交給了弟子。');log('交棒給弟子');break;}
+  }
+  return 'ok';
+}
+const REGION={pingtung:'南',kaosub:'南',tainanS:'南',kaocity:'南',tainanC:'南',chiayi:'中',taichung:'中',hualien:'東',taipei:'北'};
+function discAvail(){const tot=(S.dojo?S.dojo.blacks:0)+Math.floor((S.flags.teachY||0)/2);return Math.max(0,tot-(S.branches||[]).length-(S.flags.brFail||0));}
+function regionsHeld(){const set=new Set(['南']);(S.branches||[]).forEach(b=>set.add(REGION[b.city]));if(S.dojo)set.add(REGION[S.dojo.city]);return set;}
+function* openBranch(){
+  const used=new Set((S.branches||[]).map(b=>b.city).concat(S.dojo?[S.dojo.city]:[]));
+  const held=regionsHeld();
+  const pr=C=>clamp(.7-C.stars*.14+Math.min(.1,S.fame/2000)+(hasT('leader')?.1:0),.1,.85);
+  const cost=C=>6+C.stars*4;
+  const opts=Object.entries(CITIES).filter(([k])=>!used.has(k)).map(([k,C])=>({id:k,label:`${C.n}`,sub:`${REGION[k]}部${held.has(REGION[k])?'':'・<b>新地區</b>'} · 開館支援金 ${cost(C)} 萬 · 成功機率約 ${Math.round(pr(C)*100)}%`,disabled:S.money<cost(CITIES[k])}));
+  opts.push({id:'no',label:'再等等',sub:''});
+  const c=yield P('派弟子開分館',`你是台灣支部長，可以派黑帶弟子到其他地區開設「台灣支部分館」。分館每季上繳一點收入，越遠的地方越難撐。目前可派的弟子 <b>${discAvail()}</b> 人，支部的版圖：<b>${['北','中','南','東'].map(x=>held.has(x)?x+'✓':x+'·').join(' ')}</b>。北、中、南、東都有據點，就是「全台製霸」。`,opts);
+  if(c==='no'){say('你決定再觀察一陣子。');return;}
+  const C=CITIES[c];S.money-=cost(C);S.flags.brY=S.year;const lead=twName();
+  if(r()<pr(C)){S.branches=S.branches||[];S.branches.push({city:c,name:`台灣支部${C.short}分館`,year:S.year,st:ri(8,15),lead});S.hq=(S.hq||0)+5;S.fame+=3;
+    say(`<b class="gold">你的弟子${lead}在${C.n}掛上了「台灣支部${C.short}分館」的招牌。</b>`);log(`派弟子${lead}開設${C.short}分館`,'gold');
+    if(regionsHeld().size>=4&&!S.flags.zenkoku){S.flags.zenkoku=1;S.fame+=10;S.hq+=5;S.titles.push(`${S.year} 台灣支部全台製霸`);say('<b class="gold">北、中、南、東都有了台灣支部的道場——全台製霸！</b>');log('全台製霸','gold');}}
+  else{S.flags.brFail=(S.flags.brFail||0)+1;S.hq=Math.max(0,(S.hq||0)-2);say(`<span class="bad">弟子${lead}在${C.n}撐了一年，學員招不起來，分館收掉了。</span>`);log(`${C.short}分館開設失敗`,'bad');}
+}
+function branchTick(){
+  if(!S.branches||!S.branches.length)return;
+  const keep=[];
+  for(const b of S.branches){const C=CITIES[b.city];const add=Math.round((5+S.fame*.02)*(1-C.comp*.6)*(.5+r())/Math.pow(C.far,1.3));const lose=Math.round(b.st*.15);b.st=Math.max(0,b.st+add-lose);
+    if((b.st<6&&r()<.5)||(b.st<12&&r()<.06*C.far*C.stars)){say(`<span class="bad">${b.name}學員太少，${b.lead}含淚把招牌拿了下來。</span>`);log(`${b.name}關閉`,'bad');continue;}keep.push(b);}
+  S.branches=keep;
+}
+function* branchAffairs(){
+  const opts=[];
+  if(S.flags.shibucho&&discAvail()>0&&S.money>=10&&(S.flags.brY||0)<=S.year-2)opts.push({id:'branch',label:'派弟子到其他地區開分館',sub:`可派的黑帶弟子 ${discAvail()} 人 · 已有分館 ${(S.branches||[]).length} 間 · 目標：全台製霸`});
+  if(S.money>=6)opts.push({id:'abroad',label:'參加海外講習會',sub:'花費 6 萬 · 技術↑ 鬥志↑ · 本部評價 +4'});
+  if(S.money>=4)opts.push({id:'goodwill',label:'舉辦國際親善大賽',sub:'花費 4 萬 · 名聲↑ · 本部評價 +5，辦得好再加'});
+  if(S.rank>=7&&S.money>=10)opts.push({id:'asia',label:'主辦亞洲杯',sub:'花費 10 萬 · 規模大、風險也大 · 本部評價 +12 或 −6'});
+  if(S.flags.shibucho&&!S.flags.merch&&S.money>=5)opts.push({id:'merch',label:'推出支部周邊商品',sub:'花費 5 萬 · 道着、T恤、毛巾、貼紙 · 之後每季有商品收入，名聲越高賣越好'});
+  if(S.flags.shibucho&&S.flags.merch===1&&S.money>=8)opts.push({id:'merch2',label:'周邊商品加開新品線',sub:'花費 8 萬 · 聯名護具、限定道着 · 商品收入加倍'});
+  if(S.q===3&&S.money>=2)opts.push({id:'escort',label:'陪同台灣代表隊出國比賽',sub:'花費 2 萬 · 本部評價 +4'});
+  opts.push({id:'none',label:'這次先專心自己的事',sub:''});
+  {const order=['merch2','merch','asia','goodwill','escort','abroad','none'];const has=id=>opts.some(o=>o.id===id)&&(id!=='asia'||S.fame>=45);const ri=order.find(has);opts.forEach(o=>o.rec=o.id===ri);}
+  const c=yield P('支部事務',`日本本部會看你為支部做了多少事。本部評價 <b>${Math.round(S.hq)}</b> / 100（${hqTier()}）${S.flags.shibucho?'（你已是支部長）':'。'+shibuchoGoal()+'，才有機會被任命為台灣支部長'}。`,opts);
+  const s0=snap();const h0=S.hq;
+  if(c==='abroad'){S.money-=6;grow('tec',1.6);grow('spi',1.6);S.flags.seminars++;S.hq+=4;say('你在海外講習會上和各國師範交換心得。');}
+  if(c==='goodwill'){S.money-=4;S.fame+=3;S.hq+=5;S.flags.hosted=1;if(r()<.5+S.fame/200){S.hq+=3;say('親善大賽辦得有聲有色，海外代表隊都說明年還要來。');}else say('親善大賽順利結束。');}
+  if(c==='asia'){S.money-=10;S.flags.hosted=1;const ok=r()<clamp(.4+S.fame/200+(S.dojo?.1:0)+S.hq/400,.2,.9);if(ok){S.hq+=12;S.fame+=8;say('<b class="gold">亞洲杯圓滿成功</b>，本部特別發函致謝。');log('主辦亞洲杯成功','gold');}else{S.hq-=6;S.money-=3;say('<span class="bad">亞洲杯場地和賽程出包，被各國代表抱怨。</span>');log('主辦亞洲杯出包','bad');}}
+  if(c==='escort'){S.money-=2;S.fame+=2;S.hq+=4;say('你陪著年輕的台灣代表隊出國，在場邊幫他們綁好每一條腰帶。');}
+  if(c==='merch'){S.money-=5;S.flags.merch=1;S.hq+=2;say('支部的第一批周邊商品上架了，比賽會場的攤位前排起了隊。');log('推出支部周邊商品','gold');}
+  if(c==='merch2'){S.money-=8;S.flags.merch=2;S.hq+=2;say('聯名護具和限定道着推出，海外分部也來詢問代理。');log('周邊商品加開新品線','gold');}
+  if(c==='none'){say('這陣子沒有處理支部事務。');return;}
+  if(c==='branch'){yield* openBranch();return;}
+  say(`本部評價 ${Math.round(h0)} → <b>${Math.round(S.hq)}</b> ${diff(s0)}`);
+}
+
+/* ===== events ===== */
+function evScore(o){const s=o.s||'';let v=(s.match(/↑/g)||[]).length-(s.match(/↓/g)||[]).length*1.2;if(/受傷|風險|看運氣/.test(s))v-=S.hp<50?2:.8;if(/花費|捐|存款↓/.test(s+o.l)&&S.money<5)v-=2;if(/體況↑/.test(s)&&S.hp<45)v+=2;if(/本部評價 \+/.test(s))v+=1.5;if(/本部評價 −/.test(s))v-=2;return v;}
+function* ev(title,body,opts){
+  let ri=0;if(opts.length>1){let b=-1e9;opts.forEach((o,i)=>{const v=evScore(o);if(v>b+.01){b=v;ri=i;}});}
+  const c=yield P(title,body,opts.map((o,i)=>({id:String(i),label:o.l,sub:o.s||'',rec:opts.length>1&&i===ri})));
+  const o=opts[+c];const s0=snap();let t;
+  if(o.do)t=o.do();else{fx(o.fx||{});t=o.t;}
+  say(`${t} ${diff(s0)}`);
+}
+const H=k=>v=>{S.home[k]=clamp(S.home[k]+v,0,100);};
+const EVENTS=[
+  {id:'senpai',cond:()=>S.age<=18,run:()=>ev('學長的下段踢','組手時學長毫不留情，你的大腿被下段踢踢到發紫。下課後他丟下一句：「痛，就記住了。」',
+    [{l:'咬牙說「押忍」',s:'鬥志↑ 鍛體↑ 體況↓',fx:{spi:3,con:2,hp:-6},t:'隔週你又站到他面前。'},{l:'請學長教你怎麼擋',s:'技術↑',fx:{tec:3},t:'學長愣了一下，然後教你抬膝擋下段。'}])},
+  {id:'exam',cond:()=>S.age>=16&&S.age<=18,run:()=>ev('期末考週','期末考撞上道場的審查前特訓。',
+    [{l:'回家讀書',s:'爸媽放心 · 鬥志↓',fx:{spi:-1},t:'成績單讓爸媽鬆了一口氣。'},{l:'翹掉複習去道場',s:'技術↑ 耐力↑',fx:{tec:2,sta:2},t:'你在道場練到熄燈。'}])},
+  {id:'parttime',rep:1,cond:()=>S.money<4&&S.path!=='uchi'&&S.age>=16&&S.serviceLeft===0,run:()=>ev('夜班打工','便利商店夜班在徵人，時薪不錯。',
+    [{l:'接下來',s:'存款↑ 體況↓',fx:{money:4,hp:-6},t:'凌晨三點的店裡，你在倉庫偷練踢腿。'},{l:'先不要',s:'鬥志↑',fx:{spi:1},t:'你把時間全留給稽古。'}])},
+  {id:'demo',cond:()=>S.rank>=3,run:()=>ev('廟會演武','師範指派你在廟會的武術表演上演武「型」。',
+    [{l:'上台',s:'名聲↑ · 看技術',do(){if(r()<S.st.tec/90){fx({fame:3,tec:1});return '一套「擊碎」打完，台下的阿伯們用力鼓掌。';}fx({fame:1,spi:2});return '轉身時腳下一滑，台下笑成一片。你紅著臉打完。';}},
+     {l:'讓給學弟',s:'',fx:{},t:'學弟緊張到同手同腳，但很開心。'}])},
+  {id:'love',cond:()=>S.age>=22&&!S.flags.partner,run:()=>ev('道場門口','你和常來接弟弟下課的人聊得很投緣。',
+    [{l:'約對方吃飯',s:'鬥志↑',do(){S.flags.partner=1;fx({spi:4});log('開始交往');return '你們開始交往了。';}},{l:'專心修行',s:'',fx:{spi:1},t:'你把心思放回沙包上。'}])},
+  {id:'family',cond:()=>S.age>=16&&S.age<=20,run:()=>ev('家裡的擔心','爸媽怕你練到受傷，希望你把心思放在課業或工作上。',
+    [{l:'帶他們來看比賽',s:'鬥志↑',fx:{spi:3},t:'看完比賽，媽媽什麼都沒說，只是幫你買了新護脛。'},{l:'暫時減少練習量',s:'體況↑ 鬥志↓',fx:{hp:15,spi:-1},t:'家裡的氣氛緩和了。'}])},
+  {id:'viral',cond:()=>S.fame>=12&&!S.flags.channel,run:()=>ev('影片爆紅','你的比賽影片在社群上被轉了幾萬次。',
+    [{l:'開始經營頻道',s:'名聲↑ · 每季多一點收入',do(){S.flags.channel=1;fx({fame:6,money:2,spi:-1});return '訂閱數一路往上，留言區有人叫你「南台灣之星」。';}},{l:'保持低調',s:'鬥志↑',fx:{spi:2},t:'你把手機收起來，繼續練。'}])},
+  {id:'sponsor',cond:()=>S.fame>=28&&!S.flags.sponsor,run:()=>ev('贊助邀約','運動用品品牌想贊助你，條件是比賽穿他們的裝備、拍幾支廣告。',
+    [{l:'簽約',s:'每季固定收入',do(){S.flags.sponsor=1;fx({money:8});log('簽下贊助合約');return '你第一次有了穩定的收入。';}},{l:'婉拒',s:'鬥志↑',fx:{spi:2},t:'你覺得自己還不夠格。'}])},
+  {id:'teach',cond:()=>S.rank>=6&&!S.flags.teach&&S.path!=='uchi'&&S.path!=='school',run:()=>ev('少年部','支部長希望你接下週末少年部的指導。',
+    [{l:'接下',s:'技術↑ 鬥志↑ · 每季小額收入 · 累積指導資歷',do(){S.flags.teach=1;fx({tec:2,spi:2});log('擔任少年部指導');return '一群小學生對你喊「押忍」，你突然懂了師範當年的心情。';}},{l:'專心當選手',s:'',fx:{spi:1},t:'支部長點點頭，沒有勉強。'}])},
+  {id:'oldinj',rep:1,w:4,cond:()=>S.wear>=10&&!S.flags.skip,run:()=>ev('舊傷復發','舊傷又在痛。醫生建議開刀，但得休養半年，不能比賽。',
+    [{l:'開刀',s:'舊傷大幅改善 · 接下來不能出賽',do(){S.wear=Math.max(0,S.wear-7);S.hp=hpMax()*.6;S.flags.skip=2;log('舊傷手術');return '手術很順利。復健室的鏡子裡，你瘦了一圈。';}},
+     {l:'打止痛針撐著',s:'體況↑ 舊傷↑',fx:{hp:15,wear:3},t:'痛感消失了，但你知道它還在。'}])},
+  {id:'visitor',cond:()=>S.rank>=3,run:()=>ev('日本選手來訪','一位日本選手來台交流，點名想跟你對練。',
+    [{l:'全力對練',s:'技術↑ 鬥志↑ · 可能受傷',do(){fx({tec:3,spi:2});if(r()<.25){const n=injure(1);return `你撐滿了三分鐘，代價是${n}。`;}return '他離開前說：「下次在日本見。」';}},
+     {l:'在旁邊觀摩',s:'技術↑',fx:{tec:1.5},t:'你把他的步法記在筆記本上。'}])},
+  {id:'gasshuku',cond:()=>S.q===2&&S.rank>=1&&S.path!=='uchi',run:()=>ev('夏季合宿','支部的夏季合宿在墾丁。八個道場的學員一起，清晨在沙灘跑步，下午在浪裡練基本。',
+    [{l:'參加',s:'耐力↑ 鬥志↑ · 花費 1.5 萬',fx:{sta:3,spi:3,money:-1.5},t:'最後一晚大家在沙灘上喊「押忍」，喊到沒聲音。'},{l:'留在家休息',s:'體況↑',fx:{hp:8},t:'你看著群組裡的照片。'}])},
+  {id:'degeiko',cond:()=>S.rank>=2&&S.path!=='uchi',run:()=>ev('出稽古',`師範帶幾個學員去${otherDojo()}出稽古，問你要不要一起去。`,
+    [{l:'一起去',s:'技術↑ 速度↑ · 可能受傷',do(){fx({tec:2,spd:2});if(r()<.15){const n=injure(1);return `對方道場的組手很硬，你帶著${n}回家。`;}return '換個道場對打，才發現自己的習慣動作被看穿了。';}},{l:'留在道場自主練',s:'鍛體↑',fx:{con:2},t:'你一個人把沙包踢到換新。'}])},
+  {id:'dojomove',cond:()=>S.rank>=2&&S.path!=='uchi',run:()=>ev('道場危機','道場租約到期，房東要收回場地。師範一個人在找新地點。',
+    [{l:'出錢出力',s:'名聲↑ 鬥志↑ · 新道場設備↑',do(){H('equip')(8);H('mood')(5);if(S.money>=3){fx({money:-3,fame:2,spi:3});return '你和學長們扛著沙包搬進更大的新道場。';}fx({spi:3,hp:-5});return '你沒什麼錢，但每個週末都去幫忙搬家。';}},
+     {l:'在社群上幫忙募款',s:'名聲↑',do(){H('equip')(3);fx({fame:1,spi:1});return '貼文被分享了上百次，新道場順利找到了。';}}])},
+  {id:'newgear',cond:()=>S.path!=='uchi'&&S.home.equip<75,run:()=>ev('道場換新器材','師範想替道場換新的沙包、護具和計時器，向學員募款。',
+    [{l:'捐 2 萬',s:'道場設備↑↑',do(){H('equip')(12);fx({money:-2,spi:1});return '新的沙包掛上去，踢起來的聲音都不一樣了。';}},{l:'幫忙組裝',s:'道場設備↑',do(){H('equip')(5);fx({hp:-2});return '你和學弟花了一整個週日鎖螺絲。';}}])},
+  {id:'senpaiback',cond:()=>S.path!=='uchi'&&S.rank>=2,run:()=>ev('黑帶前輩回歸','一位去外地工作多年的黑帶前輩搬回來，重新回到道場。',
+    [{l:'請他帶組手',s:'道場對手層級↑ 技術↑',do(){H('partners')(10);fx({tec:2});return '前輩的中段踢比以前更重了。道場的組手水準整個被拉高。';}},{l:'請他教型',s:'道場指導↑ 技術↑',do(){H('coach')(8);fx({tec:2});return '前輩把每個型的細節講得很清楚。';}}])},
+  {id:'quarrel',cond:()=>S.path!=='uchi'&&S.age>=17,run:()=>ev('學員之間的摩擦','道場裡兩派學長為了比賽名額吵起來，氣氛很僵。',
+    [{l:'出面調停',s:'道場氛圍↑ 鬥志↑',do(){H('mood')(10);fx({spi:2});return '你約兩邊去吃宵夜，把話講開了。';}},{l:'不想捲入',s:'道場氛圍↓',do(){H('mood')(-8);return '練習時大家都不太說話。';}}])},
+  {id:'scout',rep:1,cond:()=>S.rank>=4&&!S.flags.scout&&S.q<=1&&S.route!=='kata',run:()=>ev('對手的影片','你找到今年大賽熱門選手的比賽影片。',
+    [{l:'熬夜研究',s:'下次組手命中率↑、看穿對手弱點',do(){S.flags.scout=1;fx({tec:1,hp:-3});return '你把他每一次出腳前的小習慣都記下來了。';}},{l:'專注在自己身上',s:'鬥志↑',fx:{spi:2},t:'「對手是誰都一樣。」'}])},
+  {id:'drink',rep:1,w:1,cond:()=>S.age>=18&&S.path!=='uchi',run:()=>ev('熱炒店慶功','比賽後大家約去熱炒店慶功。',
+    [{l:'去',s:'鬥志↑ 體況↓',fx:{spi:2,hp:-4},t:'學長把獎牌放進啤酒杯裡拍照。'},{l:'回家伸展',s:'體況↑',fx:{hp:6},t:'你在客廳拉筋到半夜。'}])},
+  {id:'words',w:1,cond:()=>S.rank>=1,run:()=>ev('晨練之後','師範在晨練後說：「頭要低，眼要高，嘴要緊，心要寬。」',
+    [{l:'押忍',s:'鬥志↑',fx:{spi:4},t:'你把這句話寫在護脛內側。'}])},
+  {id:'provoke',cond:()=>S.age>=18&&S.path!=='uchi',run:()=>ev('夜市','夜市裡有人聽說你練空手道，故意撞你肩膀挑釁。',
+    [{l:'點頭道歉，離開',s:'鬥志↑',fx:{spi:3},t:'師範說過，空手道不是拿來打架的。'},
+     {l:'跟他理論',s:'',do(){if(r()<.5){fx({fame:-3,spi:1});return '有人拍了影片傳到道場群組。師範罰你掃道場一個月。';}fx({spi:-1});return '對方自己走了，你卻覺得不太痛快。';}}])},
+  {id:'propose',rep:1,w:3,cond:()=>S.flags.partner&&S.age>=25&&!S.flags.married&&S.flags.proposeY!==S.year&&S.path!=='twuchi'&&S.path!=='uchi',run:()=>{S.flags.proposeY=S.year;return ev('下一步','交往多年的對象問你：「我們什麼時候結婚？」結婚後每季多一筆家庭開銷；當上指導員後，家庭和道場會常常搶時間。',
+    [{l:'辦婚宴',s:'鬥志↑↑ · 花費 6 萬',do(){S.flags.married=1;S.mil=S.mil||{};S.mil.married=S.age;fx({spi:5,money:-6});log('結婚');return '婚禮上，道場的學弟們排成兩列喊「押忍」。';}},
+     {l:'簡單登記就好',s:'鬥志↑ · 花費 1 萬',do(){S.flags.married=1;S.mil=S.mil||{};S.mil.married=S.age;fx({spi:3,money:-1});log('結婚');return '你們穿著便服去戶政事務所，晚上回道場請大家喝飲料。';}},
+     {l:'等大賽之後再說',s:'鬥志↓',do(){fx({spi:-2});S.flags.strain=(S.flags.strain||0)+1;if(S.flags.strain>=3){S.flags.partner=0;S.flags.strain=0;log('分手');return '對方說等不下去了。你們分手了。';}return '對方沒有再提，但你知道這件事還沒結束。';}}]);}},
+  {id:'baby',cond:()=>S.flags.married&&S.age>=28&&!S.flags.kid,run:()=>ev('新生命','孩子出生了。凌晨餵奶的時候，你另一隻手還在做握力訓練。',
+    [{l:'減少練習，多陪家人',s:'鬥志↑↑ 體況↑',do(){S.flags.kid=1;fx({spi:5,hp:10});log('孩子出生');return '孩子第一次抓住你長繭的手指。';}},
+     {l:'請家人分擔，繼續練',s:'鬥志↑ 體況↓',do(){S.flags.kid=1;fx({spi:3,hp:-6});log('孩子出生');return '你答應自己，比完這一年就多陪他們。';}}])},
+  {id:'mountain',cond:()=>S.rank>=6&&S.age>=22,run:()=>ev('入山','你讀到創始人入山獨自修行的故事，心裡有個聲音一直在響。',
+    [{l:'入山一個月',s:'鬥志↑↑ 耐力↑ 體況↓',fx:{spi:6,sta:3,hp:-10},t:'山裡沒有對手，只有自己。下山時你的眼神變了。'},{l:'只是想想',s:'',fx:{},t:'你笑自己太浪漫。'}])},
+  {id:'uchi_hard',cond:()=>S.path==='uchi'||S.path==='twuchi',run:()=>ev('內弟子的日常','清晨五點起床掃除，白天稽古，晚上整理道場。昨晚又有一個人收拾行李離開了。',
+    [{l:'撐下去',s:'鬥志↑↑',fx:{spi:5,hp:-4},t:'你在日記上只寫了兩個字：押忍。'},{l:'打電話回家',s:'體況↑ 鬥志↑',fx:{hp:8,spi:2},t:'聽到家人的聲音，你在宿舍頂樓哭了一場。'}])},
+  {id:'uchi_lang',cond:()=>S.path==='uchi',run:()=>ev('語言的牆','日文還不流利，聽錯師範的指示，被罰正座一小時。',
+    [{l:'每晚苦讀日文',s:'技術↑',fx:{tec:2,hp:-2},t:'三個月後，你開始聽得懂學長的玩笑。'},{l:'用身體記住',s:'耐力↑',fx:{sta:2},t:'動作比語言先學會了。'}])},
+  {id:'rivalmsg',cond:()=>S.age>=19&&S.path!=='uchi'&&S.route!=='kata',run:()=>ev('宿敵的訊息',`${S.rivalDojo}的${esc(S.rival)}傳訊息給你：「全台見。這次不會讓你。」`,
+    [{l:'回「押忍」',s:'鬥志↑',fx:{spi:3},t:'你把那則訊息截圖設成桌布。'},{l:'已讀不回',s:'鬥志↑',fx:{spi:2},t:'用比賽回答就好。'}])}
+];
+EVENTS.push(
+  {id:'smear',rep:1,w:2,cond:()=>!!S.flags.uchiDone,run:()=>ev('外派系的抹黑','另一個流派在網路上發文，說台灣支部的審查是「花錢買段位」，留言越吵越兇。',
+    [{l:'整理審查紀錄，公開說明',s:'看名聲 · 本部評價可能上升',do(){if(r()<.45+S.fame/150){S.hq+=8;S.fame+=3;return '你把歷年審查影片和成績公開，風向整個反轉。';}S.hq-=2;return '說明文太長，沒多少人看完。';}},
+     {l:'邀請對方來道場交流',s:'以武會友 · 有風險',do(){if(r()<clamp((est('tec')+est('pow'))/180,.2,.85)){S.hq+=10;S.fame+=5;return '交流結束，對方主動鞠躬，刪掉了那篇文章。';}const n=injure(1);S.hq-=6;return `交流變成了衝突，你帶著${n}回家，事情還鬧上了新聞。`;}},
+     {l:'不回應',s:'本部評價 −4',do(){S.hq-=4;return '流言傳了好一陣子才慢慢平息。';}}])},
+  {id:'poach',rep:1,w:1,cond:()=>!!S.flags.uchiDone&&(!!S.dojo||!!S.flags.shibucho),run:()=>ev('挖角','外派系開出條件，想挖走支部的指導員和學員。',
+    [{l:'親自慰留、改善待遇',s:'花費 3 萬 · 本部評價 +5',do(){S.money-=3;S.hq+=5;return '大家都留下來了，還多了一份向心力。';}},
+     {l:'公開聲明支部的立場',s:'本部評價 +2 · 可能流失學員',do(){S.hq+=2;if(S.dojo&&r()<.5){S.dojo.students=Math.max(0,S.dojo.students-4);return '有幾個學員還是走了。';}return '聲明發出後，挖角的事不了了之。';}}])},
+  {id:'protest',rep:1,w:1,cond:()=>!!S.flags.hosted,run:()=>ev('會場抗議','你主辦的比賽中，外派系選手不服判定，帶人在會場鬧事。',
+    [{l:'依規則冷靜處理，請審判團說明',s:'本部評價 +6',do(){S.hq+=6;return '審判團重播影片說明判定，對方無話可說。';}},
+     {l:'當場和對方理論',s:'本部評價 −6',do(){S.hq-=6;S.fame-=2;return '爭吵的影片被傳上網，本部來電關切。';}}])}
+);
+EVENTS.push({id:'slumpev',rep:1,w:6,cond:()=>S.mood==='slump',run:()=>ev('低潮','最近怎麼練都不對勁，連基本動作都打不好。',
+  [{l:'去找師範談談',s:'可能走出低潮 · 鬥志↑',do(){fx({spi:2});if(r()<.7){S.mood='normal';return '師範只說了一句：「押忍就對了。」你突然覺得輕鬆了。';}return '談完之後還是有點悶。';}},
+   {l:'一個人去跑山',s:'耐力↑ · 看運氣',do(){grow('sta',2);if(r()<.5){S.mood='normal';return '跑到山頂的時候，你大喊了一聲。';}return '跑完更累了。';}},
+   {l:'放自己幾天假',s:'體況↑ · 走出低潮',do(){fx({hp:12});S.mood='normal';return '你睡了整整兩天，醒來時想念道場的味道。';}}])});
+EVENTS.push(
+  {id:'npc_s1',w:4,cond:()=>S.age<=18&&S.rank<=3,run:()=>ev(`師兄${S.npc.sen}`,`道場裡最照顧你的是茶帶的師兄${esc(S.npc.sen)}。今天下課後他留下來：「我教你用前腳控制距離。」`,
+    [{l:'留下來一起練',s:'技術↑ 速度↑',do(){fx({tec:2,spd:1});S.flags.senBond=1;return `你們練到道場熄燈。${esc(S.npc.sen)}說：「你會比我強。」`;}},{l:'謝謝師兄，今天先回家',s:'體況↑',fx:{hp:6},t:'師兄笑著揮揮手。'}])},
+  {id:'npc_s2',w:5,cond:()=>!!S.used.npc_s1&&S.age>=23&&S.rank>=6,run:()=>ev(`${S.npc.sen}的引退`,`師兄${esc(S.npc.sen)}要回老家接香腸店，決定引退。最後一堂課，他把自己那條磨白的黑帶遞給你。`,
+    [{l:'收下，和他打最後一場組手',s:'鬥志↑↑',do(){fx({spi:5});setMood('good','師兄的黑帶放在你的道着袋最裡面。');return '三分鐘打完，兩個人都在笑。';}},{l:'請他留下來當道場的助教',s:S.dojo?'自己的道場多一位助手':'師兄會常回來幫忙',do(){if(S.dojo){S.dojo.assist=true;S.dojo.mood=Math.min(100,S.dojo.mood+6);}fx({spi:2});return `${esc(S.npc.sen)}想了一個晚上，答應週末回來帶課。`;}}])},
+  {id:'npc_k1',w:4,cond:()=>S.age>=20&&S.age<=26&&S.rank>=5,run:()=>ev(`學弟${S.npc.koh}`,`剛升綠帶的學弟${esc(S.npc.koh)}一直盯著你練。他鼓起勇氣問：「學長，可以教我組手嗎？」`,
+    [{l:'每週撥兩個晚上帶他',s:'累積指導經驗 · 體況↓',do(){S.flags.kohTrained=1;S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;fx({tec:1,hp:-4});return '他學得很快，每次被踢倒都馬上站起來。';}},{l:'叫他先把基本練好',s:'鬥志↑',fx:{spi:1},t:'他點點頭，默默去踢沙包。'}])},
+  {id:'npc_k2',w:5,cond:()=>!!S.used.npc_k1&&S.age>=27,run:()=>ev(`${S.npc.koh}的全台冠軍`,`學弟${esc(S.npc.koh)}拿下了全台選手權冠軍。頒獎台上，他朝觀眾席的你鞠躬。`,
+    [{l:'走到場邊抱住他',s:S.flags.kohTrained?'名聲↑ 鬥志↑ · 狀態變好':'鬥志↑',do(){fx({spi:3});if(S.flags.kohTrained){S.fame+=3;setMood('good','看著自己帶出來的學弟奪冠，比自己拿冠軍還高興。');return '他在你耳邊說：「是學長教我的。」';}return '你突然覺得自己老了。';}},
+     {l:'回道場加練',s:'力量↑ 耐力↑',fx:{pow:1.5,sta:1.5},t:'被學弟追上了。你把沙包踢到天黑。'}])}
+);
+const famBusy=()=>S.flags.married&&(S.flags.instDone||!!S.dojo||S.path==='trainee');
+EVENTS.push(
+  {id:'famtime',rep:1,w:3,cond:famBusy,run:()=>ev('家裡的晚餐桌','這個月你每天晚上都在道場。伴侶把飯菜熱了第三次，說：「這個家你還記得嗎？」',
+    [{l:'把週末留給家人',s:'鬥志↑ 體況↑ · 這半年稽古效果打折',do(){S.flags.teachHalf=1;fx({spi:2,hp:6});S.flags.strain=Math.max(0,(S.flags.strain||0)-1);return '你們帶孩子去海邊，手機一整天沒開。';}},
+     {l:'道場的事放不下',s:'鬥志↓ · 家裡的氣氛變差',do(){fx({spi:-3});S.flags.strain=(S.flags.strain||0)+1;return '你回到家時，大家都睡了。';}}])},
+  {id:'kidsick',rep:1,w:2,cond:()=>S.flags.kid&&famBusy(),run:()=>ev('孩子發燒','孩子半夜高燒，剛好碰上道場的審查前特訓。',
+    [{l:'請假在醫院陪孩子',s:'體況↓ 鬥志↑ · 本季不出賽',do(){S.flags.skip=Math.max(S.flags.skip||0,1);fx({hp:-6,spi:2});return '你在急診室的椅子上睡了兩晚。';}},
+     {l:'拜託家人照顧，自己去道場',s:'鬥志↓ · 家裡的氣氛變差',do(){fx({spi:-2});S.flags.strain=(S.flags.strain||0)+1;return '整堂課你都在看手機。';}}])},
+  {id:'fammoney',rep:1,w:2,cond:()=>famBusy()&&S.money<8,run:()=>ev('家用不夠','房貸、保險、孩子的學費，指導員的收入有點撐不住。',
+    [{l:'多接成人班和私人課',s:'存款↑ 體況↓',fx:{money:4,hp:-8},t:'你一週上了九堂課，嗓子啞了。'},
+     {l:'拿存款出來補',s:'存款↓',fx:{money:-3},t:'你算了算，今年的海外講習只好先不去。'}])},
+  {id:'crisis',rep:1,w:4,cond:()=>S.flags.married&&(S.flags.strain||0)>=3,run:()=>ev('婚姻亮紅燈','伴侶說：「我嫁的是你，不是道場。」',
+    [{l:'向支部長請長假，好好陪家人',s:'鬥志↑ · 本部評價 −3 · 半年不出賽',do(){S.flags.strain=0;S.flags.skip=Math.max(S.flags.skip||0,2);S.hq=Math.max(0,(S.hq||0)-3);fx({spi:4,hp:10});return '那半年你每天接送孩子上下學，家裡又有了笑聲。';}},
+     {l:'請對方再體諒一下',s:'鬥志↓↓ · 可能分居',do(){if(r()<.5){S.flags.married=0;S.flags.partner=0;S.flags.separated=1;S.flags.strain=0;fx({spi:-8});log('與伴侶分居','bad');return '對方帶著孩子搬回娘家了。';}fx({spi:-4});return '對方沒有再說什麼，只是越來越少笑。';}}])}
+);
+const DEBT={id:'debt',run:()=>ev('存款見底','學費、生活費和報名費繳不出來了。負債太多時，壓力會讓稽古效果打折。',
+  [{l:'去永山香腸加班搬貨',s:'存款↑ 體況↓ 鬥志↓',fx:{money:10,hp:-12,spi:-2},t:'冷凍庫一箱一箱搬，連續三個月每天只睡五小時。'},{l:'向家人開口',s:'存款↑ 鬥志↓',fx:{money:8,spi:-3},t:'電話那頭沉默了一下，然後說「錢的事不用擔心」。'}])};
+function pickEvent(){
+  if(S.money<-6){S.flags.debtSeen=1;return DEBT;}
+  if(r()>.36)return null;
+  const pool=EVENTS.filter(e=>(e.rep||!S.used[e.id])&&e.cond());
+  if(!pool.length)return null;
+  let tot=pool.reduce((a,e)=>a+(e.w||2),0),x=r()*tot;
+  for(const e of pool){x-=e.w||2;if(x<=0)return e;}
+  return pool[pool.length-1];
+}
+function income(serving){const f=flow(serving);S.money+=f.total;S.lastFlow=f;}
+const STS={pow:'力',spd:'速',sta:'耐',tec:'技',con:'鍛',res:'抗',spi:'志'};
+const TICON={job:['工','var(--gold)'],kihon:['基','var(--teal)'],kumite:['組','var(--coral)'],taiso:['體','var(--sky)'],rest:['休','var(--green)'],rehab:['復','var(--green)'],yama:['山','var(--plum)']};
+function lvMul(id){return 1+cardLv(id)*.05;}
+function kataGainAmt(T){return 9*attrMul('coach')*(pk().kihon||1)*(S.route==='kata'?1.1:1)*(T.km||1);}
+function previewTrain(k){
+  const T=TX(k);const am=attrMul(T.attr)*(S.route==='kata'&&T.fam==='kihon'?1.15:1)*(pk()[T.fam]||1)*lvMul(k);const out=[];
+  for(const st in T.g){const cur=S.st[st],pot=S.pot[st];const room=Math.max(0,(pot-cur)/pot);
+    const g=T.g[st]*1.12*am*(st==='spi'?(.8+homeNow().mood/250):1)*.95*Math.pow(room,.5)*ageF()*S.mult*injG()*lifeG()*traitG()*(st==='spi'&&hasT('hot')?1.3:1)*(st==='pow'&&hasT('strong')?1.2:1)*(st==='spd'&&hasT('swift')?1.2:1)*(T.fam==='kumite'&&hasT('wimp')?.9:1)*(T.fam==='kihon'&&hasT('sleepy')?.88:1)*(['kshi','kboss','u_feng'].includes(k)&&hasT('stubborn')?.9:1);
+    if(g>=.3)out.push([STS[st],g]);}
+  out.sort((a,b)=>b[1]-a[1]);
+  const risk=T.inj?Math.min(95,Math.round(T.inj*.6*injMul()*(S.hp<40?1.8:1)*100)):0;
+  const hp=Math.round(T.hp*(T.hp>0?.8:.6));
+  let extra='';if(T.prep){const fk=focusKata(),m=km(fk);extra=`「${fk}」+${Math.max(1,Math.round(kataGainAmt(T)*(1-m/110)*injG()*lifeG()*2))}%`;}
+  return {g:out.slice(0,4).map(([n,v])=>`${n}+${v<1?v.toFixed(1):Math.round(v)}`),risk,hp,extra};
+}
+function annotateTrain(opts){
+  const rec=examRec();
+  opts.forEach(o=>{if(TX(o.id)){o.tile=1;o.pv=previewTrain(o.id);o.rec=false;}else o.chip=1;});
+  return opts;
+}
+function trainPrompt(){
+  const bits=[];
+  if(S.hp<40)bits.push(`<b>體況只剩 ${Math.round(S.hp)}</b>，硬練容易受傷`);
+  const up=TOURN.filter(T=>T.q===S.q&&tDivs(T).length);
+  if(up.length&&!S.flags.skip)bits.push(`近期比賽：${up.map(T=>T.short).join('、')}`);
+  const n=S.rank+1;if(n<=10){const I=examInfo(n);const left=Math.max(0,examGap(I)-(S.turn-S.lastPromo));if(!left)bits.push(I.abroad?(S.q===3?`這次可赴日報考<b>${RANKS[n]}</b>`:`<b>${RANKS[n]}</b>要在下半年到日本本部審查`):S.q===1||S.q===3?`這次可報考<b>${RANKS[n]}</b>`:`這半年稍後可報考<b>${RANKS[n]}</b>`);}
+  if(S.q===2&&!S.flags.twuchiDone&&!['twuchi','uchi'].includes(S.path)&&twReqs().every(x=>x.ok||x.n.startsWith('20')))bits.push('明年年初有<b>內弟子選拔</b>');
+  if(!S.flags.instDone&&S.age>=27)bits.push('<b>32 歲前需取得指導員資格</b>（初段＋助教／講習／指導員／開道場）');
+  return bits.join('・')||'從抽到的牌選一張。';
+}
+function attrMul(a){if(a==='none')return 1;return .86+homeNow()[a]/300;}
+
+function* life(){
+  const ks=['pow','spd','sta','tec','con'];let best=ks[0],worst=ks[0];
+  for(const k of ks){if(S.pot[k]>S.pot[best])best=k;if(S.pot[k]<S.pot[worst])worst=k;}
+  say(`十六歲，高中二年級的春天。你推開台灣支部・${S.home.n}的木門，脫鞋、鞠躬，第一次喊出「押忍」。`);
+  say(`師範看你打了幾下沙包，說你的<b>${STATN[best]}</b>是天生的，<b>${STATN[worst]}</b>得下苦功。`);
+  if(S.route!=='kata')say(`支部交流會上，${S.rivalDojo}一個同年的<b>${esc(S.rival)}</b>把你踢倒。你們從此較上了勁。`);
+  else say('你在交流會上看到黑帶前輩演武「觀空」，決定這輩子要把型練到極致。');
+  log(`入門${S.home.n}`);
+  while(true){
+    if(S.turn>0&&S.q===0){S.age++;S.year++;yearTick();
+      if(S.yrs){const y=S.yrs,b=[];if(S.rank>y.rank)b.push(`升上${RANKS[S.rank]}`);const nt=S.titles.slice(y.t).filter(t=>/優勝|就任|完遂/.test(t));if(nt.length)b.push(nt.map(t=>t.replace(/^\d+ /,'')).join('、'));const ni=(S.flags.injN||0)-y.inj;if(ni)b.push(`受傷 ${ni} 次`);const dm=Math.round(S.money-y.m);if(dm)b.push(`存款 ${dm>0?'+':'−'}${Math.abs(dm)} 萬`);
+        say(`<span class="lbl">${S.year-1} 年回顧</span>${b.length?b.join('・'):'平平淡淡地練了一整年。'}`);}
+      S.yrs={rank:S.rank,t:S.titles.length,inj:S.flags.injN||0,m:S.money};}
+    if(S.turn===0)S.yrs={rank:0,t:0,inj:0,m:S.money};
+    if(!S.flags.instDone&&instOk()){S.flags.instDone=1;S.mil=S.mil||{};S.mil.inst=S.age;say('<b class="gold">取得指導員資格。</b>從今天起，你可以站在學員前面了。可以報名台灣支部內弟子，也可以籌備自己的道場。');log('取得指導員資格','gold');if(S.path==='trainee'){S.path='inst';S.mult=1.1;say('見習結束，你正式成為支部的指導員，開始領指導員薪水。');}}
+    if(S.age>=32&&!S.flags.instDone){S.forcedEnd='member';say('三十二歲了，你還沒取得指導員資格。你決定不再追逐段位和頭銜，以一般學員的身分繼續來道場流汗。');log('以一般學員身分結束修行','bad');break;}
+    if(S.q===0&&S.turn>0)yield* appointChecks();
+    if(S.age>=42||hpMax()<=30){S.forced=true;say(S.age>=42?'四十二歲。身體終於跟不上意志了。':'醫生看著X光片搖頭：舊傷累積太多，不能再上場了。');log('被迫引退','bad');break;}
+    if(S.path==='uchi'&&S.turn>=(S.uchiTurn||0)+12&&!S.flags.hoko){
+      const c=yield P('內弟子卒寮・研修派遣','三年、一千多個日子的內弟子生活結束，你在卒寮式上領到結業證書。依照規定，結業後還要接受本部指派、為期一年的研修，才能回國。',[
+        {id:'hq',label:'留在日本本部當指導員助手',sub:'技術↑ 鬥志↑ · 本部評價 +6'},
+        {id:'abroad',label:'派到海外分部協助指導',sub:'名聲↑ 鬥志↑ · 本部評價 +8 · 體況↓'}]);
+      S.flags.hoko=c;const s0=snap();
+      if(c==='hq'){grow('tec',2);grow('spi',2);S.hq=(S.hq||0)+6;say(`你留在本部，每天帶一般部的稽古。 ${diff(s0)}`);}
+      else{S.fame+=4;grow('spi',3);bump('hp',-10);S.hq=(S.hq||0)+8;say(`本部派你到${pick(['波蘭','巴西','南非','澳洲','印度'])}的分部，你用破英文和手勢教了一年。 ${diff(s0)}`);}
+      log(c==='hq'?'結業後留本部研修一年':'結業後派往海外分部研修一年');
+    }
+    if(S.path==='uchi'&&S.turn>=(S.uchiTurn||0)+16){
+      S.path='inst';S.mult=1.1;S.qJ.kumite=S.qJ.kata=S.year;S.flags.seminars++;S.flags.uchiDone=1;S.hq=Math.max(S.hq||0,15);fx({fame:8,spi:5});
+      say(`一年的研修也結束了。師範拍拍你的肩膀：「回台灣去，把極真傳下去。」你回到${S.home.n}擔任指導員。`);log('日本內弟子結業，回台擔任指導員','gold');say('從此你可以參與「支部事務」，累積本部評價。');
+    }
+    if(S.path==='twuchi'&&S.turn>=(S.twuchiTurn||0)+12){
+      fx({fame:4,spi:3});S.flags.twuchiDone=1;log('台灣內弟子結業','gold');
+      const c=yield P('台灣內弟子結業','三年的台灣內弟子生活結束了。支部長說，如果你願意，他可以推薦你去日本本部當內弟子。',[
+        {id:'uchi',label:'赴日成為日本內弟子',sub:'住進本部宿舍三年（約一千日）＋一年研修 · 早上 6:30 起床、23:30 熄燈，前三個月沒有休假 · 成長大增 · 沒有收入 · 不能參加台灣賽事'},
+        {id:'inst',label:'留在台灣擔任指導員',sub:'免學費、有指導收入 · 稽古效率略升'},
+        {id:'job',label:'回到一般生活，下班後練習',sub:'有收入 · 稽古效率略低'}]);
+      S.path=c;S.mult=c==='uchi'?1.4:c==='inst'?1.1:.85;if(c==='uchi'){S.uchiStart=S.year;S.uchiTurn=S.turn;S.mil=S.mil||{};S.mil.uchi=S.age;}
+      log({uchi:'赴日成為日本內弟子',inst:'留台擔任指導員',job:'回到一般生活'}[c]);
+      if(c!=='uchi')yield* lifeSetup('結業了，要自己打理生活。');
+    }
+    if(S.age===18&&S.q===2&&S.path==='school'){
+      const okT=S.rank>=2;
+      const c=yield P('十八歲的岔路','高中畢業了。接下來的人生，你要怎麼跟空手道一起走？之後的生活費要自己付。<br>只有<b>指導員</b>才能報名台灣支部內弟子、開設自己的道場。',[
+        {id:'trainee',label:'留在支部當見習指導員',sub:okT?'見習津貼每季 2 萬 · 稽古效率 ×1.05 · 每年累積指導資歷 · 升上初段就直接成為指導員 · 20 歲服兵役':'需要藍帶以上',disabled:!okT},
+        {id:'uni',label:'讀大學，繼續在道場練',sub:'四年 · 學費＋學雜費 · 稽古效率 ×1 · 兵役延到畢業 · 每年有大專盃 · 可接家教 · 畢業後找工作薪水較高'},
+        {id:'job',label:'就業，下班後練習',sub:`薪水每季約 ${(3.4).toFixed(1)} 萬，年資越久越高 · 稽古效率 ×0.85 · 20 歲服兵役 · 最快存到開道場的錢`}]);
+      S.path=c;S.mult=c==='trainee'?1.05:c==='job'?.85:1;if(c==='job')S.flags.jobStart=S.year;if(c==='uni')S.flags.uniStart=S.year;
+      log({trainee:'留在支部當見習指導員',uni:'上大學，繼續在道場練',job:'就業，下班後練習'}[c]);
+      yield* lifeSetup('從現在起，生活費要自己出了。');
+    }
+    if(S.path==='uni'&&S.q===2&&S.year>=(S.flags.uniStart||S.year)+4){
+      S.flags.degree=1;log('大學畢業');
+      const c=yield P('大學畢業','四年過去，你拿到了畢業證書。兵役通知也快寄來了。接下來呢？',[
+        {id:'job',label:'進公司上班',sub:`大學畢業薪水較高，每季約 ${(4.5).toFixed(1)} 萬起 · 稽古效率 ×0.85`},
+        {id:'trainee',label:S.flags.instDone?'回道場當指導員':'回道場當見習指導員',sub:S.flags.instDone?'指導員薪水 · 稽古效率 ×1.1 · 可以報名內弟子':'見習津貼 · 稽古效率 ×1.05 · 升上初段就成為指導員'}]);
+      if(c==='job'){S.path='job';S.mult=.85;S.flags.jobStart=S.year;}
+      else if(S.flags.instDone){S.path='inst';S.mult=1.1;}else{S.path='trainee';S.mult=1.05;}
+      log({job:'大學畢業，進公司上班',trainee:'大學畢業，回道場'}[c]);
+      yield* lifeSetup('畢業了，生活要自己打理。');
+    }
+    if(S.path==='uni'&&S.q===1&&!badlyHurt())yield* uniCup();
+    if(S.q===0&&S.turn>0&&!S.flags.twuchiDone&&!['twuchi','uchi'].includes(S.path)&&S.serviceLeft<=0&&twReqs().every(x=>x.ok)){
+      const es=twSel();const pr=es.all;
+      const c=yield P('台灣支部內弟子選拔',`支部長每年年初從指導員裡挑選內弟子，一生最多報名 3 次（已報名 ${S.flags.twTries||0} 次）。四項都要過關。${examHTMLRows(es)}<br>入選後住進支部三年，結業後才有機會被推薦去日本本部。`,[
+        {id:'go',label:'報名支部長審查',sub:`審查費 0.5 萬 · 通過機率約 ${Math.round(pr*100)}%`},
+        {id:'no',label:'今年先不報名',sub:'明年年初還有機會（28 歲以前）'}]);
+      if(c==='go'){S.money-=.5;S.flags.twTries=(S.flags.twTries||0)+1;
+        say(`<span class="tname">支部長審查</span>`);let ok=true;
+        for(const p of es.parts){const pass=r()<p.pr;if(!pass)ok=false;say(`<div class="exrow ${pass?'w':'l'}"><span class="rd">${p.n}</span><span class="op">${Math.round(p.sc)} / ${p.need}</span><span class="res">${pass?'合格':'不合格'}</span></div>`);}
+        if(ok){S.path='twuchi';S.mult=1.25;S.twuchiStart=S.year;S.twuchiTurn=S.turn;S.mil=S.mil||{};S.mil.twuchi=S.age;log('通過支部長審查，成為台灣支部內弟子','gold');say('<b class="gold">通過支部長審查。</b>你把行李搬進支部的宿舍，成為台灣支部內弟子。');}
+        else{fx({spi:2});say(`<span class="bad">支部長審查沒有通過。</span>${S.flags.twTries>=3?'這是最後一次機會了。':'支部長說：「明年再來。」'}`);log('內弟子選拔未通過','bad');}}
+    }
+    if(['job','inst','trainee'].includes(S.path)&&S.age>=20&&!S.flags.service&&S.q===0){
+      S.flags.service=1;S.serviceLeft=4;say('兵役通知寄到了。接下來一年，你要在營區度過。');log('入伍服役');
+    }
+    const serving=S.serviceLeft>0;const s0=snap();let c,label;
+    if(serving){
+      c=yield P('營區生活',`義務役的第 ${5-S.serviceLeft} 季。晚上熄燈前有一點自己的時間。`,[
+        {id:'self',rec:S.hp>=60,label:'利用晚上自主訓練',sub:'耐力↑ 力量↑'},{id:'rest',rec:S.hp<60,label:'好好休養舊傷',sub:'體況大幅回復'}]);
+      if(c==='self'){const m=S.mult;S.mult=.6;grow('sta',4);grow('pow',2.5);S.mult=m;label='營區自主訓練';}
+      else{bump('hp',25);bump('wear',-1);label='營區休養';}
+      S.serviceLeft--;
+    }else{
+      const trainOpts=()=>{
+        const opts=[];
+        if(!badlyHurt()&&S.hand)for(const id of S.hand)opts.push({id,label:cardName(id),sub:CARDS[id].s});
+        opts.push({id:'rest',label:TRAIN.rest.n,sub:TRAIN.rest.s});
+        if(S.injury)opts.push({id:'rehab',label:TRAIN.rehab.n,sub:TRAIN.rehab.s});
+        if(!badlyHurt()&&rerollLeft()>0)opts.push({id:'reroll',label:`換牌（今年還剩 ${rerollLeft()} 次・鬥志 −2）`,sub:''});
+        if(!badlyHurt()&&S.rank>=6&&!S.flags.teach&&S.path!=='uchi')opts.push({id:'assist',label:'申請少年部助教',sub:S.flags.instDone?'每季 +1.5 萬 · 累積指導資歷':'取得指導員資格 · 每季 +1.5 萬 · 累積指導資歷',big:1,icon:'助'});
+        if(!badlyHurt()&&!S.dojo&&S.flags.instDone&&S.age>=24&&S.path!=='uchi'&&S.path!=='twuchi'&&S.flags.openTry!==S.year){const rq=dojoReqs();const miss=rq.filter(x=>!x.ok);opts.push({id:'open',label:'申請開設道場',sub:miss.length?`還差：${miss.map(x=>x.n).join('、')}`:'需支部長審核 · 一年一次 · 以台灣支部名義開設',big:1,icon:'館',disabled:miss.length>0});}
+        if(S.age>=27)opts.push({id:'retire',label:'宣布引退',sub:'',danger:true});
+        if(!EZ())opts.push({id:'kfocus',label:`主練型：${focusKata()}`,sub:''});
+
+        return opts;
+      };
+      let auto=false;
+      if(S.q%2===1&&S.lastTrain){
+        const want=S.lastTrain;const c0=CARDS[want];
+        const ok=!!TX(want)&&(!c0||!c0.cond||c0.cond())&&(want!=='rehab'||!!S.injury);
+        if(ok&&S.hp>=35&&!badlyHurt()){c=want;auto=true;}
+        else{const alt=S.injury&&badlyHurt()?'rehab':'rest';c=alt;auto=true;say(`<span class="bad">${S.hp<35?'體況太低':'受傷'}，這一季改成「${TRAIN[alt].n}」。</span>`);}
+      }
+      if(!auto){
+        if(!badlyHurt()&&!S.hand)S.hand=drawHand();
+        while(true){const opts=trainOpts();annotateTrain(opts);
+          c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
+          if(c==='life'){yield* lifeSetup();continue;}
+          if(c==='kfocus'){const ex=EXK[Math.min(10,S.rank+1)];const kf=yield P('主練的型','練「基本・型」系列的牌時，主練的型修煉度漲最多，其他型只會小幅提升。型比賽和審查都看修煉度。',unlockedKata().map(x=>({id:x.n,label:`「${x.n}」 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)}${x.n===ex?' · 下一次審查要考':''}`})));S.kfocus=kf;continue;}
+          if(c==='reroll'){const f=S.flags.rr||{};S.flags.rr={y:S.year,n:(f.y===S.year?f.n:0)+1};bump('spi',-2);S.hand=drawHand();say('你向師範要求換一套練法。');continue;}
+          break;}
+        S.hand=null;
+      }
+      if(!auto&&TX(c))S.lastTrain=c;
+      if(!auto&&!TX(c))S.lastTrain=null;
+      if(c==='retire'){log('宣布引退');say('你向支部長深深一鞠躬，說出了「引退」兩個字。');break;}
+      if(c==='open'){const ok=yield* openDojo();label=ok?'籌備道場':'籌備落空';}
+      else if(c==='assist'){S.flags.teach=1;grow('tec',1.5);grow('spi',1.5);label='擔任少年部助教';log('擔任少年部助教');}
+      else{
+        const T=TX(c);label=T.n+(T.card?` Lv${cardLv(c)+1}`:'')+(auto?'（半年稽古的後半）':'');
+        let am=attrMul(T.attr)*(S.flags.teachHalf?.85:1)*(S.route==='kata'&&T.fam==='kihon'?1.15:1)*(pk()[T.fam]||1)*lvMul(c);
+        if(['kihon','kumite','taiso'].includes(T.fam)){const sp0=specInfo().key;S.trc=S.trc||{};S.trc[T.fam]=(S.trc[T.fam]||0)+1;const sp1=specInfo();if(sp1.key!==sp0&&sp1.key!=='none'){say(`<span class="tg crit">稽古傾向</span>你成為了<b>${sp1.n}</b>（${sp1.d}）`);log(`成為${sp1.n}`);}}
+        if(T.card){S.clv=S.clv||{};const l0=cardLv(c);S.clv[c]=(S.clv[c]||0)+1;const l1=cardLv(c);if(l1>l0)say(`<span class="tg crit">卡牌升級</span>「${T.n}」升到 <b>Lv${l1+1}</b>，效果 +${l1*5}%`);}
+        if(T.pay)S.money+=T.pay;
+        if(CARDS[c]&&CARDS[c].kids){S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;S.fame+=.5;}
+        if(T.fam==='kumite'&&hasT('wimp'))am*=.9;if(T.fam==='kihon'&&hasT('sleepy'))am*=.88;if(['kshi','kboss','u_feng'].includes(c)&&hasT('stubborn'))am*=.9;if(hasT('hard')&&T.hp<0)bump('hp',-2);
+        for(const k in T.g)grow(k,T.g[k]*1.12*am*(k==='spi'?(.8+homeNow().mood/250):1));
+        bump('hp',T.hp*(T.hp>0?.8:.6));if(T.wear)bump('wear',T.wear);if(T.cost)S.money-=T.cost;
+        if(T.prep){S.flags.kataPrep=1;const fk=focusKata();kmGain(fk,kataGainAmt(T));unlockedKata().forEach(x=>{if(x.n!==fk)kmGain(x.n,1.2);});}
+        if(S.path==='uchi')bump('hp',-5);
+        if(T.heal)S.flags.healed=T.heal;
+        if(T.card||TRAIN[c])S.flags.trainN=(S.flags.trainN||0)+1;if(c==='rest'||c==='rehab')S.flags.restN=(S.flags.restN||0)+1;if(c==='syama'||c==='yama')S.flags.yamaN=(S.flags.yamaN||0)+1;
+        if(r()<T.inj*.6*injMul()*(S.hp<40?1.8:1)){const n=injure(1);say(`<span class="bad">稽古中受傷：${n}</span>`);}
+      }
+      S.flags.teachHalf=0;
+      const J=jobNow();if(J.pay){bump('hp',J.hp);if(J.stat)for(const k in J.stat)grow(k,J.stat[k]);}
+    }
+    if(S.injury&&S.injury.sev>=2&&!S.injury.fresh){for(const k of ['spd','sta'])S.st[k]=Math.max(5,S.st[k]-(S.injury.sev-1)*.6);}
+    if(S.q===0&&S.age>=28){const lost=[];const dec=(k,v)=>{const d=Math.min(S.st[k]-5,v*(.8+r()*.4));if(d>0){S.st[k]-=d;lost.push(`${STATN[k]}−${Math.max(1,Math.round(d))}`);}};
+      dec('spd',(S.age-27)*.35);if(S.age>=30)dec('sta',(S.age-29)*.4);if(S.age>=33)dec('pow',(S.age-32)*.35);if(S.age>=35)dec('con',(S.age-34)*.3);
+      if(lost.length)say(`<span class="bad">${S.age} 歲，身體開始走下坡：${lost.join(' ')}</span>`);}
+    S.hp=Math.min(hpMax(),S.hp+7+nutriNow().hp+(hasT('lazy')?3:0)+(hasT('sleepy')?2:0));
+    if(c==='rest'&&['slump','irr'].includes(S.mood)){S.mood='normal';say('好好休息了一陣子，心情也平復了。');}
+    else if(S.mood&&S.mood!=='normal'&&r()<(S.mood==='slump'?.3:S.mood==='smug'?.25:.4)*(hasT('moody')?.6:1)){const was=MOODS[S.mood].n;S.mood='normal';say(`<span class="tg">${was}</span>過去了，狀態回到平常。`);}
+    if(S.injury){if(S.injury.fresh)S.injury.fresh=0;else{S.injury.left-=(S.flags.healed||1);if(S.injury.left<=0){say(`<span class="good">${S.injury.n}痊癒了。</span>`);log(`${S.injury.n}痊癒`);S.injury=null;}}}
+    S.flags.healed=0;
+    income(serving);
+    say(`<span class="lbl">${label}</span>${diff(s0)}`);
+    if(serving&&S.serviceLeft===0){say('退伍了。你在營區門口回頭看了一眼，然後直奔道場。');log('退伍');}
+
+    if(S.dojo&&c!=='open'&&S.q%2===0)yield* manage(false);
+    if(!serving&&S.flags.uchiDone&&S.rank>=6&&S.q%2===1&&!badlyHurt())yield* branchAffairs();
+
+    const e=pickEvent();
+    if(e){S.used[e.id]=1;yield* e.run();}
+
+    if(!serving){
+      if(S.flags.skip>0){if(TOURN.some(T=>T.q===S.q&&tDivs(T).length))say('術後休養中，這一季不出賽。');S.flags.skip--;}
+      else{
+        let held=null;
+        for(const T of TOURN){if(T.q===S.q){const did=yield* tourney(T);if(did)held=T;}}
+        if(held&&held.id!=='local')yield* seminar(held);
+      }
+      yield* examPhase();
+      if(!badlyHurt()&&S.route!=='kata'&&S.q===3&&S.rank>=7&&S.age>=23&&S.age<=34&&!S.flags.hyaku&&S.st.sta>=72&&S.st.spi>=72&&S.flags.hyakuOff!==S.year){S.flags.hyakuOff=S.year;yield* hyaku();}
+    }
+    traitCheck();
+    S.q=(S.q+1)%4;S.turn++;
+  }
+  if(S.forcedEnd==='member'){S.ending='member';yield P('END','',[],'end');return;}
+  const opts=[];
+  if(S.dojo)opts.push({id:'dojo',rec:true,label:'全心經營自己的道場',sub:`${S.dojo.name} · 學員 ${S.dojo.students} 人`});
+  else if(S.flags.instDone)opts.push({id:'dojo',label:'開設自己的道場',sub:'把極真傳給下一代'});
+  if(S.flags.instDone&&!S.dojo)opts.push({id:'staff',label:'繼續擔任支部指導員',sub:'不再出賽，專心指導學員和支部事務'+(S.flags.uchiDone&&!S.flags.shibucho?' · 仍有機會成為支部長':'')});
+  opts.push({id:'judge',label:'成為審判員',sub:(S.flags.judge?'你已經有審判資歷 · ':'')+'回到賽場邊，看著後輩'});
+  opts.push({id:'life',label:'收起道着',sub:'回歸平凡的生活'});
+  let c=yield P('引退之後',`${S.age} 歲。最後一次稽古結束，你把道着摺好放進袋子。接下來呢？`,opts);
+  if(c==='dojo'){
+    let ok=!!S.dojo;
+    if(!ok)ok=yield* openDojo();
+    if(ok){const res=yield* ownerMode();if(res==='closed')c='closed';}else c=S.flags.instDone?'staff':'life';
+  }
+  if(c==='staff')yield* staffMode();
+  S.ending=c;log({dojo:'以道場主身分退休',judge:'成為審判員',life:'回歸平凡生活',closed:'道場結束營業',staff:'以指導員身分退休'}[c]);
+  yield P('END','',[],'end');
+}
+function epithet(){
+  const c=S.champ;
+  if(c.world_kumite&&c.world_kata)return '型與組手的世界王者';
+  if(c.world_kumite)return '世界王者';if(c.world_kata)return '型的世界王者';
+  if(S.flags.shibucho)return '台灣支部長';
+  if(S.flags.shihandai&&!c.jp_kumite&&!c.jp_kata&&!S.flags.hyaku)return '台灣支部師範代';
+  if(S.flags.hyaku)return '百人組手達成者';
+  if(c.jp_kumite&&c.jp_kata)return '全日本雙冠王';
+  if(c.jp_kumite)return '全日本王者';if(c.jp_kata)return '全日本型王者';
+  if(S.dojo&&(S.dojo.champs>=3||S.dojo.blacks>=12))return '名門道場主';
+  if(c.jpw_kumite)return '全日本體重別王者';
+  if(S.twc.kata&&S.twc.kumite)return '全台雙修王者';
+  if(S.twc.kumite>=3)return '全台組手三冠王';if(S.twc.kata>=3)return '全台型三冠王';
+  if(S.twc.kumite)return '全台組手王者';if(S.twc.kata)return '全台型王者';
+  if(S.dojo)return '道場主';if(S.ending==='member')return '一般學員';if(S.rank>=6)return '黑帶拳士';return '永不放棄的修行者';
+}
+const ENDTXT={
+  dojo:'道場的招牌已經有點褪色。每天傍晚，孩子們的「押忍」還是從窗戶傳出來。',
+  judge:'你拿著紅白旗站在場邊。看到年輕選手的下段踢，就會想起自己十六歲的那天。',
+  life:'道着收在衣櫃深處。偶爾在公園看到有人練踢腿，你會停下來看很久。',
+  staff:'你一直站在道場前面，直到學員比你還高。每年審查，你還是坐在審查席的中間。',
+  member:'你沒有成為指導員，但每週三次，你還是準時出現在道場，對著鏡子打完一千次正拳。',
+  closed:'道場的鐵門拉下那天，你一個人把沙包一個個拆下來。幾年後，你又在社區活動中心教起了小朋友。'
+};
+
+/* ===== pixel sprites: drawn as layered shapes, each layer auto-outlined ===== */
+function shade(hex,f){const n=parseInt(hex.slice(1),16);const c=[n>>16,(n>>8)&255,n&255].map(v=>Math.max(0,Math.min(255,Math.round(v*f))));return '#'+c.map(v=>v.toString(16).padStart(2,'0')).join('');}
+const SPR_CACHE={};
+function buildSprite(view,belt,hair){
+  const key=view+belt+hair;if(SPR_CACHE[key])return SPR_CACHE[key];
+  const W=32,Ht=40;const out=Array.from({length:Ht},()=>Array(W).fill(null));
+  const SK='#f7cda1',SKS='#dd9f74',GI='#ffffff',GIS='#cfd6ea',OL='#26223b',HC=hair,HH=shade(hair,1.8),BD=shade(belt,.68);
+  function layer(draw){
+    const L=Array.from({length:Ht},()=>Array(W).fill(null));
+    const px=(x,y,c)=>{x=Math.round(x);y=Math.round(y);if(x>=0&&x<W&&y>=0&&y<Ht)L[y][x]=c;};
+    const rect=(x0,y0,x1,y1,c)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)px(x,y,c);};
+    const poly=(pts,c)=>{const ys=pts.map(p=>p[1]),xs=pts.map(p=>p[0]);for(let y=Math.floor(Math.min(...ys));y<=Math.ceil(Math.max(...ys));y++)for(let x=Math.floor(Math.min(...xs));x<=Math.ceil(Math.max(...xs));x++){const X=x+.5,Y=y+.5;let ins=false;for(let i=0,j=pts.length-1;i<pts.length;j=i++){const[xi,yi]=pts[i],[xj,yj]=pts[j];if((yi>Y)!==(yj>Y)&&X<(xj-xi)*(Y-yi)/(yj-yi)+xi)ins=!ins;}if(ins)px(x,y,c);}};
+    const line=(x0,y0,x1,y1,w,c)=>{const n=Math.ceil(Math.hypot(x1-x0,y1-y0)*2)+1;for(let i=0;i<=n;i++){const t=i/n,cx=x0+(x1-x0)*t,cy=y0+(y1-y0)*t;const h=(w-1)/2;rect(Math.round(cx-h),Math.round(cy-h),Math.round(cx-h)+w-1,Math.round(cy-h)+w-1,c);}};
+    const set=(x,y,c)=>{if(L[y]&&L[y][x])L[y][x]=c;};
+    draw({px,rect,poly,line,set});
+    for(let y=0;y<Ht;y++)for(let x=0;x<W;x++){if(L[y][x])continue;if((L[y-1]&&L[y-1][x])||(L[y+1]&&L[y+1][x])||L[y][x-1]||L[y][x+1])out[y][x]=OL;}
+    for(let y=0;y<Ht;y++)for(let x=0;x<W;x++)if(L[y][x])out[y][x]=L[y][x];
+  }
+  const front=view==='front';
+  // legs
+  layer(g=>{
+    g.poly([[8.5,28],[15.6,28],[15.6,30.5],[10.5,36.6],[3.5,36.6]],GI);
+    g.poly([[16.4,28],[23.5,28],[28.5,36.6],[21.5,36.6],[16.4,30.5]],GI);
+    g.line(15,30,11,35,1,GIS);g.line(17,30,21,35,1,GIS);
+    g.rect(2,37,9,38,SK);g.rect(22,37,29,38,SK);g.rect(2,38,9,38,SKS);g.rect(22,38,29,38,SKS);
+  });
+  // torso
+  layer(g=>{
+    g.poly([[9,16],[23,16],[24,28.6],[8,28.6]],GI);
+    g.rect(21,17,23,27,GIS);
+    if(front){g.poly([[13.5,16],[18.5,16],[16,20.5]],SK);g.line(13,16,16,23,1,GIS);g.line(19,16,16.5,22,1,GIS);}
+    else{g.line(16,17,16,26,1,GIS);}
+    g.rect(14,15,17,15,SKS);
+  });
+  // belt
+  layer(g=>{
+    g.rect(8,26,23,28,belt);g.rect(8,28,23,28,BD);
+    if(front){g.rect(14,26,17,29,BD);g.line(14.5,30,12.5,33.5,2,belt);g.line(17,30,19.5,34,2,belt);}
+  });
+  // head
+  layer(g=>{
+    g.rect(11,4,20,15,SK);g.rect(10,6,21,13,SK);
+    g.rect(11,2,20,4,HC);g.rect(10,3,21,6,HC);g.rect(9,5,10,10,HC);g.rect(21,5,22,10,HC);
+    if(front){
+      [11,12,13,15,16,18,19,20].forEach(x=>g.px(x,7,HC));[12,19].forEach(x=>g.px(x,8,HC));
+      g.rect(13,3,16,3,HH);g.px(12,4,HH);
+      g.rect(13,10,13,11,OL);g.rect(18,10,18,11,OL);g.px(12,9,HC);g.px(19,9,HC);
+      g.rect(15,13,16,13,'#b8665b');g.px(11,12,SKS);g.px(20,12,SKS);g.rect(10,13,10,13,SKS);
+    }else{
+      g.rect(10,6,21,12,HC);g.rect(11,13,20,13,HC);g.rect(12,3,15,4,HH);g.px(9,10,SK);g.px(22,10,SK);g.rect(13,14,18,14,SKS);
+    }
+  });
+  // arms (rear first, then lead)
+  const fistA=front?[[9,22.5],[6,21],[10.5,15.5]]:[[22,22.5],[25,21],[21,15.5]];
+  const fistB=front?[[22.5,17.5],[26.5,21],[24,13]]:[[9.5,17.5],[5.5,21],[8,13]];
+  layer(g=>{const[s,e,f]=fistA;g.line(front?9:22,17.5,e[0],e[1],3,GI);g.line(e[0],e[1],f[0],f[1],3,GI);g.rect(Math.round(f[0])-1,Math.round(f[1])-2,Math.round(f[0])+2,Math.round(f[1]),SK);g.px(Math.round(f[0])+2,Math.round(f[1]),SKS);});
+  layer(g=>{const[s,e,f]=fistB;g.line(s[0],s[1],e[0],e[1],3,GI);g.line(e[0],e[1],f[0],f[1],3,GI);g.rect(Math.round(f[0])-2,Math.round(f[1])-2,Math.round(f[0])+1,Math.round(f[1]),SK);g.px(Math.round(f[0])-2,Math.round(f[1]),SKS);});
+  SPR_CACHE[key]=out;return out;
+}
+function drawSprite(cv,view,belt,hair){
+  const m=buildSprite(view,belt,hair||'#3a3550');const W=m[0].length,Ht=m.length;
+  cv.width=W;cv.height=Ht;const x=cv.getContext('2d');x.clearRect(0,0,W,Ht);
+  for(let y=0;y<Ht;y++)for(let xx=0;xx<W;xx++){const c=m[y][xx];if(c){x.fillStyle=c;x.fillRect(xx,y,1,1);}}
+}
+
+/* ===== UI ===== */
+let G=null;
+const KEY='kyokushin-life-v31';
+const $=s=>document.querySelector(s);
+function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
+function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
+function clearSave(){try{localStorage.removeItem(KEY);}catch(e){}}
+function startGame(setup,choices){
+  newState(setup);const gen=life();let res=gen.next();
+  const done=[];
+  for(const ch of (choices||[])){if(res.done||res.value.kind==='end')break;if(String(ch).startsWith('alloc:')){applyAlloc(ch.slice(6));done.push(ch);continue;}if(ch==='cmd:stopauto'){S.auto=null;S.autoPref=false;done.push(ch);continue;}res=gen.next(ch);done.push(ch);}
+  G={setup,choices:done,gen,prompt:res.value};save();render();
+}
+let AC=null;
+function sndOn(){try{return localStorage.getItem('kl-snd')==='1';}catch(e){return false;}}
+function beep(seq){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime+.01;for(const [f,d] of seq){const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d;}}catch(e){}}
+function sfx(){const p=G&&G.prompt;if(!p)return;const L=(p.lines||[]).join('');
+  if(p.kind==='end')beep([[392,.12],[523,.12],[659,.12],[784,.3]]);
+  else if(/class="gold"|優勝|合格，晉升/.test(L))beep([[523,.09],[659,.09],[784,.09],[1047,.22]]);
+  else if(/一本！|合技一本/.test(L))beep([[196,.08],[147,.18]]);
+  else if(/技有/.test(L))beep([[330,.06],[247,.1]]);
+  else beep([[880,.025]]);}
+function choose(id){
+  if(String(id).startsWith('alloc:')){if(applyAlloc(id.slice(6))){G.choices.push(id);save();render();}return;}
+  if(id==='cmd:stopauto'){if(S.auto){S.auto=null;S.autoPref=false;G.choices.push(id);save();render();}return;}
+  const wasBattle=G.prompt.kind==='battle';
+  G.choices.push(id);const res=G.gen.next(id);G.prompt=res.value;save();render();sfx();
+  if(!(wasBattle&&G.prompt.kind==='battle'))window.scrollTo({top:0,behavior:'smooth'});
+}
+const PILL_BG=['#f6f4ee','#ef8a4a','#3f6fd8','#f2c24f','#45a85c','#7a4a2a','#26223b','#26223b','#26223b','#26223b','#26223b'];
+const PILL_FG=['#26223b','#26223b','#ffffff','#26223b','#ffffff','#ffffff','#f2c24f','#f2c24f','#f2c24f','#f2c24f','#f2c24f'];
+const SPR_BELT=['#eeeae0','#ef8a4a','#3f6fd8','#f2c24f','#45a85c','#7a4a2a','#2c2840','#2c2840','#2c2840','#2c2840','#2c2840'];
+function beltPill(rk){return `<span class="beltpill" style="--belt:${PILL_BG[rk]};--bfg:${PILL_FG[rk]}">${rk>=6?RANKS[rk]:`${RANKS[rk]}・${KYU[rk]}`}${rk>=6?'<i></i>'.repeat(rk-5):''}</span>`;}
+const hpCls=f=>{const p=f.hp/f.maxHp;return p>.5?'g':p>.2?'y':'r';};
+function optsHTML(opts){return opts.map(o=>`<button type="button" class="opt${o.danger?' danger':''}${o.wide?' wide':''}${o.rec&&!o.disabled?' isrec':''}" data-id="${o.id}"${o.disabled?' disabled':''}><span class="l">${o.label}${o.rec&&!o.disabled?'<em class="rtag">建議</em>':''}</span>${o.sub?`<span class="s">${o.sub}</span>`:''}</button>`).join('');}
+function pipsHTML(i){if(!i||!i.limit)return '';const ext=i.phase==='延長戰';const n=ext?3:5,cur=ext?i.turn-5:i.turn;return `<span class="pips"><em>${i.phase}</em>${Array.from({length:n},(_,k)=>`<i class="${k<cur-1?'on':k===cur-1?'now':''}"></i>`).join('')}</span>`;}
+function renderBattle(p){
+  const m=p.me,f=p.foe;
+  const card=$('#card');
+  card.className='battle';
+  card.innerHTML=`
+  <div class="scene">
+    <div class="win w1"></div>
+    <div class="banner">押忍</div>
+    <div class="plat foe"></div><div class="plat me"></div>
+    <canvas class="spr foe${f.flash?' hit':''}" id="sprFoe"></canvas>
+    <canvas class="spr me${m.flash?' hit':''}" id="sprMe"></canvas>
+    <div class="hud foe">
+      <div class="nm"><span>${esc(f.name)}</span><span class="waza">${'★'.repeat(f.waza)}</span></div>
+      <div class="ty">${esc(f.sub)}・<b>${TYPEN[f.type]}</b>・${RANKS[f.belt]||''}</div>
+      <div class="row">HP<div class="bar sm ${hpCls(f)}"><i style="width:${f.hp/f.maxHp*100}%"></i></div></div>
+      <div class="num">${Math.round(f.hp/f.maxHp*100)}%</div>
+    </div>
+    <div class="hud me">
+      <div class="nm"><span>${esc(m.name)}</span><span class="waza">${'★'.repeat(m.waza)}</span></div>
+      <div class="row">HP<div class="bar sm ${hpCls(m)}"><i style="width:${m.hp/m.maxHp*100}%"></i></div></div>
+      <div class="num">${m.hp}/${m.maxHp}</div>
+      <div class="row">KI<div class="ki">${Array.from({length:m.kiMax},(_,i)=>`<i class="${i<m.ki?'on':''}"></i>`).join('')}</div></div>
+    </div>
+  </div>
+  <div class="tbox"><div class="ph"><span>${esc(p.title)}</span>${pipsHTML(p.info)}</div>${p.lines.join('')}</div>
+  <div class="moves">${optsHTML(p.opts)}</div>
+  <p class="bhelp">★ 技有：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每回合回 1 格</p>`;
+  drawSprite($('#sprFoe'),'front',SPR_BELT[f.belt]||'#2c2840',f.hair);
+  drawSprite($('#sprMe'),'back',SPR_BELT[m.belt],m.hair);
+  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{if(!b.disabled)choose(b.dataset.id);}));
+}
+function attrsHTML(h){return `<div class="attrs">${Object.keys(ATTRN).map(k=>`<div class="attr">${ATTRN[k]}<b>${Math.round(h[k])}</b><div class="bar sm t"><i style="width:${h[k]}%"></i></div></div>`).join('')}</div>`;}
+function reqsHTML(){
+  const show=S.rank>=3&&S.path!=='uchi'&&S.age>=16;
+  const row=(t,l)=>`<div class="reqs"><span class="req" style="box-shadow:none;background:none;padding-left:0;color:var(--ink);font-weight:700">${t}</span>${l.map(x=>`<span class="req${x.ok?' ok':''}">${x.ok?'✓':'·'} ${x.n}</span>`).join('')}</div>`;
+  let h='';
+  if(S.age>=18&&!S.flags.twuchiDone&&!['twuchi','uchi'].includes(S.path)&&(S.flags.twTries||0)<3&&S.age<=28)h+=row('台灣內弟子選拔（每年年初）',twReqs());
+  if(!S.dojo&&!S.flags.closedDojo&&S.age>=18)h+=row('開設道場（支部長審核）',dojoReqs());
+  if(!S.flags.shibucho&&S.age>=22)h+=row('台灣支部長',shibuchoReqs());
+  if(!show)return h;
+  return h+divs().map(d=>`<div class="reqs"><span class="req" style="box-shadow:none;background:none;padding-left:0;color:var(--ink);font-weight:700">全日本${DIVN[d]}資格</span>${jpReqs(d).map(x=>`<span class="req${x.ok?' ok':''}">${x.ok?'✓':'·'} ${x.n}</span>`).join('')}</div>`).join('');
+}
+let TABDATA={},curTab=null;
+function renderTab(){
+  document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.t===curTab));
+  const tb=$('#tabBody');tb.hidden=!curTab;tb.innerHTML=curTab?(TABDATA[curTab]||''):'';
+}
+const PALS={night:{n:'夜空（預設）',c:['#141933','#f3ecdc']},dusk:{n:'暗色低對比',c:['#16181d','#2a2f38']},sepia:{n:'護眼米黃',c:['#d6c9ad','#f0e4cb']},green:{n:'護眼綠',c:['#22332a','#e2ebdb']}};
+function applyDisp(){
+  let pal='night',fs='n';try{pal=localStorage.getItem('kl-pal')||'night';fs=localStorage.getItem('kl-fs')||'n';}catch(e){}
+  if(!PALS[pal])pal='night';
+  document.documentElement.dataset.pal=pal;document.documentElement.dataset.fs=fs;
+  $('#swatches').innerHTML=Object.entries(PALS).map(([k,v])=>`<button type="button" class="sw${k===pal?' on':''}" data-pal="${k}"><i style="background:linear-gradient(90deg,${v.c[0]} 50%,${v.c[1]} 50%)"></i>${v.n}</button>`).join('');
+  document.querySelectorAll('.fsrow .sw[data-fs]').forEach(b=>b.classList.toggle('on',b.dataset.fs===fs));
+  document.querySelectorAll('.sndrow .sw').forEach(b=>b.classList.toggle('on',b.dataset.snd===(sndOn()?'1':'0')));
+  document.querySelectorAll('#swatches .sw').forEach(b=>b.onclick=()=>{try{localStorage.setItem('kl-pal',b.dataset.pal);}catch(e){}applyDisp();});
+}
+function render(){
+  const p=G&&G.prompt;
+  $('#start').hidden=!!G;if(G)$('#achBox').hidden=true;$('#game').hidden=!G||p.kind==='end';$('#end').hidden=!G||p.kind!=='end';
+  $('#seedChip').hidden=!G;
+  if(!G){renderStart();return;}
+  $('#seedVal').textContent=String(G.setup.seed).padStart(6,'0');
+  if(p.kind==='end'){renderEnd();return;}
+  const inBattle=p.kind==='battle';
+  $('#panels').hidden=inBattle;$('#logBox').hidden=inBattle;$('#moreBox').hidden=inBattle;
+  if(inBattle){renderBattle(p);return;}
+  drawSprite($('#heroSpr'),'front',SPR_BELT[S.rank],'#3a3550');
+  $('#heroName').textContent=S.name;
+  const sp=specInfo(),md=moodNow();
+  $('#injSlot').innerHTML=`<div class="badges"><span class="bdg sp-${sp.key}">${sp.n}</span>${(S.traits||[]).map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}">${TRAITS[k].n}${(S.tAcq||[]).includes(k)?'<small>後天</small>':''}</span>`).join('')}<span class="bdg md-${S.mood||'normal'}">狀態：${md.n}</span></div>`+(S.auto&&S.auto.left>0?`<span class="autopill">連續稽古：${TRAIN[S.auto.id].n}（剩 ${S.auto.left} 季）<button type="button" id="btnStopAuto">停止</button></span>`:'')+(S.injury?`<span class="injpill">${INJSEV[S.injury.sev]}・${S.injury.n}（約 ${S.injury.left*3} 個月）</span>`:'');
+  {const b=$('#btnStopAuto');if(b)b.onclick=()=>choose('cmd:stopauto');}
+  $('#beltPill').innerHTML=beltPill(S.rank);
+  $('#profile').textContent=`${homeNow().n}・${specLabel()}・${S.flags.shibucho?'支部長':S.flags.shihandai?'師範代':S.dojo?'道場主':S.path==='uchi'&&S.flags.hoko?'本部研修':PATHN[S.path]}${S.serviceLeft>0?'（服役中）':''}`;
+  const rec=`${S.w}-${S.l}`;
+  const fl=flow(S.serviceLeft>0);
+  $('#vitals').innerHTML=[['年齡',S.age],[S.route==='kata'?'型戰績':'戰績',rec],['存款',`${Math.round(S.money)}萬`],['每季',`${fl.total>=0?'+':''}${fl.total.toFixed(1)}`]]
+    .map(([a,b])=>`<div><span>${a}</span><b class="${a==='存款'&&S.money<0||a==='每季'&&fl.total<0?'bad':''}">${b}</b></div>`).join('');
+  const hm=hpMax();const hpv=Math.round(S.hp);const rb=rankB();
+  const es=examStatus();
+  const pts=S.pts||0;
+  $('#stats').innerHTML=(pts>0?`<div class="ptsbar"><b>可分配修煉點 ${pts}</b><span>點一下能力就 +${PT_GAIN}</span></div>`:'')+`<div class="st7${pts>0?' alloc':''}">`+Object.keys(STATN).map(k=>{const b=S.st[k],bonus=k==='spi'?0:Math.min(rb,100-b);const tag=pts>0?'button':'div';return `<${tag} class="t"${pts>0?` type="button" data-alloc="${k}"`:''}><span>${STATN[k]}${pts>0?' <em>+</em>':''}</span><b>${Math.round(est(k))}</b><div class="bar"><i style="width:${b.toFixed(1)}%"></i>${bonus>0?`<u style="left:${b.toFixed(1)}%;width:${bonus.toFixed(1)}%"></u>`:''}</div></${tag}>`;}).join('')+
+    `<div class="t"><span>體況</span><b>${hpv}</b><div class="bar ${hpv<35?'r':hpv<60?'y':'g'}"><i style="width:${S.hp.toFixed(1)}%"></i>${S.wear>0?`<s style="width:${100-hm}%"></s>`:''}</div></div></div>`+
+    `<div class="exline"><span>${es?examSummary(es):'<b>已達五段</b>'}${!S.flags.instDone&&S.age>=26?'・<b class="bad">32 歲前需指導員資格</b>':''}</span><button type="button" id="btnMore">明細</button></div>`;
+  document.querySelectorAll('[data-alloc]').forEach(b=>b.onclick=()=>choose('alloc:'+b.dataset.alloc));
+  $('#btnMore').onclick=()=>{curTab='exam';renderTab();$('#moreBox').scrollIntoView({behavior:'smooth',block:'start'});};
+  const hn=homeNow();
+  const T={};
+  T.exam=es?`<div><div class="wt"><h3>下一次升級</h3></div>${examHTML(es,true)}</div>`:'<div><b>已達五段</b></div>';
+  T.skill=`<div><div class="wt"><h3>能力</h3><span class="tag">名聲 <b>${Math.round(S.fame)}</b>・${WCLS[S.wc].n}</span></div><div class="moveline">戰鬥風格：<b>${STYLES[S.style].n}</b>${S.fav?`・得意技 <b>${MOVES[S.fav].n}</b>（熟練 ${Math.round(favM()*100)}%）`:''}</div><div class="legendrow" style="margin-top:0"><span><i style="background:var(--sky)"></i>修練</span><span><i style="background:var(--gold)"></i>段位加成 +${rb.toFixed(0)}</span>${S.wear>0?'<span><i style="background:repeating-linear-gradient(135deg,var(--red) 0 2px,var(--track) 2px 4px)"></i>舊傷</span>':''}</div>`+
+    (S.route!=='kata'?`<div class="moveline">組手招式：<b>${moveset().map(k=>MOVES[k].n).join('、')}</b></div>`:'')+
+    `<div class="moveline">稽古傾向：<b>${specInfo().n}</b>（${specInfo().d}）・依你練「基本・型」和「組手」牌的比例決定，練越久加成越大</div>`+
+    `<div class="moveline">個性：${(S.traits||[]).map(k=>`<b>${TRAITS[k].n}</b>（${TRAITS[k].d}）`).join('、')}・狀態：<b>${moodNow().n}</b></div>`+
+    `<div class="moveline">型的修煉度：<b>${unlockedKata().map(k=>`${k.n} ${Math.round(km(k.n))}%`).join('、')}</b>（主練「${focusKata()}」）</div></div>`;
+  T.dojo=((S.branches&&S.branches.length)?`<div><div class="wt"><h3>支部分館</h3><span class="tag">版圖 ${['北','中','南','東'].map(x=>regionsHeld().has(x)?x+'✓':x+'·').join(' ')}</span></div><div class="moveline" style="margin-top:0">${S.branches.map(b=>`${esc(b.name)}（${esc(b.lead)}・學員 ${b.st} 人）`).join('<br>')}</div></div>`:'')+(S.flags.uchiDone?`<div><div class="wt"><h3>本部評價</h3><span class="tag">${S.flags.shibucho?'<b>台灣支部長</b>':shibuchoGoal()}</span></div><div class="srow full"><span class="lab">評價</span><div class="bar g"><i style="width:${clamp(S.hq,0,100)}%"></i></div><span class="val">${Math.round(S.hq)}</span></div></div>`:'')+
+    `<div><div class="wt"><h3>所屬道場</h3><span class="tag"><b>${hn.n}</b>・學費 ${S.path==='school'?'家裡支付':S.path==='uchi'||S.path==='inst'?'免':hn.fee+' 萬／季'}</span></div><p class="exnote" style="margin:0">特色稽古：${(()=>{const u=Object.entries(CARDS).find(([,c])=>c.uniq===S.setup.home);return S.path==='uchi'?'本部的所有稽古':u?'「'+u[1].n+'」':'—';})()}${rerollMax()>1?'・每年可換牌 2 次':''}</p></div>`+
+    (S.dojo?(()=>{const d=S.dojo;return `<div><div class="wt"><h3>我的道場</h3><span class="tag"><b>${esc(d.name)}</b>・${(CITIES[d.city]||{}).area||''}・${LOCS[d.loc].n}${d.kids?'・少年部':''}${d.bad?`・<span class="bad">警訊 ${d.bad}/3</span>`:''}</span></div>
+    <div class="ledger"><div><span>學員</span><b>${d.students}</b></div><div><span>黑帶弟子</span><b>${d.blacks}</b></div><div><span>上繳支部</span><b>${(d.royalty||0).toFixed(1)}</b></div><div><span>上期收支</span><b class="${d.net>=0?'good':'bad'}">${d.net>=0?'+':'-'}${Math.abs(d.net).toFixed(1)}</b></div></div>
+    <div class="attrs"><div class="attr">設備<b>${d.equip}</b><div class="bar sm t"><i style="width:${d.equip}%"></i></div></div><div class="attr">口碑<b>${d.mood}</b><div class="bar sm t"><i style="width:${d.mood}%"></i></div></div><div class="attr">指導品質<b>${Math.round(dojoQ())}</b><div class="bar sm t"><i style="width:${dojoQ()}%"></i></div></div><div class="attr">租金<b>${d.rent}</b></div></div><p class="exnote" style="margin-top:8px">名號加成：${prestigeTxt(prestige())}</p></div>`;})():'');
+  T.money=`<div><div class="wt"><h3>每季收支</h3><span class="tag">講習 <b>${S.flags.seminars}</b> 次</span></div><div class="moveline" style="margin-top:0">${fl.it.length?flowTxt(fl):'—'}${S.money<-10?'・<b class="bad">負債壓力：稽古 ×0.85</b>':''}</div></div>`+(reqsHTML()?`<div>${reqsHTML()}</div>`:'');
+  TABDATA=T;renderTab();
+  const card=$('#card');
+  card.className='px card';
+  const tiles=p.opts.filter(o=>o.tile),chips=p.opts.filter(o=>o.chip&&!o.big),bigs=p.opts.filter(o=>o.big);
+  const optArea=tiles.length?`<div class="tgrid">${tiles.map(o=>{const X=TX(o.id);const ic=TICON[X.fam]||['?','var(--muted)'];const v=o.pv;const lv=X.card?cardLv(o.id)+1:0;const cc=X.card?cardCnt(o.id):0;const pips=X.card?(lv>=5?'<span class="mx">MAX</span>':`<span class="pg">${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}</span>`):'';return `<button type="button" class="opt ttile${o.rec?' rec':''}${X.card?' card r'+X.rar:''}" data-id="${o.id}"><span class="tn"><i style="background:${ic[1]}">${ic[0]}</i><span>${o.label}</span></span>${X.card?`<span class="cmeta"><b class="rar">${RARN[X.rar]}</b><small class="lv">Lv${lv}${pips}</small></span><span class="cs">${esc(X.s)}</span>`:''}<span class="tg2">${v.g.map(x=>`<u>${x}</u>`).join('')}${v.extra?`<u class="k">${v.extra}</u>`:''}</span><span class="tr"><span class="${v.hp<0?'bad':'good'}">體況 ${v.hp>0?'+':''}${v.hp}</span>${v.risk?`<span class="${v.risk>=8?'bad':''}">受傷 ${v.risk}%</span>`:'<span>無風險</span>'}${X.cost?`<span>花 ${X.cost} 萬</span>`:''}${X.pay?`<span class="good">存款 +${X.pay} 萬／季</span>`:''}</span></button>`;}).join('')}</div>${bigs.length?`<div class="bigrow">${bigs.map(o=>`<button type="button" class="opt bigopt" data-id="${o.id}"${o.disabled?' disabled':''}><i>${o.icon||'★'}</i><span><span class="l">${o.label}</span><span class="s">${o.sub||''}</span></span></button>`).join('')}</div>`:''}${chips.length?`<div class="xrow">${chips.map(o=>`<button type="button" class="opt xbtn${o.danger?' danger':''}" data-id="${o.id}"><span class="l">${o.label}</span></button>`).join('')}</div>`:''}`:`<div class="opts">${optsHTML(p.opts)}</div>`;
+  card.innerHTML=`<div class="eyebrow">${p.eyebrow}</div><h2>${p.title}</h2>${p.lines.length?`<div class="lines">${p.lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}${p.body?`<p class="q">${p.body}</p>`:''}${optArea}`;
+  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.id)));
+  $('#log').innerHTML=S.log.slice().reverse().map(x=>`<li class="${x.cls}"><span>${x.w}</span>${esc(x.t)}</li>`).join('');
+}
+function epilogue(){
+  const m=S.mil||{},c=S.champ,out=[];const nm=esc(S.name);
+  out.push(`${nm}，十六歲推開${S.home.n}的木門，${specLabel()}，${(WCLS[S.wc]||{}).n||''}${S.fav?`，得意技是${MOVES[S.fav].n}`:''}。`);
+  if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);out.push(a.pos&&b.pos?`天生${a.n}又${b.n}。`:!a.pos&&!b.pos?`雖然${a.n}又${b.n}，還是一路走了下來。`:`天生${(a.pos?a:b).n}，也有${(a.pos?b:a).n}的一面。`);}
+  {const gone=(S.traits0||[]).filter(k=>!S.traits.includes(k)).map(k=>TRAITS[k].n),got=(S.tAcq||[]).filter(k=>S.traits.includes(k)).map(k=>TRAITS[k].n);
+   if(gone.length||got.length)out.push(`修行改變了你${gone.length?`：不再${gone.join('、')}`:''}${got.length?`${gone.length?'，':'：'}變得${got.join('、')}`:''}。`);}
+  if(m.black)out.push(`${m.black} 歲繫上黑帶${m.inst?`，${m.inst} 歲取得指導員資格`:''}。`);else out.push(`終其一生沒有繫上黑帶，最後是${RANKS[S.rank]}。`);
+  if(m.twuchi)out.push(`${m.twuchi} 歲通過支部長審查成為台灣支部內弟子${S.flags.uchiDone?`，之後遠赴日本本部，熬過一千多個日子${S.flags.hoko==='abroad'?'，還被派到海外分部研修一年':''}`:''}。`);
+  const big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');
+  const twn=(S.twc.kumite||0)+(S.twc.kata||0);
+  if(big.length)out.push(`選手生涯最耀眼的是${big.join('、')}${twn?`，全台冠軍拿過 ${twn} 次`:''}。`);
+  else if(twn)out.push(`拿過 ${twn} 次全台冠軍。`);
+  else if(S.titles.length)out.push(`最好的成績是${esc(S.titles[0].replace(/^\d+ /,''))}。`);
+  else out.push('沒有拿過冠軍，但每一次都站上了場。');
+  if(S.route!=='kata'&&(S.rivalW||S.rivalL))out.push(`和宿敵${esc(S.rival)}交手 ${S.rivalW+S.rivalL} 次，${S.rivalW>S.rivalL?'你贏得多':S.rivalW<S.rivalL?'他贏得多':'不分上下'}。`);
+  if(S.flags.hyaku)out.push('完成了百人組手。');
+  if(m.shd)out.push(`${m.shd} 歲成為台灣支部師範代${m.shibu?`，${m.shibu} 歲接下台灣支部長`:''}。`);
+  if(S.branches&&S.branches.length)out.push(`身為支部長，派出 ${S.branches.length} 名弟子開設分館，足跡遍及${[...regionsHeld()].join('、')}部${S.flags.zenkoku?'，完成全台製霸':''}。`);
+  if(S.dojo||S.flags.closedDojo)out.push(S.dojo?`一手創立的${esc(S.dojo.name)}，培養出 ${S.dojo.blacks} 名黑帶弟子。`:`曾經開過${esc(S.flags.closedDojo)}，最後沒能撐下去。`);
+  if(S.flags.separated)out.push('為了道場，家庭付出了代價。');else if(S.flags.married)out.push(m.married?`${m.married} 歲成家${S.flags.kid?'，有了孩子':''}，家人一直在場邊。`:'家人一直在場邊。');
+  const fin={dojo:'道場的燈還亮著。',judge:'現在，你拿著紅白旗站在場邊。',life:'道着收進了衣櫃深處。',member:'你沒有成為指導員，但一直沒有離開道場。',closed:'招牌拆下了，但你還在教小朋友。',staff:'你一直站在學員前面，直到最後一堂課。'}[S.ending]||'';
+  out.push(fin);
+  return out.join('');
+}
+const ACHS=[
+  ['black','黑帶','升上初段',S=>S.rank>=6],
+  ['godan','五段','升上五段',S=>S.rank>=10],
+  ['tw','全台冠軍','拿下全台選手權優勝',S=>!!(S.twc.kata||S.twc.kumite)],
+  ['tw2','全台雙冠','全台型和組手都拿過冠軍',S=>!!(S.twc.kata&&S.twc.kumite)],
+  ['jpw','體重別王者','全日本體重別優勝',S=>!!S.champ.jpw_kumite],
+  ['jp','全日本王者','全日本選手權優勝',S=>!!(S.champ.jp_kata||S.champ.jp_kumite)],
+  ['world','世界王者','世界大賽優勝',S=>!!(S.champ.world_kata||S.champ.world_kumite)],
+  ['world2','型與組手的世界王者','世界大賽型和組手都奪冠',S=>!!(S.champ.world_kata&&S.champ.world_kumite)],
+  ['hyaku','百人組手','完成百人組手',S=>!!S.flags.hyaku],
+  ['twuchi','台灣內弟子','通過支部長審查並結業',S=>!!S.flags.twuchiDone],
+  ['uchi','日本內弟子','熬過本部的一千多個日子',S=>!!S.flags.uchiDone],
+  ['abroad','海外研修','結業後被派到海外分部',S=>S.flags.hoko==='abroad'&&!!S.flags.uchiDone],
+  ['inst','指導員','取得指導員資格',S=>!!S.flags.instDone],
+  ['shd','師範代','就任台灣支部師範代',S=>!!S.flags.shihandai],
+  ['shibu','台灣支部長','就任台灣支部長',S=>!!S.flags.shibucho],
+  ['dojo','一國一城','開設自己的道場',S=>!!S.dojo||!!S.flags.closedDojo],
+  ['meimon','名門道場','培養出 12 名黑帶弟子',S=>!!S.dojo&&S.dojo.blacks>=12],
+  ['closed','鐵門拉下','道場經營不下去',S=>!!S.flags.closedDojo],
+  ['genius','天才','以天才的個性出生',S=>(S.traits0||[]).includes('genius')],
+  ['allround','天才全能型','天才＋全能型的人生',S=>(S.traits0||[]).includes('genius')&&S.style==='all'],
+  ['legend','傳說牌','抽到「中村師範來台講習」',S=>!!S.flags.legend],
+  ['maxcard','一招到底','有一張稽古牌練到 MAX',S=>Object.values(S.clv||{}).some(n=>n>=18)],
+  ['overcome','克服自己','克服一個先天的壞個性',S=>(S.traits0||[]).some(k=>!TRAITS[k].pos&&!S.traits.includes(k))],
+  ['acq3','脫胎換骨','得到 3 個後天個性',S=>(S.tAcq||[]).length>=3],
+  ['rival','宿敵終結者','贏宿敵 3 次以上',S=>S.rivalW>=3],
+  ['family','成家','結婚並有了孩子',S=>!!(S.flags.married&&S.flags.kid)],
+  ['unicup','大專盃王者','大專盃優勝',S=>S.titles.some(t=>t.includes('大專盃')&&t.includes('優勝'))],
+  ['sausage','永山香腸之光','去永山香腸搬過 2 次香腸',S=>((S.clv||{}).w_saus||0)>=2],
+  ['prodigy','名伯樂','少年部的天才少年拿下全日本冠軍',S=>!!(S.dojo&&S.dojo.prodigyJp)||!!S.flags.prodigyJp],
+  ['women','女子部的驕傲','女子部選手拿下全台優勝',S=>!!S.flags.womenChamp],
+  ['rich','存到一千萬','存款達到 1000 萬',S=>S.money>=1000],
+  ['iron42','現役到最後','42 歲還站在比賽場上',S=>S.forced&&S.age>=42],
+  ['member','平凡的修行者','以一般學員身分結束',S=>S.ending==='member'],
+  ['branch1','開枝散葉','當上支部長後派弟子開出第一間分館',S=>(S.branches||[]).length>=1],
+  ['zenkoku','全台製霸','北、中、南、東都有台灣支部的道場',S=>!!S.flags.zenkoku],
+  ['branch5','分館之父','同時擁有 5 間分館',S=>(S.branches||[]).length>=5],
+  ['npc','師兄弟','走完師兄和學弟的故事',S=>!!(S.used.npc_s2&&S.used.npc_k2)],
+  ['alldojo','走遍南台灣','從九間道場都入門過一次',null]
+];
+function achLoad(){try{return JSON.parse(localStorage.getItem('kl-ach')||'{}');}catch(e){return {};}}
+function histLoad(){try{return JSON.parse(localStorage.getItem('kl-hist')||'[]');}catch(e){return [];}}
+function recordRun(){
+  const id=`${G.setup.seed}-${G.choices.length}-${S.age}`;const h=histLoad();
+  const got=achLoad();const fresh=[];
+  if(!h.some(x=>x.id===id)){
+    h.unshift({id,name:S.name,ep:epithet(),rank:RANKS[S.rank],age:S.age,seed:String(G.setup.seed).padStart(6,'0'),home:S.home.n,titles:S.titles.length,date:new Date().toISOString().slice(0,10)});
+    try{localStorage.setItem('kl-hist',JSON.stringify(h.slice(0,30)));}catch(e){}
+  }
+  const homes=new Set(h.map(x=>x.home));
+  for(const [k,n,d,f] of ACHS){const ok=f?f(S):homes.size>=9;if(ok&&!got[k]){got[k]=new Date().toISOString().slice(0,10);fresh.push(n);}}
+  try{localStorage.setItem('kl-ach',JSON.stringify(got));}catch(e){}
+  return fresh;
+}
+function renderAch(){
+  const got=achLoad(),h=histLoad();const n=ACHS.filter(a=>got[a[0]]).length;
+  $('#achBox').innerHTML=`<div class="wt"><h3>成就圖鑑 ${n} / ${ACHS.length}</h3><button class="chipbtn" type="button" id="btnAchClose" style="color:var(--ink);background:var(--paper2);box-shadow:0 0 0 2px var(--ink)">關閉</button></div>
+  <div class="achgrid">${ACHS.map(([k,nm,d])=>`<div class="ach${got[k]?' on':''}"><b>${got[k]?nm:'？？？'}</b><span>${d}</span></div>`).join('')}</div>
+  <div class="wt" style="margin-top:14px"><h3>歷代紀錄</h3></div>
+  ${h.length?`<ol class="hist">${h.map(x=>`<li><b>${esc(x.name)}</b>・${esc(x.ep)}<span>${esc(x.rank)}・${x.age} 歲・${esc(x.home)}・冠軍 ${x.titles}・種子 ${x.seed}</span></li>`).join('')}</ol>`:'<p class="hint">還沒有完成的人生。</p>'}
+  <p class="hint">成就和紀錄存在這個瀏覽器裡。</p>`;
+  $('#btnAchClose').onclick=()=>{$('#achBox').hidden=true;};
+}
+function shareCard(){
+  const W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+  const F='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+  x.fillStyle='#141933';x.fillRect(0,0,W,H);
+  x.fillStyle='#f3ecdc';x.fillRect(40,40,W-80,H-80);
+  x.fillStyle='#d9534f';x.fillRect(40,40,W-80,16);
+  x.fillStyle='#26223b';x.font=`900 46px ${F}`;x.fillText('極真人生',80,130);
+  x.font=`500 26px ${F}`;x.fillStyle='#6b6480';x.fillText('中村道場台灣支部篇',300,128);
+  const sp=document.createElement('canvas');drawSprite(sp,'front',SPR_BELT[S.rank],'#3a3550');
+  x.fillStyle='#e6dcc4';x.fillRect(80,170,300,375);x.imageSmoothingEnabled=false;x.drawImage(sp,80+22,170+20,256,320);
+  x.strokeStyle='#26223b';x.lineWidth=6;x.strokeRect(80,170,300,375);
+  x.fillStyle='#d9534f';x.font=`900 50px ${F}`;x.fillText(epithet(),420,240);
+  x.fillStyle='#26223b';x.font=`900 72px ${F}`;x.fillText(S.name,420,330);
+  x.font=`700 34px ${F}`;x.fillText(`${RANKS[S.rank]}・${S.age} 歲・${specLabel()}`,420,390);
+  x.font=`500 30px ${F}`;x.fillStyle='#4a4560';x.fillText(`出身 ${S.home.n}・${(WCLS[S.wc]||{}).n||''}・${STYLES[S.style].n}`,420,440);
+  x.fillText(`個性：${(S.traits||[]).map(k=>TRAITS[k].n).join('、')}`,420,490);
+  x.fillText(`組手 ${S.w} 勝 ${S.l} 敗・型 ${S.kw} 勝 ${S.kl} 敗`,420,540);
+  let y=620;x.fillStyle='#26223b';x.font=`900 36px ${F}`;x.fillText('主要頭銜',80,y);y+=20;x.font=`500 32px ${F}`;
+  const tt=S.titles.filter(t=>/優勝|就任|完遂/.test(t)).slice(-6);(tt.length?tt:['每一次站上場，都算數。']).forEach(t=>{y+=50;x.fillText('★ '+t,90,y);});
+  y=Math.max(y+70,1000);x.font=`500 28px ${F}`;x.fillStyle='#4a4560';
+  const ep=epilogue().replace(/<[^>]+>/g,'');let line='';const lines=[];for(const ch of ep){if(x.measureText(line+ch).width>W-180){lines.push(line);line=ch;}else line+=ch;}lines.push(line);
+  const ls=lines.slice(0,4);if(lines.length>4)ls[3]=ls[3].slice(0,-1)+'…';ls.forEach((l,i)=>x.fillText(l,90,y+i*42));
+  x.fillStyle='#26223b';x.fillRect(40,H-150,W-80,110);x.fillStyle='#f2c24f';x.font=`900 34px ${F}`;x.fillText(`命運種子 ${String(G.setup.seed).padStart(6,'0')}`,80,H-82);
+  x.fillStyle='#f3ecdc';x.font=`500 26px ${F}`;x.fillText('輸入同一顆種子，挑戰同一段人生',520,H-84);
+  return cv;
+}
+function renderEnd(){
+  const el=$('#end');const lines=G.prompt.lines;const d=S.dojo;
+  el.innerHTML=`<div class="eyebrow">${S.year} · ${S.age} 歲${S.forced?' · 被迫引退':''}</div>
+  <div class="hero"><div class="portrait"><canvas id="endSpr"></canvas></div>
+    <div class="hinfo"><p class="ep">${epithet()}</p><div class="hname"><b>${esc(S.name)}</b>${beltPill(S.rank)}</div><div class="hsub">${specLabel()}・出身 ${S.home.n}</div></div></div>
+  ${lines.length?`<div class="lines">${lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}
+  <div class="epi"><b>結語</b><p>${epilogue()}</p></div>
+  <p class="q">${ENDTXT[S.ending]||''}</p>
+  <div class="endgrid">
+    ${S.route!=='kata'?`<div><span>組手戰績</span><b>${S.w} 勝 ${S.l} 敗</b></div>`:''}
+    ${S.route!=='kumite'?`<div><span>型戰績</span><b>${S.kw} 勝 ${S.kl} 敗</b></div>`:''}
+    <div><span>名聲</span><b>${Math.round(S.fame)}</b></div>
+    <div><span>量級・得意技</span><b>${(WCLS[S.wc]||{}).n||''}${S.fav?'・'+MOVES[S.fav].n:''}</b></div>
+    ${S.route!=='kata'?`<div><span>對宿敵 ${esc(S.rival)}</span><b>${S.rivalW} 勝 ${S.rivalL} 敗</b></div>`:''}
+    <div><span>命運種子</span><b style="font-family:var(--f-px);font-weight:400;font-size:10px">${String(G.setup.seed).padStart(6,'0')}</b></div>
+    ${d?`<div><span>${esc(d.name)}・${d.opened} 年創立</span><b>最多 ${d.peak} 人</b></div><div><span>黑帶弟子 / 弟子冠軍</span><b>${d.blacks} / ${d.champs}</b></div>`:''}
+  </div>
+  <div class="reqs">${[[S.flags.instDone,'指導員資格'],[S.flags.twuchiDone,'台灣內弟子'],[S.flags.uchiDone,'日本內弟子'],[!!S.dojo||!!S.flags.closedDojo,'開設道場'],[S.flags.shihandai,'台灣師範代'],[S.flags.shibucho,'台灣支部長'],[S.flags.hyaku,'百人組手']].map(([ok,n])=>`<span class="req${ok?' ok':''}">${ok?'✓':'·'} ${n}</span>`).join('')}</div>
+  ${S.titles.length?`<ul class="titles">${S.titles.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:'<p class="hint">沒有冠軍頭銜。但每一次站上場，都算數。</p>'}
+  <div id="newAch"></div>
+  <div class="opts">
+    <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
+    <div id="cardOut"></div>
+    <button class="opt" type="button" id="btnSame"><span class="l">同一顆種子，重新來過</span></button>
+    <button class="opt" type="button" id="btnNew"><span class="l">開始新的人生</span></button>
+  </div>`;
+  drawSprite($('#endSpr'),'front',SPR_BELT[S.rank],'#3a3550');
+  {const fresh=recordRun();if(fresh.length)$('#newAch').innerHTML=`<div class="epi"><b>解鎖成就</b><p>${fresh.map(n=>'🏅 '+n).join('<br>')}</p></div>`;}
+  $('#btnCard').onclick=async()=>{
+    try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(e){}
+    const cv=shareCard();const url=cv.toDataURL('image/png');
+    $('#cardOut').innerHTML=`<img src="${url}" alt="分享卡" style="width:100%;margin:8px 0;box-shadow:0 0 0 3px #26223b"><p class="hint">手機長按圖片可以存到相簿；電腦按右鍵另存。</p><div class="opts" style="padding:0"><button class="opt" type="button" id="cardDl"><span class="l">下載圖片</span></button>${navigator.share?'<button class="opt" type="button" id="cardShare"><span class="l">分享</span></button>':''}</div>`;
+    $('#cardDl').onclick=async()=>{const fn=`kyokushin-${String(G.setup.seed).padStart(6,'0')}.png`;let dl=null;
+      try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;}catch(e){dl=null;}
+      if(dl){try{const blob=await (await fetch(url)).blob();await dl.save({filename:fn,data:blob});}catch(e){}}
+      else{const a=document.createElement('a');a.href=url;a.download=fn;document.body.appendChild(a);a.click();a.remove();}};
+    const sb=$('#cardShare');if(sb)sb.onclick=async()=>{try{const blob=await (await fetch(url)).blob();const f=new File([blob],'kyokushin.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:`極真人生・命運種子 ${String(G.setup.seed).padStart(6,'0')}`});else await navigator.share({text:`我在極真人生成為「${epithet()}」！命運種子 ${String(G.setup.seed).padStart(6,'0')}`});}catch(e){}};
+  };
+  $('#btnSame').onclick=()=>{startGame(G.setup,[]);window.scrollTo({top:0});};
+  $('#btnNew').onclick=()=>{G=null;clearSave();render();window.scrollTo({top:0});};
+}
+
+let startBuilt=false;
+function randSeed(){return 1+Math.floor(Math.random()*999999);}
+function randName(){return SUR[Math.floor(Math.random()*SUR.length)]+GIV[Math.floor(Math.random()*GIV.length)];}
+function renderStart(){
+  if(!startBuilt){
+    startBuilt=true;
+    drawSprite($('#startSpr'),'front',SPR_BELT[0],'#3a3550');
+    $('#homeSeg').innerHTML=Object.entries(HOMES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="home" id="home-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span class="fee">學費 ${v.fee} 萬／季</span><span class="dtag">特色牌「${(Object.values(CARDS).find(c=>c.uniq===k)||{}).n||''}」</span></label>`).join('');
+    $('#wcSeg').innerHTML=Object.entries(WCLS).map(([k,v])=>`<label class="pickr"><input type="radio" name="wc" id="wc-${k}" value="${k}"${k==='middle'?' checked':''}><b>${v.n} <small>${v.kg}</small></b><span>${v.d}</span></label>`).join('');
+    $('#styleSeg').innerHTML=Object.entries(STYLES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="style" id="st-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span>${v.d}</span></label>`).join('');
+    const favSync=()=>{const st=(document.querySelector('input[name=style]:checked')||{}).value||'low';const cur=(document.querySelector('input[name=fav]:checked')||{}).value;const ok=STYLE_FAV[st];const pick=ok.includes(cur)?cur:ok[0];
+      $('#favSeg').innerHTML=ok.map(k=>`<label class="pickr"><input type="radio" name="fav" id="fav-${k}" value="${k}"${k===pick?' checked':''}><b>${MOVES[k].n}</b><span>${FAVS[k]}</span></label>`).join('');};
+    $('#styleSeg').addEventListener('change',favSync);favSync();
+    $('#inName').value=randName();$('#inSeed').value=String(randSeed()).padStart(6,'0');
+    const sync=()=>{$('#startName').textContent=$('#inName').value.trim()||'新人';};
+    $('#inName').addEventListener('input',sync);sync();
+    const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;
+      {const g=traitsFor(sd).includes('genius');const allIn=document.querySelector('#st-all');if(allIn){allIn.disabled=!g;allIn.closest('label').style.opacity=g?1:.45;if(!g&&allIn.checked){document.querySelector('#st-low').checked=true;$('#styleSeg').dispatchEvent(new Event('change'));}}}$('#startTraits').innerHTML='個性　'+traitsFor(sd).map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}" title="${TRAITS[k].d}">${TRAITS[k].n}</span>`).join('')+`<span style="flex-basis:100%;font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.5">${traitsFor(sd).map(k=>TRAITS[k].n+'：'+TRAITS[k].d).join('<br>')}</span>`;};
+    $('#btnReroll').onclick=()=>{$('#inSeed').value=String(randSeed()).padStart(6,'0');trSync();};
+    setTimeout(trSync,0);
+    $('#inSeed').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);trSync();});
+    $('#startForm').addEventListener('submit',e=>{
+      e.preventDefault();
+      const seed=parseInt($('#inSeed').value,10)||randSeed();
+      const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
+      const setup={seed,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),style:q('style'),fav:q('fav')};
+      startGame(setup,[]);window.scrollTo({top:0});
+    });
+    $('#btnAch').onclick=()=>{renderAch();const b=$('#achBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({behavior:'smooth'});};
+    $('#btnResume').onclick=()=>{const sv=loadSave();if(sv)startGame(sv.setup,sv.choices);};
+  }
+  {const got=achLoad();$('#achSub').textContent=`已解鎖 ${ACHS.filter(a=>got[a[0]]).length} / ${ACHS.length}・完成 ${histLoad().length} 段人生`;}
+  const sv=loadSave();
+  $('#btnResume').hidden=!(sv&&sv.setup&&sv.choices&&sv.choices.length);
+  if(sv&&sv.setup)$('#resumeSub').textContent=`${sv.setup.name}・種子 ${String(sv.setup.seed).padStart(6,'0')}・已做了 ${sv.choices.length} 個選擇`;
+}
+function initUI(){
+  applyDisp();
+  document.querySelectorAll('.fsrow .sw[data-fs]').forEach(b=>b.onclick=()=>{try{localStorage.setItem('kl-fs',b.dataset.fs);}catch(e){}applyDisp();});
+  document.querySelectorAll('.sndrow .sw').forEach(b=>b.onclick=()=>{try{localStorage.setItem('kl-snd',b.dataset.snd);}catch(e){}applyDisp();if(b.dataset.snd==='1')beep([[660,.06],[880,.08]]);});
+  $('#btnDisp').addEventListener('click',()=>{const d=$('#disp');d.hidden=!d.hidden;$('#btnDisp').textContent=d.hidden?'顯示':'收起';});
+  document.querySelectorAll('#tabs button').forEach(b=>b.addEventListener('click',()=>{curTab=curTab===b.dataset.t?null:b.dataset.t;renderTab();}));
+  $('#seedChip').addEventListener('click',()=>{
+    const s=String(G.setup.seed).padStart(6,'0');const b=$('#seedChip');
+    const done=()=>{b.innerHTML='已複製';setTimeout(()=>{b.innerHTML=`SEED <b id="seedVal">${s}</b>`;},1400);};
+    try{navigator.clipboard.writeText(s).then(done,()=>{});}catch(e){}
+  });
+  const toggleGuide=show=>{$('#guide').hidden=!show;$('#btnGuide').textContent=show?'收起說明':'遊戲說明';if(show)$('#guide').scrollIntoView({behavior:'smooth',block:'start'});};
+  $('#btnGuide').addEventListener('click',()=>toggleGuide($('#guide').hidden));
+  $('#btnGuideClose').addEventListener('click',()=>toggleGuide(false));
+  let armed=false;
+  $('#btnQuit').addEventListener('click',e=>{
+    if(!armed){armed=true;e.target.textContent='再按一次確認放棄';setTimeout(()=>{armed=false;e.target.textContent='放棄這段人生，回到首頁';},3000);return;}
+    armed=false;e.target.textContent='放棄這段人生，回到首頁';G=null;clearSave();render();window.scrollTo({top:0});
+  });
+}
+function boot(data){
+  initUI();
+  if(data&&data.setup)startGame(data.setup,data.choices||[]);else render();
+}
+if(typeof document!=='undefined'&&document.querySelector('#start')){
+  window.claude?.hot?.snapshot?.(()=>G?{setup:G.setup,choices:G.choices}:{});
+  window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
+}
+</script>
+
+</body>
+</html>
