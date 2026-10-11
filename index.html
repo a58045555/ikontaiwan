@@ -457,6 +457,13 @@ a.opt{text-decoration:none;color:inherit}
       <li><b>失敗條件</b>：學員少於 6 人或虧損連續三期且存款不足，或負債超過 20 萬，道場就會結束營業。</li>
       <li><b>名號加成</b>：拿過大賽冠軍再開道場，學員會慕名而來。世界冠軍：招生 ×1.5、學費 +20%、開幕多 15 名學員、弟子更強；全日本冠軍 ×1.3；全日本體重別 ×1.2；全台冠軍 ×1.1；百人組手再 ×1.25；支部長再 ×1.1。冠軍是開道場後才拿到的也會生效。</li>
       <li>指導員講習會、助教經驗會提高指導品質；培養出 3 名黑帶弟子是五段審查的條件。</li></ul></details>
+    <details><summary>全職道場主（引退後）</summary>
+      <ul><li><b>一年一回合</b>：每年選一個經營重點，之後跑兩期收支，再遇到 1～2 件突發事件。60 歲自動交棒，45 歲或開館 6 年後也可以自己交棒。</li>
+      <li><b>自動經營三年</b>：嫌慢可以選它，每年會自動挑合理的經營重點；出現經營警訊或學員大量流失會馬上停下來問你，突發事件也照樣會出現。去過日本的人，支部事務會跳過，本部評價會慢慢下降。</li>
+      <li><b>指導員人手</b>：自己一個人只帶得了約 35 人，每聘一位專任指導員（人事費每半年 2.5 萬）多帶 30 人、品質提高。學員超過能帶的人數，指導品質會往下掉。專任指導員有可能自立門戶、帶走學員。</li>
+      <li><b>會變難的地方</b>：設備每年老化；開館三年後附近的拳館越來越多，學員流失變多（到學校推廣、辦交流賽可以壓下來）；50 歲以後沒有專任指導員分擔，指導品質逐年下降。</li>
+      <li><b>其他經營手段</b>：擴建道場（學員快滿時）、開少年部或女子部、成人體能班（多一筆收入但道場風氣變淡）、調漲學費或推出優惠方案。畫面上的 ⚠ 會提醒你目前的問題。</li>
+      <li><b>突發事件</b>：颱風淹水、學員受傷求償（加保之後就交給保險處理）、網路負評、房東賣房（存款夠可以買下場地）、國稅局查帳、鄰居抗議噪音、少年部霸凌、傳染病停課、體力不如從前；也有好事：市府補助、企業防身課、老弟子回來捐器材、暑假少年營、電視台採訪。</li></ul></details>
     <details><summary>個性與狀態</summary>
       <p>每個人入門時有兩個<b>個性</b>，由命運種子決定（開局最上面按「換一個」就會換），可能兩個都好、兩個都麻煩，或一好一壞。正面：天才、熱血、努力家、冷靜、鐵人、人望、大賽型、不屈、柔軟、怪力、天生腳快、研究型、好運、領袖氣質、節儉。麻煩的：玻璃心、懶散、衝動、怯場、易受傷、驕傲、怕痛、愛花錢、頑固、晚熟、情緒化、笨拙、暴躁、愛睡。「招式・型」分頁看得到每個個性的效果。<br><b>天才</b>非常少見（約 2%），而且七成會同時帶著<b>驕傲</b>；只有天才可以選<b>全能型</b>（沒有弱點、組手攻防 +4）。驕傲的人奪冠後八成會「自滿」（成長 ×0.85、比賽 −3），審查也 −2。<br><b>後天個性</b>：修行中達成條件會改變個性（最多同時 4 個）；如果原本有對應的壞個性，會先把它克服掉。<ul><li>體能・鍛體練 20 次以上且很少受傷 → 鐵人（克服易受傷）</li><li>基本・型練 26 次 → 研究型（克服笨拙）</li><li>組手練 26 次 → 熱血（克服怕痛）</li><li>落榜 3 次以上還是升上黑帶 → 不屈（克服玻璃心）</li><li>50 次稽古只休養 4 次以下 → 努力家（克服懶散、愛睡）</li><li>欠過錢後存回 10 萬 → 節儉（克服愛花錢）</li><li>入山修行 2 次 → 冷靜（克服情緒化、暴躁）</li><li>全日本大賽奪冠 → 大賽型（克服怯場）</li><li>自滿時吃敗仗 3 次 → 謙虛（克服驕傲）</li><li>指導滿 5 年 → 人望（克服頑固）</li><li>受傷 4 次 → 克服衝動</li><li>也會變壞：舊傷太多 → 易受傷；低潮 4 次以上 → 玻璃心</li></ul><br><b>狀態</b>會隨比賽、審查、受傷變化：奪冠會「絕好調」，早早輸球或落榜可能「低潮」，受傷可能「焦躁」，驕傲的人奪冠後會「自滿」。壞狀態會讓成長和比賽變差，選「休養」或過一陣子會恢復。</p></details>
     <details><summary>支部長與分館</summary>
@@ -1377,7 +1384,12 @@ function* hyaku(){
 }
 
 /* ===== 自己的道場 ===== */
-function dojoQ(){const d=S.dojo;return clamp(S.st.tec*.45+S.rank*4+d.mood*.2+(d.assist?6:0)+Math.min(10,(S.flags.coachLic||0)*4),0,100);}
+function dojoLoad(){const d=S.dojo;return 35+(d.staff||0)*30+(d.assist?10:0);}
+function dojoQ(){const d=S.dojo;let q=S.st.tec*.45+S.rank*4+d.mood*.2+(d.assist?6:0)+(d.staff||0)*4+Math.min(10,(S.flags.coachLic||0)*4);
+  const over=d.students/dojoLoad();if(over>1)q-=Math.min(25,(over-1)*30);
+  if(S.age>50)q-=(S.age-50)*((d.staff||0)?.5:1.3);
+  if(d.fit)q-=3;
+  return clamp(q,0,100);}
 function dojoReqs(){return [
   {n:'指導員資格',ok:!!S.flags.instDone},{n:'初段以上',ok:S.rank>=6},{n:'滿 24 歲',ok:S.age>=24},
   {n:'指導資歷 2 年以上',ok:(S.flags.teachY||0)>=2},{n:'存款 5 萬以上',ok:S.money>=5}];}
@@ -1418,24 +1430,29 @@ function* openDojo(){
 }
 function closeDojo(why){
   const d=S.dojo;say(`<span class="bad">${esc(d.name)}${why}，只能結束營業。</span>`);log(`${d.name}結束營業`,'bad');
-  S.flags.closedDojo=d.name;S.flags.closedPeak=d.peak;S.flags.closedCity=d.city;S.fame=Math.max(0,S.fame-5);S.dojo=null;
+  S.flags.closedDojo=d.name;S.flags.closedAge=S.age;S.flags.closedSt=d.students;S.flags.closedMoney=Math.round(S.money);S.flags.closedPeak=d.peak;S.flags.closedCity=d.city;S.fame=Math.max(0,S.fame-5);S.dojo=null;
 }
-function dojoTick(extraAdd){
+function dojoTick(extraAdd,forceYear){
   const d=S.dojo,q=dojoQ();const before=d.students;const C=CITIES[d.city]||CITIES.kaosub;const PR=prestige();
-  const add=Math.round((S.fame*.02+q*.035+d.equip*.012)*(.4+r()*.8)*(1-C.comp*.75)*PR.m*(hasT('leader')?1.2:1)/Math.pow(C.far,1.6))+Math.round((extraAdd||0)*(1-C.comp*.45)/C.far);
-  const churn=Math.round(d.students*clamp(.24-q/800-d.mood/1200+C.comp*.08,.04,.3));
+  if(!d.fee0)d.fee0=d.fee;
+  const add=Math.round((S.fame*.02+q*.035+d.equip*.012)*(.4+r()*.8)*(1-(C.comp+(d.cx||0))*.75)*PR.m*(hasT('leader')?1.2:1)/Math.pow(C.far,1.6))+Math.round((extraAdd||0)*(1-C.comp*.45)/C.far);
+  const feeEff=(d.fee/d.fee0-1)*.3;
+  const churn=Math.round(d.students*clamp(.24-q/800-d.mood/1200+C.comp*.08+(d.cx||0)+feeEff+(d.fit?.01:0),.05,.34));
   d.students=clamp(d.students+add-churn,0,d.cap);
-  const income=d.students*d.fee*(1+PR.fee);const royalty=1+income*.1;
-  const opx=2+d.students*.5;const net=income-d.rent-.5*C.far-royalty-opx;S.money+=net;d.net=net;d.royalty=royalty;
-  d.mood=Math.round(d.mood+(60-d.mood)*.15);
+  const fitInc=d.fit?2+d.students*.02:0;
+  const income=d.students*d.fee*(1+PR.fee)+fitInc;const royalty=1+income*.1;
+  const opx=2+d.students*.46+(d.staff||0)*2.5+(d.raise||0)+(d.ins?.5:0);const net=income-d.rent-.5*C.far-royalty-opx;S.money+=net;d.net=net;d.royalty=royalty;
+  d.mood=Math.round(d.mood+((d.fit?54:60)-d.mood)*.15);
   d.peak=Math.max(d.peak,d.students);
-  const dl=d.students-before;
+  const dl=d.students-before;d.drop=before>=10&&dl<-before*.12;
   say(`<span class="lbl">${esc(d.name)}</span>學員 ${d.students} 人（${dl>=0?'+':'−'}${Math.abs(dl)}）· 上繳支部 ${royalty.toFixed(1)} 萬 · 人事營運 ${opx.toFixed(1)} 萬 · 收支 <span class="${net>=0?'good':'bad'}">${net>=0?'+':'−'}${Math.abs(net).toFixed(1)} 萬</span>`);
   if(d.students<6||net<0)d.bad++;else d.bad=0;
   if(d.bad===2)say('<span class="bad">經營警訊：已經連續兩期學員太少或虧損，再一期就可能撐不下去。</span>');
   if(d.bad>=3&&S.money<15){closeDojo(d.students<6?'學員太少':'連續虧損、入不敷出');return;}
   if(S.money<-20){closeDojo('負債太多');return;}
-  if(S.year!==d.lastYearly&&S.q>=2){d.lastYearly=S.year;
+  if(S.year!==d.lastYearly&&(S.q>=2||forceYear)){d.lastYearly=S.year;
+    d.equip=Math.max(15,d.equip-4);
+    if(S.year-d.opened>=3)d.cx=Math.min(.05,(d.cx||0)+.005);
     if(d.prodigy&&!d.prodigy.done){const pg=d.prodigy;pg.lv+=1+pg.c*.5+q/120+(r()-.3);
       if(pg.lv>=4&&!pg.tw){pg.tw=1;S.fame+=2;say(`你帶大的${esc(pg.n)}拿下了<b>全台少年組優勝</b>。`);log(`${pg.n} 全台少年組優勝`);}
       if(pg.lv>=8){pg.done=1;if(r()<.1+pg.c*.18+q/800){d.prodigyJp=1;S.flags.prodigyJp=1;S.fame+=8;if(S.flags.uchiDone)S.hq=(S.hq||0)+3;say(`<b class="gold">${esc(pg.n)}在全日本選手權奪冠！</b>他在頒獎台上找到你，深深一鞠躬。`);log(`弟子${pg.n} 全日本優勝`,'gold');S.titles.push(`${S.year} 弟子${pg.n}全日本優勝`);}
@@ -1454,6 +1471,7 @@ function dojoTick(extraAdd){
     }
   }
 }
+const DS=()=>S.dojo;const dmul=f=>{S.dojo.students=Math.max(0,Math.round(S.dojo.students*f));};const dadd=n=>{S.dojo.students=Math.max(0,S.dojo.students+n);};
 const DOJO_EVENTS=[
   {id:'prodigy',cond:()=>S.dojo.kids&&!S.dojo.prodigy,run:()=>{const nm=twName();return ev('天才少年',`少年部來了一個叫${nm}的十歲孩子，第一次踢沙包就踢得砰砰響。家長問你：「他真的有天分嗎？」`,
     [{l:'親自一對一帶他',s:'他會成長得更快 · 名聲↑',do(){S.dojo.prodigy={n:nm,y:S.year,lv:0,c:1};S.fame+=1;log(`開始培養天才少年${nm}`);return `你在${nm}的道着上別了一個小小的徽章：「押忍」。`;}},
@@ -1461,43 +1479,137 @@ const DOJO_EVENTS=[
   {id:'women',cond:()=>!S.dojo.women&&S.dojo.students>=20,run:()=>ev('女子部','好幾位女學員希望道場開設女子部，有專屬的時段和更衣室。',
     [{l:'開設女子部',s:'花費 2 萬 · 學員上限 +20 · 學員↑',do(){S.money-=2;S.dojo.women=1;S.dojo.cap+=20;S.dojo.students+=6;log('開設女子部');return '第一堂女子部的課，來了九個人。';}},
      {l:'時間還不夠，再說',s:'',do(){return '你把這件事記在筆記本上。';}}])},
-  {id:'parent',run:()=>ev('家長的抱怨','少年部有孩子在組手時流鼻血，家長在群組裡抱怨。',
-    [{l:'登門道歉，調整少年部課程',s:'口碑↑',do(){S.dojo.mood+=6;S.dojo.students=Math.max(0,S.dojo.students-1);return '家長看到你親自來，態度軟化了。';}},
-     {l:'說明這是空手道的一部分',s:'看運氣',do(){S.dojo.mood-=8;if(r()<.4){S.dojo.students=Math.max(0,S.dojo.students-4);return '有幾個家庭退出了。';}return '大部分家長表示理解。';}}])},
-  {id:'rival',run:()=>ev('對面開了拳館','新開的連鎖健身拳館打出「首月免費」。',
-    [{l:'辦免費體驗課迎戰',s:'花費 2 萬',do(){S.money-=2;if(dojoQ()>60){S.dojo.students+=4;return '體驗課的學員有一半留下來了。';}S.dojo.students=Math.max(0,S.dojo.students-3);return '體驗的人不少，留下的不多。';}},
-     {l:'專注在自己的學員身上',s:'口碑↑',do(){S.dojo.mood+=5;return '老學員說：「我們又不是來健身的。」';}}])},
-  {id:'rent',run:()=>ev('房東漲租','房東說下一期租金要調漲。',
+  {id:'parent',cond:()=>S.dojo.kids,run:()=>ev('家長的抱怨','少年部有孩子在組手時流鼻血，家長在群組裡抱怨。',
+    [{l:'登門道歉，調整少年部課程',s:'口碑↑',do(){S.dojo.mood+=6;dadd(-1);return '家長看到你親自來，態度軟化了。';}},
+     {l:'說明這是空手道的一部分',s:'看運氣',do(){S.dojo.mood-=8;if(r()<.4){dadd(-4);return '有幾個家庭退出了。';}return '大部分家長表示理解。';}}])},
+  {id:'rival',w:1.3,run:()=>ev('對面開了拳館','新開的連鎖健身拳館打出「首月免費」，你的學員有人在問。',
+    [{l:'辦免費體驗課迎戰',s:'花費 2 萬 · 看指導品質',do(){S.money-=2;if(dojoQ()>60){dadd(4);return '體驗課的學員有一半留下來了。';}dadd(-3);S.dojo.cx=(S.dojo.cx||0)+.01;return '體驗的人不少，留下的不多。';}},
+     {l:'專注在自己的學員身上',s:'口碑↑ · 周邊競爭變大',do(){S.dojo.mood+=5;S.dojo.cx=(S.dojo.cx||0)+.02;return '老學員說：「我們又不是來健身的。」';}}])},
+  {id:'rent',cond:()=>!S.dojo.owned,run:()=>ev('房東漲租','房東說下一期租金要調漲。',
     [{l:'接受',s:'租金每半年 +1.5 萬',do(){S.dojo.rent+=1.5;return '你多接了幾堂成人班。';}},
-     {l:'搬到便宜一點的地方',s:'學員流失、設備受損',do(){S.dojo.rent=Math.max(1,S.dojo.rent-1);S.dojo.students=Math.round(S.dojo.students*.8);S.dojo.equip=Math.max(0,S.dojo.equip-10);return '搬家那天，弟子們扛著沙包走了三條街。';}}])},
-  {id:'media',run:()=>ev('電視台採訪','地方電視台想來拍一集「傳統武道」專題。',
-    [{l:'接受採訪',s:'名聲↑ 學員↑',do(){S.fame+=4;S.dojo.students+=6;return '節目播出後，詢問電話響個不停。';}},{l:'婉拒',s:'口碑↑',do(){S.dojo.mood+=2;return '你覺得道場不是拍給人看的。';}}])},
-  {id:'disciple',run:()=>ev('弟子的請求','最認真的弟子說，他想去日本當內弟子。',
-    [{l:'寫推薦信給支部長',s:'名聲↑ 口碑↑',do(){S.fame+=3;S.dojo.mood+=5;S.dojo.students=Math.max(0,S.dojo.students-1);log('推薦弟子赴日成為內弟子');return '送機那天，你想起十八歲的自己。';}},
-     {l:'留他在道場當助教',s:'之後學員比較不會流失',do(){S.dojo.assist=true;S.dojo.mood+=3;return '他第一次站在學員前面喊口令，聲音在發抖。';}}])}
+     {l:'搬到便宜一點的地方',s:'學員流失、設備受損',do(){S.dojo.rent=Math.max(1,S.dojo.rent-1);dmul(.8);S.dojo.equip=Math.max(0,S.dojo.equip-10);return '搬家那天，弟子們扛著沙包走了三條街。';}}])},
+  {id:'media',w:.7,run:()=>ev('電視台採訪','地方電視台想來拍一集「傳統武道」專題。',
+    [{l:'接受採訪',s:'名聲↑ 學員↑',do(){S.fame+=4;dadd(6);return '節目播出後，詢問電話響個不停。';}},{l:'婉拒',s:'口碑↑',do(){S.dojo.mood+=2;return '你覺得道場不是拍給人看的。';}}])},
+  {id:'disciple',w:.8,run:()=>ev('弟子的請求','最認真的弟子說，他想去日本當內弟子。',
+    [{l:'寫推薦信給支部長',s:'名聲↑ 口碑↑',do(){S.fame+=3;S.dojo.mood+=5;dadd(-1);log('推薦弟子赴日成為內弟子');return '送機那天，你想起十八歲的自己。';}},
+     {l:'留他在道場當助教',s:'之後學員比較不會流失',do(){S.dojo.assist=true;S.dojo.mood+=3;return '他第一次站在學員前面喊口令，聲音在發抖。';}}])},
+  {id:'defect',w:1.4,cond:()=>(S.dojo.staff||0)>0&&S.dojo.students>=30,run:()=>{const nm=twName();return ev('指導員要自立門戶',`你的專任指導員${nm}說，他想在附近自己開道場，而且有幾個學員想跟他走。`,
+    [{l:'祝福他，讓他以支部名義開館',s:'學員流失一些 · 名聲↑',do(){S.dojo.staff--;dmul(.85);S.fame+=2;if(S.flags.uchiDone)S.hq=(S.hq||0)+2;log(`指導員${nm}自立門戶`);return '開幕那天，你送了一面「押忍」的匾額過去。';}},
+     {l:'加薪挽留',s:'人事費每半年 +1.5 萬 · 看運氣',do(){S.dojo.raise=(S.dojo.raise||0)+1.5;if(r()<.65)return '他想了一個禮拜，決定留下來。';S.dojo.staff--;dmul(.8);return '<span class="bad">錢談好了，他還是走了，帶走了一批學員。</span>';}},
+     {l:'跟他撕破臉',s:'看運氣 · 口碑↓',do(){S.dojo.staff--;S.dojo.mood-=8;if(r()<.5){dmul(.7);S.fame-=2;return '<span class="bad">事情在學員群組裡傳開，走的人比你想的還多。</span>';}dmul(.92);return '大部分學員選擇留下來。';}}]);}},
+  {id:'plague',w:.35,cond:()=>S.year-(S.flags.plagueY||-99)>=12,run:()=>{S.flags.plagueY=S.year;return ev('傳染病停課','傳染病疫情升溫，政府要求室內運動場館降低人數，家長也不敢讓孩子來。',
+    [{l:'改成線上課程',s:'花費 2 萬 · 學員流失一些',do(){S.money-=2;dmul(.85);S.dojo.mood-=3;return '你對著手機鏡頭喊「押忍」，螢幕那頭有人在客廳踢腿。';}},
+     {l:'全面停課，等疫情過去',s:'學員↓↓ · 房租照付',do(){dmul(.65);S.money-=S.dojo.rent*2;return '<span class="bad">道場關了三個月，沙包上積了一層灰。</span>';}},
+     {l:'偷偷照常上課',s:'看運氣',do(){if(r()<.5)return '這段時間平安無事。';S.money-=5;S.fame-=5;S.dojo.mood-=10;return '<span class="bad">被檢舉了。罰款加上新聞報導，讓你抬不起頭。</span>';}}]);}},
+  {id:'flood',run:()=>ev('颱風淹水','颱風夜一場大雨，道場一樓淹了半個小腿高，榻榻米全泡水了。',
+    [{l:'自費整修',s:'花費 5 萬',do(){S.money-=5;return '一週後道場恢復上課。';}},
+     {l:'號召弟子一起清理',s:'口碑↑ · 設備↓',do(){S.dojo.mood+=8;S.dojo.equip=Math.max(0,S.dojo.equip-15);return '幾十個學員穿著雨鞋來刷地板，那天比稽古還累。';}}])},
+  {id:'sue',cond:()=>S.dojo.students>=15,run:()=>S.dojo.ins?ev('學員受傷求償','成人班的學員在組手時膝蓋韌帶斷裂，家屬要求賠償。',
+    [{l:'交給保險處理',s:'已投保團體保險',do(){S.dojo.mood+=2;return '保險公司處理了醫藥費，學員半年後回到道場。';}}])
+    :ev('學員受傷求償','成人班的學員在組手時膝蓋韌帶斷裂，家屬要求賠償。',
+    [{l:'和解賠償',s:'花費 4 萬',do(){S.money-=4;return '你親自去醫院探望，事情圓滿落幕。';}},
+     {l:'和解，並幫全體學員加保',s:'花費 5 萬 · 之後每半年保費 0.5 萬',do(){S.money-=5;S.dojo.ins=1;S.dojo.mood+=3;return '從此以後，入會單上多了一欄保險資料。';}},
+     {l:'上法院',s:'看運氣 · 名聲可能↓',do(){if(r()<.45)return '法官認定道場已盡告知義務。';S.money-=8;S.fame-=4;dadd(-4);return '<span class="bad">官司輸了，賠償加上律師費，還上了地方新聞。</span>';}}])},
+  {id:'review',w:1.2,run:()=>ev('網路負評','一位退會的學員在網路上寫了一篇長文，說你的道場「只會打人」。',
+    [{l:'公開誠懇回應',s:'指導品質高就有用',do(){if(dojoQ()>=60){S.dojo.mood+=5;dadd(3);return '不少學員留言替你說話，反而多了幾個人來詢問。';}dadd(-3);return '回應被截圖轉傳，還是有人退會了。';}},
+     {l:'不理會',s:'學員↓',do(){dadd(-4);return '那篇文章在搜尋結果排在第一個。';}},
+     {l:'請弟子去留言反擊',s:'看運氣 · 口碑↓',do(){S.dojo.mood-=4;if(r()<.4){dadd(-8);S.fame-=2;return '<span class="bad">被網友發現是道場的人在洗留言，事情越燒越大。</span>';}return '風波慢慢平息了。';}}])},
+  {id:'sell',w:.6,cond:()=>!S.dojo.owned,run:()=>{const d=S.dojo;const buy=Math.round(d.rent*10+10);const o=[];
+    if(S.money>=buy)o.push({l:'把場地買下來',s:`花費 ${buy} 萬 · 之後不用付租金`,do(){S.money-=buy;d.owned=1;d.rent=.3;log('買下道場的場地','gold');return '<b class="gold">你拿到了權狀。</b>這裡從今以後就是道場的家。';}});
+    o.push({l:'搬到附近的新場地',s:'花費 4 萬 · 學員流失一些',do(){S.money-=4;dmul(.85);d.equip=Math.max(0,d.equip-5);return '新場地離捷運站遠了一點。';}});
+    o.push({l:'跟新屋主談續租',s:'看運氣',do(){if(r()<.5){d.rent+=2;return '新屋主同意續租，但租金漲了。';}S.money-=4;dmul(.75);return '<span class="bad">談不攏，只好匆忙搬家，流失了不少學員。</span>';}});
+    return ev('房東要賣房','房東說這棟樓要賣了，新屋主不一定會續租。',o);}},
+  {id:'tired',w:1.5,cond:()=>S.age>=50&&S.year-(S.dojo.tiredY||-99)>=4,run:()=>{const d=S.dojo;d.tiredY=S.year;const o=[];
+    if((d.staff||0)<3&&S.money>=2)o.push({l:'聘一位專任指導員分擔',s:'花費 2 萬 · 人事費每半年 +2.5 萬 · 指導品質↑',do(){S.money-=2;d.staff=(d.staff||0)+1;return '新來的指導員接下了晚上的成人班。';}});
+    o.push({l:'減少自己的課',s:'學員流失一些 · 口碑↓',do(){dmul(.9);d.mood-=4;return '你把週六早上的課停了。';}});
+    o.push({l:'硬撐下去',s:'看運氣',do(){if(r()<.5){d.mood-=8;dmul(.85);return '<span class="bad">你在課堂上閃到腰，休息了兩個月。</span>';}return '你撐過來了，只是每天早上起床都更久一點。';}});
+    return ev('體力不如從前',`${S.age} 歲，一天帶三堂課之後，你在更衣室坐了很久才站起來。`,o);}},
+  {id:'tax',cond:()=>S.dojo.students>=20,run:()=>{const x=Math.round(2+S.dojo.students*.04);return ev('國稅局查帳','國稅局來函，要查道場這幾年的帳。',
+    [{l:'乖乖補繳',s:`花費 ${x} 萬`,do(){S.money-=x;return '你補繳了稅款，順便把帳本整理了一遍。';}},
+     {l:'請會計師處理',s:'花費 2 萬 · 看運氣',do(){S.money-=2;if(r()<.6)return '會計師說帳目沒有問題。';S.money-=Math.round(x*.5);return '還是補了一些稅。';}}]);}},
+  {id:'subsidy',w:.8,run:()=>ev('市府運動補助','市政府推出「基層運動推廣」補助，可以申請器材和課程經費。',
+    [{l:'寫計畫申請',s:'看運氣 · 存款↑',do(){if(r()<.35+dojoQ()/200){const g=ri(4,8);S.money+=g;S.dojo.equip=Math.min(100,S.dojo.equip+5);return `補助通過，拿到 ${g} 萬。`;}return '這次沒有通過。';}},
+     {l:'沒時間，不申請',s:'',do(){return '公文被你壓在桌墊下。';}}])},
+  {id:'corp',w:.8,cond:()=>S.dojo.students>=20,run:()=>ev('企業員工防身課','一家科技公司想請你每週去帶一堂員工防身課。',
+    [{l:'接下來',s:'存款↑ · 口碑↓（分身乏術）',do(){S.money+=5;S.dojo.mood-=(S.dojo.staff?1:5);return '工程師們第一次學正拳，都打得很認真。';}},
+     {l:'婉拒',s:'口碑↑',do(){S.dojo.mood+=2;return '你把時間留給自己的學員。';}}])},
+  {id:'alumni',w:.7,cond:()=>S.dojo.blacks>=2,run:()=>{const nm=twName();return ev('老弟子回來了',`多年前拿到黑帶的${nm}回來看你，他現在自己開公司了。`,
+    [{l:'他想捐一批新器材',s:'設備↑',do(){S.dojo.equip=Math.min(100,S.dojo.equip+15);return '新的沙包和護具送來那天，學員們搶著試踢。';}},
+     {l:'請他週末回來幫忙帶課',s:'口碑↑ 學員比較不會流失',do(){S.dojo.assist=true;S.dojo.mood+=4;return `${nm}站在學員前面，好像看到當年的自己。`;}}]);}},
+  {id:'noise',run:()=>ev('鄰居抗議噪音','樓上的住戶受不了晚上的吆喝聲和打沙包的聲音，揚言要檢舉。',
+    [{l:'加裝隔音',s:'花費 3 萬',do(){S.money-=3;return '隔音棉貼好之後，鄰居送了一盒水果來。';}},
+     {l:'調整上課時段',s:'學員流失一些',do(){dadd(-3);S.dojo.mood-=2;return '晚上九點以後不再打沙包。';}},
+     {l:'置之不理',s:'看運氣',do(){if(r()<.4){S.money-=3;dadd(-2);return '<span class="bad">被開了罰單。</span>';}return '後來就沒再聽到抱怨。';}}])},
+  {id:'bully',cond:()=>S.dojo.kids,run:()=>ev('少年部霸凌','少年部有幾個大孩子在更衣室欺負新來的學員。',
+    [{l:'嚴正處理，請帶頭的孩子退會',s:'口碑↑',do(){dadd(-2);S.dojo.mood+=6;return '你在全體學員面前講了「押忍」真正的意思。';}},
+     {l:'私下調解',s:'看運氣',do(){if(r()<.5){S.dojo.mood+=2;return '孩子們互相道歉，後來還成了朋友。';}dadd(-5);S.dojo.mood-=6;return '<span class="bad">被欺負的孩子家長很不滿，事情在家長群組傳開。</span>';}}])},
+  {id:'camp',w:.8,cond:()=>S.dojo.kids,run:()=>ev('暑假少年營','暑假快到了，很多家長在找孩子的夏令營。',
+    [{l:'舉辦少年空手道營',s:'花費 1 萬 · 學員↑',do(){S.money-=1;dadd(ri(4,9));S.dojo.mood+=3;return '營隊最後一天，孩子們在家長面前表演型。';}},
+     {l:'今年休息',s:'',do(){return '你帶家人去了一趟墾丁。';}}])}
 ];
-function* manage(owner){
-  const d=S.dojo;const q=Math.round(dojoQ());
+function dojoStatus(){const d=S.dojo;const q=Math.round(dojoQ());const w=[];
+  if(d.students>dojoLoad())w.push(`學員太多、指導員不夠（${d.students}/${dojoLoad()}），品質下降`);
+  if(S.age>50&&!(d.staff||0))w.push('年紀大了，沒有專任指導員分擔，品質逐年下降');
+  if(d.equip<45)w.push('設備老舊');
+  if((d.cx||0)>=.04)w.push('周邊拳館越來越多，流失變多');
+  if(d.fee>d.fee0*1.15)w.push('學費偏高，流失變多');
+  return `<b>${esc(d.name)}</b>　學員 ${d.students}/${d.cap} · 專任指導員 ${d.staff||0} · 設備 ${d.equip} · 口碑 ${d.mood} · 指導品質 ${q} · 學費 ${Math.round(d.fee/d.fee0*100)}%`+(w.length?`<br><span class="bad">⚠ ${w.join('；')}</span>`:'');}
+var DOJO_AUTO=null;
+function* manage(owner,forced){
+  const d=S.dojo;if(!d.fee0)d.fee0=d.fee;const q=Math.round(dojoQ());
   const opts=[{id:'normal',label:'照常經營',sub:'不額外花錢'}];
+  if(owner)opts.push({id:'auto',label:'交給你判斷，自動經營三年',sub:'每年自動挑合理的經營重點 · 突發事件和經營警訊還是會叫你'+(S.flags.uchiDone?' · 支部事務會跳過（本部評價慢慢下降）':'')});
   if(S.money>=3)opts.push({id:'promo',label:'招生宣傳',sub:'花費 3 萬 · 學員↑'});
   if(S.money>=6&&d.equip<100)opts.push({id:'equip',label:'添購設備',sub:'花費 6 萬 · 設備↑ 招生更容易'});
   opts.push({id:'teach',label:'親自加強指導',sub:'口碑↑ 學員比較不會流失'+(owner?'':' · 自己的稽古效果減少')});
+  if(d.students>=25&&(d.staff||0)<3&&S.money>=2)opts.push({id:'hire',label:'聘請專任指導員',sub:`花費 2 萬 · 人事費每半年 +2.5 萬 · 可帶的學員 +30 · 品質↑（目前 ${d.staff||0} 位）`});
   if(!d.kids&&S.money>=2)opts.push({id:'kids',label:'開設少年部',sub:'花費 2 萬 · 學員上限 +30'});
+  if(d.kids&&S.money>=1)opts.push({id:'school',label:'到學校、社區推廣',sub:'花費 1 萬 · 少年部學員↑ · 周邊競爭↓'});
+  if(!d.women&&d.students>=15&&S.money>=2)opts.push({id:'women',label:'開設女子部',sub:'花費 2 萬 · 學員上限 +20'});
+  if(d.students>=d.cap*.85&&(d.exp||0)<3){const ec=Math.round(10+d.cap*.12);if(S.money>=ec)opts.push({id:'expand',label:'擴建道場',sub:`花費 ${ec} 萬 · 學員上限 +40 · 租金每半年 +1.5 萬`});}
+  if(!d.fit&&S.money>=3)opts.push({id:'fit',label:'開成人體能班',sub:'花費 3 萬 · 之後每期多一筆收入 · 道場風氣變淡，口碑、品質↓'});
+  if(d.fit)opts.push({id:'fitoff',label:'收掉成人體能班',sub:'回到純粹的空手道道場 · 口碑↑'});
+  if(d.fee<d.fee0*1.3)opts.push({id:'feeup',label:'調漲學費一成',sub:'收入↑ · 口碑↓ 流失變多'});
+  if(d.fee>d.fee0*.8)opts.push({id:'feedown',label:'推出優惠方案',sub:'學費降一成 · 學員↑ 口碑↑'});
   if(d.students>=20&&S.money>=2)opts.push({id:'cup',label:'舉辦道場交流賽',sub:'花費 2 萬 · 名聲↑ 口碑↑'});
   if(owner&&(S.age>=45||S.year-d.opened>=6))opts.push({id:'hand',label:'把道場交給弟子',sub:'結束這段人生',danger:true});
-  {const ri=d.students<d.cap*.5&&S.money>=3?'promo':!d.kids&&S.money>=2?'kids':d.equip<60&&S.money>=10?'equip':'teach';opts.forEach(o=>o.rec=o.id===ri);}
-  const c=yield P(owner?'道場主的日子':'道場經營',`<b>${esc(d.name)}</b>　學員 ${d.students}/${d.cap} · 設備 ${d.equip} · 口碑 ${d.mood} · 指導品質 ${q}。這半年把力氣花在哪？`,opts);
+  const has=id=>opts.some(o=>o.id===id);
+  const autoC=d.students>dojoLoad()*1.1&&(d.net||0)>2&&has('hire')?'hire':d.equip<45&&S.money>=10?'equip':d.students<d.cap*.6&&has('promo')&&S.money>=8?'promo':has('kids')?'kids':d.mood<60?'teach':has('expand')&&S.money>=40?'expand':'teach';
+  opts.forEach(o=>o.rec=o.id===autoC);DOJO_AUTO=autoC;
+  const c=forced?autoC:yield P(owner?'道場主的一年':'道場經營',dojoStatus()+`<br>${owner?'今年':'這半年'}的經營重點？`,opts);
+  if(forced)say(`<span class="lbl">${S.age} 歲・自動經營</span>${opts.find(o=>o.id===c).label}（還剩 ${d.autoY} 年）`);
   if(c==='hand')return 'hand';
   let extra=0;
+  if(c==='auto')d.autoY=3;
   if(c==='promo'){S.money-=3;extra=Math.round(ri(5,12)*(1+S.fame/100));}
   if(c==='equip'){S.money-=6;d.equip=Math.min(100,d.equip+15);}
-  if(c==='teach'){d.mood+=8;if(!owner)S.flags.teachHalf=1;}
+  if(c==='teach'){d.mood+=owner?10:8;if(!owner)S.flags.teachHalf=1;}
+  if(c==='hire'){S.money-=2;d.staff=(d.staff||0)+1;log(`聘請第 ${d.staff} 位專任指導員`);}
   if(c==='kids'){S.money-=2;d.kids=true;d.cap+=30;extra=8;log('開設少年部');}
-  if(c==='cup'){S.money-=2;S.fame+=3;d.mood+=6;extra=4;}
+  if(c==='school'){S.money-=1;extra=ri(4,9);d.cx=Math.max(0,(d.cx||0)-.01);}
+  if(c==='women'){S.money-=2;d.women=1;d.cap+=20;extra=5;log('開設女子部');}
+  if(c==='expand'){const ec=Math.round(10+d.cap*.12);S.money-=ec;d.cap+=40;d.rent+=1.5;d.exp=(d.exp||0)+1;d.equip=Math.min(100,d.equip+5);log('擴建道場');}
+  if(c==='fit'){S.money-=3;d.fit=1;d.mood-=5;log('開設成人體能班');}
+  if(c==='fitoff'){d.fit=0;d.mood+=6;}
+  if(c==='feeup'){d.fee=+(d.fee*1.1).toFixed(3);d.mood-=6;}
+  if(c==='feedown'){d.fee=+(d.fee/1.1).toFixed(3);d.mood+=4;extra=ri(3,7);}
+  if(c==='cup'){S.money-=2;S.fame+=3;d.mood+=6;extra=4;d.cx=Math.max(0,(d.cx||0)-.005);}
   d.mood=clamp(d.mood,0,100);
-  dojoTick(extra);
+  if(owner){dojoTick(Math.round(extra*.6));if(!S.dojo)return 'closed';dojoTick(Math.round(extra*.4),true);}
+  else dojoTick(extra);
   if(!S.dojo)return 'closed';
-  if(r()<(owner?.4:.15)){const e=pick(DOJO_EVENTS.filter(x=>!x.cond||x.cond()));yield* e.run();S.dojo.mood=clamp(S.dojo.mood,0,100);S.dojo.students=clamp(S.dojo.students,0,S.dojo.cap);}
+  yield* dojoEvents(owner);
+  if(!S.dojo)return 'closed';
+}
+function* dojoEvents(owner){
+  const n=owner?(r()<.45?2:1):(r()<.15?1:0);const done=[];
+  for(let k=0;k<n;k++){
+    const pool=DOJO_EVENTS.filter(x=>(!x.cond||x.cond())&&!done.includes(x.id)&&!(S.dojo.lastEv||[]).includes(x.id));if(!pool.length)break;
+    const tot=pool.reduce((a,x)=>a+(x.w||1),0);let t=r()*tot;let e=pool[pool.length-1];for(const x of pool){t-=(x.w||1);if(t<=0){e=x;break;}}
+    done.push(e.id);yield* e.run();
+    const d=S.dojo;d.mood=clamp(d.mood,0,100);d.students=clamp(d.students,0,d.cap);d.equip=clamp(d.equip,0,100);
+  }
+  S.dojo.lastEv=done.concat(S.dojo.lastEv||[]).slice(0,3);
 }
 function yearTick(){
   branchTick();
@@ -1573,16 +1685,18 @@ function shibuchoReqs(){return [{n:'日本內弟子結業',ok:!!S.flags.uchiDone
 function shibuchoGoal(){return '本部評價 100、四段、滿 40 歲，並已擔任台灣支部師範代';}
 function* ownerMode(){
   log('成為全職道場主','gold');
-  say('你把選手時代的獎盃收進櫃子，從今天起，你是全職的道場主。');
+  say('你把選手時代的獎盃收進櫃子，從今天起，你是全職的道場主。之後一年一年過：每年決定經營重點，還會遇到各種突發狀況。');
   while(true){
-    let ny=false;for(let k=0;k<2;k++){S.q=(S.q+1)%4;S.turn++;if(S.q===0){S.age++;S.year++;yearTick();ny=true;}}
-    if(ny)yield* appointChecks();
-    if(S.age>=62){say('六十二歲。你在年終審查後宣布，把道場交給最資深的弟子。');log('交棒給弟子');break;}
+    for(let k=0;k<4;k++){S.q=(S.q+1)%4;S.turn++;if(S.q===0){S.age++;S.year++;yearTick();}}
+    yield* appointChecks();
+    if(S.age>=60){say('六十歲。你在年終審查後宣布，把道場交給最資深的弟子。');log('交棒給弟子');break;}
     if(S.rank<10){const n=S.rank+1,I=examInfo(n);if(n>=8&&I.extra&&S.turn-S.lastPromo>=I.gap&&S.age>=I.age&&S.money>=4){S.money-=4;S.rank=n;S.lastPromo=S.turn;S.danYear=S.year;say(`你赴日本本部接受審查，本部肯定你的指導實績，晉升<b class="gold">${RANKS[n]}</b>。`);log(`日本本部審查晉升${RANKS[n]}`,'gold');}}
-    if(ny&&S.flags.uchiDone&&S.rank>=6)yield* branchAffairs();
+    const d=S.dojo;const auto=(d.autoY||0)>0&&!d.bad&&!d.drop;
+    if(auto)d.autoY--;else d.autoY=0;
+    if(!auto&&S.flags.uchiDone&&S.rank>=6)yield* branchAffairs();
     {const inc=(S.flags.shibucho?3:0)+(S.flags.merch?(.8+S.fame*.012)*S.flags.merch:0)+(S.branches||[]).reduce((a,b)=>a+.15+b.st*.01,0)+(S.flags.sponsor?2:0);
-     const out=4+(S.flags.married?1:0)+(S.flags.kid?1:0);S.money+=2*(inc-out);}
-    const res=yield* manage(true);
+     const out=4+(S.flags.married?1:0)+(S.flags.kid?1:0);S.money+=4*(inc-out);}
+    const res=yield* manage(true,auto);
     if(res==='closed')return 'closed';
     if(res==='hand'){say('你在最後一堂課後，把道場鑰匙交給了弟子。');log('交棒給弟子');break;}
   }
@@ -2076,7 +2190,7 @@ function drawSprite(cv,view,belt,hair){
 
 /* ===== UI ===== */
 let G=null;
-const KEY='kyokushin-life-v31';
+const KEY='kyokushin-life-v32';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
@@ -2439,6 +2553,3 @@ if(typeof document!=='undefined'&&document.querySelector('#start')){
   window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
 }
 </script>
-
-</body>
-</html>
