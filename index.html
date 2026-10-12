@@ -426,7 +426,7 @@ footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
 .ttile.r3 .rar{background:#d9534f;color:#fff}
 .ttile.r2{background:linear-gradient(180deg,rgba(242,194,79,.18),transparent 60%)}
 .ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
-.ver{display:inline-block;margin-top:6px;font-family:var(--f-px,monospace);font-size:9px;letter-spacing:.1em;opacity:.7}.honor.hsay{margin:2px 0 6px}.epch{margin-top:14px}.epch:first-of-type{margin-top:6px}.epchh{display:flex;align-items:baseline;gap:8px;padding:8px 0 6px;border-bottom:2px solid var(--ink,#26223b);margin-bottom:8px}.epchh span{font-size:11px;color:#fff;background:var(--ink,#26223b);padding:2px 6px;letter-spacing:.1em}.epchh b{font-size:18px;color:var(--ink,#26223b)!important;letter-spacing:.1em}.epchh small{font-size:12px;color:var(--muted,#8a806c)}
+.ver{display:inline-block;margin-top:6px;font-family:var(--f-px,monospace);font-size:9px;letter-spacing:.1em;opacity:.7}.honor.hsay{margin:2px 0 6px}.ffbtn{align-self:stretch;margin:4px 0 0;border-style:dashed!important}.epch{margin-top:14px}.epch:first-of-type{margin-top:6px}.epchh{display:flex;align-items:baseline;gap:8px;padding:8px 0 6px;border-bottom:2px solid var(--ink,#26223b);margin-bottom:8px}.epchh span{font-size:11px;color:#fff;background:var(--ink,#26223b);padding:2px 6px;letter-spacing:.1em}.epchh b{font-size:18px;color:var(--ink,#26223b)!important;letter-spacing:.1em}.epchh small{font-size:12px;color:var(--muted,#8a806c)}
 .epihint{font-size:12px;color:var(--muted,#8a806c);margin:4px 0 8px;text-indent:0!important}.epiv{border-top:2px solid rgba(0,0,0,.12)}.epiv:last-child{border-bottom:2px solid rgba(0,0,0,.12)}.epiv summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:10px 2px}.epiv summary::-webkit-details-marker{display:none}.epiv .en{font-family:var(--f-px,monospace);font-size:10px;color:#fff;background:var(--ink,#26223b);padding:5px 5px 4px;margin-top:2px}.epiv .et{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}.epiv .et b{font-size:16px;color:var(--ink,#26223b)!important;letter-spacing:.05em}.epiv .et small{font-size:12px;color:var(--muted,#8a806c)}.epiv .et i{flex-basis:100%;font-style:normal;font-size:12px;color:var(--ink2,#555);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.epiv[open] .et i{display:none}.epiv summary::after{content:'＋';font-weight:900;color:var(--ink2,#555);margin-top:2px}.epiv[open] summary::after{content:'－'}.epiv[open] summary{background:rgba(0,0,0,.04)}.epib{padding:2px 2px 12px}
 .epitabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 6px}.etab{min-width:0;border:2px solid var(--ink,#26223b);background:#fff;color:var(--ink,#26223b);font:inherit;font-weight:700;font-size:13px;padding:5px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.3}.etab small{font-weight:400;font-size:10px;color:var(--muted,#777)}.etab.on{background:var(--ink,#26223b);color:#fff}.etab.on small{color:#ddd}.etab.rr{border-style:dashed}
 .epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
@@ -653,6 +653,7 @@ a.opt{text-decoration:none;color:inherit}
       </div>
     </div>
     <article id="card" aria-live="polite"></article>
+    <button class="opt ffbtn" type="button" id="btnFF" hidden><span class="l">⏩ 人生快轉，直接看結局</span><span class="s">剩下的日子自動照「建議」過完，結語一樣會寫進去</span></button>
     <button class="quit" type="button" id="btnGiveUp2" style="align-self:center;color:var(--headsub)">放棄・直接結算這段人生</button>
     <section class="px more" id="moreBox" aria-label="詳細資料">
       <div class="tabs" id="tabs"><button type="button" data-t="exam">審查</button><button type="button" data-t="skill">招式・型</button><button type="button" data-t="dojo">道場</button><button type="button" data-t="money">收支・資格</button></div>
@@ -668,7 +669,7 @@ a.opt{text-decoration:none;color:inherit}
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.1・2026.10.12</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.2・2026.10.12</span></footer>
 </div>
 
 <script>
@@ -1459,8 +1460,9 @@ function* examPhase(){
   if(S.turn-S.lastPromo<examGap(I)||S.age<I.age)return;
   if(!I.extra){if(S.flags.extraNote!==n){S.flags.extraNote=n;say(`晉升${RANKS[n]}的條件：${I.extraTxt}。`);}return;}
   const parts=examParts(I);const es=examStatus();
-  const c=yield P(`${RANKS[n]}審查`,`${tipOnce('exam','四項都要合格才升級，看下方每一項的通過機率。不夠的話先不考，回去練弱的那一項。')}${I.abroad?'<b>三段以上要到日本本部審查</b>，由本部的師範審核，每年下半年一次。':''}指定型「${I.kata}」，四項都要合格。合格率約 <b>${Math.round(es.all*100)}%</b>。${examHTML(es,false)}`,
-    [{id:'go',rec:es.all>=.5,label:I.abroad?'赴日本本部報考':'報考',sub:`審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''} · 不合格不退費 · 合格機率約 ${Math.round(es.all*100)}%`},{id:'no',rec:es.all<.5,label:'這次不考，再練一陣子',sub:(()=>{const rc=examRec();return rc?`「${rc.part}」不足，建議多練「${rc.n}」`:'各項都準備好了';})()}]);
+  if(S.money<I.fee+I.travel&&S.money<0){say(`<span class="lbl">${RANKS[n]}審查</span>已經符合報考資格，可是存款不夠繳審查費，這次只能先放棄。`);return;}
+  if(es.all<.5){const rc=examRec();say(`<span class="lbl">${RANKS[n]}審查</span>已經符合報考資格，但合格率只有 ${Math.round(es.all*100)}%，這次先不報名${rc?`，回去多練「${rc.n}」`:''}。合格率到 50% 會自動報名。`);return;}
+  const c='go';say(`<span class="lbl">自動報名</span>符合${RANKS[n]}審查資格，${I.abroad?'赴日本本部':''}報名審查（審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''}）・合格率約 ${Math.round(es.all*100)}%`);
   if(c!=='go'){say(`這次沒有報考${RANKS[n]}審查。`);return;}
   S.money-=I.fee+I.travel;
   say(`<span class="tname">${RANKS[n]}審查${I.abroad?'・日本本部':''}</span>`);
@@ -1878,7 +1880,7 @@ function branchTick(){
     if((b.st<6&&r()<.5)||(b.st<12&&r()<.06*C.far*C.stars)){say(`<span class="bad">${b.name}學員太少，${b.lead}含淚把招牌拿了下來。</span>`);log(`${b.name}關閉`,'bad');continue;}keep.push(b);}
   S.branches=keep;
 }
-function* branchAffairs(){
+function* branchAffairs(mult){
   const opts=[];
   if(S.flags.shibucho&&discAvail()>0&&S.money>=10&&(S.flags.brY||0)<=S.year-2)opts.push({id:'branch',label:'派弟子到其他地區開分館',sub:`可派的黑帶弟子 ${discAvail()} 人 · 已有分館 ${(S.branches||[]).length} 間 · 目標：全台製霸`});
   if(S.money>=6)opts.push({id:'abroad',label:'參加海外講習會',sub:'花費 6 萬 · 技術↑ 鬥志↑ · 本部評價 +4'});
@@ -1886,7 +1888,7 @@ function* branchAffairs(){
   if(S.rank>=7&&S.money>=10)opts.push({id:'asia',label:'主辦亞洲杯',sub:'花費 10 萬 · 規模大、風險也大 · 本部評價 +12 或 −6'});
   if(S.flags.shibucho&&!S.flags.merch&&S.money>=5)opts.push({id:'merch',label:'推出支部周邊商品',sub:'花費 5 萬 · 道着、T恤、毛巾、貼紙 · 之後每季有商品收入，名聲越高賣越好'});
   if(S.flags.shibucho&&S.flags.merch===1&&S.money>=8)opts.push({id:'merch2',label:'周邊商品加開新品線',sub:'花費 8 萬 · 聯名護具、限定道着 · 商品收入加倍'});
-  if(S.q===3&&S.money>=2)opts.push({id:'escort',label:'陪同台灣代表隊出國比賽',sub:'花費 2 萬 · 本部評價 +4'});
+  if((S.q===3||mult)&&S.money>=2)opts.push({id:'escort',label:'陪同台灣代表隊出國比賽',sub:'花費 2 萬 · 本部評價 +4'});
   opts.push({id:'none',label:'這次先專心自己的事',sub:''});
   {const order=['merch2','merch','asia','goodwill','escort','abroad','none'];const has=id=>opts.some(o=>o.id===id)&&(id!=='asia'||S.fame>=45);const ri=order.find(has);opts.forEach(o=>o.rec=o.id===ri);}
   const c=yield P('支部事務',`日本本部會看你為支部做了多少事。本部評價 <b>${Math.round(S.hq)}</b> / 100（${hqTier()}）${S.flags.shibucho?'（你已是支部長）':'。'+shibuchoGoal()+'，才有機會被任命為台灣支部長'}。`,opts);
@@ -1899,6 +1901,7 @@ function* branchAffairs(){
   if(c==='merch2'){S.money-=8;S.flags.merch=2;S.hq+=2;say('聯名護具和限定道着推出，海外分部也來詢問代理。');log('周邊商品加開新品線','gold');}
   if(c==='none'){say('這陣子沒有處理支部事務。');return;}
   if(c==='branch'){yield* openBranch();return;}
+  if(mult&&S.hq>h0)S.hq=Math.min(100,h0+(S.hq-h0)*mult);
   say(`本部評價 ${Math.round(h0)} → <b>${Math.round(S.hq)}</b> ${diff(s0)}`);
 }
 
@@ -1906,7 +1909,7 @@ function* branchAffairs(){
 function evScore(o){const s=o.s||'';let v=(s.match(/↑/g)||[]).length-(s.match(/↓/g)||[]).length*1.2;if(/受傷|風險|看運氣/.test(s))v-=S.hp<50?2:.8;if(/花費|捐|存款↓/.test(s+o.l)&&S.money<5)v-=2;if(/體況↑/.test(s)&&S.hp<45)v+=2;if(/本部評價 \+/.test(s))v+=1.5;if(/本部評價 −/.test(s))v-=2;return v;}
 function* ev(title,body,opts){
   let ri=0;if(opts.length>1){let b=-1e9;opts.forEach((o,i)=>{const v=evScore(o);if(v>b+.01){b=v;ri=i;}});}
-  const c=yield P(title,body,opts.map((o,i)=>({id:String(i),label:o.l,sub:o.s||'',rec:opts.length>1&&i===ri})));
+  const c=yield P(title,tipOnce('ev','事件二選一。選項下方的小字是效果：<b>↑</b> 會提升、<b>↓</b> 會下降。上一件事的結果會出現在最上面的「剛剛發生的事」。')+body,opts.map((o,i)=>({id:String(i),label:o.l,sub:o.s||'',rec:opts.length>1&&i===ri})));
   const o=opts[+c];const s0=snap();let t;
   if(o.do)t=o.do();else{fx(o.fx||{});t=o.t;}
   say(`${t} ${diff(s0)}`);
@@ -2657,7 +2660,7 @@ function* life(){
       if(!auto){
         if(!badlyHurt()&&!S.hand)S.hand=drawHand();
         while(true){const opts=trainOpts();annotateTrain(opts);
-          c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
+          c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+(S.flags.tips&&S.flags.tips.train?tipOnce('goal','看角色卡最下面：下一條腰帶的<b>合格率</b>，和紅字「不足 → 多練○○」。照著提示挑稽古就對了；合格率到 50% 就會<b>自動報名審查</b>。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
           if(c==='life'){yield* lifeSetup();continue;}
           if(c==='kfocus'){const ex=EXK[Math.min(10,S.rank+1)];const kf=yield P('主練的型','練「基本・型」系列的牌時，主練的型修煉度漲最多，其他型只會小幅提升。型比賽和審查都看修煉度。',unlockedKata().map(x=>({id:x.n,label:`「${x.n}」 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)}${x.n===ex?' · 下一次審查要考':''}`})));S.kfocus=kf;continue;}
           if(c==='reroll'){const f=S.flags.rr||{};S.flags.rr={y:S.year,n:(f.y===S.year?f.n:0)+1};bump('spi',-2);S.hand=drawHand();say('你向師範要求換一套練法。');continue;}
@@ -2704,7 +2707,7 @@ function* life(){
     if(serving&&S.serviceLeft===0){say('退伍了。你在營區門口回頭看了一眼，然後直奔道場。');log('退伍');}
 
     if(S.dojo&&c!=='open'&&S.q%2===0)yield* manage(false);
-    if(!serving&&S.flags.uchiDone&&S.rank>=6&&S.q%2===1&&!badlyHurt())yield* branchAffairs();
+    if(!serving&&S.flags.uchiDone&&S.rank>=6&&S.q===1&&!badlyHurt())yield* branchAffairs(3.6);
 
     const e=pickEvent();
     if(e){S.used[e.id]=1;yield* e.run();}
@@ -3072,9 +3075,11 @@ function quitLife(){S.ending='quit';S.forcedEnd=null;S.mil=S.mil||{};S.mil.quit=
 function startGame(setup,choices){
   newState(setup);const gen=life();let res=gen.next();
   const done=[];let quit=null;
-  for(const ch of (choices||[])){if(res.done||res.value.kind==='end')break;if(String(ch).startsWith('alloc:')){applyAlloc(ch.slice(6));done.push(ch);continue;}if(ch==='cmd:stopauto'){S.auto=null;S.autoPref=false;done.push(ch);continue;}if(ch==='cmd:quit'){quit=quitLife();done.push(ch);break;}res=gen.next(ch);done.push(ch);}
-  G={setup,choices:done,gen,prompt:quit||res.value};save();render();
+  for(const ch of (choices||[])){if(res.done||res.value.kind==='end')break;if(String(ch).startsWith('alloc:')){applyAlloc(ch.slice(6));done.push(ch);continue;}if(ch==='cmd:stopauto'){S.auto=null;S.autoPref=false;done.push(ch);continue;}if(ch==='cmd:quit'){quit=quitLife();done.push(ch);break;}if(ch==='cmd:ff'){S.flags.ff=1;log('人生快轉','');done.push(ch);continue;}res=gen.next(ch);done.push(ch);}
+  G={setup,choices:done,gen,prompt:quit||res.value};if(S.flags.ff&&G.prompt)ffRun();save();render();
 }
+function ffPick(p){const en=(p.opts||[]).filter(o=>!o.disabled);if(!en.length)return null;if(p.kind==='battle')return en.some(o=>o.id==='auto')?'auto':en[0].id;const rc=en.find(o=>o.rec);return (rc||en[0]).id;}
+function ffRun(){let n=0;while(S.flags.ff&&G.prompt&&G.prompt.kind!=='end'&&n<8000){const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;n++;}}
 let AC=null;
 function sndOn(){try{return localStorage.getItem('kl-snd')==='1';}catch(e){return false;}}
 function beep(seq){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime+.01;for(const [f,d] of seq){const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d;}}catch(e){}}
@@ -3087,6 +3092,7 @@ function sfx(){const p=G&&G.prompt;if(!p)return;const L=(p.lines||[]).join('');
 function choose(id){
   if(String(id).startsWith('alloc:')){if(applyAlloc(id.slice(6))){G.choices.push(id);save();render();}return;}
   if(id==='cmd:stopauto'){if(S.auto){S.auto=null;S.autoPref=false;G.choices.push(id);save();render();}return;}
+  if(id==='cmd:ff'){if(!S.flags.ff&&G.prompt.kind!=='end'){S.flags.ff=1;log('人生快轉','');G.choices.push(id);ffRun();save();render();window.scrollTo({top:0});}return;}
   const wasBattle=G.prompt.kind==='battle';
   G.choices.push(id);const res=G.gen.next(id);G.prompt=res.value;save();render();sfx();
   if(!(wasBattle&&G.prompt.kind==='battle'))window.scrollTo({top:0,behavior:'smooth'});
@@ -3163,6 +3169,7 @@ function render(){
   if(!G){renderStart();return;}
   $('#seedVal').textContent=String(G.setup.seed).padStart(6,'0');
   if(p.kind==='end'){renderEnd();return;}
+  {const ff=$('#btnFF');if(ff)ff.hidden=!(S.age>=50&&!S.flags.ff&&p.kind!=='battle');}
   const inBattle=p.kind==='battle';
   $('#panels').hidden=inBattle;$('#logBox').hidden=inBattle;$('#moreBox').hidden=inBattle;
   if(inBattle){renderBattle(p);return;}
@@ -3589,11 +3596,14 @@ function shareCard(){
   x.fillText(`組手 ${S.w} 勝 ${S.l} 敗・型 ${S.kw} 勝 ${S.kl} 敗`,420,540);
   let y=620;x.fillStyle='#26223b';x.font=`900 36px ${F}`;x.fillText('主要頭銜',80,y);y+=20;x.font=`500 32px ${F}`;
   const tt=S.titles.filter(t=>/優勝|就任|完遂|三冠|製霸/.test(t)).slice(-6);(tt.length?tt:['每一次站上場，都算數。']).forEach(t=>{y+=50;x.fillText('★ '+t,90,y);});
-  y=Math.max(y+70,1000);x.font=`500 28px ${F}`;x.fillStyle='#4a4560';
+  y=Math.max(y+60,960);x.font=`500 28px ${F}`;x.fillStyle='#4a4560';
   const ep=epiParas().slice(-1)[0].t.replace(/<[^>]+>/g,'');let line='';const lines=[];for(const ch of ep){if(x.measureText(line+ch).width>W-180){lines.push(line);line=ch;}else line+=ch;}lines.push(line);
-  const ls=lines.slice(0,4);if(lines.length>4)ls[3]=ls[3].slice(0,-1)+'…';ls.forEach((l,i)=>x.fillText(l,90,y+i*42));
-  x.fillStyle='#26223b';x.fillRect(40,H-150,W-80,110);x.fillStyle='#f2c24f';x.font=`900 34px ${F}`;x.fillText(`命運種子 ${String(G.setup.seed).padStart(6,'0')}`,80,H-82);
-  x.fillStyle='#f3ecdc';x.font=`500 26px ${F}`;x.fillText('輸入同一顆種子，挑戰同一段人生',520,H-84);
+  const ls=lines.slice(0,3);if(lines.length>3)ls[2]=ls[2].slice(0,-1)+'…';ls.forEach((l,i)=>x.fillText(l,90,y+i*42));
+  x.fillStyle='#26223b';x.fillRect(40,H-215,W-80,175);x.fillStyle='#f2c24f';x.font=`900 34px ${F}`;x.fillText(`命運種子 ${String(G.setup.seed).padStart(6,'0')}`,80,H-158);
+  x.fillStyle='#f3ecdc';x.font=`500 26px ${F}`;x.fillText('輸入同一顆種子，挑戰同一段人生',520,H-160);
+  x.fillStyle='#d9534f';x.fillRect(80,H-130,W-160,3);
+  x.fillStyle='#f3ecdc';x.font=`700 30px ${F}`;x.fillText('想真的來練練看？',80,H-90);x.fillStyle='#f2c24f';x.font=`900 32px ${F}`;x.fillText('IG @i.k.o.n.taiwan',420,H-90);
+  x.fillStyle='#b9b3c9';x.font=`500 22px ${F}`;x.fillText('玩遊戲：reurl.cc/DYpbGm',80,H-55);
   return cv;
 }
 function renderEnd(){
@@ -3702,6 +3712,7 @@ function initUI(){
     if(!armed2){armed2=true;lab.textContent='再按一次，確定放棄並結算';setTimeout(()=>{armed2=false;lab.textContent=orig;},3000);return;}
     armed2=false;lab.textContent=orig;G.choices.push('cmd:quit');G.prompt=quitLife();save();render();window.scrollTo({top:0});};
     $('#btnGiveUp').addEventListener('click',gu);$('#btnGiveUp2').addEventListener('click',gu);}
+  $('#btnFF').addEventListener('click',()=>{if(G&&G.prompt.kind!=='end')choose('cmd:ff');});
   $('#btnQuit').addEventListener('click',e=>{
     if(!armed){armed=true;e.target.textContent='再按一次確認放棄';setTimeout(()=>{armed=false;e.target.textContent='放棄這段人生，回到首頁';},3000);return;}
     armed=false;e.target.textContent='放棄這段人生，回到首頁';G=null;clearSave();render();window.scrollTo({top:0});
