@@ -146,7 +146,10 @@ body.introOn{overflow:hidden}
 .iphone{position:absolute;inset:4% 0 4% 0;display:flex;justify-content:center;align-items:center;background:rgba(13,16,36,.55)}
 .iphone[hidden]{display:none}
 .iphone-in{position:relative;height:100%;aspect-ratio:480/696;border:5px solid #26223b;border-radius:10px;box-shadow:0 0 0 2px #9aa1c8,0 0 18px rgba(140,200,255,.5);overflow:hidden;background:#000}
-.iphone-in video{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated}
+.iphone-in canvas{width:100%;height:100%;display:block;image-rendering:pixelated;image-rendering:crisp-edges}
+.iscreen.vid canvas#introCv{aspect-ratio:3/4;object-fit:cover;height:auto}
+.ifast{align-self:center;background:#141933;border:3px solid #f3ecdc;color:#f3ecdc;font-weight:900;font-size:15px;letter-spacing:.08em;padding:8px 22px;cursor:pointer;box-shadow:3px 3px 0 #0d1024}
+.ifast.on{background:#f2c24f;color:#141933;border-color:#141933}
 .iheart{position:absolute;right:5px;top:45%;color:#d24b4b;font-size:14px;line-height:1;text-shadow:1px 1px 0 #000}
 .itext{min-height:3.4em;width:100%;font-size:17px;line-height:1.7;color:#f3ecdc;text-align:left;padding:8px 10px;border:3px solid #f3ecdc;background:#141933;box-shadow:inset 0 0 0 2px #0d1024;letter-spacing:.04em}
 .ihint{margin:0;font-size:12px;color:#9aa1c8;letter-spacing:.08em}
@@ -157,8 +160,8 @@ body.introOn{overflow:hidden}
 .intro-vid video{width:100%;display:block;image-rendering:pixelated;aspect-ratio:480/696}
 .intro-vid video[hidden]{display:none}
 #introCv{width:100%;image-rendering:pixelated;image-rendering:crisp-edges}
-.intro-cap{position:absolute;left:0;right:0;bottom:10%;text-align:center;line-height:1.3;font-size:13px;font-weight:900;color:#f3ecdc;letter-spacing:.06em;text-shadow:2px 0 0 #0d1024,-2px 0 0 #0d1024,0 2px 0 #0d1024,0 -2px 0 #0d1024,2px 2px 0 #0d1024,-2px 2px 0 #0d1024,2px -2px 0 #0d1024,-2px -2px 0 #0d1024,4px 4px 0 #d24b4b;padding:0 6px;pointer-events:none}
-.intro-cap.hot{color:#f2c24f;font-size:15px}
+.intro-cap{position:absolute;left:0;right:0;bottom:10%;text-align:center;line-height:1.3;font-size:17px;font-weight:900;color:#f3ecdc;letter-spacing:.06em;text-shadow:2px 0 0 #0d1024,-2px 0 0 #0d1024,0 2px 0 #0d1024,0 -2px 0 #0d1024,2px 2px 0 #0d1024,-2px 2px 0 #0d1024,2px -2px 0 #0d1024,-2px -2px 0 #0d1024,4px 4px 0 #d24b4b;padding:0 6px;pointer-events:none}
+.intro-cap.hot{color:#f2c24f;font-size:20px}
 .intro-title{margin:6px 0 0;font-size:44px;font-weight:900;letter-spacing:.12em;color:#f3ecdc;text-shadow:3px 0 0 #d24b4b,0 3px 0 #d24b4b,3px 3px 0 #d24b4b,6px 6px 0 #0d1024}
 .intro-sub{font-family:var(--f-px,'Press Start 2P',monospace);font-size:10px;color:#f2c24f;margin:0;letter-spacing:.2em}
 .intro-flyer{width:100%}
@@ -462,11 +465,11 @@ a.opt{text-decoration:none;color:inherit}
         <div class="iscreen">
           <canvas id="introCv" width="128" height="96" aria-label="開場動畫"></canvas>
           <div id="iPhone" class="iphone" hidden>
-            <div class="iphone-in"><video id="introVid" poster="intro-poster.png" muted playsinline preload="auto" aria-label="中村道場台灣支部的 8-bit 介紹影片"><source src="intro.mp4" type="video/mp4"><source id="introSrcLast" src="intro.webm" type="video/webm"></video><div id="introCap" class="intro-cap"></div><span class="iheart">♥</span></div>
+            <div class="iphone-in"><canvas id="iVid" width="80" height="116" aria-label="中村道場台灣支部的 8-bit 介紹影片"></canvas><div id="introCap" class="intro-cap"></div><span class="iheart">♥</span></div>
           </div>
         </div>
         <div id="iText" class="itext"></div>
-        <p id="iHint" class="ihint">長按畫面可以加速 ▶▶</p>
+        <button type="button" id="iFast" class="ifast">▶▶ 加速</button>
       </div>
     </div>
   </div>
@@ -2840,6 +2843,8 @@ function fanfare(){if(!sndOn())return;try{AC=AC||new (window.AudioContext||windo
 
 /* ===== 開場動畫：十六歲的你，滑到了一支道場的影片 ===== */
 let introRAF=0,introScene='room',iTok=0,iSpeed=1;
+const IVF={src:'intro-frames.png',w:80,h:116,cols:10,n:80,fps:10,img:null};
+function ivfLoad(){if(IVF.img||typeof Image==='undefined')return;IVF.img=new Image();IVF.img.src=IVF.src;}
 function pxRect(x,c,a,b,w,h){x.fillStyle=c;x.fillRect(a,b,w,h);}
 function drawIntro(t){
   const cv=$('#introCv');if(!cv||$('#intro').hidden||$('#iScene').hidden){introRAF=0;return;}
@@ -2881,23 +2886,26 @@ function bgmVideo(){const s=.25,N={C5:523,D5:587,E5:659,G5:784,A5:880,C6:1047,G4
 function introShow(id){['iTap','iScene'].forEach(k=>{$('#'+k).hidden=k!==id;});}
 let iDone=null;
 function introHide(){const el=$('#intro');el.classList.add('out');setTimeout(()=>{el.hidden=true;el.classList.remove('out');document.body.classList.remove('introOn');window.scrollTo({top:0});},500);}
-function introFinish(){iTok++;iSpeed=1;const v=$('#introVid');try{v.pause();}catch(e){}$('#iPhone').hidden=true;fanfare();
+function introFinish(){iTok++;iSpeed=1;$('#iPhone').hidden=true;$('.iscreen').classList.remove('vid');fanfare();
   const f=iDone;iDone=null;introHide();if(f)setTimeout(f,350);}
-function playOpening(done){const el=$('#intro');iDone=done;el.hidden=false;document.body.classList.add('introOn');introPlay();}
+function playOpening(done){const el=$('#intro');iDone=done;ivfLoad();el.hidden=false;document.body.classList.add('introOn');introPlay();}
 async function introPlay(){
-  const tk=++iTok;iSpeed=1;$('#iHint').textContent='長按畫面可以加速 ▶▶';$('#iHint').classList.remove('on');introShow('iScene');$('#iPhone').hidden=true;introScene='room';if(!introRAF)introRAF=requestAnimationFrame(drawIntro);
-  const v=$('#introVid'),cap=$('#introCap');
+  const tk=++iTok;iSpeed=1;{const b=$('#iFast');b.textContent='▶▶ 加速';b.classList.remove('on');}introShow('iScene');$('#iPhone').hidden=true;introScene='room';if(!introRAF)introRAF=requestAnimationFrame(drawIntro);
+  const cap=$('#introCap');
   try{
     await iWait(400,tk);
     await iType('十六歲那年的某個晚上。',tk,700);
     await iType('你躺在床上，手指一直往下滑。',tk,600);
-    let ok=!!v&&!v.dataset.bad;
-    if(ok){$('#iPhone').hidden=false;$('#iText').textContent='';v.loop=false;try{v.currentTime=0;}catch(e){}
+    let ok=IVF.img&&IVF.img.complete&&IVF.img.naturalWidth>0;
+    if(ok){$('#iPhone').hidden=false;$('.iscreen').classList.add('vid');$('#iText').textContent='';
       const CAPS=[[0,1.45,'我們是中村道場'],[1.5,3.45,'臺灣最強的極真空手道'],[3.5,4.45,'我們的訓練環境'],[4.5,5.45,'讚！👍'],[5.5,5.95,'器材很多'],[6,6.95,'Sensei 很優'],[7,8.3,'趕快來報名！',1]];
-      let alive=true;const tick=()=>{if(!alive||tk!==iTok)return;const t=v.currentTime;const c=CAPS.find(z=>t>=z[0]&&t<z[1]);const txt=c?c[2]:'';if(cap.textContent!==txt){cap.textContent=txt;cap.classList.toggle('hot',!!(c&&c[3]));}requestAnimationFrame(tick);};
-      try{const p=v.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}bgmVideo();requestAnimationFrame(tick);
-      await Promise.race([new Promise(r=>v.addEventListener('ended',r,{once:true})),iWait(8600,tk)]).catch(e=>{alive=false;throw e;});
-      alive=false;if(tk!==iTok)throw 'skip';await iWait(500,tk);$('#iPhone').hidden=true;cap.textContent='';
+      const vc=$('#iVid'),vx=vc.getContext('2d');vx.imageSmoothingEnabled=false;let vt=0,last=performance.now();
+      bgmVideo();
+      await new Promise((res,rej)=>{const step=()=>{if(tk!==iTok){rej('skip');return;}const now=performance.now();vt+=(now-last)/1000*iSpeed;last=now;
+        const f=Math.min(IVF.n-1,Math.floor(vt*IVF.fps));vx.drawImage(IVF.img,(f%IVF.cols)*IVF.w,Math.floor(f/IVF.cols)*IVF.h,IVF.w,IVF.h,0,0,IVF.w,IVF.h);
+        const c=CAPS.find(z=>vt>=z[0]&&vt<z[1]);const txt=c?c[2]:'';if(cap.textContent!==txt){cap.textContent=txt;cap.classList.toggle('hot',!!(c&&c[3]));}
+        if(vt>=IVF.n/IVF.fps+.4)res();else requestAnimationFrame(step);};requestAnimationFrame(step);});
+      $('#iPhone').hidden=true;$('.iscreen').classList.remove('vid');cap.textContent='';
     }else await iType('一支道場的影片跳了出來。你看了三遍。',tk,900);
     await iType('……',tk,700);
     await iType('「好像，很帥。」',tk,900);
@@ -2910,17 +2918,12 @@ async function introPlay(){
   }catch(e){if(e!=='skip')introFinish();}
 }
 function showIntro(){
-  const el=$('#intro');if(!el)return;
+  const el=$('#intro');if(!el)return;ivfLoad();
   el.hidden=false;document.body.classList.add('introOn');introShow('iTap');
-  const v=$('#introVid');if(v){const bad=()=>{v.dataset.bad='1';};v.addEventListener('error',bad);const ls=$('#introSrcLast');if(ls)ls.addEventListener('error',bad);}
   const setSnd=on=>{try{localStorage.setItem('kl-snd',on?'1':'0');}catch(e){}applyDisp();};
-  $('#iSnd').onclick=()=>{setSnd(true);chip([[523,.08],[784,.08],[1047,.16]]);introHide();};
-  $('#iMute').onclick=()=>{setSnd(false);introHide();};
-  const sc=$('#iScene'),hint=$('#iHint');let hold=0;
-  const fast=on=>{iSpeed=on?4:1;try{v.playbackRate=iSpeed;}catch(e){}hint.textContent=on?'▶▶ 加速中':'長按畫面可以加速 ▶▶';hint.classList.toggle('on',on);};
-  sc.addEventListener('pointerdown',()=>{clearTimeout(hold);hold=setTimeout(()=>fast(true),220);});
-  ['pointerup','pointercancel','pointerleave'].forEach(n=>sc.addEventListener(n,()=>{clearTimeout(hold);if(iSpeed>1)fast(false);}));
-  sc.addEventListener('contextmenu',e=>e.preventDefault());
+  $('#iSnd').onclick=()=>{setSnd(true);playOpening(null);};
+  $('#iMute').onclick=()=>{setSnd(false);playOpening(null);};
+  const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
 const KEY='kyokushin-life-v36';
@@ -3348,7 +3351,7 @@ function renderStart(){
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
       const setup={seed,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),style:q('style'),fav:q('fav')};
-      playOpening(()=>{startGame(setup,[]);window.scrollTo({top:0});});
+      startGame(setup,[]);window.scrollTo({top:0});
     });
     $('#btnAch').onclick=()=>{renderAch();const b=$('#achBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({behavior:'smooth'});};
     $('#btnResume').onclick=()=>{const sv=loadSave();if(sv)startGame(sv.setup,sv.choices);};
