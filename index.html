@@ -131,6 +131,58 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 .lbl{color:var(--ink);font-weight:700;margin-right:4px}
 .honor{text-align:center;margin:4px auto 10px;padding:12px 10px;border:2px solid var(--gold,#f2c24f);background:var(--card);box-shadow:0 0 0 3px var(--paper2) inset}.honor small{display:block;font-size:11px;letter-spacing:.2em;color:var(--muted)}.honor b{display:block;font-size:22px;letter-spacing:.08em;color:var(--ink);margin-top:2px}
 .hlist{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}.hchip{display:inline-flex;align-items:baseline;gap:4px;padding:3px 8px;border:1px solid var(--gold,#f2c24f);background:var(--card);font-size:12px}.hchip small{color:var(--muted);font-size:10px}
+.intro{position:fixed;inset:0;z-index:200;background:#0d1024;overflow:auto;display:flex;justify-content:center;align-items:flex-start;padding:24px 16px 40px;transition:opacity .8s}
+.intro::after{content:'';position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.18) 0 1px,transparent 1px 3px)}
+.intro.out{opacity:0}
+body.introOn{overflow:hidden}
+.intro-in{width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;color:#f3ecdc}
+.intro-pre{font-family:var(--f-px,'Press Start 2P',monospace);font-size:9px;letter-spacing:.1em;color:#9aa1c8;margin:4px 0 0}
+.istage{width:100%;display:flex;flex-direction:column;align-items:center;gap:10px}
+.istage[hidden]{display:none}
+#iTap,#iTitle{padding-top:12vh}
+#iScene{padding-top:6vh}
+.iscreen{position:relative;width:100%;border:4px solid #f3ecdc;box-shadow:0 0 0 4px #0d1024,0 0 0 8px #d24b4b;background:#0d1024;line-height:0}
+.iscreen canvas{width:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.iphone{position:absolute;inset:4% 0 4% 0;display:flex;justify-content:center;align-items:center;background:rgba(13,16,36,.55)}
+.iphone[hidden]{display:none}
+.iphone-in{position:relative;height:100%;aspect-ratio:480/696;border:5px solid #26223b;border-radius:10px;box-shadow:0 0 0 2px #9aa1c8,0 0 18px rgba(140,200,255,.5);overflow:hidden;background:#000}
+.iphone-in video{width:100%;height:100%;object-fit:cover;display:block;image-rendering:pixelated}
+.iheart{position:absolute;right:5px;top:45%;color:#d24b4b;font-size:14px;line-height:1;text-shadow:1px 1px 0 #000}
+.itext{min-height:3.4em;width:100%;font-size:17px;line-height:1.7;color:#f3ecdc;text-align:left;padding:8px 10px;border:3px solid #f3ecdc;background:#141933;box-shadow:inset 0 0 0 2px #0d1024;letter-spacing:.04em}
+.iskip{align-self:flex-end;background:none;border:0;color:#9aa1c8;font-family:var(--f-px,'Press Start 2P',monospace);font-size:10px;padding:6px 2px;cursor:pointer}
+.intro-vid{position:relative;width:62%;max-width:240px;border:4px solid #f3ecdc;box-shadow:0 0 0 4px #0d1024,0 0 0 8px #d24b4b;background:#0d1024;line-height:0}
+.intro-vid video{width:100%;display:block;image-rendering:pixelated;aspect-ratio:480/696}
+.intro-vid video[hidden]{display:none}
+#introCv{width:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.intro-cap{position:absolute;left:0;right:0;bottom:10%;text-align:center;line-height:1.3;font-size:13px;font-weight:900;color:#f3ecdc;letter-spacing:.06em;text-shadow:2px 0 0 #0d1024,-2px 0 0 #0d1024,0 2px 0 #0d1024,0 -2px 0 #0d1024,2px 2px 0 #0d1024,-2px 2px 0 #0d1024,2px -2px 0 #0d1024,-2px -2px 0 #0d1024,4px 4px 0 #d24b4b;padding:0 6px;pointer-events:none}
+.intro-cap.hot{color:#f2c24f;font-size:15px}
+.intro-title{margin:6px 0 0;font-size:44px;font-weight:900;letter-spacing:.12em;color:#f3ecdc;text-shadow:3px 0 0 #d24b4b,0 3px 0 #d24b4b,3px 3px 0 #d24b4b,6px 6px 0 #0d1024}
+.intro-sub{font-family:var(--f-px,'Press Start 2P',monospace);font-size:10px;color:#f2c24f;margin:0;letter-spacing:.2em}
+.intro-flyer{width:100%}
+.intro-flyer img{width:100%;display:block;border:4px solid #f3ecdc;image-rendering:auto}
+.pxflyer{border:4px solid #f3ecdc;background:#d24b4b;color:#f3ecdc;padding:14px 10px;display:flex;flex-direction:column;gap:6px;box-shadow:inset 0 0 0 4px #0d1024}
+.pxflyer small{font-size:12px;letter-spacing:.08em}
+.pxflyer b{font-size:28px;font-weight:900;letter-spacing:.15em;text-shadow:3px 3px 0 #0d1024}
+.pxflyer span{font-size:13px}
+.pxflyer i{font-style:normal;font-family:var(--f-px,'Press Start 2P',monospace);font-size:10px;color:#f2c24f}
+.blink{font-family:var(--f-px,'Press Start 2P',monospace);font-size:12px;color:#f2c24f;animation:blink 1s steps(1) infinite;margin:6px 0 0}
+@keyframes blink{50%{opacity:0}}
+.intro .opts{width:100%}
+.intro .opt{color:var(--ink)}
+.intro .opt.primary{color:#fff}
+.modal{position:fixed;inset:0;z-index:300;background:rgba(10,12,28,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+.modal[hidden]{display:none}
+.rc-box{max-width:420px;width:100%;max-height:90vh;overflow:auto}
+.rc-head{text-align:center;border:3px solid var(--ink);padding:10px;background:#d24b4b;color:#f3ecdc}
+.rc-head small{font-family:var(--f-px,'Press Start 2P',monospace);font-size:9px;color:#f2c24f;display:block}
+.rc-head b{display:block;font-size:24px;letter-spacing:.15em;margin:4px 0}
+.rc-head span{font-size:12px}
+.rc-flyer{width:100%;border:3px solid var(--ink)}
+.rc-slogan{font-weight:900;font-size:18px;text-align:center;margin:0}
+.rc-dojos{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.rc-dojos li{border:2px solid var(--soft);padding:6px 8px;display:flex;flex-direction:column;font-size:12px;background:var(--card)}
+.rc-dojos li b{font-size:14px}
+.rc-dojos li span{color:var(--muted)}
 .talk{display:block;margin-top:2px;padding-left:10px;border-left:3px solid var(--soft);color:var(--ink2);font-size:13px;line-height:1.6}
 .bad{color:var(--red)} .gold{color:#b5761a;font-weight:700} .good{color:#2f8a4a}
 .bout{display:grid;grid-template-columns:4.4em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
@@ -391,6 +443,42 @@ a.opt{text-decoration:none;color:inherit}
 </style>
 
 <div class="app">
+  <div id="intro" class="intro" hidden>
+    <div class="intro-in">
+      <div id="iTap" class="istage">
+        <p class="intro-pre">中村道場台灣支部　presents</p>
+        <h2 class="intro-title">極真人生</h2>
+        <p class="intro-sub">KYOKUSHIN LIFE</p>
+        <p class="blink">▶ PRESS START</p>
+        <div class="opts">
+          <button class="opt primary" type="button" id="iSnd"><span class="l">開始（有音效）</span></button>
+          <button class="opt" type="button" id="iMute"><span class="l">靜音開始</span></button>
+        </div>
+      </div>
+      <div id="iScene" class="istage" hidden>
+        <div class="iscreen">
+          <canvas id="introCv" width="128" height="96" aria-label="開場動畫"></canvas>
+          <div id="iPhone" class="iphone" hidden>
+            <div class="iphone-in"><video id="introVid" poster="intro-poster.png" muted playsinline preload="auto" aria-label="中村道場台灣支部的 8-bit 介紹影片"><source src="intro.mp4" type="video/mp4"><source id="introSrcLast" src="intro.webm" type="video/webm"></video><div id="introCap" class="intro-cap"></div><span class="iheart">♥</span></div>
+          </div>
+        </div>
+        <div id="iText" class="itext"></div>
+        <button class="iskip" type="button" id="iSkip">略過 ▶▶</button>
+      </div>
+      <div id="iTitle" class="istage" hidden>
+        <p class="intro-pre">那一天，你決定去道場看看。</p>
+        <h2 class="intro-title">極真人生</h2>
+        <p class="intro-sub">KYOKUSHIN LIFE</p>
+        <p class="blink">▶ PRESS START</p>
+        <div class="opts">
+          <button class="opt primary" type="button" id="introGo"><span class="l">開始遊戲</span></button>
+          <button class="opt" type="button" id="introRc"><span class="l">真實道場・招生資訊</span></button>
+          <button class="opt" type="button" id="iReplay"><span class="l">重看開場動畫</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="recruit" class="modal" hidden><div class="px card rc-box" role="dialog" aria-label="招生資訊"></div></div>
   <header class="top">
     <div class="brand">
       <span class="seal">押<br>忍</span>
@@ -534,6 +622,7 @@ a.opt{text-decoration:none;color:inherit}
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
         <button class="opt" type="button" id="btnAch"><span class="l">成就圖鑑・歷代紀錄</span><span class="s" id="achSub"></span></button>
+        <button class="opt" type="button" id="btnRc"><span class="l">真實道場・招生資訊</span><span class="s">遊戲裡的人生，可以從真的道場開始</span></button>
       </div>
     </form>
   </section>
@@ -2724,6 +2813,124 @@ function drawSprite(cv,view,belt,hair){
 }
 
 /* ===== UI ===== */
+/* ===== 招生資訊（待道場提供；空白欄位不會顯示） ===== */
+const RECRUIT={
+  name:'極真空手道 中村道場 台灣支部',
+  slogan:'',        // 招生標語
+  flyer:'',         // 宣傳單圖檔（例如 'flyer.jpg'）
+  dojos:[],         // [{n:'屏東道場',addr:'',time:''}]
+  phone:'',line:'',ig:'',fb:'',url:'',
+  note:''
+};
+function recruitHTML(){
+  const R=RECRUIT;const ds=R.dojos.length?R.dojos:Object.values(HOMES).map(h=>({n:h.n}));
+  const link=(u,t)=>u?`<a class="opt" href="${esc(u)}" target="_blank" rel="noopener"><span class="l">${t}</span></a>`:'';
+  return `<div class="rc-head"><small>RECRUIT</small><b>學員招募中</b><span>${esc(R.name)}</span></div>
+  ${R.flyer?`<img class="rc-flyer" src="${esc(R.flyer)}" alt="道場宣傳單">`:''}
+  ${R.slogan?`<p class="rc-slogan">${esc(R.slogan)}</p>`:''}
+  <p>遊戲裡的人生，可以從真的道場開始。歡迎到道場看看。</p>
+  <ul class="rc-dojos">${ds.map(d=>`<li><b>${esc(d.n)}</b>${d.addr?`<span>${esc(d.addr)}</span>`:''}${d.time?`<span>${esc(d.time)}</span>`:''}</li>`).join('')}</ul>
+  ${R.note?`<p class="hint">${esc(R.note)}</p>`:''}
+  ${R.phone?`<p>電話：<a href="tel:${esc(R.phone)}">${esc(R.phone)}</a></p>`:''}
+  ${!R.phone&&!R.line&&!R.ig&&!R.fb&&!R.url?'<p class="hint">詳細上課時間與地點，歡迎直接到各道場詢問。</p>':''}
+  <div class="opts">${link(R.line,'LINE 詢問')}${link(R.ig,'Instagram')}${link(R.fb,'Facebook')}${link(R.url,'道場網站')}
+  <button class="opt primary" type="button" id="rcClose"><span class="l">押忍，知道了</span></button></div>`;
+}
+function showRecruit(){const m=$('#recruit');if(!m)return;m.querySelector('.rc-box').innerHTML=recruitHTML();m.hidden=false;chip([[784,.08],[1047,.12]]);
+  $('#rcClose').onclick=()=>{m.hidden=true;};m.onclick=e=>{if(e.target===m)m.hidden=true;};}
+
+/* ===== 8-bit 音效 ===== */
+function chip(seq,type,vol,at){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=(at||AC.currentTime)+.02;
+  for(const [f,d] of seq){if(f){const o=AC.createOscillator(),g=AC.createGain();o.type=type||'square';o.frequency.value=f;g.gain.setValueAtTime(vol||.05,t);g.gain.setValueAtTime(vol||.05,t+d*.7);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);}t+=d;}}catch(e){}}
+function fanfare(){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t0=AC.currentTime+.05;
+  const N={C3:131,G2:98,A2:110,F2:87,E5:659,G5:784,C6:1047,B5:988,D5:587,A5:880,C5:523};const s=.12;
+  chip([[N.E5,s],[N.G5,s],[N.C6,s*2],[N.B5,s],[N.G5,s],[N.E5,s*2],[N.D5,s],[N.E5,s],[N.G5,s],[N.A5,s],[N.G5,s*2],[N.C6,s*4]],'square',.045,t0);
+  chip([[N.C3,s*4],[N.G2,s*4],[N.A2,s*4],[N.F2,s*2],[N.G2,s*2],[N.C3,s*4]],'triangle',.12,t0);}catch(e){}}
+
+/* ===== 開場動畫：十六歲的你，滑到了一支道場的影片 ===== */
+let introRAF=0,introScene='room',iTok=0;
+function pxRect(x,c,a,b,w,h){x.fillStyle=c;x.fillRect(a,b,w,h);}
+function drawIntro(t){
+  const cv=$('#introCv');if(!cv||$('#intro').hidden||$('#iScene').hidden){introRAF=0;return;}
+  const W=128,H=96;if(cv.width!==W){cv.width=W;cv.height=H;}const x=cv.getContext('2d');x.imageSmoothingEnabled=false;
+  if(introScene==='room'){
+    pxRect(x,'#161a36',0,0,W,H);pxRect(x,'#1d2246',0,0,W,62);
+    pxRect(x,'#2b3366',10,8,34,28);pxRect(x,'#0d1024',12,10,30,24);pxRect(x,'#2b3366',26,10,2,24);pxRect(x,'#2b3366',12,21,30,2);
+    pxRect(x,'#f3ecdc',33,13,4,1);pxRect(x,'#f3ecdc',32,14,6,4);pxRect(x,'#f3ecdc',33,18,4,1);pxRect(x,'#0d1024',35,13,3,5);
+    x.fillStyle='#f3ecdc';for(let i=0;i<6;i++)if((Math.floor(t/500)+i)%3)x.fillRect(14+(i*7)%26,12+(i*5)%9,1,1);
+    pxRect(x,'#3a3256',86,12,26,22);pxRect(x,'#d24b4b',88,14,22,18);x.fillStyle='#f3ecdc';[[96,16,3,3],[97,19,2,6],[95,20,2,1],[93,21,2,1],[99,20,2,1],[101,19,2,1],[97,25,1,4],[98,24,1,1],[99,23,2,1],[101,22,2,1],[103,21,2,1],[96,29,2,1]].forEach(([a,b,w,h])=>x.fillRect(a,b,w,h));
+    pxRect(x,'#5a3a2a',0,62,W,34);pxRect(x,'#6a4632',0,62,W,2);
+    pxRect(x,'#e7dcc4',14,52,96,18);pxRect(x,'#4a6fb0',30,54,80,16);pxRect(x,'#3b5b95',30,54,80,2);pxRect(x,'#f3ecdc',16,50,18,8);
+    pxRect(x,'#2a2440',20,44,12,9);pxRect(x,'#e8b98f',22,48,8,6);
+    const fl=.6+.4*Math.abs(Math.sin(t/180));x.fillStyle=`rgba(140,200,255,${.25*fl})`;x.fillRect(26,36,22,20);pxRect(x,'#9fd3ff',34,44,5,8);pxRect(x,'#0d1024',35,45,3,6);
+  }else{
+    pxRect(x,'#3b3550',0,0,W,H);
+    for(let i=0;i<8;i++)pxRect(x,['#2b1f4a','#3d2557','#5a2d5c','#80385c','#a8485a','#c9604f','#e07f4f','#f2a65a'][i],0,i*6,W,6);
+    pxRect(x,'#2a2a3a',0,40,W,4);
+    pxRect(x,'#5c5870',18,22,92,52);pxRect(x,'#4a4660',18,22,92,3);
+    pxRect(x,'#d24b4b',30,27,68,13);pxRect(x,'#f3ecdc',32,29,64,9);pxRect(x,'#d24b4b',33,30,62,7);
+    x.fillStyle='#f3ecdc';[[36,31],[38,31],[40,31],[36,33],[40,33],[36,35],[38,35],[40,35],[44,31],[46,31],[48,31],[46,33],[44,35],[46,35],[48,35]].forEach(([a,b])=>x.fillRect(a,b,2,1));
+    x.fillStyle='#f2c24f';x.fillRect(56,32,34,3);
+    const glow=.75+.25*Math.sin(t/260);pxRect(x,'#1b1830',50,46,28,28);x.fillStyle=`rgba(255,214,140,${glow})`;x.fillRect(52,48,24,26);pxRect(x,'#3a3256',63,48,2,26);
+    pxRect(x,'#6e6a80',0,74,W,22);pxRect(x,'#7c7890',0,74,W,1);
+    pxRect(x,'#4a4660',0,44,18,30);pxRect(x,'#4a4660',110,44,18,30);
+    pxRect(x,'#3a3550',8,30,2,44);pxRect(x,'#f2c24f',6,28,6,3);
+    {const ox=60,oy=64;pxRect(x,'#2a2440',ox+2,oy,6,5);pxRect(x,'#2a2440',ox+1,oy+1,8,3);
+     pxRect(x,'#f3ecdc',ox+1,oy+5,8,8);pxRect(x,'#2e4f8f',ox,oy+5,3,7);pxRect(x,'#2e4f8f',ox+7,oy+5,3,7);pxRect(x,'#24407a',ox+1,oy+6,8,6);
+     pxRect(x,'#e8b98f',ox,oy+12,1,2);pxRect(x,'#e8b98f',ox+9,oy+12,1,2);
+     pxRect(x,'#2b2b3d',ox+2,oy+13,6,7);pxRect(x,'#1b1b28',ox+4,oy+15,1,5);pxRect(x,'#f3ecdc',ox+1,oy+20,3,1);pxRect(x,'#f3ecdc',ox+6,oy+20,3,1);}
+  }
+  introRAF=requestAnimationFrame(drawIntro);
+}
+const iWait=(ms,tk)=>new Promise(r=>setTimeout(r,ms)).then(()=>{if(tk!==iTok)throw 'skip';});
+async function iType(txt,tk,hold){const el=$('#iText');el.textContent='';for(const ch of txt){el.textContent+=ch;if(ch.trim())chip([[1320,.012]],'square',.018);await iWait(60,tk);}await iWait(hold||1000,tk);}
+function bgmVideo(){const s=.25,N={C5:523,D5:587,E5:659,G5:784,A5:880,C6:1047,G4:392,A4:440,C4:262,G3:196,A3:220,F3:175};
+  chip([[N.C5,s],[N.E5,s],[N.G5,s],[N.E5,s],[N.A5,s*2],[N.G5,s*2],[N.E5,s],[N.G5,s],[N.C6,s],[N.A5,s],[N.G5,s*4],[N.C5,s],[N.E5,s],[N.G5,s],[N.A5,s],[N.C6,s*2],[N.A5,s*2],[N.G5,s],[N.E5,s],[N.D5,s],[N.E5,s],[N.C5,s*4]],'square',.035);
+  chip([[N.C4,s*4],[N.A3,s*4],[N.F3,s*4],[N.G3,s*4],[N.C4,s*4],[N.A3,s*4],[N.F3,s*4],[N.G3,s*2],[N.C4,s*2]],'triangle',.1);}
+function introShow(id){['iTap','iScene','iTitle'].forEach(k=>{$('#'+k).hidden=k!==id;});}
+function introTitle(){iTok++;introShow('iTitle');const v=$('#introVid');try{v.pause();}catch(e){}$('#iPhone').hidden=true;fanfare();
+  try{localStorage.setItem('kl-introSeen','1');}catch(e){}}
+async function introPlay(){
+  const tk=++iTok;introShow('iScene');$('#iPhone').hidden=true;introScene='room';if(!introRAF)introRAF=requestAnimationFrame(drawIntro);
+  const v=$('#introVid'),cap=$('#introCap');
+  try{
+    await iWait(400,tk);
+    await iType('十六歲那年的某個晚上。',tk,700);
+    await iType('你躺在床上，手指一直往下滑。',tk,600);
+    let ok=!!v&&!v.dataset.bad;
+    if(ok){$('#iPhone').hidden=false;$('#iText').textContent='';v.loop=false;try{v.currentTime=0;}catch(e){}
+      const CAPS=[[0,1.45,'我們是中村道場'],[1.5,3.45,'臺灣最強的極真空手道'],[3.5,4.45,'我們的訓練環境'],[4.5,5.45,'讚！👍'],[5.5,5.95,'器材很多'],[6,6.95,'Sensei 很優'],[7,8.3,'趕快來報名！',1]];
+      let alive=true;const tick=()=>{if(!alive||tk!==iTok)return;const t=v.currentTime;const c=CAPS.find(z=>t>=z[0]&&t<z[1]);const txt=c?c[2]:'';if(cap.textContent!==txt){cap.textContent=txt;cap.classList.toggle('hot',!!(c&&c[3]));}requestAnimationFrame(tick);};
+      try{const p=v.play();if(p&&p.catch)p.catch(()=>{});}catch(e){}bgmVideo();requestAnimationFrame(tick);
+      await Promise.race([new Promise(r=>v.addEventListener('ended',r,{once:true})),iWait(8600,tk)]).catch(e=>{alive=false;throw e;});
+      alive=false;if(tk!==iTok)throw 'skip';await iWait(500,tk);$('#iPhone').hidden=true;cap.textContent='';
+    }else await iType('一支道場的影片跳了出來。你看了三遍。',tk,900);
+    await iType('……',tk,700);
+    await iType('「好像，很帥。」',tk,900);
+    await iType('「我也想變得那麼強。」',tk,1100);
+    introScene='door';
+    await iType('隔天放學，你站在了道場門口。',tk,700);
+    chip([[392,.08],[523,.18]],'square',.05);
+    await iType('裡面傳來一聲——「押忍！」',tk,1300);
+    introTitle();
+  }catch(e){if(e!=='skip')introTitle();}
+}
+function showIntro(){
+  const el=$('#intro');if(!el)return;
+  el.hidden=false;document.body.classList.add('introOn');
+  const v=$('#introVid');if(v){const bad=()=>{v.dataset.bad='1';};v.addEventListener('error',bad);const ls=$('#introSrcLast');if(ls)ls.addEventListener('error',bad);}
+  let seen=false;try{seen=localStorage.getItem('kl-introSeen')==='1';}catch(e){}
+  introShow(seen?'iTitle':'iTap');
+  const setSnd=on=>{try{localStorage.setItem('kl-snd',on?'1':'0');}catch(e){}applyDisp();};
+  $('#iSnd').onclick=()=>{setSnd(true);introPlay();};
+  $('#iMute').onclick=()=>{setSnd(false);introPlay();};
+  $('#iSkip').onclick=()=>introTitle();
+  $('#iReplay').onclick=()=>introPlay();
+  $('#introRc').onclick=()=>showRecruit();
+  $('#introGo').onclick=()=>{iTok++;el.classList.add('out');try{v&&v.pause();}catch(e){}
+    setTimeout(()=>{el.hidden=true;el.classList.remove('out');document.body.classList.remove('introOn');window.scrollTo({top:0});},450);};
+}
+
 let G=null;
 const KEY='kyokushin-life-v36';
 const $=s=>document.querySelector(s);
@@ -2876,7 +3083,7 @@ function epiParas(){
   const W=(WCLS[S.wc]||{}).n||'';const fav=S.fav?MOVES[S.fav].n:'';const L=S.log||[];const has=re=>L.some(l=>re.test(l.t));const cnt=re=>L.filter(l=>re.test(l.t)).length;
   const add=(h,t)=>{if(t)P.push({h,t});};
   // 入門
-  {let t=`那年春天，十六歲的你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
+  {let t=`那年春天，十六歲的你在手機上滑到一支道場的影片，看了三遍。隔天放學，你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
    if(S.flags.senBond)t+=`那天下課後，${sen}留下來教你用前腳控制距離，一直練到道場熄燈。他說：「你會比我強。」`;
    if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);t+=a.pos&&b.pos?`你天生${a.n}，又${b.n}，大家都說你是塊料。`:!a.pos&&!b.pos?`你${a.n}，又${b.n}，沒有人看好你，可是你一直沒走。`:`你${(a.pos?a:b).n}，也${(a.pos?b:a).n}；好的那一面帶你往前，壞的那一面逼你長大。`;}
    add('入門・十六歲',t);}
@@ -3102,10 +3309,13 @@ function renderEnd(){
   <div class="opts">
     <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
     <div id="cardOut"></div>
+    <button class="opt" type="button" id="btnRc2"><span class="l">想真的來練練看？招生資訊</span></button>
     <button class="opt" type="button" id="btnSame"><span class="l">同一顆種子，重新來過</span></button>
     <button class="opt" type="button" id="btnNew"><span class="l">開始新的人生</span></button>
   </div>`;
   drawSprite($('#endSpr'),'front',SPR_BELT[S.rank],'#3a3550');
+  $('#btnRc2').onclick=()=>showRecruit();
+  if(G&&!G.rcShown){G.rcShown=1;setTimeout(()=>{if(G&&G.prompt&&G.prompt.kind==='end')showRecruit();},1800);}
   {const fresh=recordRun();if(fresh.length)$('#newAch').innerHTML=`<div class="epi"><b>解鎖成就</b><p>${fresh.map(n=>'🏅 '+n).join('<br>')}</p></div>`;}
   $('#btnCard').onclick=async()=>{
     try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(e){}
@@ -3170,6 +3380,7 @@ function initUI(){
   });
   const toggleGuide=show=>{$('#guide').hidden=!show;$('#btnGuide').textContent=show?'收起說明':'遊戲說明';if(show)$('#guide').scrollIntoView({behavior:'smooth',block:'start'});};
   $('#btnGuide').addEventListener('click',()=>toggleGuide($('#guide').hidden));
+  {const b=$('#btnRc');if(b)b.onclick=()=>showRecruit();}
   $('#btnGuideClose').addEventListener('click',()=>toggleGuide(false));
   let armed=false;
   $('#btnQuit').addEventListener('click',e=>{
@@ -3179,6 +3390,7 @@ function initUI(){
 }
 function boot(data){
   initUI();
+  if(!(data&&data.setup))showIntro();
   if(data&&data.setup)startGame(data.setup,data.choices||[]);else render();
 }
 if(typeof document!=='undefined'&&document.querySelector('#start')){
