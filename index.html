@@ -111,6 +111,7 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 .card h2::before{content:"";width:8px;height:8px;background:var(--coral);box-shadow:3px 3px 0 var(--ink);flex:none}
 .lines{display:flex;flex-direction:column;gap:6px;background:var(--paper2);padding:10px 12px;font-size:14px;color:var(--ink2)}
 .lines b{color:var(--ink);font-weight:700}
+.lines.prev{margin:0 0 4px;border-left:4px solid var(--muted,#9a8f7a);opacity:.92}.prevtag{font-size:11px;font-weight:700;letter-spacing:.12em;color:var(--muted,#8a806c)}.prevsep{border-top:2px dashed rgba(0,0,0,.18);margin:10px 0 12px}
 .q{margin:0;font-size:15px}
 .q b{font-weight:700;color:var(--coral)}
 .opts{display:flex;flex-direction:column;gap:11px;margin-top:2px}
@@ -3187,7 +3188,7 @@ function render(){
   card.className='px card';
   const tiles=p.opts.filter(o=>o.tile),chips=p.opts.filter(o=>o.chip&&!o.big),bigs=p.opts.filter(o=>o.big);
   const optArea=tiles.length?`<div class="tgrid">${tiles.map(o=>{const X=TX(o.id);const ic=TICON[X.fam]||['?','var(--muted)'];const v=o.pv;const lv=X.card?cardLv(o.id)+1:0;const cc=X.card?cardCnt(o.id):0;const pips=X.card?(lv>=5?'<span class="mx">MAX</span>':`<span class="pg">${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}</span>`):'';return `<button type="button" class="opt ttile${o.rec?' rec':''}${X.card?' card r'+X.rar:''}" data-id="${o.id}"><span class="tn"><i style="background:${ic[1]}">${ic[0]}</i><span>${o.label}</span></span>${X.card?`<span class="cmeta"><b class="rar">${RARN[X.rar]}</b><small class="lv">Lv${lv}${pips}</small></span><span class="cs">${esc(X.s)}</span>`:''}<span class="tg2">${v.g.map(x=>`<u>${x}</u>`).join('')}${v.extra?`<u class="k">${v.extra}</u>`:''}</span><span class="tr"><span class="${v.hp<0?'bad':'good'}">體況 ${v.hp>0?'+':''}${v.hp}</span>${v.risk?`<span class="${v.risk>=8?'bad':''}">受傷 ${v.risk}%</span>`:'<span>無風險</span>'}${X.cost?`<span>花 ${X.cost} 萬</span>`:''}${X.pay?`<span class="good">存款 +${X.pay} 萬／季</span>`:''}</span></button>`;}).join('')}</div>${bigs.length?`<div class="bigrow">${bigs.map(o=>`<button type="button" class="opt bigopt" data-id="${o.id}"${o.disabled?' disabled':''}><i>${o.icon||'★'}</i><span><span class="l">${o.label}</span><span class="s">${o.sub||''}</span></span></button>`).join('')}</div>`:''}${chips.length?`<div class="xrow">${chips.map(o=>`<button type="button" class="opt xbtn${o.danger?' danger':''}" data-id="${o.id}"><span class="l">${o.label}</span></button>`).join('')}</div>`:''}`:`<div class="opts">${optsHTML(p.opts)}</div>`;
-  card.innerHTML=`<div class="eyebrow">${p.eyebrow}</div><h2>${p.title}</h2>${p.lines.length?`<div class="lines">${p.lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}${p.body?`<p class="q">${p.body}</p>`:''}${optArea}`;
+  card.innerHTML=`${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.map(l=>`<div>${l}</div>`).join('')}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div><h2>${p.title}</h2>${p.body?`<p class="q">${p.body}</p>`:''}${optArea}`;
   card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.id)));
   $('#log').innerHTML=S.log.slice().reverse().map(x=>`<li class="${x.cls}"><span>${x.w}</span>${esc(x.t)}</li>`).join('');
 }
