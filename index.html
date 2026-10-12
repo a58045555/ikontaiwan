@@ -354,7 +354,7 @@ footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
 .ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
 .epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
 .epi b{display:block;font-size:12px;letter-spacing:.2em;color:var(--muted);margin-bottom:4px}
-.epi p{margin:0 0 .7em;line-height:1.9;text-indent:2em}.epi p:last-child{margin-bottom:0}
+.epi p{margin:0 0 .7em;line-height:1.9;text-indent:2em}.epi p:last-child{margin-bottom:0}.epi h4{margin:.9em 0 .25em;font-size:12px;letter-spacing:.15em;color:var(--ink2)}.epi h4:first-of-type{margin-top:.2em}.life .stage{border-top:1px dashed rgba(0,0,0,.15);padding:6px 0}.life .stage summary{cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:8px;list-style:none}.life .stage summary::-webkit-details-marker{display:none}.life .stage summary::before{content:'▸';margin-right:4px;color:var(--muted)}.life .stage[open] summary::before{content:'▾'}.life .sn{font-weight:700;flex:1}.life small{color:var(--muted);font-size:11px;white-space:nowrap}.tl{list-style:none;margin:6px 0 2px;padding:0}.tl li{display:flex;gap:8px;font-size:13px;line-height:1.6;padding:1px 0}.tl li i{font-style:normal;min-width:2.2em;color:var(--muted);text-align:right}.tl li.gold{font-weight:700}.tl li.gold i{color:var(--ink)}.tl li.bad{color:var(--coral,#b8504c)}
 .achgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .ach{padding:8px 10px;background:var(--paper2,#efe6d2);box-shadow:0 0 0 2px #cfc4ab;opacity:.6}
 .ach.on{opacity:1;background:#fff6d8;box-shadow:0 0 0 2px #f2c24f}
@@ -1974,7 +1974,7 @@ function* life(){
         {id:'trainee',label:'留在支部當見習指導員',sub:okT?'見習津貼每季 2 萬 · 稽古效率 ×1.05 · 每年累積指導資歷 · 升上初段就直接成為指導員 · 20 歲服兵役':'需要藍帶以上',disabled:!okT},
         {id:'uni',label:'讀大學，繼續在道場練',sub:'四年 · 學費＋學雜費 · 稽古效率 ×1 · 兵役延到畢業 · 每年有大專盃 · 可接家教 · 畢業後找工作薪水較高'},
         {id:'job',label:'就業，下班後練習',sub:`薪水每季約 ${(3.4).toFixed(1)} 萬，年資越久越高 · 稽古效率 ×0.85 · 20 歲服兵役 · 最快存到開道場的錢`}]);
-      S.path=c;S.mult=c==='trainee'?1.05:c==='job'?.85:1;if(c==='job')S.flags.jobStart=S.year;if(c==='uni')S.flags.uniStart=S.year;
+      S.path=c;S.flags.p18=c;S.mult=c==='trainee'?1.05:c==='job'?.85:1;if(c==='job')S.flags.jobStart=S.year;if(c==='uni')S.flags.uniStart=S.year;
       log({trainee:'留在支部當見習指導員',uni:'上大學，繼續在道場練',job:'就業，下班後練習'}[c]);
       yield* lifeSetup('從現在起，生活費要自己出了。');
     }
@@ -2350,57 +2350,109 @@ function render(){
   card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.id)));
   $('#log').innerHTML=S.log.slice().reverse().map(x=>`<li class="${x.cls}"><span>${x.w}</span>${esc(x.t)}</li>`).join('');
 }
+function birthY(){return S.year-S.age;}
+function logAge(l){return parseInt(l.w)-birthY();}
 function epiParas(){
   const m=S.mil||{},c=S.champ,P=[];const home=S.home.n;const yrs=S.age-16;const sen=esc(S.npc.sen),koh=esc(S.npc.koh);
-  const W=(WCLS[S.wc]||{}).n||'';const fav=S.fav?MOVES[S.fav].n:'';
-  // 一、入門
-  P.push(`那年春天，十六歲的你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`);
-  // 二、這個人
-  {let t='';
+  const W=(WCLS[S.wc]||{}).n||'';const fav=S.fav?MOVES[S.fav].n:'';const L=S.log||[];const has=re=>L.some(l=>re.test(l.t));const cnt=re=>L.filter(l=>re.test(l.t)).length;
+  const add=(h,t)=>{if(t)P.push({h,t});};
+  // 入門
+  {let t=`那年春天，十六歲的你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
+   if(S.flags.senBond)t+=`那天下課後，${sen}留下來教你用前腳控制距離，一直練到道場熄燈。他說：「你會比我強。」`;
    if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);t+=a.pos&&b.pos?`你天生${a.n}，又${b.n}，大家都說你是塊料。`:!a.pos&&!b.pos?`你${a.n}，又${b.n}，沒有人看好你，可是你一直沒走。`:`你${(a.pos?a:b).n}，也${(a.pos?b:a).n}；好的那一面帶你往前，壞的那一面逼你長大。`;}
+   add('入門・十六歲',t);}
+  // 十八歲
+  {let t='';const p=S.flags.p18;
+   if(p==='trainee')t+='高中畢業那年，同學去上大學、去上班，你選擇留在支部當見習指導員。每天早上第一個拉開道場的鐵門，晚上最後一個關燈。';
+   else if(p==='uni')t+=`高中畢業後你上了大學。白天坐在教室，晚上換上道着${S.flags.degree?'；四年後拿到畢業證書，爸媽在台下比你還高興':''}${has(/大專盃.*優勝/)?`，你還替學校拿下過 ${cnt(/大專盃.*優勝/)} 次大專盃冠軍`:''}。`;
+   else if(p==='job')t+='高中畢業後你選擇就業。下班趕到道場，常常只剩最後一個小時的稽古，可是你從來沒有少練一次。';
+   if(S.flags.service)t+='兵役那一年，你在營區熄燈後的寢室裡偷偷練正拳；退伍那天，你在營區門口回頭看了一眼，然後直奔道場。';
+   if(has(/打工|夜班/)||S.flags.jobStart&&p!=='job')t+='';
+   add('十八歲的岔路',t);}
+  // 腰帶
+  {let t='';const fails=cnt(/審查不合格/);
+   if(m.black)t+=`${m.black} 歲那年，你第一次把黑帶繫在腰上，打結的手微微發抖${fails?`。在那之前，你在審查會上落榜過 ${fails} 次，${fails>1?'每一次':'那一次'}都是自己默默把腰帶收回袋子裡`:''}。`;
+   else t+=`你終究沒有繫上黑帶。那條${RANKS[S.rank]}洗到發白，卻從來沒有缺席過一次稽古${fails?`；審查落榜 ${fails} 次，你沒有一次說過放棄`:''}。`;
+   if(m.inst)t+=`${m.inst} 歲取得指導員資格，第一次站到學員前面喊口令，聲音比自己想的還要小。`;
+   if(m.yon)t+=`${m.yon} 歲升上四段，腰帶上多了一條條金線，肩上的責任也是。`;
+   const inj=S.flags.injN||0;if(inj)t+=inj>=5?`這些年你受過 ${inj} 次傷，身上的每一道疤，你都記得是哪一場。`:`你受過 ${inj} 次傷，每一次都咬著牙回到道場。`;
    const gone=(S.traits0||[]).filter(k=>!S.traits.includes(k)).map(k=>TRAITS[k].n),acq=(S.tAcq||[]).filter(k=>S.traits.includes(k));
    const got=acq.filter(k=>TRAITS[k].pos).map(k=>TRAITS[k].n),scar=acq.filter(k=>!TRAITS[k].pos&&!(S.traits0||[]).includes(k)).map(k=>TRAITS[k].n);
-   if(gone.length||got.length||scar.length)t+=`這些年的修行慢慢改變了你${gone.length?`，磨掉了${gone.join('、')}`:''}${got.length?`，換來了${got.join('、')}`:''}${scar.length?`，也在你身上落下了${scar.join('、')}`:''}。`;
-   t+=`你是${specLabel()}的${W}選手${fav?`，最信任的是${fav}，那是無數個夜裡對著沙包磨出來的答案`:''}。`;
-   P.push(t);}
-  // 三、帶與修行
+   if(gone.length||got.length||scar.length)t+=`修行慢慢改變了你${gone.length?`，磨掉了${gone.join('、')}`:''}${got.length?`，換來了${got.join('、')}`:''}${scar.length?`，也在你身上落下了${scar.join('、')}`:''}。`;
+   add('腰帶',t);}
+  // 內弟子
   {let t='';
-   if(m.black)t+=`${m.black} 歲那年，你第一次把黑帶繫在腰上，打結的手微微發抖。`;else t+=`你終究沒有繫上黑帶。那條${RANKS[S.rank]}洗到發白，卻從來沒有缺席過一次稽古。`;
-   if(m.inst)t+=`${m.inst} 歲取得指導員資格，第一次站到學員前面喊口令，聲音比自己想的還要小。`;
-   if(m.twuchi)t+=`${m.twuchi} 歲，你通過支部長審查成為台灣支部內弟子，凌晨五點拖地的聲音成了你的鬧鐘。`;
-   if(S.flags.uchiDone)t+=`後來你遠赴日本本部，在異鄉的冬天熬過一千多個日子${S.flags.hoko==='abroad'?'，又被派到海外分部研修一年':''}。回到台灣那天，連走路的樣子都不一樣了。`;
-   P.push(t);}
-  // 四、場上
+   if(m.twuchi)t+=`${m.twuchi} 歲，你通過支部長審查成為台灣支部內弟子，住進支部，凌晨五點拖地的聲音成了你的鬧鐘。`;
+   if(S.flags.uchiDone)t+=`${m.uchi?`${m.uchi} 歲，`:'後來'}你遠赴日本本部，在異鄉的冬天熬過一千多個日子；同期一個一個收拾行李離開，你留了下來${S.flags.hoko==='abroad'?'，結業後又被派到海外分部研修一年':''}。回到台灣那天，連走路的樣子都不一樣了。`;
+   else if(S.flags.twuchiDone)t+='三年的台灣內弟子結業那天，支部長只說了一句：「辛苦了。」你記到現在。';
+   add('內弟子修行',t);}
+  // 選手
   {let t='';
    const big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');
    const twn=(S.twc.kumite||0)+(S.twc.kata||0);
+   t+=`你是${specLabel()}的${W}選手${fav?`，最信任的是${fav}，那是無數個夜裡對著沙包磨出來的答案`:''}。`;
    if(big.length)t+=`選手生涯最亮的那一刻，是${big.join('、')}。場館的燈打在你身上，你想起的卻是${home}裡那盞昏黃的日光燈${twn?`；全台冠軍，你拿過 ${twn} 次`:''}。`;
    else if(twn)t+=`你拿過 ${twn} 次全台冠軍，每一座獎盃底下，都壓著一層又一層的瘀青。`;
    else if(S.titles.length)t+=`你最好的成績是${esc(S.titles[0].replace(/^\d+ /,''))}。那不是終點，只是你曾經抵達過的地方。`;
    else t+='你沒有拿過冠軍。可是每一次點到名字，你都站上了場；每一次倒下，你都自己站了起來。';
+   const tw=S.w+S.l,tk=S.kw+S.kl;if(tw||tk)t+=`算一算，${tw?`組手 ${S.w} 勝 ${S.l} 敗`:''}${tw&&tk?'，':''}${tk?`型 ${S.kw} 勝 ${S.kl} 敗`:''}；輸掉的那些場，教會你的比贏的還多。`;
    if(S.route!=='kata'&&(S.rivalW||S.rivalL))t+=`你和宿敵${esc(S.rival)}交手 ${S.rivalW+S.rivalL} 次，${S.rivalW>S.rivalL?'你贏得多一點':S.rivalW<S.rivalL?'他贏得多一點':'始終不分上下'}。多年以後回頭看，最懂你的人，也許就是他。`;
    if(S.flags.hyaku)t+='百人組手那天，第一百人倒下時整座道場的吶喊，到現在還留在你的耳朵裡。';
-   if(m.ret)t+=S.forced?`${m.ret} 歲，身體終於跟不上意志，你被迫從選手引退。`:`${m.ret} 歲，你從選手引退。最後一場比賽結束，你對著空下來的場地，深深鞠了一躬。`;
-   P.push(t);}
-  // 五、人
+   if(S.flags.sponsor||S.flags.channel)t+=`${S.flags.sponsor?'有企業找你簽贊助，':''}${S.flags.channel?'你開了自己的頻道，留言區有人叫你「老師」，':''}你第一次發現，原來有那麼多人在看。`;
+   add('選手時代',t);}
+  // 引退
+  {let t='';
+   if(m.ret)t+=S.forced?`${m.ret} 歲，身體終於跟不上意志，你被迫從選手引退。那天你在更衣室坐了很久，才把護具一件一件拿下來。`:`${m.ret} 歲，你從選手引退。最後一場比賽結束，你對著空下來的場地，深深鞠了一躬。`;
+   const nx={dojo:'接下來的日子，你把全部的力氣都給了自己的道場。',closed:'你決定開一間自己的道場，把極真傳下去。',staff:'你選擇留在支部當專職指導員，從站在場上，變成站在學員前面。',judge:'你拿起紅白旗，成為審判員，換一個位置繼續待在賽場邊。',life:'你把道着收進衣櫃，回到平凡的生活。'}[S.ending];
+   if(m.ret&&nx)t+=nx;
+   add('從選手引退',t);}
+  // 傳承
+  {let t='';
+   if(S.flags.teach)t+='你帶過少年部，那些當年只到你腰的孩子，後來有好幾個都比你高了。';
+   if(m.shd)t+=`${m.shd} 歲，支部長任命你為台灣支部師範代${S.flags.shdFail?`，那是你第 ${S.flags.shdFail+1} 次站在審查席前`:''}${m.shibu?`；${m.shibu} 歲，你接下了台灣支部長，從此肩上扛的是整個台灣的極真`:''}。`;
+   if(S.branches&&S.branches.length)t+=`你派出 ${S.branches.length} 名弟子到各地開館，台灣支部的招牌掛到了${[...regionsHeld()].join('、')}部${S.flags.zenkoku?'，完成了全台製霸':''}。`;
+   if(S.dojo){const d=S.dojo;const oa=d.opened-birthY();t+=`${oa} 歲那年，你在${(CITIES[d.city]||{}).n||''}開了${esc(d.name)}。最多的時候有 ${d.peak} 個學員擠在道場裡${d.staff?`，${d.staff} 位專任指導員和你一起扛`:''}${d.owned?'，後來你還把場地買了下來':''}；有 ${d.blacks} 名弟子在那裡繫上黑帶${d.champs?`，${d.champs} 人拿下全台冠軍`:''}。`;
+     if(d.prodigyJp)t+='你從少年部一手帶大的孩子，後來站上了全日本的頂點，在頒獎台上找到你，深深一鞠躬。';
+     else if(d.prodigy)t+=`少年部的${esc(d.prodigy.n)}，是你這輩子最用心帶的孩子。`;
+     if(S.flags.womenChamp)t+='女子部的選手也拿過全台冠軍，那天道場的女生們哭成一團。';}
+   else if(S.flags.closedDojo)t+=`你開過${esc(S.flags.closedDojo)}，最多的時候有 ${S.flags.closedPeak||0} 個學員，最後還是拉下了鐵門。那不是失敗，那是你為這條路付過的學費。`;
+   add('傳承',t);}
+  // 人
   {let t='';
    if(S.used.npc_s2)t+=`師兄${sen}回老家接香腸店那天，把那條磨白的黑帶交給你，你一直把它收在道着袋的最裡面。`;
    if(S.used.npc_k2)t+=`學弟${koh}站上全台頒獎台時，朝觀眾席的你深深一鞠躬；你這才知道，原來自己也成了別人的師兄。`;
    if(S.flags.separated)t+='為了道場，家庭付出了代價。有些晚歸的夜，怎麼道歉都補不回來。';
    else if(S.flags.married)t+=`${m.married?`${m.married} 歲成家${S.flags.kid?'，後來有了孩子':''}。`:''}觀眾席上，總有一個位置是留給家人的，他們一直都在。`;
-   if(t)P.push(t);}
-  // 六、傳承
-  {let t='';
-   if(m.shd)t+=`${m.shd} 歲，支部長任命你為台灣支部師範代${m.shibu?`；${m.shibu} 歲，你接下了台灣支部長，從此肩上扛的是整個台灣的極真`:''}。`;
-   if(S.branches&&S.branches.length)t+=`你派出 ${S.branches.length} 名弟子到各地開館，台灣支部的招牌掛到了${[...regionsHeld()].join('、')}部${S.flags.zenkoku?'，完成了全台製霸':''}。`;
-   if(S.dojo){const d=S.dojo;t+=`你一手創立的${esc(d.name)}，有 ${d.blacks} 名弟子在那裡繫上黑帶${d.champs?`，${d.champs} 人拿下全台冠軍`:''}${d.prodigyJp?'；你從少年部帶大的孩子，後來站上了全日本的頂點':''}。`;}
-   else if(S.flags.closedDojo)t+=`你開過${esc(S.flags.closedDojo)}，最後還是拉下了鐵門。那不是失敗，那是你為這條路付過的學費。`;
-   if(t)P.push(t);}
-  // 七、尾聲
-  P.push(`從十六歲到 ${S.age} 歲，${yrs} 年。流過的汗可以把整座道場拖過一千遍，受過的傷早就數不清了。有人問你，這一路值不值得？你只是笑了笑，雙手在胸前交叉，輕輕說了一聲——押忍。`);
+   else t+='你沒有成家。道場就是你的家，學員就是你的家人。';
+   add('身邊的人',t);}
+  // 尾聲
+  add('尾聲',`從十六歲到 ${S.age} 歲，${yrs} 年。流過的汗可以把整座道場拖過一千遍，受過的傷早就數不清了。有人問你，這一路值不值得？你只是笑了笑，雙手在胸前交叉，輕輕說了一聲——押忍。`);
   return P;
 }
-function epilogue(){return epiParas().join('');}
+function epilogue(){return epiParas().map(p=>p.t).join('');}
+function lifeStages(){
+  const m=S.mil||{};const L=(S.log||[]).filter(l=>!/講習會$|痊癒$/.test(l.t));
+  const uEnd=L.find(l=>/日本內弟子結業/.test(l.t)),tEnd=L.find(l=>/台灣內弟子結業/.test(l.t));
+  const PN={trainee:'見習指導員',uni:'大學生',job:'上班族'};
+  let b=[[16,'入門'],[18,'十八歲・'+(PN[S.flags.p18]||'出社會')]];
+  if(m.black)b.push([m.black,'繫上黑帶']);
+  if(m.twuchi)b.push([m.twuchi,'台灣內弟子']);
+  if(m.uchi)b.push([m.uchi,'日本內弟子']);
+  const back=uEnd?logAge(uEnd):(tEnd&&!m.uchi?logAge(tEnd):0);if(back)b.push([back,'回到台灣・選手生涯']);
+  {const pk=L.find(l=>/^(全日本|全世界).*優勝/.test(l.t));if(pk){const a=logAge(pk);if(!m.ret||a<m.ret)b.push([a,'站上頂點']);}}
+  if(m.ret)b.push([m.ret,'從選手引退']);
+  if(S.dojo||S.flags.closedDojo){const d=S.dojo;const oa=d?d.opened-birthY():null;if(oa&&oa>=(m.ret||99))b.push([oa,'道場主']);}
+  if(m.shd&&m.shd>(m.ret||0))b.push([m.shd,'師範代']);
+  if(m.shibu)b.push([m.shibu,'台灣支部長']);
+  b.sort((x,y)=>x[0]-y[0]);const B=[];for(const x of b){const last=B[B.length-1];if(last&&last.a0===x[0])last.n+='・'+x[1];else B.push({a0:x[0],n:x[1],items:[]});}
+  for(const l of L){const a=logAge(l);let st=B[0];for(const s of B)if(s.a0<=a)st=s;st.items.push({a,t:l.t,cls:l.cls});}
+  B.forEach((s,i)=>{s.a1=i<B.length-1?Math.max(s.a0,B[i+1].a0-1):S.age;});
+  return B.filter(s=>s.items.length||s.a0===16);
+}
+function stagesHTML(){
+  return `<div class="epi life"><b>人生年表</b>${lifeStages().map((s,i)=>{const g=s.items.filter(x=>x.cls==='gold').length;
+    return `<details class="stage"${i===0?' open':''}><summary><span class="sn">${s.n}</span><small>${s.a0===s.a1?s.a0:s.a0+'–'+s.a1} 歲 · ${s.items.length} 件事${g?` · ★${g}`:''}</small></summary><ul class="tl">${s.items.map(x=>`<li class="${x.cls}"><i>${x.a}</i>${esc(x.t)}</li>`).join('')}</ul></details>`;}).join('')}</div>`;
+}
 const ACHS=[
   ['black','黑帶','升上初段',S=>S.rank>=6],
   ['godan','五段','升上五段',S=>S.rank>=10],
@@ -2484,7 +2536,7 @@ function shareCard(){
   let y=620;x.fillStyle='#26223b';x.font=`900 36px ${F}`;x.fillText('主要頭銜',80,y);y+=20;x.font=`500 32px ${F}`;
   const tt=S.titles.filter(t=>/優勝|就任|完遂/.test(t)).slice(-6);(tt.length?tt:['每一次站上場，都算數。']).forEach(t=>{y+=50;x.fillText('★ '+t,90,y);});
   y=Math.max(y+70,1000);x.font=`500 28px ${F}`;x.fillStyle='#4a4560';
-  const ep=epiParas().slice(-1)[0].replace(/<[^>]+>/g,'');let line='';const lines=[];for(const ch of ep){if(x.measureText(line+ch).width>W-180){lines.push(line);line=ch;}else line+=ch;}lines.push(line);
+  const ep=epiParas().slice(-1)[0].t.replace(/<[^>]+>/g,'');let line='';const lines=[];for(const ch of ep){if(x.measureText(line+ch).width>W-180){lines.push(line);line=ch;}else line+=ch;}lines.push(line);
   const ls=lines.slice(0,4);if(lines.length>4)ls[3]=ls[3].slice(0,-1)+'…';ls.forEach((l,i)=>x.fillText(l,90,y+i*42));
   x.fillStyle='#26223b';x.fillRect(40,H-150,W-80,110);x.fillStyle='#f2c24f';x.font=`900 34px ${F}`;x.fillText(`命運種子 ${String(G.setup.seed).padStart(6,'0')}`,80,H-82);
   x.fillStyle='#f3ecdc';x.font=`500 26px ${F}`;x.fillText('輸入同一顆種子，挑戰同一段人生',520,H-84);
@@ -2496,8 +2548,9 @@ function renderEnd(){
   <div class="hero"><div class="portrait"><canvas id="endSpr"></canvas></div>
     <div class="hinfo"><p class="ep">${epithet()}</p><div class="hname"><b>${esc(S.name)}</b>${beltPill(S.rank)}</div><div class="hsub">${specLabel()}・出身 ${S.home.n}</div></div></div>
   ${lines.length?`<div class="lines">${lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}
-  <div class="epi"><b>結語</b>${epiParas().map(p=>`<p>${p}</p>`).join('')}</div>
+  <div class="epi"><b>結語</b>${epiParas().map(p=>`<h4>${p.h}</h4><p>${p.t}</p>`).join('')}</div>
   <p class="q">${ENDTXT[S.ending]||''}</p>
+  ${stagesHTML()}
   <div class="endgrid">
     ${S.route!=='kata'?`<div><span>組手戰績</span><b>${S.w} 勝 ${S.l} 敗</b></div>`:''}
     ${S.route!=='kumite'?`<div><span>型戰績</span><b>${S.kw} 勝 ${S.kl} 敗</b></div>`:''}
