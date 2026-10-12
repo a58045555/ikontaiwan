@@ -426,6 +426,7 @@ footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
 .ttile.r3 .rar{background:#d9534f;color:#fff}
 .ttile.r2{background:linear-gradient(180deg,rgba(242,194,79,.18),transparent 60%)}
 .ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
+.epch{margin-top:14px}.epch:first-of-type{margin-top:6px}.epchh{display:flex;align-items:baseline;gap:8px;padding:8px 0 6px;border-bottom:2px solid var(--ink,#26223b);margin-bottom:8px}.epchh span{font-size:11px;color:#fff;background:var(--ink,#26223b);padding:2px 6px;letter-spacing:.1em}.epchh b{font-size:18px;color:var(--ink,#26223b)!important;letter-spacing:.1em}.epchh small{font-size:12px;color:var(--muted,#8a806c)}
 .epihint{font-size:12px;color:var(--muted,#8a806c);margin:4px 0 8px;text-indent:0!important}.epiv{border-top:2px solid rgba(0,0,0,.12)}.epiv:last-child{border-bottom:2px solid rgba(0,0,0,.12)}.epiv summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:10px 2px}.epiv summary::-webkit-details-marker{display:none}.epiv .en{font-family:var(--f-px,monospace);font-size:10px;color:#fff;background:var(--ink,#26223b);padding:5px 5px 4px;margin-top:2px}.epiv .et{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}.epiv .et b{font-size:16px;color:var(--ink,#26223b)!important;letter-spacing:.05em}.epiv .et small{font-size:12px;color:var(--muted,#8a806c)}.epiv .et i{flex-basis:100%;font-style:normal;font-size:12px;color:var(--ink2,#555);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.epiv[open] .et i{display:none}.epiv summary::after{content:'＋';font-weight:900;color:var(--ink2,#555);margin-top:2px}.epiv[open] summary::after{content:'－'}.epiv[open] summary{background:rgba(0,0,0,.04)}.epib{padding:2px 2px 12px}
 .epitabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 6px}.etab{min-width:0;border:2px solid var(--ink,#26223b);background:#fff;color:var(--ink,#26223b);font:inherit;font-weight:700;font-size:13px;padding:5px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.3}.etab small{font-weight:400;font-size:10px;color:var(--muted,#777)}.etab.on{background:var(--ink,#26223b);color:#fff}.etab.on small{color:#ddd}.etab.rr{border-style:dashed}
 .epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
@@ -3203,9 +3204,9 @@ function epiParas(){
   const W=(WCLS[S.wc]||{}).n||'';const fav=S.fav?MOVES[S.fav].n:'';const L=S.log||[];const has=re=>L.some(l=>re.test(l.t));const cnt=re=>L.filter(l=>re.test(l.t)).length;
   const add=(h,t)=>{if(t)P.push({h,t});};
   // 入門
-  {let t=vs('open',['那年春天，十五歲、剛上高一的你在手機上滑到一支道場的影片，看了三遍。','十五歲，高一的某個晚上，你本來只是在滑手機，滑到一支道場的影片，就再也滑不下去了。','你一直記得那個晚上：十五歲，功課還沒寫完，手機裡的影片重播到第三遍，你心裡有個聲音說：「去吧。」'])+`隔天放學，你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
+  {let t=vs('open',['那年春天，十五歲、剛上高一的你在手機上滑到一支道場的影片，看了三遍。','十五歲，高一的某個晚上，你本來只是在滑手機，滑到一支道場的影片，就再也滑不下去了。','你一直記得那個晚上：十五歲，功課還沒寫完，手機裡的影片重播到第三遍，你心裡有個聲音說：「去吧。」'])+`隔天放學，你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，${S.ending==='quit'&&yrs<3?'會是一段短短、卻忘不掉的日子':`就是 ${yrs} 年`}。`;
    if(S.flags.senBond)t+=`那天下課後，${sen}留下來教你用前腳控制距離，一直練到道場熄燈。他說：「你會比我強。」`;
-   if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);t+=a.pos&&b.pos?`你天生${a.n}，又${b.n}，大家都說你是塊料。`:!a.pos&&!b.pos?`你${a.n}，又${b.n}，沒有人看好你，可是你一直沒走。`:`你${(a.pos?a:b).n}，也${(a.pos?b:a).n}；好的那一面帶你往前，壞的那一面逼你長大。`;}
+   if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);t+=a.pos&&b.pos?`你天生${a.n}，又${b.n}，大家都說你是塊料。`:!a.pos&&!b.pos?(S.ending==='quit'?`你${a.n}，又${b.n}，沒有人看好你。你最後沒能證明他們錯了——可是你試過了。`:`你${a.n}，又${b.n}，沒有人看好你，可是你一直沒走。`):`你${(a.pos?a:b).n}，也${(a.pos?b:a).n}；好的那一面帶你往前，壞的那一面逼你長大。`;}
    add('入門・十五歲',t);}
   // 十八歲
   {let t='';const p=S.flags.p18;
@@ -3218,6 +3219,7 @@ function epiParas(){
   // 腰帶
   {let t='';const fails=cnt(/審查不合格/);
    if(m.black)t+=`${m.black} 歲那年，你第一次把黑帶繫在腰上，打結的手微微發抖${fails?`。在那之前，你在審查會上落榜過 ${fails} 次，${fails>1?'每一次':'那一次'}都是自己默默把腰帶收回袋子裡`:''}。`;
+   else if(S.ending==='quit')t+=S.rank?`你最後停在${RANKS[S.rank]}。那條腰帶，是你一次一次審查換來的${fails?`；中間落榜過 ${fails} 次`:''}。`:'你還來不及換上第二條腰帶。那條白帶，是你推開那扇門的證明。';
    else t+=`你終究沒有繫上黑帶。那條${RANKS[S.rank]}洗到發白，卻從來沒有缺席過一次稽古${fails?`；審查落榜 ${fails} 次，你沒有一次說過放棄`:''}。`;
    if(m.inst)t+=`${m.inst} 歲取得指導員資格，第一次站到學員前面喊口令，聲音比自己想的還要小。`;
    if(m.yon)t+=`${m.yon} 歲升上四段，腰帶上多了一條條金線，肩上的責任也是。`;
@@ -3236,13 +3238,14 @@ function epiParas(){
   {let t='';
    const big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');
    const twn=(S.twc.kumite||0)+(S.twc.kata||0);
-   t+=`你是${specLabel()}的${W}選手${fav?`，最信任的是${fav}，那是無數個夜裡對著沙包磨出來的答案`:''}。`;
+   if(!(S.w+S.l+S.kw+S.kl)&&!S.titles.length){add('選手時代','');}else t+=`你是${specLabel()}的${W}選手${fav?`，最信任的是${fav}，那是無數個夜裡對著沙包磨出來的答案`:''}。`;
    if(big.length)t+=`選手生涯最亮的那一刻，是${big.join('、')}。場館的燈打在你身上，你想起的卻是${home}裡那盞昏黃的日光燈${twn?`；全台冠軍，你拿過 ${twn} 次`:''}。`;
    else if(twn)t+=`你拿過 ${twn} 次全台冠軍，每一座獎盃底下，都壓著一層又一層的瘀青。`;
    else if(S.titles.length)t+=`你最好的成績是${esc(S.titles[0].replace(/^\d+ /,''))}。那不是終點，只是你曾經抵達過的地方。`;
-   else t+='你沒有拿過冠軍。可是每一次點到名字，你都站上了場；每一次倒下，你都自己站了起來。';
+   else if(S.w+S.l+S.kw+S.kl)t+='你沒有拿過冠軍。可是每一次點到名字，你都站上了場；每一次倒下，你都自己站了起來。';
+   else{t='';}
    const tw=S.w+S.l,tk=S.kw+S.kl;if(tw||tk)t+=`算一算，${tw?`組手 ${S.w} 勝 ${S.l} 敗`:''}${tw&&tk?'，':''}${tk?`型 ${S.kw} 勝 ${S.kl} 敗`:''}；輸掉的那些場，教會你的比贏的還多。`;
-   if(S.route!=='kata'&&(S.rivalW||S.rivalL))t+=`你和宿敵${esc(S.rival)}交手 ${S.rivalW+S.rivalL} 次，${S.rivalW>S.rivalL?'你贏得多一點':S.rivalW<S.rivalL?'他贏得多一點':'始終不分上下'}。多年以後回頭看，最懂你的人，也許就是他。`;
+   if(S.route!=='kata'&&S.rivalW+S.rivalL>=3)t+=`你和宿敵${esc(S.rival)}交手 ${S.rivalW+S.rivalL} 次，${S.rivalW>S.rivalL?'你贏得多一點':S.rivalW<S.rivalL?'他贏得多一點':'始終不分上下'}。多年以後回頭看，最懂你的人，也許就是他。`;
    {const ct=crownText();if(ct)t+=`最難的是${ct}——同一年把日本的大賽一場一場拿下來，那一年你幾乎住在飛機上。`;}
    if(S.flags.hyaku)t+='百人組手那天，第一百人倒下時整座道場的吶喊，到現在還留在你的耳朵裡。';
    if(S.flags.sponsor||S.flags.channel)t+=`${S.flags.sponsor?'有企業找你簽贊助，':''}${S.flags.channel?'你開了自己的頻道，留言區有人叫你「老師」，':''}你第一次發現，原來有那麼多人在看。`;
@@ -3273,18 +3276,18 @@ function epiParas(){
    if(S.used.npc_k2)t+=`學弟${koh}站上全台頒獎台時，朝觀眾席的你深深一鞠躬；你這才知道，原來自己也成了別人的師兄。`;
    if(S.flags.separated)t+='為了道場，家庭付出了代價。有些晚歸的夜，怎麼道歉都補不回來。';
    else if(S.flags.married)t+=`${m.married?`${m.married} 歲成家${S.flags.kid?'，後來有了孩子':''}。`:''}觀眾席上，總有一個位置是留給家人的，他們一直都在。`;
-   else t+='你沒有成家。道場就是你的家，學員就是你的家人。';
+   else if(S.age>=32)t+='你沒有成家。道場就是你的家，學員就是你的家人。';
    add('身邊的人',t);}
   // 荒唐事
   {const L3=(S.flags.epL||[]).filter(x=>x[0]!=='teach').map(x=>x[1].replace(/[「」]/g,''));const hn=(S.honors||[]).length;let t='';
    if(L3.length)t+=`這一路上，還有很多說出來沒人相信的事：${L3.slice(0,5).join('、')}${L3.length>5?`……一共 ${L3.length} 件`:''}。每一件，後來都成了宵夜桌上被講了一百遍的故事。`;
    if(hn)t+=`這一生，你得到了 ${hn} 個稱號${hn>=3?`，從「${S.honors[0].n}」到「${S.honors[hn-1].n}」`:`：${S.honors.map(h=>'「'+h.n+'」').join('、')}`}。`;
    add('那些說出來沒人信的事',t);}
-  if(S.ending==='quit')add('放下',`${S.age} 歲那年的某一天，你沒有再去道場。沒有什麼特別的理由，只是那天下課後，你騎車經過道場門口，沒有停下來。可是那 ${S.age-15} 年流過的汗，一直都還在你身上。`);
+  if(S.ending==='quit')add('放下',`${S.age} 歲那年的某一天，你沒有再去道場。沒有什麼特別的理由，只是那天下課後，你騎車經過道場門口，沒有停下來。可是${S.age-15>=1?`那 ${S.age-15} 年`:'那段日子'}流過的汗，一直都還在你身上。`);
   // 尾聲
   add('尾聲',vs('end',S.ending==='quit'?[
-    `從十五歲到 ${S.age} 歲，${yrs} 年。你沒有走到最後，可是那條腰帶你一直沒丟。偶爾經過道場，聽到裡面傳出「押忍」，你會在門口站一下，然後笑著走開。`,
-    `${yrs} 年，不長也不短。後來你很少提起空手道，只有在搬重物、在爬樓梯、在被生活打倒又站起來的時候，身體會比你先想起來——你練過。`]:[
+    `${yrs>=1?`從十五歲到 ${S.age} 歲，${yrs} 年。`:'不到一年。'}你沒有走到最後，可是那條腰帶你一直沒丟。偶爾經過道場，聽到裡面傳出「押忍」，你會在門口站一下，然後笑著走開。`,
+    `${yrs>=1?`${yrs} 年`:'那段日子'}，不長也不短。後來你很少提起空手道，只有在搬重物、在爬樓梯、在被生活打倒又站起來的時候，身體會比你先想起來——你練過。`]:[
     `從十五歲到 ${S.age} 歲，${yrs} 年。流過的汗可以把整座道場拖過一千遍，受過的傷早就數不清了。有人問你，這一路值不值得？你只是笑了笑，雙手在胸前交叉，輕輕說了一聲——押忍。`,
     `${yrs} 年過去，當年那個在手機上滑到道場影片的高一生，已經是別人口中的「${epithet()}」。今晚道場熄燈前，你又一個人對著鏡子打了一百下正拳。有些事情，一輩子都不會變。`,
     `如果能回到十五歲那個晚上，對著手機發呆的自己，你想說什麼？你想了很久，最後只想說一句：「去吧，那扇門推得開。」然後，押忍。`,
@@ -3354,12 +3357,12 @@ function epiLetter(){
   const f=epiFacts(),m=f.m,P=[];const quit=S.ending==='quit';const d=S.dojo;
   P.push({h:'給十五歲的你',t:`十五歲的我：<br>你現在大概正盯著手機，那支道場影片看到第三遍了吧。我是 ${S.age} 歲的你。${vs('l0',['先說好，我不是來劇透的，我只是想叫你別怕。','我寫這封信，不是要告訴你答案，是想跟你說：門推開吧。','有些事情我想早一點告訴你，可是說了你大概也不會聽——你一直都是這樣。'])}`});
   const hard=[];
-  hard.push(vs('lm',['你會窮好幾年。高中的零用錢只夠買一罐蛋白粉，你會把它省到過期。','你會窮到要去搬香腸、顧夜班，下班直接騎車去道場，道着袋裡永遠有一個冷掉的飯糰。','你會為了報名費猶豫很久，最後還是報了。那幾年你很窮，但你從來沒有覺得自己可憐。']));
+  if(f.yrs>=3)hard.push(vs('lm',['你會窮好幾年。高中的零用錢只夠買一罐蛋白粉，你會把它省到過期。','你會窮到要去搬香腸、顧夜班，下班直接騎車去道場，道着袋裡永遠有一個冷掉的飯糰。','你會為了報名費猶豫很久，最後還是報了。那幾年你很窮，但你從來沒有覺得自己可憐。']));
   if(f.fails)hard.push(`你會在審查會上落榜 ${f.fails} 次。落榜那天晚上你會哭，然後隔天照樣去道場。`);
   if(f.inj)hard.push(`你會受 ${f.inj} 次傷。我不告訴你是哪幾次，你只要記得：好好復健，不要逞強。`);
   if(S.forced)hard.push(`你的身體會比你的意志先放棄。那天在更衣室，你會坐很久。沒關係，坐久一點也沒關係。`);
   if(S.flags.closedDojo)hard.push(`你會開一間道場，然後親手拉下它的鐵門。那會是你這輩子最難的一個晚上。`);
-  P.push({h:'你會吃的苦',t:hard.join('')});
+  if(hard.length)P.push({h:'你會吃的苦',t:hard.join('')});
   const good=[];
   if(m.black)good.push(`${m.black} 歲，你會繫上黑帶。打結的時候手會抖，不要笑自己。`);
   if(f.big.length)good.push(`你會拿到${f.big.join('、')}。我知道你現在不信，我當年也不信。`);else if(f.twn)good.push(`你會拿 ${f.twn} 次全台冠軍。`);
@@ -3368,14 +3371,14 @@ function epiLetter(){
   if(S.flags.shibucho)good.push('你會成為台灣支部長。對，就是你，那個現在連正坐五分鐘都會腳麻的你。');else if(S.flags.shihandai)good.push('你會成為台灣支部師範代。');
   if(d)good.push(`你會在${(CITIES[d.city]||{}).short||''}開一間自己的道場，最多的時候有 ${d.peak} 個人在裡面喊押忍。`);
   if(f.pupil)good.push(`你會收一個叫${esc(f.pupil.n)}的弟子，那孩子會比你更好。這是你最驕傲的事。`);
-  if(!good.length)good.push('你不會拿到什麼了不起的冠軍。可是你會一直練下去，這件事本身就很了不起。');
+  if(!good.length)good.push(quit?'你不會走得很遠。可是推開那扇門，本身就需要勇氣，而你推開了。':'你不會拿到什麼了不起的冠軍。可是你會一直練下去，這件事本身就很了不起。');
   P.push({h:'你會得到的',t:good.join('')});
   const ppl=[];
-  if(S.npc&&S.npc.sen)ppl.push(`茶帶的師兄${f.sen}會照顧你，記得跟師兄說謝謝——說早一點。`);
-  if(S.route!=='kata'&&S.rivalW+S.rivalL>=2)ppl.push(`你會遇到一個叫${esc(S.rival)}的人，你們會打 ${S.rivalW+S.rivalL} 次。不要討厭那個人，那是你最好的老師。`);
+  if(S.npc&&S.npc.sen&&(S.used.npc_s1||S.flags.senBond))ppl.push(`茶帶的師兄${f.sen}會照顧你，記得跟師兄說謝謝——說早一點。`);
+  if(S.route!=='kata'&&S.rivalW+S.rivalL>=3)ppl.push(`你會遇到一個叫${esc(S.rival)}的人，你們會打 ${S.rivalW+S.rivalL} 次。不要討厭那個人，那是你最好的老師。`);
   if(S.flags.married)ppl.push(S.flags.separated?'你會成家，也會讓家人失望。晚上早點回家，這句話請你一定要聽。':'你會成家。觀眾席上那個為你大喊的人，請你好好珍惜。');
   if(ppl.length)P.push({h:'你會遇到的人',t:ppl.join('')});
-  P.push({h:'最後',t:(quit?`最後，你會在 ${S.age} 歲那年放下。我不後悔，你也不要。那 ${f.yrs} 年的汗，一滴都沒有白流。`:`最後，我只有一個建議：${vs('la',['每一次稽古結束，都對道場鞠一個躬。','不要跟別人比，跟昨天的自己比。','累的時候，就去打沙包；難過的時候，也去打沙包。','多喝水。真的。'])}`)+`<br><br>${S.age} 歲的你　押忍`});
+  P.push({h:'最後',t:(quit?`最後，你會在 ${S.age} 歲那年放下。我不後悔，你也不要。${f.yrs>=1?`那 ${f.yrs} 年`:'那段日子'}的汗，一滴都沒有白流。`:`最後，我只有一個建議：${vs('la',['每一次稽古結束，都對道場鞠一個躬。','不要跟別人比，跟昨天的自己比。','累的時候，就去打沙包；難過的時候，也去打沙包。','多喝水。真的。'])}`)+`<br><br>${S.age} 歲的你　押忍`});
   return P;
 }
 function epiRival(){
@@ -3443,12 +3446,24 @@ function epiBelt(){
 }
 const EPI_VER=[['回憶','你的一生'],['致詞','弟子的致詞'],['專訪','報紙專訪'],['書信','給十五歲的自己'],['宿敵','對手／師兄的話'],['家人','媽媽的話'],['腰帶','腰帶的自述']];
 let EPI_CUR=0;
+function epiPlan(){
+  const f=epiFacts(),m=f.m,d=S.dojo,c=S.champ;const quit=S.ending==='quit';
+  const rivalOK=S.route!=='kata'&&S.rivalW+S.rivalL>=3;
+  const teacher=!!(S.flags.instDone||d||S.flags.closedDojo||f.pupil);
+  const notable=!!(f.big.length||f.twn||S.flags.hyaku||S.flags.shihandai||S.flags.shibucho||(d&&d.peak>=30)||(S.crowns&&S.crowns.length));
+  const L=[['回憶','你的一生',epiParas]];
+  if(f.yrs>=2)L.push(['家人','媽媽的話',epiFamily]);
+  if(rivalOK)L.push(['宿敵',`${esc(S.rival)}的話`,epiRival]);else if(m.black&&f.yrs>=6&&(S.used.npc_s1||S.flags.senBond))L.push(['師兄',`${f.sen}的話`,epiRival]);
+  if(teacher&&f.yrs>=8)L.push(['致詞',f.pupil?'愛徒的致詞':'弟子的致詞',epiSpeech]);
+  if(notable)L.push(['專訪','南台灣日報',epiNews]);
+  if(S.rank>=1&&f.yrs>=3)L.push(['腰帶','腰帶的自述',epiBelt]);
+  if(f.yrs>=2)L.push(['書信','寫給十五歲的自己',epiLetter]);
+  return L;
+}
 function epiHTML(){
-  const fns=[epiParas,epiSpeech,epiNews,epiLetter,epiRival,epiFamily,epiBelt];
-  return `<p class="epihint">同一段人生，七種說法。點一下展開。</p>`+EPI_VER.map((v,i)=>{let ps=[];try{ps=fns[i]();}catch(e){ps=[];}if(!ps.length)return '';
-    const prev=(ps[0].t||'').replace(/<i>.*?<\/i><br>/,'').replace(/<br>/g,'').replace(/<[^>]+>/g,'').slice(0,26)+'…';
-    const sen=i===4&&!(S.route!=='kata'&&S.rivalW+S.rivalL>=3);const who=sen?'入門時的師兄':v[1];const nm=sen?'師兄':v[0];
-    return `<details class="epiv"${i===0?' open':''}><summary><span class="en">${String(i+1).padStart(2,'0')}</span><span class="et"><b>${nm}</b><small>${who}</small><i>${prev}</i></span></summary><div class="epib">${ps.map(p=>`${p.h?`<h4>${p.h}</h4>`:''}<p>${p.t}</p>`).join('')}</div></details>`;}).join('');}
+  const NUM=['一','二','三','四','五','六','七'];const plan=epiPlan();
+  return plan.map(([n,sub,fn],i)=>{let ps=[];try{ps=fn();}catch(e){ps=[];}if(!ps.length)return '';
+    return `<section class="epch"><div class="epchh"><span>其${NUM[i]}</span><b>${n}</b><small>${sub}</small></div>${ps.map(p=>`${p.h?`<h4>${p.h}</h4>`:''}<p>${p.t}</p>`).join('')}</section>`;}).join('');}
 function bindEpi(){}
 function epilogue(){return epiParas().map(p=>p.t).join('');}
 function lifeStages(){
