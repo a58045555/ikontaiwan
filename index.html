@@ -463,7 +463,6 @@ a.opt{text-decoration:none;color:inherit}
           </div>
         </div>
         <div id="iText" class="itext"></div>
-        <button class="iskip" type="button" id="iSkip">略過 ▶▶</button>
       </div>
       <div id="iTitle" class="istage" hidden>
         <p class="intro-pre">那一天，你決定去道場看看。</p>
@@ -472,7 +471,6 @@ a.opt{text-decoration:none;color:inherit}
         <p class="blink">▶ PRESS START</p>
         <div class="opts">
           <button class="opt primary" type="button" id="introGo"><span class="l">開始遊戲</span></button>
-          <button class="opt" type="button" id="introRc"><span class="l">真實道場・招生資訊</span></button>
           <button class="opt" type="button" id="iReplay"><span class="l">重看開場動畫</span></button>
         </div>
       </div>
@@ -622,7 +620,6 @@ a.opt{text-decoration:none;color:inherit}
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
         <button class="opt" type="button" id="btnAch"><span class="l">成就圖鑑・歷代紀錄</span><span class="s" id="achSub"></span></button>
-        <button class="opt" type="button" id="btnRc"><span class="l">真實道場・招生資訊</span><span class="s">遊戲裡的人生，可以從真的道場開始</span></button>
       </div>
     </form>
   </section>
@@ -2924,9 +2921,7 @@ function showIntro(){
   const setSnd=on=>{try{localStorage.setItem('kl-snd',on?'1':'0');}catch(e){}applyDisp();};
   $('#iSnd').onclick=()=>{setSnd(true);introPlay();};
   $('#iMute').onclick=()=>{setSnd(false);introPlay();};
-  $('#iSkip').onclick=()=>introTitle();
   $('#iReplay').onclick=()=>introPlay();
-  $('#introRc').onclick=()=>showRecruit();
   $('#introGo').onclick=()=>{iTok++;el.classList.add('out');try{v&&v.pause();}catch(e){}
     setTimeout(()=>{el.hidden=true;el.classList.remove('out');document.body.classList.remove('introOn');window.scrollTo({top:0});},450);};
 }
@@ -3380,7 +3375,7 @@ function initUI(){
   });
   const toggleGuide=show=>{$('#guide').hidden=!show;$('#btnGuide').textContent=show?'收起說明':'遊戲說明';if(show)$('#guide').scrollIntoView({behavior:'smooth',block:'start'});};
   $('#btnGuide').addEventListener('click',()=>toggleGuide($('#guide').hidden));
-  {const b=$('#btnRc');if(b)b.onclick=()=>showRecruit();}
+
   $('#btnGuideClose').addEventListener('click',()=>toggleGuide(false));
   let armed=false;
   $('#btnQuit').addEventListener('click',e=>{
