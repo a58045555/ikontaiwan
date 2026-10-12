@@ -2843,7 +2843,7 @@ function fanfare(){if(!sndOn())return;try{AC=AC||new (window.AudioContext||windo
 
 /* ===== 開場動畫：十六歲的你，滑到了一支道場的影片 ===== */
 let introRAF=0,introScene='room',iTok=0,iSpeed=1;
-const IVF={src:'intro-frames.png',w:80,h:116,cols:10,n:80,fps:10,img:null};
+const IVF={src:'intro-frames.png',w:80,h:116,cols:10,n:98,fps:10,img:null};
 function ivfLoad(){if(IVF.img||typeof Image==='undefined')return;IVF.img=new Image();IVF.img.src=IVF.src;}
 function pxRect(x,c,a,b,w,h){x.fillStyle=c;x.fillRect(a,b,w,h);}
 function drawIntro(t){
@@ -2898,7 +2898,7 @@ async function introPlay(){
     await iType('你躺在床上，手指一直往下滑。',tk,600);
     let ok=IVF.img&&IVF.img.complete&&IVF.img.naturalWidth>0;
     if(ok){$('#iPhone').hidden=false;$('.iscreen').classList.add('vid');$('#iText').textContent='';
-      const CAPS=[[0,1.45,'我們是中村道場'],[1.5,3.45,'臺灣最強的極真空手道'],[3.5,4.45,'我們的訓練環境'],[4.5,5.45,'讚！👍'],[5.5,5.95,'器材很多'],[6,6.95,'Sensei 很優'],[7,8.3,'趕快來報名！',1]];
+      const CAPS=[[0,1.55,'遇到變態怎麼辦'],[1.6,3.05,'我們是中村道場'],[3.1,5.05,'臺灣最強的極真空手道'],[5.1,6.05,'我們的訓練環境'],[6.1,7.05,'讚！👍'],[7.1,7.55,'器材很多'],[7.6,8.55,'Sensei 很優'],[8.6,10.3,'趕快來報名！',1]];
       const vc=$('#iVid'),vx=vc.getContext('2d');vx.imageSmoothingEnabled=false;let vt=0,last=performance.now();
       bgmVideo();
       await new Promise((res,rej)=>{const step=()=>{if(tk!==iTok){rej('skip');return;}const now=performance.now();vt+=(now-last)/1000*iSpeed;last=now;
