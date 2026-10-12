@@ -426,7 +426,7 @@ footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
 .ttile.r3 .rar{background:#d9534f;color:#fff}
 .ttile.r2{background:linear-gradient(180deg,rgba(242,194,79,.18),transparent 60%)}
 .ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
-.epch{margin-top:14px}.epch:first-of-type{margin-top:6px}.epchh{display:flex;align-items:baseline;gap:8px;padding:8px 0 6px;border-bottom:2px solid var(--ink,#26223b);margin-bottom:8px}.epchh span{font-size:11px;color:#fff;background:var(--ink,#26223b);padding:2px 6px;letter-spacing:.1em}.epchh b{font-size:18px;color:var(--ink,#26223b)!important;letter-spacing:.1em}.epchh small{font-size:12px;color:var(--muted,#8a806c)}
+.ver{display:inline-block;margin-top:6px;font-family:var(--f-px,monospace);font-size:9px;letter-spacing:.1em;opacity:.7}.honor.hsay{margin:2px 0 6px}.epch{margin-top:14px}.epch:first-of-type{margin-top:6px}.epchh{display:flex;align-items:baseline;gap:8px;padding:8px 0 6px;border-bottom:2px solid var(--ink,#26223b);margin-bottom:8px}.epchh span{font-size:11px;color:#fff;background:var(--ink,#26223b);padding:2px 6px;letter-spacing:.1em}.epchh b{font-size:18px;color:var(--ink,#26223b)!important;letter-spacing:.1em}.epchh small{font-size:12px;color:var(--muted,#8a806c)}
 .epihint{font-size:12px;color:var(--muted,#8a806c);margin:4px 0 8px;text-indent:0!important}.epiv{border-top:2px solid rgba(0,0,0,.12)}.epiv:last-child{border-bottom:2px solid rgba(0,0,0,.12)}.epiv summary{list-style:none;cursor:pointer;display:flex;gap:10px;align-items:flex-start;padding:10px 2px}.epiv summary::-webkit-details-marker{display:none}.epiv .en{font-family:var(--f-px,monospace);font-size:10px;color:#fff;background:var(--ink,#26223b);padding:5px 5px 4px;margin-top:2px}.epiv .et{flex:1;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}.epiv .et b{font-size:16px;color:var(--ink,#26223b)!important;letter-spacing:.05em}.epiv .et small{font-size:12px;color:var(--muted,#8a806c)}.epiv .et i{flex-basis:100%;font-style:normal;font-size:12px;color:var(--ink2,#555);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.epiv[open] .et i{display:none}.epiv summary::after{content:'＋';font-weight:900;color:var(--ink2,#555);margin-top:2px}.epiv[open] summary::after{content:'－'}.epiv[open] summary{background:rgba(0,0,0,.04)}.epib{padding:2px 2px 12px}
 .epitabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 6px}.etab{min-width:0;border:2px solid var(--ink,#26223b);background:#fff;color:var(--ink,#26223b);font:inherit;font-weight:700;font-size:13px;padding:5px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.3}.etab small{font-weight:400;font-size:10px;color:var(--muted,#777)}.etab.on{background:var(--ink,#26223b);color:#fff}.etab.on small{color:#ddd}.etab.rr{border-style:dashed}
 .epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
@@ -668,7 +668,7 @@ a.opt{text-decoration:none;color:inherit}
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構</footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.1・2026.10.12</span></footer>
 </div>
 
 <script>
@@ -1361,8 +1361,14 @@ function* tourney(T){
   const fee=c==='both'?+(T.fee*1.6).toFixed(1):T.fee;S.money-=fee;if(T.id==='tw')S.flags.twEntered=S.year;
   let quick=true;
   if(list.length){
-    const m=yield P(`${T.short}・出賽方式`,`已繳報名費 ${fee} 萬。`,[{id:'quick',label:'快速模式',sub:'自動比完，只看結果',rec:EZ()},{id:'go',label:'親自上場',sub:'每一回合、每一輪自己決定'}]);
-    quick=m==='quick';
+    if(!S.flags.fmode){
+      const m=yield P('比賽方式',`已繳報名費 ${fee} 萬。這是你的第一場正式比賽！<br>以後的比賽，你想怎麼打？`,[{id:'quick',label:'都用快速模式',sub:'自動比完，只看結果 · 最省時間',rec:true},{id:'go',label:'都親自上場',sub:'每一回合、每一輪自己決定'},{id:'ask',label:'每場比賽前再問我',sub:'每次都可以選'}]);
+      S.flags.fmode=m;
+    }
+    if(S.flags.fmode==='ask'){
+      const m=yield P(`${T.short}・出賽方式`,`已繳報名費 ${fee} 萬。`,[{id:'quick',label:'快速模式',sub:'自動比完，只看結果',rec:EZ()},{id:'go',label:'親自上場',sub:'每一回合、每一輪自己決定'}]);
+      quick=m==='quick';
+    }else quick=S.flags.fmode==='quick';
   }
   for(const d of list)yield* runDivision(T,d,quick);
   S.flags.scout=0;
@@ -1381,6 +1387,9 @@ function* seminar(T){
   opts.push({id:'no',label:'這次不參加',sub:''});
   {const rc=examRec();let ri=poor?'no':rc?({kihon:'kata',taiso:'body',kumite:'kumite'})[rc.id]:(trShare().k>trShare().m?'kata':'kumite');   if(!poor&&!S.flags.instDone&&S.rank>=6&&!S.flags.teach&&S.age>=26)ri='coach';
    opts.forEach(o=>o.rec=o.id===ri);}
+  if(EZ()){const c=opts.find(o=>o.rec).id;if(c==='no'){say(`<span class="lbl">${T.short}講習會</span>${poor?'存款不夠，這次沒有參加。':'這次沒有參加。'}`);return;}
+    const s0=snap();S.money-=T.semFee;SEMINARS[c].run(T.sem*.6);S.flags.seminars++;
+    say(`<span class="lbl">${T.short}講習會</span>自動報名「${SEMINARS[c].n}」（報名費 ${T.semFee} 萬）　${diff(s0)||'資歷 +1'}`);log(`參加${T.short}${SEMINARS[c].n}`);return;}
   const c=yield P(`${T.short}講習會`,`${poor?'<b>存款不夠，這次參加不了。</b>'+(EZ()?'':'可以在「生活」安排打工賺錢。'):''}比賽季結束，${T.short}之後舉辦講習會。等級越高的大會，講習效果越好。${S.flags.seminars?'':'<b>參加過講習會是日本大賽的條件之一。</b>'}`,opts);
   if(c==='no'){say('沒有參加講習會。');return;}
   const s0=snap();S.money-=T.semFee;SEMINARS[c].run(T.sem*.6);S.flags.seminars++;
@@ -2248,13 +2257,15 @@ function* honor(k){
   const opts=[{id:'report',label:'回道場向師範報告',sub:'鬥志↑'}];
   if(S.money>=1)opts.push({id:'treat',label:'請大家吃宵夜',sub:'名聲↑ · 存款 −1 萬'});
   opts.push({id:'family',label:'打電話給家人',sub:'體況↑'},{id:'quiet',label:'一個人安靜地待一下',sub:'鬥志↑ 體況↑'});
-  const c=yield P('獲得稱號',`<div class="honor"><small>第 ${S.honors.length} 個稱號</small><b>${H.n}</b></div><p>${H.t}</p>今晚，你想怎麼過？`,opts);
+  let c;
+  if(EZ())c='report';
+  else c=yield P('獲得稱號',`<div class="honor"><small>第 ${S.honors.length} 個稱號</small><b>${H.n}</b></div><p>${H.t}</p>今晚，你想怎麼過？`,opts);
   const s0=snap();let t='';
   if(c==='report'){fx({spi:2});t=hpick(['師範聽完，只說：「明天照常稽古。」然後轉身，你看到他偷偷笑了。','師範拍拍你的肩：「這才剛開始。」','師範沉默很久，拿出一瓶珍藏的高粱。'],k.length);}
   if(c==='treat'){fx({fame:1,money:-1});t=hpick(['你請了全道場吃鹹酥雞，老闆以為是公司聚餐。','三十個人擠在熱炒店，乾杯的時候大家一起喊「押忍」，隔壁桌嚇到。','學弟們吃完宵夜，把你抬起來拋了三次。'],k.length);}
   if(c==='family'){fx({hp:4});t=hpick(['電話那頭，媽媽哭了。爸爸在旁邊說：「叫他早點睡。」','家人說：「我們都有看直播。」你才知道他們一直都在看。','阿嬤說：「很好。但是還是很危險。」'],k.length);}
   if(c==='quiet'){fx({spi:1,hp:2});t=hpick(['你一個人坐在空蕩蕩的道場，摸著榻榻米，想起很多人的臉。','你騎車到海邊，對著海喊了一聲押忍。','你把證書放在床頭，看了很久才睡著。'],k.length);}
-  say(`<span class="tg crit">稱號</span><b>${H.n}</b>　${t} ${diff(s0)}`);
+  say(EZ()?`<div class="honor hsay"><small>第 ${S.honors.length} 個稱號</small><b>${H.n}</b></div><span>${H.t}</span><br>${t} ${diff(s0)}`:`<span class="tg crit">稱號</span><b>${H.n}</b>　${t} ${diff(s0)}`);
 }
 
 
@@ -3052,7 +3063,7 @@ function showIntro(){
   const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
-const KEY='kyokushin-life-v37';
+const KEY='kyokushin-life-v38';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
