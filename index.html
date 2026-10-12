@@ -129,6 +129,7 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 .chip{display:inline-block;font-size:12px;font-weight:500;padding:0 6px;margin:1px 2px;white-space:nowrap;line-height:1.6;background:var(--card);box-shadow:0 0 0 1.5px currentColor}
 .chip.up{color:#2f8a4a} .chip.dn{color:var(--red)}
 .lbl{color:var(--ink);font-weight:700;margin-right:4px}
+.talk{display:block;margin-top:2px;padding-left:10px;border-left:3px solid var(--soft);color:var(--ink2);font-size:13px;line-height:1.6}
 .bad{color:var(--red)} .gold{color:#b5761a;font-weight:700} .good{color:#2f8a4a}
 .bout{display:grid;grid-template-columns:4.4em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
 .exrow{display:grid;grid-template-columns:6.6em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
@@ -437,6 +438,13 @@ a.opt{text-decoration:none;color:inherit}
       <p>型、組手、體能講習會直接提升能力；審判講習會和指導員講習會累積資歷，對四段審查和開道場有幫助。大賽等級越高，講習會效果越好、費用越貴。<b>參加過講習會是日本大賽的條件之一。</b></p></details>
     <details><summary>日本大賽資格</summary>
       <ul><li>全日本選手權（型・組手分開計算）：茶帶以上、滿 18 歲、近一年全台該組別前二名、參加過講習會、名聲 15 以上（支部推薦）。</li><li>全日本體重別（只有組手）：條件同上。</li><li>世界大賽（四年一次）：茶帶以上，且近一年全日本八強、體重別前三，或全台冠軍。</li><li>當日本內弟子第二年起，可直接報名日本大賽。</li></ul></details>
+    <details><summary>日本三冠王與完全製霸</summary>
+      <ul><li><b>日本賽事的一年</b>：年初「極真國際大會（東京）」（型・組手）→ 春天「全日本體重別」（只有組手）／「全日本型選手權大會」（只有型）→ 秋天「全日本選手權」（型・組手；世界大賽那一年改為世界大賽）。報名資格和全日本選手權一樣。</li>
+      <li><b>三冠王</b>：<b>同一年</b>拿下同一個組別的三個日本大賽冠軍。型和組手分開算：<br>組手三冠＝國際大會＋全日本體重別＋全日本（或世界大賽）<br>型三冠＝國際大會＋全日本型選手權＋全日本（或世界大賽）<br>拿到兩冠時畫面會提醒你。三冠王名聲 +15，去過日本的人本部評價 +6。</li>
+      <li><b>完全製霸</b>：拿到三冠的那一年，本部會邀請你挑戰第四戰「本部最強決定戰」——對手是當年各大賽的冠軍和世界級選手，三輪淘汰，比全日本決賽還硬。可以婉拒保住體力；接受並奪冠就是<b>日本完全製霸</b>（名聲 +25、本部評價 +10），輸了三冠王也不會被拿走。</li>
+      <li>稱號優先順序：型與組手的完全製霸 → 型與組手的世界王者 → 完全製霸 → 世界王者 → 三冠王 → 其他。成就有「組手三冠王」「型三冠王」「完全製霸」「型與組手的完全製霸」。</li></ul></details>
+    <details><summary>教課插曲與稽古對話</summary>
+      <p>當上助教、見習指導員、指導員或開道場之後，會遇到各種教課上的狗屁倒灶：粉紅色的道着、用香腸抵學費、十段大師來踢館、家長直播、水桶裡的手機……共 16 種，每種一輩子只會遇到一次，都會記進人生年表，結語也會提到。遇到 15 件以上有成就「狗屁倒灶」。<br>每次稽古之後也會有一句對話：師範、師兄、學弟、本部先輩、打工的老闆，或自己心裡的聲音。受傷、卡牌升級、自滿、低潮、年紀大了都會有不同的話。</p></details>
     <details><summary>18 歲的三條路</summary>
       <ul><li><b>見習指導員</b>（藍帶以上）：津貼少，稽古效率 ×1.05，每年累積指導資歷，升上初段就直接成為指導員。20 歲服兵役。最快走上內弟子之路。</li><li><b>讀大學</b>：四年，要付學費，稽古效率 ×1，兵役延到畢業。每年上半年有大專盃，可以接家教。畢業後找工作薪水比較高，也可以回道場。</li><li><b>就業</b>：薪水最高、年資越久越高，但稽古效率 ×0.85。20 歲服兵役。最快存到開道場的錢，但要另外靠助教、講習或帶少年部取得指導員資格。</li><li>只有<b>指導員</b>才能報名內弟子選拔、開設自己的道場、成為師範代。</li></ul></details>
     <details><summary>內弟子之路</summary>
@@ -995,8 +1003,12 @@ const worldOk=div=>S.rank>=5&&(S.qW[div]>=S.year-1||S.qWTW[div]>=S.year-1);
 const TOURN=[
   {id:'local',name:'台灣支部交流賽',short:'支部交流賽',q:0,base:28,rounds:3,kbase:18,kr:2,fame:2,prize:0,fee:.3,sem:.7,semFee:.5,open:true,kata:true,desc:'八個道場的年輕選手交流賽。',
     can:d=>S.rank>=1&&S.age<=21&&S.path!=='uchi'},
+  {id:'intl',name:'極真國際大會（東京）',short:'國際大會',q:0,base:60,inc:2,rounds:6,kbase:79,kr:4,fame:9,prize:9,fee:2.5,sem:1.2,semFee:2,open:true,kata:true,desc:'每年年初在東京舉行的國際公開賽，各國代表齊聚。<b>日本三冠</b>的第一站。報名費含機票住宿。',
+    can:d=>jpOk(d)},
   {id:'jpw',name:'全日本體重別選手權',short:'全日本體重別',q:1,base:55,rounds:5,kbase:0,kr:0,fame:12,prize:10,fee:4,sem:1.5,semFee:3,open:false,kata:false,desc:'日本各地的強者，在同一量級裡分出高下。前三名可取得世界大賽資格。報名費含機票住宿。',
     can:d=>d==='kumite'&&jpOk('kumite')},
+  {id:'jpk',name:'全日本型選手權大會',short:'全日本型',q:1,base:0,rounds:0,kbase:81,kr:4,fame:9,prize:9,fee:2.5,sem:1.2,semFee:2,open:false,kata:true,desc:'只比型的全日本大會，裁判看得比全日本選手權還細。型的<b>日本三冠</b>第二站。報名費含機票住宿。',
+    can:d=>d==='kata'&&jpOk('kata')},
   {id:'tw',name:'全台極真空手道選手權',short:'全台選手權',q:2,base:52,rounds:4,kbase:50,kr:3,fame:6,prize:3,fee:.5,sem:1,semFee:1,open:true,kata:true,desc:'台灣極真最大的舞台。前兩名可取得全日本出賽資格之一，冠軍代表台灣出征世界。',
     can:d=>S.rank>=3&&S.age>=16&&S.path!=='uchi'},
   {id:'jp',name:'全日本選手權',short:'全日本',q:3,base:60,inc:2,rounds:6,kbase:80,kr:4,fame:18,prize:20,fee:4,sem:1.5,semFee:3,open:true,kata:true,desc:'型與無差別組手的最高舞台。八強可取得世界大賽資格。報名費含機票住宿。',
@@ -1207,8 +1219,10 @@ function* runDivision(T,div,quick){
   if(T.id==='tw'){if(place.lvl<=1){S.qJ[div]=S.year;say(`全台${DIVN[div]}前二：達成全日本資格條件之一。`);}if(place.lvl===0){S.twc[div]++;S.qWTW[div]=S.year;}}
   if(T.id==='jp'&&place.lvl<=3)S.qW[div]=S.year;
   if(T.id==='jpw'&&place.lvl<=2)S.qW.kumite=S.year;
+  if(T.id==='jpk'&&place.lvl<=1)S.qW.kata=S.year;
+  if(place.lvl===0&&JP_EV.includes(T.id)){if(!S.crownY||S.crownY.y!==S.year)S.crownY={y:S.year,kata:[],kumite:[]};S.crownY[div].push(T.id);if(T.id!=='saikyo'&&crownCount(div)===2&&T.q<3)say(`<span class="tg crit">日本三冠</span>今年${DIVN[div]}已經拿下兩冠，再拿下${crownLegs(div)[2]}就是三冠王。`);}
   if(place.lvl===0&&T.id!=='local'&&T.id!=='tw')S.champ[`${T.id}_${div}`]=1;
-  if(place.lvl===0&&S.flags.uchiDone&&!S.flags.shibucho){const g={jpw:3,jp:5,world:10}[T.id]||0;if(g){S.hq=(S.hq||0)+g;say(`本部評價 +${g}（在${T.short}奪冠）`);}}
+  if(place.lvl===0&&S.flags.uchiDone&&!S.flags.shibucho){const g={intl:2,jpw:3,jpk:3,jp:5,world:10}[T.id]||0;if(g){S.hq=(S.hq||0)+g;say(`本部評價 +${g}（在${T.short}奪冠）`);}}
 }
 function* tourney(T){
   const ds=tDivs(T);if(!ds.length)return false;
@@ -1606,6 +1620,7 @@ function* dojoEvents(owner){
   for(let k=0;k<n;k++){
     const pool=DOJO_EVENTS.filter(x=>(!x.cond||x.cond())&&!done.includes(x.id)&&!(S.dojo.lastEv||[]).includes(x.id));if(!pool.length)break;
     const tot=pool.reduce((a,x)=>a+(x.w||1),0);let t=r()*tot;let e=pool[pool.length-1];for(const x of pool){t-=(x.w||1);if(t<=0){e=x;break;}}
+    if(r()<.12&&(yield* teachEvent())){done.push('teach');continue;}
     done.push(e.id);yield* e.run();
     const d=S.dojo;d.mood=clamp(d.mood,0,100);d.students=clamp(d.students,0,d.cap);d.equip=clamp(d.equip,0,100);
   }
@@ -1651,6 +1666,7 @@ function* staffMode(){
     if(S.rank<10){const n=S.rank+1,I=examInfo(n);if(n<=9&&S.turn-S.lastPromo>=I.gap&&S.age>=I.age&&(n<9||I.extra)){S.rank=n;S.lastPromo=S.turn;S.danYear=S.year;say(`本部肯定你的指導實績，推薦晉升<b class="gold">${RANKS[n]}</b>。`);log(`推薦晉升${RANKS[n]}`,'gold');}}
     {const f=flow(false);S.money+=f.total*2;}
     if(ny&&S.flags.uchiDone&&S.rank>=6)yield* branchAffairs();
+    if(r()<.22)yield* teachEvent();
     const c=yield P('指導員的日子',`${S.age} 歲${S.flags.shibucho?'・台灣支部長':S.flags.shihandai?'・台灣支部師範代':''}。這半年把力氣花在哪？`,[
       {id:'teach',label:'專心帶道場的稽古',sub:'名聲↑ · 累積指導資歷'},
       {id:'tour',label:'到各道場巡迴指導',sub:'花費 1 萬 · 名聲↑ · 本部評價 +2'},
@@ -1885,6 +1901,122 @@ EVENTS.push(
 );
 const DEBT={id:'debt',run:()=>ev('存款見底','學費、生活費和報名費繳不出來了。負債太多時，壓力會讓稽古效果打折。',
   [{l:'去永山香腸加班搬貨',s:'存款↑ 體況↓ 鬥志↓',fx:{money:10,hp:-12,spi:-2},t:'冷凍庫一箱一箱搬，連續三個月每天只睡五小時。'},{l:'向家人開口',s:'存款↑ 鬥志↓',fx:{money:8,spi:-3},t:'電話那頭沉默了一下，然後說「錢的事不用擔心」。'}])};
+/* ===== 教課插曲：指導員時期的狗屁倒灶 ===== */
+const teaching=()=>!!(S.flags.teach||S.flags.instDone||S.dojo||S.path==='trainee'||S.flags.staff2);
+const tdadd=n=>{if(S.dojo)S.dojo.students=clamp(S.dojo.students+n,0,S.dojo.cap);};
+const TEACH_EV=[
+  {id:'t_black',run:()=>ev('「我兒子什麼時候黑帶？」','一位家長堵在門口：「我兒子學了三個月，隔壁跆拳道的都黃帶了，你們怎麼還是白帶？」',
+    [{l:'耐心解釋極真的審查制度',s:'鬥志↑ 名聲↑',fx:{spi:1,fame:1},t:'家長聽完，默默蹲下來幫孩子把腰帶重新綁好。'},
+     {l:'「那您可以去學跆拳道。」',s:'鬥志↑↑ · 可能少一個學員',do(){fx({spi:3});tdadd(-1);return '家長氣得轉頭就走。孩子回頭看了你一眼，下週又自己跑回來了。';}}])},
+  {id:'t_pink',run:()=>ev('粉紅色的道着','審查當天，一個學員穿著一套粉紅色的道着出現——他把紅襪子跟道着丟進同一台洗衣機。',
+    [{l:'讓他照樣上場',s:'名聲↑ · 全場笑翻',fx:{fame:1,spi:1},t:'審查員憋笑憋到肩膀發抖，他還是過了。從此大家都叫他「櫻花」。'},
+     {l:'把你的備用道着借他',s:'鬥志↑',fx:{spi:2},t:'你的道着穿在他身上，袖子長了一大截，像在演布袋戲。'}])},
+  {id:'t_pee',run:()=>ev('榻榻米上的一灘水','少年部組手到一半，一個小朋友突然哭著說要找媽媽，接著榻榻米上多了一灘水。',
+    [{l:'自己拿拖把',s:'鬥志↑ 名聲↑',fx:{spi:2,fame:.5},t:'你一邊拖地一邊喊：「繼續！其他人不要看！」所有人都在看。'},
+     {l:'全班休息十分鐘',s:'體況↑',fx:{hp:5},t:'你蹲下來幫他擦眼淚，順便打電話叫媽媽帶褲子來。'}])},
+  {id:'t_kungfu',run:()=>ev('一指神功','成人班的新學員看了一整晚的武俠片，下課跑來問你：「老師，什麼時候教一指神功？還有無影腳。」',
+    [{l:'「先打一千次正拳再說。」',s:'技術↑',fx:{tec:1},t:'他打到第三百下就沒再提了。'},
+     {l:'當場示範迴旋踢踢破木板',s:'名聲↑ 存款↑ · 體況↓',fx:{fame:2,money:1,hp:-3},t:'木板裂成兩半，他眼睛發亮，當場繳了一整年的學費。'}])},
+  {id:'t_live',run:()=>ev('場邊的直播主','一位家長在場邊開直播，對著鏡頭講解：「大家看，這個老師的教法有問題喔。」',
+    [{l:'請他把手機收起來',s:'鬥志↑',fx:{spi:1},t:'他嘟囔著收起手機，之後每次都坐在最角落。'},
+     {l:'請他直接下場體驗',s:'名聲↑',fx:{fame:2},t:'他做到第二十下伏地挺身，就默默把直播關了。'}])},
+  {id:'t_melon',run:()=>ev('踢爆西瓜','學員是個小網紅，想拍短影音，要你用迴旋踢踢爆一顆西瓜。',
+    [{l:'拍吧',s:'名聲↑ · 看運氣',do(){if(r()<.35){fx({fame:5,hp:-5});return '西瓜沒破，你的腳背紫了一個禮拜。影片反而爆紅，留言全是「西瓜：我沒事」。';}fx({fame:3});return '西瓜炸開的瞬間，影片破了十萬觀看。';}},
+     {l:'「道場不是拍片的地方。」',s:'鬥志↑',fx:{spi:2},t:'他想了想，改拍你們早上拖地的樣子，也意外地很多人看。'}])},
+  {id:'t_ac',run:()=>ev('冷氣壞了','七月，道場的冷氣壞了，室內三十八度，榻榻米燙腳。',
+    [{l:'照常上課，順便練意志力',s:'耐力↑ 鬥志↑ · 體況↓',fx:{sta:2,spi:2,hp:-6},t:'下課時每個人的道着都可以擰出水來。'},
+     {l:'自掏腰包修冷氣',s:'存款↓',fx:{money:-2},t:'師傅說零件要等三天。那三天你們改去公園練。'}])},
+  {id:'t_saus',run:()=>ev('用香腸抵學費','隔壁香腸攤的老闆想報名，搓著手問你：「學費……可不可以用香腸抵？」',
+    [{l:'收下香腸',s:'體況↑ · 大家吃得很開心',fx:{hp:5,spi:1},t:'那個月，道場每天下課都飄著烤香腸的味道，出席率創新高。'},
+     {l:'還是照規矩收學費',s:'存款↑',fx:{money:1},t:'他繳了學費，還是每次都多帶一袋香腸來。'}])},
+  {id:'t_master',run:()=>ev('十段大師來訪','一位自稱「某某流派十段大師」的中年人走進道場，說要跟你「切磋一下」。',
+    [{l:'換上護具，跟他打一場',s:'鬥志↑ 名聲↑ · 看運氣',do(){if(r()<.85){fx({spi:2,fame:2});return '不到十秒，他坐在地上說：「今天狀況不好。」';}fx({hp:-6,spi:3});return '他出奇地強，你們打成平手，最後一起去吃了宵夜。';}},
+     {l:'請他先報名初級班',s:'鬥志↑',fx:{spi:1},t:'他說下次會再來，後來再也沒出現過。'}])},
+  {id:'t_pants',run:()=>ev('審查前一分鐘','審查前一分鐘，你發現一個學員的道着褲穿反了，另一個忘了帶腰帶。',
+    [{l:'衝過去一個一個幫忙',s:'名聲↑',fx:{fame:1},t:'你用自己的腰帶幫他綁好，然後才想起自己要坐審查席。'},
+     {l:'讓他們自己想辦法',s:'鬥志↑',fx:{spi:1},t:'他們用鞋帶把褲子綁住上場，你決定假裝沒看到。'}])},
+  {id:'t_mlm',run:()=>ev('群組裡的直銷','道場的 LINE 群組裡，有學員開始推銷保健食品，還附上「限時優惠」。',
+    [{l:'私訊他，好好說',s:'鬥志↑',fx:{spi:1},t:'他回了一張「押忍」的貼圖，之後就沒再發了。'},
+     {l:'在群組公告禁止',s:'名聲↑ · 可能少一個學員',do(){fx({fame:1});tdadd(-1);return '他退出了群組，也退出了道場。群組安靜了一個禮拜。';}}])},
+  {id:'t_phone',run:()=>ev('水桶裡的手機','少年部的孩子打掃時，「不小心」把你的手機丟進了拖地的水桶裡。',
+    [{l:'認命換一支新的',s:'存款↓',fx:{money:-2},t:'孩子們集體罰半蹲十分鐘，然後一起幫你挑手機殼。'},
+     {l:'塞進米缸賭一把',s:'看運氣',do(){if(r()<.5)return '兩天後手機奇蹟復活，只是開機畫面一直在閃。';fx({money:-2});return '手機沒救了，米倒是吸飽了拖把水。';}}])},
+  {id:'t_old',run:()=>ev('七十歲的新學員','每天在門口看的阿伯終於走進來：「我七十歲了，還能學嗎？」',
+    [{l:'收下他',s:'鬥志↑↑ 名聲↑',fx:{spi:3,fame:1},t:'三年後他拿到了藍帶，出席率比很多年輕人還高。'},
+     {l:'推薦他去公園打太極',s:'',t:'他點點頭走了。後來你常在公園看到他，對著空氣打正拳。'}])},
+  {id:'t_tall',run:()=>ev('「練空手道會長不高」','一位媽媽堅持要孩子退出：「網路上說，練空手道會長不高。」',
+    [{l:'拿出研究資料好好說明',s:'鬥志↑',fx:{spi:1},t:'媽媽說要回家想想。孩子在旁邊拼命對你點頭。'},
+     {l:'指向一百八十五公分的黑帶學長',s:'名聲↑',fx:{fame:1},t:'媽媽沉默了五秒，把退費單收了回去。'}])},
+  {id:'t_night',run:()=>ev('半夜的道場門口','兩個國中生學員跟家裡吵架，半夜跑到道場門口坐著不走。',
+    [{l:'陪他們聊到天亮，再送回家',s:'鬥志↑↑ 名聲↑ · 體況↓',fx:{spi:3,fame:1,hp:-5},t:'後來其中一個，成了你最得力的助教。'},
+     {l:'打電話請家長來接',s:'鬥志↑',fx:{spi:1},t:'家長來的時候，孩子低著頭說了一聲「押忍」。'}])},
+  {id:'t_trophy',run:()=>ev('獎盃不見了','展示櫃裡你最重要的那座獎盃不見了。最後在少年部的置物櫃找到——孩子說想「帶回家給阿嬤看」。',
+    [{l:'讓他帶回家一個禮拜',s:'鬥志↑ 名聲↑',fx:{spi:2,fame:1},t:'一週後獎盃回來了，上面多了一張阿嬤寫的紙條：「謝謝老師。」'},
+     {l:'收回來，好好說明',s:'鬥志↑',fx:{spi:1},t:'你跟他約好：等他自己拿到獎盃，再一起帶去給阿嬤看。'}])}
+];
+function* teachRun(e){S.used[e.id]=1;S.flags.tEv=(S.flags.tEv||0)+1;S.flags.tEvL=(S.flags.tEvL||[]).concat(e.ttl||[]);yield* e.run();}
+TEACH_EV.forEach(e=>{const src=e.run.toString();const m=src.match(/ev\('([^']+)'/);e.ttl=m?m[1]:'';});
+function* teachEvent(){const pool=TEACH_EV.filter(e=>!S.used[e.id]);if(!pool.length)return false;const e=pool[Math.floor(r()*pool.length)];log(`教課插曲：${e.ttl}`);yield* teachRun(e);return true;}
+
+/* ===== 稽古後的對話 ===== */
+function hpick(a,salt){let h=(S.turn*2654435761+salt*40503+(G&&G.setup?G.setup.seed:0))>>>0;return a[h%a.length];}
+function trainTalk(c){
+  const T=TX(c)||{};const fam=T.fam||c;const sen=esc(S.npc.sen),koh=esc(S.npc.koh);
+  const hasSen=S.used.npc_s1&&!S.used.npc_s2&&S.age<=26,hasKoh=S.used.npc_k1&&S.age>=21;
+  const uchi=S.path==='uchi';let salt=0;for(const ch of String(c))salt+=ch.charCodeAt(0);
+  const pool=[];
+  if(S.injury&&S.injury.fresh)return hpick(['師範：「受傷了就要說。逞強不叫勇敢，叫笨。」','師範幫你冰敷，嘴裡唸著：「急什麼？道場又不會跑掉。」',`${hasSen?`師兄${sen}`:'前輩'}：「我當年也傷過這裡。好好養，回來會更強。」`],salt);
+  if(S.flags.lvUp){S.flags.lvUp=0;return hpick(['師範看了你一眼：「這招，你的身體已經記住了。」','你突然發現，這個動作已經不用想就做得出來。','前輩：「欸，你最近這招變了耶。」'],salt);}
+  if(S.mood==='smug')pool.push('師範冷冷地說：「拿過冠軍，就不用練基本了嗎？」','你覺得今天的稽古太簡單。師範好像看穿了你，多加了一百下。');
+  if(S.mood==='slump')pool.push(`${hasSen?`師兄${sen}`:'師範'}：「低潮的時候，就練最簡單的東西。」`,'你一個人留下來打沙包，打到沒有力氣難過為止。');
+  if(S.hp<30)pool.push('師範：「臉色這麼差，今天早點回去。」','你在更衣室坐了很久，才有力氣站起來。');
+  if(S.age>=35&&fam!=='job')pool.push('你發現，恢復得比以前慢了。但出拳的時機，比年輕時準。','年輕學員喘到趴在地上，你還站著。經驗，也是一種體力。');
+  if(uchi&&fam!=='rest')pool.push('本部的先輩：「台灣來的！動作太慢了！」','晚上在寮裡，你用破日文寫日記：「今日も押忍。」','凌晨五點，本部道場的地板冰得像鐵。你一邊拖地一邊默背型的順序。','師範用日文說了一長串，你只聽懂最後一句：「もう一回！」');
+  if(CARDS[c]&&CARDS[c].kids)pool.push('小朋友：「老師你好兇喔！」下課時他還是跑來抱你的腿。','少年部的孩子們踢到一半，開始比誰的「押忍」比較大聲。','一個小女生第一次把型打完，回頭找媽媽的眼神，讓你想起自己十六歲。');
+  else if(fam==='kihon')pool.push('師範：「型不是跳舞。每一個動作，前面都要站著一個敵人。」','師範：「腰！腰再低一點！正拳是從腳底板打出來的。」','你在心裡數著：九百九十八、九百九十九、一千。手臂已經不是自己的了。','師範：「基本做一萬遍，才配說自己會。」','鏡子裡的自己，終於有一點像師範的樣子了。',...(hasSen?[`師兄${sen}：「第二十一個動作，你又忘了吸氣。」`]:[]),...(hasKoh?[`學弟${koh}在旁邊偷偷模仿你的轉身，被你抓個正著。`]:[]));
+  else if(fam==='kumite')pool.push('師範：「手放下來，就是請對方打你的臉。手！」','「痛嗎？」「押忍，不痛。」其實痛死了。','對手喘著氣說：「押忍，再一場！」你們兩個都笑了。','黑帶前輩拍拍你的肩：「今天那一記中段，有打進來。」','你被下段踢掃倒在地，抬頭看到天花板的日光燈在晃。',...(hasSen?[`師兄${sen}：「下段踢不是用腳踢，是用整個身體砍。」`]:[]),...(hasKoh?[`學弟${koh}：「學長，等一下可以跟我再打一場嗎？」`]:[]));
+  else if(fam==='taiso')pool.push('「再一百下！」師範的聲音比啞鈴還重。','互擊腹部的時候，前輩笑著說：「吸氣——然後忍住。」','跑完山，你躺在階梯上看雲，連手指都不想動。','小腿踢沙包踢到發紫，前輩說：「紫了，才會硬。」','你對著沙包說：「今天先放過你。」沙包沒有回答。');
+  else if(fam==='yama'||c==='yama')pool.push('山裡的夜很安靜，只聽得到自己的呼吸和瀑布的聲音。','你在瀑布下站了十分鐘，出來時已經想不起來剛剛在煩惱什麼。','一個人的山裡，你第一次聽見自己心跳的節奏。');
+  else if(c==='rest'||c==='rehab')pool.push('媽媽：「你又整天在道場，飯都沒好好吃。」','泡在熱水裡，你聽見每一個關節都在說謝謝。','師範打電話來：「休息，也是稽古。」','你躺在床上，腦子裡還在打型。');
+  else if(fam==='job'){
+    if(c==='w_saus')pool.push('老闆：「少年仔，打拳的手搬冷凍箱特別有力喔！」','冷凍庫零下十八度，你把每一箱香腸都當成槓鈴。','老闆娘塞了一包香腸給你：「拿回去給道場的人吃。」');
+    else if(c==='w_store')pool.push('店長：「你又在倉庫練踢腿？貨架倒了你賠喔。」','凌晨三點的便利商店，你在結帳台後面偷偷做馬步。');
+    else if(c==='w_tutor')pool.push('國中生：「老師，你手上的繭好可怕。」','你教他解方程式，他問你怎麼踢上段。最後兩個都沒學會。');
+    else if(c==='w_gym')pool.push('健身房會員：「你是教練嗎？」「不是，我是來打工擦器材的。」','你擦完最後一台跑步機，順手做了一百下伏地挺身。');
+    else pool.push('下班後你趕到道場，只剩最後一個小時。你一分鐘都沒浪費。');}
+  if(!pool.length)return '';
+  let t=hpick(pool,salt);const seen=S.flags.talkSeen||[];if(pool.length>1&&seen.includes(t)){const fr=pool.filter(x=>!seen.includes(x));t=fr.length?hpick(fr,salt+1):t;}
+  S.flags.talkSeen=[t].concat(seen).slice(0,6);return t;
+}
+
+/* ===== 日本賽事：三冠王與完全製霸 ===== */
+const JP_EV=['intl','jpw','jpk','jp','world','saikyo'];
+const SAIKYO={id:'saikyo',name:'本部最強決定戰',short:'最強決定戰',q:3,base:74,inc:3,rounds:3,kbase:93,kr:3,fame:20,prize:15,fee:0,sem:0,semFee:0,open:true,kata:true,desc:''};
+function crownWins(div){const cy=S.crownY;if(!cy||cy.y!==S.year)return [];return cy[div]||[];}
+function crownCount(div){const w=crownWins(div);return (w.includes('intl')?1:0)+(w.includes(div==='kumite'?'jpw':'jpk')?1:0)+(w.includes('jp')||w.includes('world')?1:0);}
+function crownLegs(div){return ['國際大會',div==='kumite'?'全日本體重別':'全日本型選手權',S.year%4===3?'世界大賽':'全日本選手權'];}
+function* crownCheck(){
+  for(const div of ['kumite','kata']){
+    if(crownCount(div)<3)continue;
+    const dn=DIVN[div];const wy=crownWins(div).includes('world');
+    S.crowns=S.crowns||[];const cr={y:S.year,div,perfect:false,world:wy};S.crowns.push(cr);
+    S.titles.push(`${S.year} 日本${dn}三冠王`);log(`日本${dn}三冠王`,'gold');S.fame+=15;if(S.flags.uchiDone&&!S.flags.shibucho){S.hq=(S.hq||0)+6;}
+    say(`<b class="gold">★★★ 日本${dn}三冠王！</b>同一年拿下${crownLegs(div).join('、')}的${dn}冠軍。${wy?'而且其中一冠是世界大賽。':''}`);
+    const hurt=badlyHurt();
+    const c=yield P(`${SAIKYO.name}的邀請`,`日本本部發來邀請：三冠王可以挑戰年度最後一戰——<b>${SAIKYO.name}（${dn}）</b>，對手是今年各大賽的冠軍和世界級選手。<br>贏了，就是<b>日本${dn}完全製霸</b>；輸了，三冠王的頭銜也不會被拿走。${hurt?`<br><span class="bad">你身上有${S.injury.n}，沒辦法出賽。</span>`:''}`,[
+      {id:'quick',label:'接受挑戰（快速模式）',sub:`體況 ${Math.round(S.hp)} · 贏了名聲大增 · 有受傷風險`,disabled:hurt},
+      {id:'go',label:'接受挑戰（親自上場）',sub:'每一回合自己決定',disabled:hurt},
+      {id:'no',label:'婉拒，帶著三冠王的榮耀回家',sub:'保住體力'}]);
+    if(c==='no'){say(`你向本部鞠躬婉拒。${dn}三冠王，已經足夠讓你記一輩子。`);continue;}
+    yield* runDivision(SAIKYO,div,c==='quick');
+    if(crownWins(div).includes('saikyo')){cr.perfect=true;S.titles.push(`${S.year} 日本${dn}完全製霸`);log(`日本${dn}完全製霸`,'gold');S.fame+=25;if(S.flags.uchiDone&&!S.flags.shibucho)S.hq=(S.hq||0)+10;
+      say(`<b class="gold">★★★★ 日本${dn}完全製霸！</b>同一年的四個日本大賽全部奪冠。本部的師範們站起來為你鼓掌。`);}
+    else say(`沒能完成完全製霸。但${dn}三冠王的頭銜，誰也拿不走。`);
+  }
+}
+function crownText(){const cs=S.crowns||[];if(!cs.length)return '';
+  return cs.map(c=>`${c.y} 年的${DIVN[c.div]}${c.perfect?'完全製霸':'三冠王'}`).join('、');}
+
 function pickEvent(){
   if(S.money<-6){S.flags.debtSeen=1;return DEBT;}
   if(r()>.36)return null;
@@ -2050,7 +2182,7 @@ function* life(){
         const T=TX(c);label=T.n+(T.card?` Lv${cardLv(c)+1}`:'')+(auto?'（半年稽古的後半）':'');
         let am=attrMul(T.attr)*(S.flags.teachHalf?.85:1)*(S.route==='kata'&&T.fam==='kihon'?1.15:1)*(pk()[T.fam]||1)*lvMul(c);
         if(['kihon','kumite','taiso'].includes(T.fam)){const sp0=specInfo().key;S.trc=S.trc||{};S.trc[T.fam]=(S.trc[T.fam]||0)+1;const sp1=specInfo();if(sp1.key!==sp0&&sp1.key!=='none'){say(`<span class="tg crit">稽古傾向</span>你成為了<b>${sp1.n}</b>（${sp1.d}）`);log(`成為${sp1.n}`);}}
-        if(T.card){S.clv=S.clv||{};const l0=cardLv(c);S.clv[c]=(S.clv[c]||0)+1;const l1=cardLv(c);if(l1>l0)say(`<span class="tg crit">卡牌升級</span>「${T.n}」升到 <b>Lv${l1+1}</b>，效果 +${l1*5}%`);}
+        if(T.card){S.clv=S.clv||{};const l0=cardLv(c);S.clv[c]=(S.clv[c]||0)+1;const l1=cardLv(c);if(l1>l0){S.flags.lvUp=1;}if(l1>l0)say(`<span class="tg crit">卡牌升級</span>「${T.n}」升到 <b>Lv${l1+1}</b>，效果 +${l1*5}%`);}
         if(T.pay)S.money+=T.pay;
         if(CARDS[c]&&CARDS[c].kids){S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;S.fame+=.5;}
         if(T.fam==='kumite'&&hasT('wimp'))am*=.9;if(T.fam==='kihon'&&hasT('sleepy'))am*=.88;if(['kshi','kboss','u_feng'].includes(c)&&hasT('stubborn'))am*=.9;if(hasT('hard')&&T.hp<0)bump('hp',-2);
@@ -2076,6 +2208,7 @@ function* life(){
     S.flags.healed=0;
     income(serving);
     say(`<span class="lbl">${label}</span>${diff(s0)}`);
+    if(c&&!['retire','open'].includes(c)&&!serving){const tk=c==='assist'?'第一次站到少年部前面，二十雙眼睛盯著你。你清了清喉嚨：「押忍！」':trainTalk(c);if(tk)say(`<span class="talk">${tk}</span>`);}
     if(serving&&S.serviceLeft===0){say('退伍了。你在營區門口回頭看了一眼，然後直奔道場。');log('退伍');}
 
     if(S.dojo&&c!=='open'&&S.q%2===0)yield* manage(false);
@@ -2083,12 +2216,14 @@ function* life(){
 
     const e=pickEvent();
     if(e){S.used[e.id]=1;yield* e.run();}
+    if(!serving&&teaching()&&r()<.13)yield* teachEvent();
 
     if(!serving){
       if(S.flags.skip>0){if(TOURN.some(T=>T.q===S.q&&tDivs(T).length))say('術後休養中，這一季不出賽。');S.flags.skip--;}
       else{
         let held=null;
         for(const T of TOURN){if(T.q===S.q){const did=yield* tourney(T);if(did)held=T;}}
+        if(S.q===3)yield* crownCheck();
         if(held&&held.id!=='local')yield* seminar(held);
       }
       yield* examPhase();
@@ -2116,8 +2251,11 @@ function* life(){
 }
 function epithet(){
   const c=S.champ;
+  {const cs=S.crowns||[];const pf=cs.filter(x=>x.perfect);if(pf.some(x=>x.div==='kata')&&pf.some(x=>x.div==='kumite'))return '型與組手的完全製霸';}
   if(c.world_kumite&&c.world_kata)return '型與組手的世界王者';
+  {const pf=(S.crowns||[]).find(x=>x.perfect);if(pf)return `日本${DIVN[pf.div]}完全製霸`;}
   if(c.world_kumite)return '世界王者';if(c.world_kata)return '型的世界王者';
+  {const cw=(S.crowns||[])[0];if(cw)return `日本${DIVN[cw.div]}三冠王`;}
   if(S.flags.shibucho)return '台灣支部長';
   if(S.flags.shihandai&&!c.jp_kumite&&!c.jp_kata&&!S.flags.hyaku)return '台灣支部師範代';
   if(S.flags.hyaku)return '百人組手達成者';
@@ -2206,7 +2344,7 @@ function drawSprite(cv,view,belt,hair){
 
 /* ===== UI ===== */
 let G=null;
-const KEY='kyokushin-life-v33';
+const KEY='kyokushin-life-v34';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
@@ -2397,6 +2535,7 @@ function epiParas(){
    else t+='你沒有拿過冠軍。可是每一次點到名字，你都站上了場；每一次倒下，你都自己站了起來。';
    const tw=S.w+S.l,tk=S.kw+S.kl;if(tw||tk)t+=`算一算，${tw?`組手 ${S.w} 勝 ${S.l} 敗`:''}${tw&&tk?'，':''}${tk?`型 ${S.kw} 勝 ${S.kl} 敗`:''}；輸掉的那些場，教會你的比贏的還多。`;
    if(S.route!=='kata'&&(S.rivalW||S.rivalL))t+=`你和宿敵${esc(S.rival)}交手 ${S.rivalW+S.rivalL} 次，${S.rivalW>S.rivalL?'你贏得多一點':S.rivalW<S.rivalL?'他贏得多一點':'始終不分上下'}。多年以後回頭看，最懂你的人，也許就是他。`;
+   {const ct=crownText();if(ct)t+=`最難的是${ct}——同一年把日本的大賽一場一場拿下來，那一年你幾乎住在飛機上。`;}
    if(S.flags.hyaku)t+='百人組手那天，第一百人倒下時整座道場的吶喊，到現在還留在你的耳朵裡。';
    if(S.flags.sponsor||S.flags.channel)t+=`${S.flags.sponsor?'有企業找你簽贊助，':''}${S.flags.channel?'你開了自己的頻道，留言區有人叫你「老師」，':''}你第一次發現，原來有那麼多人在看。`;
    add('選手時代',t);}
@@ -2409,6 +2548,7 @@ function epiParas(){
   // 傳承
   {let t='';
    if(S.flags.teach)t+='你帶過少年部，那些當年只到你腰的孩子，後來有好幾個都比你高了。';
+   if(S.flags.tEv){const L2=(S.flags.tEvL||[]).slice(0,3).map(x=>x.replace(/[「」]/g,''));t+=`教課這些年，你遇過 ${S.flags.tEv} 件狗屁倒灶的事${L2.length?`：${L2.join('、')}……`:''}。當時氣得半死，現在全都成了笑著講的故事。`;}
    if(m.shd)t+=`${m.shd} 歲，支部長任命你為台灣支部師範代${S.flags.shdFail?`，那是你第 ${S.flags.shdFail+1} 次站在審查席前`:''}${m.shibu?`；${m.shibu} 歲，你接下了台灣支部長，從此肩上扛的是整個台灣的極真`:''}。`;
    if(S.branches&&S.branches.length)t+=`你派出 ${S.branches.length} 名弟子到各地開館，台灣支部的招牌掛到了${[...regionsHeld()].join('、')}部${S.flags.zenkoku?'，完成了全台製霸':''}。`;
    if(S.dojo){const d=S.dojo;const oa=d.opened-birthY();t+=`${oa} 歲那年，你在${(CITIES[d.city]||{}).n||''}開了${esc(d.name)}。最多的時候有 ${d.peak} 個學員擠在道場裡${d.staff?`，${d.staff} 位專任指導員和你一起扛`:''}${d.owned?'，後來你還把場地買了下來':''}；有 ${d.blacks} 名弟子在那裡繫上黑帶${d.champs?`，${d.champs} 人拿下全台冠軍`:''}。`;
@@ -2439,7 +2579,7 @@ function lifeStages(){
   if(m.twuchi)b.push([m.twuchi,'台灣內弟子']);
   if(m.uchi)b.push([m.uchi,'日本內弟子']);
   const back=uEnd?logAge(uEnd):(tEnd&&!m.uchi?logAge(tEnd):0);if(back)b.push([back,'回到台灣・選手生涯']);
-  {const pk=L.find(l=>/^(全日本|全世界).*優勝/.test(l.t));if(pk){const a=logAge(pk);if(!m.ret||a<m.ret)b.push([a,'站上頂點']);}}
+  {const pk=L.find(l=>/^(全日本|全世界).*優勝|三冠王|完全製霸/.test(l.t));if(pk){const a=logAge(pk);if(!m.ret||a<m.ret)b.push([a,'站上頂點']);}}
   if(m.ret)b.push([m.ret,'從選手引退']);
   if(S.dojo||S.flags.closedDojo){const d=S.dojo;const oa=d?d.opened-birthY():null;if(oa&&oa>=(m.ret||99))b.push([oa,'道場主']);}
   if(m.shd&&m.shd>(m.ret||0))b.push([m.shd,'師範代']);
@@ -2463,6 +2603,11 @@ const ACHS=[
   ['world','世界王者','世界大賽優勝',S=>!!(S.champ.world_kata||S.champ.world_kumite)],
   ['world2','型與組手的世界王者','世界大賽型和組手都奪冠',S=>!!(S.champ.world_kata&&S.champ.world_kumite)],
   ['hyaku','百人組手','完成百人組手',S=>!!S.flags.hyaku],
+  ['crown_m','組手三冠王','同一年拿下日本組手三冠',S=>(S.crowns||[]).some(c=>c.div==='kumite')],
+  ['crown_k','型三冠王','同一年拿下日本型三冠',S=>(S.crowns||[]).some(c=>c.div==='kata')],
+  ['perfect','完全製霸','三冠之後再拿下本部最強決定戰',S=>(S.crowns||[]).some(c=>c.perfect)],
+  ['perfect2','型與組手的完全製霸','型與組手都完成完全製霸',S=>{const p=(S.crowns||[]).filter(c=>c.perfect);return p.some(c=>c.div==='kata')&&p.some(c=>c.div==='kumite');}],
+  ['teach10','狗屁倒灶','教課時遇過 15 件以上的插曲',S=>(S.flags.tEv||0)>=15],
   ['twuchi','台灣內弟子','通過支部長審查並結業',S=>!!S.flags.twuchiDone],
   ['uchi','日本內弟子','熬過本部的一千多個日子',S=>!!S.flags.uchiDone],
   ['abroad','海外研修','結業後被派到海外分部',S=>S.flags.hoko==='abroad'&&!!S.flags.uchiDone],
@@ -2534,7 +2679,7 @@ function shareCard(){
   x.fillText(`個性：${(S.traits||[]).map(k=>TRAITS[k].n).join('、')}`,420,490);
   x.fillText(`組手 ${S.w} 勝 ${S.l} 敗・型 ${S.kw} 勝 ${S.kl} 敗`,420,540);
   let y=620;x.fillStyle='#26223b';x.font=`900 36px ${F}`;x.fillText('主要頭銜',80,y);y+=20;x.font=`500 32px ${F}`;
-  const tt=S.titles.filter(t=>/優勝|就任|完遂/.test(t)).slice(-6);(tt.length?tt:['每一次站上場，都算數。']).forEach(t=>{y+=50;x.fillText('★ '+t,90,y);});
+  const tt=S.titles.filter(t=>/優勝|就任|完遂|三冠|製霸/.test(t)).slice(-6);(tt.length?tt:['每一次站上場，都算數。']).forEach(t=>{y+=50;x.fillText('★ '+t,90,y);});
   y=Math.max(y+70,1000);x.font=`500 28px ${F}`;x.fillStyle='#4a4560';
   const ep=epiParas().slice(-1)[0].t.replace(/<[^>]+>/g,'');let line='';const lines=[];for(const ch of ep){if(x.measureText(line+ch).width>W-180){lines.push(line);line=ch;}else line+=ch;}lines.push(line);
   const ls=lines.slice(0,4);if(lines.length>4)ls[3]=ls[3].slice(0,-1)+'…';ls.forEach((l,i)=>x.fillText(l,90,y+i*42));
