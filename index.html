@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="以極真空手道中村道場台灣支部為藍本的空手道人生模擬遊戲。從十六歲入門，一路練到黑帶、全日本、世界大賽，甚至成為台灣支部長。">
+<meta name="description" content="以極真空手道中村道場台灣支部為藍本的空手道人生模擬遊戲。從十五歲高一入門，一路練到黑帶、全日本、世界大賽，甚至成為台灣支部長。">
 <meta property="og:title" content="極真人生・中村道場台灣支部篇">
 <meta property="og:description" content="抽稽古牌、比賽、升段審查、當內弟子、開道場。你的空手道人生會走到哪裡？">
 <meta property="og:image" content="icon-512.png">
@@ -185,6 +185,9 @@ body.introOn{overflow:hidden}
 .modal{position:fixed;inset:0;z-index:300;background:rgba(10,12,28,.72);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
 .modal[hidden]{display:none}
 .rc-box{max-width:420px;width:100%;max-height:90vh;overflow:auto}
+.rc-box{position:relative;animation:rcIn .45s cubic-bezier(.2,1.4,.4,1)}@keyframes rcIn{from{transform:translateY(24px) scale(.94);opacity:0}to{transform:none;opacity:1}}#recruit:not([hidden]){animation:rcFade .3s ease}@keyframes rcFade{from{opacity:0}to{opacity:1}}.rc-x{position:absolute;top:6px;right:6px;width:34px;height:34px;border:2px solid var(--ink);background:#fff;color:var(--ink);font-size:16px;font-weight:900;cursor:pointer;z-index:2;line-height:1}
+.rc-cv{display:block;width:100%;image-rendering:pixelated;border:3px solid var(--ink);border-top:0;background:#ffe7ef}
+.rc-go .s{color:#ffe9e9!important}.rc-p{text-align:center;margin:.6em 0;line-height:1.8}.rc-later{display:block;margin:8px auto 0;background:none;border:0;color:var(--muted,#777);text-decoration:underline;font:inherit;font-size:13px;cursor:pointer;padding:8px}
 .rc-head{text-align:center;border:3px solid var(--ink);padding:10px;background:#d24b4b;color:#f3ecdc}
 .rc-head small{font-family:var(--f-px,'Press Start 2P',monospace);font-size:9px;color:#f2c24f;display:block}
 .rc-head b{display:block;font-size:24px;letter-spacing:.15em;margin:4px 0}
@@ -195,6 +198,7 @@ body.introOn{overflow:hidden}
 .rc-dojos li{border:2px solid var(--soft);padding:6px 8px;display:flex;flex-direction:column;font-size:12px;background:var(--card)}
 .rc-dojos li b{font-size:14px}
 .rc-dojos li span{color:var(--muted)}
+.opt.rcbtn{background:linear-gradient(90deg,rgba(242,194,79,.35),rgba(242,194,79,.1));box-shadow:0 -3px 0 0 var(--gold,#f2c24f),0 3px 0 0 var(--gold,#f2c24f),-3px 0 0 0 var(--gold,#f2c24f),3px 0 0 0 var(--gold,#f2c24f),0 7px 0 0 var(--soft)}
 .talk{display:block;margin-top:2px;padding-left:10px;border-left:3px solid var(--soft);color:var(--ink2);font-size:13px;line-height:1.6}
 .bad{color:var(--red)} .gold{color:#b5761a;font-weight:700} .good{color:#2f8a4a}
 .bout{display:grid;grid-template-columns:4.4em minmax(0,1fr) auto;gap:8px;align-items:baseline;font-size:13.5px}
@@ -419,6 +423,7 @@ footer{font-size:11.5px;color:var(--headsub);text-align:center;line-height:1.7}
 .ttile.r3 .rar{background:#d9534f;color:#fff}
 .ttile.r2{background:linear-gradient(180deg,rgba(242,194,79,.18),transparent 60%)}
 .ttile.r3{background:linear-gradient(180deg,rgba(217,83,79,.18),transparent 60%)}
+.epitabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:8px 0 6px}.etab{min-width:0;border:2px solid var(--ink,#26223b);background:#fff;color:var(--ink,#26223b);font:inherit;font-weight:700;font-size:13px;padding:5px 4px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.3}.etab small{font-weight:400;font-size:10px;color:var(--muted,#777)}.etab.on{background:var(--ink,#26223b);color:#fff}.etab.on small{color:#ddd}.etab.rr{border-style:dashed}
 .epi{margin:10px 0;padding:10px 12px;background:var(--paper2,#efe6d2);box-shadow:inset 3px 0 0 var(--gold,#f2c24f)}
 .epi b{display:block;font-size:12px;letter-spacing:.2em;color:var(--muted);margin-bottom:4px}
 .epi p{margin:0 0 .7em;line-height:1.9;text-indent:2em}.epi p:last-child{margin-bottom:0}.epi h4{margin:.9em 0 .25em;font-size:12px;letter-spacing:.15em;color:var(--ink2)}.epi h4:first-of-type{margin-top:.2em}.life .stage{border-top:1px dashed rgba(0,0,0,.15);padding:6px 0}.life .stage summary{cursor:pointer;display:flex;justify-content:space-between;align-items:baseline;gap:8px;list-style:none}.life .stage summary::-webkit-details-marker{display:none}.life .stage summary::before{content:'▸';margin-right:4px;color:var(--muted)}.life .stage[open] summary::before{content:'▾'}.life .sn{font-weight:700;flex:1}.life small{color:var(--muted);font-size:11px;white-space:nowrap}.tl{list-style:none;margin:6px 0 2px;padding:0}.tl li{display:flex;gap:8px;font-size:13px;line-height:1.6;padding:1px 0}.tl li i{font-style:normal;min-width:2.2em;color:var(--muted);text-align:right}.tl li.gold{font-weight:700}.tl li.gold i{color:var(--ink)}.tl li.bad{color:var(--coral,#b8504c)}
@@ -503,7 +508,7 @@ a.opt{text-decoration:none;color:inherit}
   <section id="guide" class="px guide" hidden aria-label="遊戲說明">
     <div class="wt"><h3>遊戲說明</h3><button class="chipbtn" type="button" id="btnGuideClose" style="color:var(--ink);background:var(--paper2);box-shadow:0 0 0 2px var(--ink)">關閉</button></div>
     <details open><summary>這是什麼遊戲</summary>
-      <p>你是十六歲、剛入門的空手道少年。每一回合是三個月（一季），稽古一年選兩次，一路練到黑帶、上全台和日本的大賽，最後也許能開自己的道場。<b>相同種子＋相同選擇＝相同人生</b>，可以把種子碼分享給朋友比較。</p></details>
+      <p>你是十五歲、剛上高一、剛入門的空手道少年。每一回合是三個月（一季），稽古一年選兩次，一路練到黑帶、上全台和日本的大賽，最後也許能開自己的道場。<b>相同種子＋相同選擇＝相同人生</b>，可以把種子碼分享給朋友比較。</p></details>
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
@@ -515,7 +520,7 @@ a.opt{text-decoration:none;color:inherit}
     <details><summary>能力與段位加成</summary>
       <p>力量、速度、耐力、技術、鍛體、抗性、鬥志七項。藍色是你練出來的，<b>金色是段位加成</b>，段位越高加越多，比賽時一起計算。<b>抗性</b>降低受傷機率和受傷的嚴重程度，也能減輕比賽中受到的傷害。體況越低越難發揮；紅色斜線是舊傷，會壓低體況上限。</p></details>
     <details><summary>錢與生活</summary>
-      <ul><li>高中時家裡出錢；18 歲後要自己付<b>生活費、學費</b>，大學生另有學雜費。</li><li>打工都在<b>稽古抽牌</b>裡：<b>永山香腸・搬香腸</b>（薪水最好、順便練力量和耐力）、便利商店夜班、健身房櫃台、家教（大學生）。選了打工牌，這半年就去打工賺錢，稽古只剩一點點。存款越少，越容易抽到打工牌。</li><li><b>營養品</b>花錢，但能提高成長和體況回復。</li><li>道着、護具會耗損，報名費、講習會、審查費都要錢。負債超過 10 萬時，壓力會讓稽古效果打折。</li><li>主畫面的「每季」顯示預估收支，下面一行是明細。</li></ul></details>
+      <ul><li>學生時期手頭很緊：高中只有一點零用錢，18 歲後要自己付<b>生活費、學費</b>，大學生另有學雜費。</li><li>打工都在<b>稽古抽牌</b>裡：<b>永山香腸・搬香腸</b>（薪水最好、順便練力量和耐力）、便利商店夜班、健身房櫃台、家教（大學生）。選了打工牌，這半年就去打工賺錢，稽古只剩一點點。存款越少，越容易抽到打工牌。</li><li><b>營養品</b>花錢，但能提高成長和體況回復。</li><li>道着、護具會耗損，報名費、講習會、審查費都要錢。負債超過 10 萬時，壓力會讓稽古效果打折。</li><li>主畫面的「每季」顯示預估收支，下面一行是明細。</li></ul></details>
     <details><summary>稽古抽牌（一年兩次）</summary>
       <p>每年上半年、下半年各從稽古牌庫抽 3 張，選 1 張練半年（兩季）。牌分 N、R、SR、傳說四種稀有度，越稀有效果越好；同一張牌練得越久越熟練：累積 3、7、12、18 季分別升到 Lv2～Lv5，每級效果 +5%，牌上的「x/y」是升級進度。牌庫裡也有<b>打工牌</b>（永山香腸搬香腸、便利商店夜班等），選了就是這半年去打工賺錢，新手模式也會出現。每間道場都有自己的特色牌；小港、楠梓、潮州每年可以換牌兩次。<b>休養</b>不用抽，隨時可選；每年可以花 2 點鬥志<b>換牌</b>一次。各道場、內弟子時期的牌庫都不一樣。審查有哪一項明顯不足時，抽到的三張裡一定至少有一張能補那一項，但要不要練它由你決定。事件、比賽、審查還是每季照常發生。下一季如果體況低於 35 或受傷，會自動改成休養或復健。</p></details>
     <details><summary>受傷</summary>
@@ -583,7 +588,7 @@ a.opt{text-decoration:none;color:inherit}
       <div class="portrait"><canvas id="startSpr"></canvas></div>
       <div class="hinfo">
         <div class="hname"><b id="startName">新人</b><span class="beltpill" style="--belt:#f6f4ee;--bfg:#26223b">白帶</span></div>
-        <p class="badges" id="startTraits"></p><p class="lead">十六歲，推開極真空手道中村道場台灣支部的木門。第一次玩可以先看右上角的「遊戲說明」。</p>
+        <p class="badges" id="startTraits"></p><p class="lead">十五歲・高一，推開極真空手道中村道場台灣支部的木門。第一次玩可以先看右上角的「遊戲說明」。</p>
       </div>
     </div>
     <form class="form" id="startForm">
@@ -643,6 +648,7 @@ a.opt{text-decoration:none;color:inherit}
       </div>
     </div>
     <article id="card" aria-live="polite"></article>
+    <button class="quit" type="button" id="btnGiveUp2" style="align-self:center;color:var(--headsub)">放棄・直接結算這段人生</button>
     <section class="px more" id="moreBox" aria-label="詳細資料">
       <div class="tabs" id="tabs"><button type="button" data-t="exam">審查</button><button type="button" data-t="skill">招式・型</button><button type="button" data-t="dojo">道場</button><button type="button" data-t="money">收支・資格</button></div>
       <div id="tabBody" hidden></div>
@@ -650,6 +656,7 @@ a.opt{text-decoration:none;color:inherit}
     <details class="log" id="logBox">
       <summary>修行記錄</summary>
       <ol id="log"></ol>
+      <button class="opt" type="button" id="btnGiveUp" style="margin-top:10px"><span class="l">放棄・直接結算這段人生</span><span class="s">看看到目前為止的結語和年表</span></button>
       <button class="quit" type="button" id="btnQuit">放棄這段人生，回到首頁</button>
     </details>
   </section>
@@ -893,8 +900,8 @@ const divs=()=>ROUTES[S.route].divs;
 function newState(setup){
   const rnd=mulberry(setup.seed);
   const H=HOMES[setup.home]||HOMES.pingtung;
-  S={setup,easy:true,fav:(STYLE_FAV[setup.style]||[]).includes(setup.fav)?setup.fav:((STYLE_FAV[setup.style]||[])[0]||null),r:rnd,name:setup.name,style:setup.style,wc:WCLS[setup.wc]?setup.wc:'middle',route:'dual',age:16,year:2026,q:0,turn:0,rank:0,
-    st:{},pot:{},hp:100,wear:0,fame:0,money:2,w:0,l:0,kw:0,kl:0,titles:[],log:[],scene:[],flags:{seminars:0,kataB:0},path:'school',used:{},
+  S={setup,easy:true,fav:(STYLE_FAV[setup.style]||[]).includes(setup.fav)?setup.fav:((STYLE_FAV[setup.style]||[])[0]||null),r:rnd,name:setup.name,style:setup.style,wc:WCLS[setup.wc]?setup.wc:'middle',route:'dual',age:15,year:2026,q:0,turn:0,rank:0,
+    st:{},pot:{},hp:100,wear:0,fame:0,money:1,w:0,l:0,kw:0,kl:0,titles:[],log:[],scene:[],flags:{seminars:0,kataB:0},path:'school',used:{},
     mult:1,serviceLeft:0,danYear:0,lastPromo:0,examFails:0,uchiStart:0,
     qJ:{kata:-99,kumite:-99},qW:{kata:-99,kumite:-99},qWTW:{kata:-99,kumite:-99},twc:{kata:0,kumite:0},champ:{},
     km:{'太極':20},kfocus:null,pts:0,hq:0,rivalW:0,rivalL:0,ending:null,forced:false,dojo:null,home:{n:H.n,fee:H.fee,pk:H.pk||{},coach:H.coach,equip:H.equip,partners:H.partners,mood:H.mood}};
@@ -1001,7 +1008,7 @@ function when(){return `${S.year} 年 ${QN[S.q]}・${S.age} 歲`;}
 const REC_KEEP=t=>t.startsWith('稽古方針')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
 function P(title,body,opts,kind){if(opts&&!REC_KEEP(title))opts.forEach(o=>{if(o.rec)o.rec=false;});const p={title,body,opts,eyebrow:when(),lines:S.scene,kind:kind||'choice'};S.scene=[];return p;}
 function log(t,cls){S.log.push({w:`${S.year}·${S.q<2?'上':'下'}`,t,cls:cls||''});}
-function ageF(){const a=S.age;return a<=17?1.1:a<=24?1:a<=28?.75:a<=32?.45:.22;}
+function ageF(){const a=S.age;return a<=15?.45:a<=16?.78:a<=24?.9:a<=28?.7:a<=32?.45:.22;}
 function grow(k,amt){const cur=S.st[k],pot=S.pot[k];const room=Math.max(0,(pot-cur)/pot);S.st[k]=clamp(cur+amt*.95*Math.pow(room,.5)*ageF()*S.mult*injG()*lifeG()*traitG()*(k==='spi'&&hasT('hot')?1.3:1)*(k==='pow'&&hasT('strong')?1.2:1)*(k==='spd'&&hasT('swift')?1.2:1)*(.75+r()*.5),0,100);}
 function bump(k,v){
   if(k==='hp')S.hp=clamp(S.hp+v,0,hpMax());
@@ -1027,13 +1034,13 @@ const NUTRI={
   basic:{n:'基本蛋白粉',s:'每季 0.5 萬 · 成長 ×1.05 · 體況回復 +2',cost:.5,g:1.05,hp:2},
   full:{n:'完整營養補給',s:'每季 1.2 萬 · 成長 ×1.12 · 體況回復 +4',cost:1.2,g:1.12,hp:4}
 };
-const LIVING={school:0,uni:1.5,job:2.5,trainee:1.8,twuchi:.3,uchi:.5,inst:2};
+const LIVING={school:0,uni:1.8,job:2.5,trainee:2,twuchi:.3,uchi:.5,inst:2};
 const canWork=()=>S.path!=='uchi'&&S.path!=='twuchi'&&S.serviceLeft<=0;
 const jobNow=()=>canWork()?JOBS[S.job||'none']:JOBS.none;
 const nutriNow=()=>NUTRI[S.nutri||'none'];
 function lifeG(){return jobNow().g*nutriNow().g*(S.money<-10?.85:1)*(S.flags.kid?.95:1);}
 function flow(serving){
-  const it=[];const base=S.path==='job'?jobPay():({school:.5,inst:2.5,trainee:2})[S.path]||0;
+  const it=[];const base=S.path==='job'?jobPay():({school:.3,inst:2.5,trainee:1.8})[S.path]||0;
   if(base)it.push([S.path==='job'?'薪水':S.path==='inst'?'指導員薪水':S.path==='trainee'?'見習津貼':'零用錢',S.dojo&&S.path==='job'?2:base]);
   if(serving)it.push(['軍餉',.5]);
   if(!serving&&LIVING[S.path])it.push(['生活費',-LIVING[S.path]*(hasT('thrifty')?.8:1)]);
@@ -1047,7 +1054,7 @@ function flow(serving){
   if(S.flags.teach)it.push(['助教',1.5]);if(S.flags.channel)it.push(['頻道',1]);
   if(S.flags.sponsor)it.push(['贊助',3+S.fame*.025]);if(S.flags.shibucho)it.push(['支部長',3]);if(S.branches&&S.branches.length)it.push(['分館上繳',S.branches.reduce((a,b)=>a+.15+b.st*.01,0)]);else if(S.flags.shihandai)it.push(['師範代津貼',1.5]);if(S.flags.merch)it.push(['周邊商品',(.8+S.fame*.012)*S.flags.merch]);
   let tot=it.reduce((a,b)=>a+b[1],0);
-  if(EZ()&&!S.dojo&&tot<1){it.push(['家人支援',+(1-tot).toFixed(2)]);tot=1;}
+  {const fl=S.age<25?.5:1;if(EZ()&&!S.dojo&&tot<fl){it.push(['家人支援',+(fl-tot).toFixed(2)]);tot=fl;}}
   return {it,total:tot};
 }
 function jobPay(){return 3.4+(S.flags.degree?1.1:0)+Math.min(1,Math.max(0,S.year-(S.flags.jobStart||S.year))*.15);}
@@ -1894,7 +1901,7 @@ const H=k=>v=>{S.home[k]=clamp(S.home[k]+v,0,100);};
 const EVENTS=[
   {id:'senpai',cond:()=>S.age<=18,run:()=>ev('學長的下段踢','組手時學長毫不留情，你的大腿被下段踢踢到發紫。下課後他丟下一句：「痛，就記住了。」',
     [{l:'咬牙說「押忍」',s:'鬥志↑ 鍛體↑ 體況↓',fx:{spi:3,con:2,hp:-6},t:'隔週你又站到他面前。'},{l:'請學長教你怎麼擋',s:'技術↑',fx:{tec:3},t:'學長愣了一下，然後教你抬膝擋下段。'}])},
-  {id:'exam',cond:()=>S.age>=16&&S.age<=18,run:()=>ev('期末考週','期末考撞上道場的審查前特訓。',
+  {id:'exam',cond:()=>S.age>=15&&S.age<=18,run:()=>ev('期末考週','期末考撞上道場的審查前特訓。',
     [{l:'回家讀書',s:'爸媽放心 · 鬥志↓',fx:{spi:-1},t:'成績單讓爸媽鬆了一口氣。'},{l:'翹掉複習去道場',s:'技術↑ 耐力↑',fx:{tec:2,sta:2},t:'你在道場練到熄燈。'}])},
   {id:'parttime',rep:1,cond:()=>S.money<4&&S.path!=='uchi'&&S.age>=16&&S.serviceLeft===0,run:()=>ev('夜班打工','便利商店夜班在徵人，時薪不錯。',
     [{l:'接下來',s:'存款↑ 體況↓',fx:{money:4,hp:-6},t:'凌晨三點的店裡，你在倉庫偷練踢腿。'},{l:'先不要',s:'鬥志↑',fx:{spi:1},t:'你把時間全留給稽古。'}])},
@@ -2211,7 +2218,7 @@ const HONORS={
   intl_kata:{n:'國際大會型王者',t:'東京的國際大會，外國選手排隊來問你這個型是誰教的。'},
   jpw:{n:'全日本體重別王者',t:'在日本，同一個量級裡，今年沒有人比你強。'},
   jpk:{n:'全日本型王者（型選手權）',t:'日本的老師範們對你點了點頭。那一點頭，比獎盃還重。'},
-  jp_kumite:{n:'全日本王者',t:'全日本選手權組手優勝——無差別級的頂點。你站在那裡，想起十六歲推開道場木門的那一天。'},
+  jp_kumite:{n:'全日本王者',t:'全日本選手權組手優勝——無差別級的頂點。你站在那裡，想起十五歲推開道場木門的那一天。'},
   jp_kata:{n:'全日本型王者',t:'全日本選手權型優勝。你是第一個讓日本觀眾為台灣的型起立鼓掌的人。'},
   world_kumite:{n:'世界王者',t:'全世界空手道選手權組手優勝。東京的會場裡，有人揮著台灣的旗子，你看不清楚，因為眼睛濕了。'},
   world_kata:{n:'型的世界王者',t:'全世界空手道選手權型優勝。你的型，被全世界的極真拳士看見了。'},
@@ -2258,7 +2265,7 @@ function trainTalk(c){
   if(S.hp<30)pool.push('師範：「臉色這麼差，今天早點回去。」','你在更衣室坐了很久，才有力氣站起來。');
   if(S.age>=35&&fam!=='job')pool.push('你發現，恢復得比以前慢了。但出拳的時機，比年輕時準。','年輕學員喘到趴在地上，你還站著。經驗，也是一種體力。');
   if(uchi&&fam!=='rest')pool.push('本部的先輩：「台灣來的！動作太慢了！」','晚上在寮裡，你用破日文寫日記：「今日も押忍。」','凌晨五點，本部道場的地板冰得像鐵。你一邊拖地一邊默背型的順序。','師範用日文說了一長串，你只聽懂最後一句：「もう一回！」');
-  if(CARDS[c]&&CARDS[c].kids)pool.push('小朋友：「老師你好兇喔！」下課時他還是跑來抱你的腿。','少年部的孩子們踢到一半，開始比誰的「押忍」比較大聲。','一個小女生第一次把型打完，回頭找媽媽的眼神，讓你想起自己十六歲。');
+  if(CARDS[c]&&CARDS[c].kids)pool.push('小朋友：「老師你好兇喔！」下課時他還是跑來抱你的腿。','少年部的孩子們踢到一半，開始比誰的「押忍」比較大聲。','一個小女生第一次把型打完，回頭找媽媽的眼神，讓你想起自己十五歲。');
   else if(fam==='kihon')pool.push('師範：「型不是跳舞。每一個動作，前面都要站著一個敵人。」','師範：「腰！腰再低一點！正拳是從腳底板打出來的。」','你在心裡數著：九百九十八、九百九十九、一千。手臂已經不是自己的了。','師範：「基本做一萬遍，才配說自己會。」','鏡子裡的自己，終於有一點像師範的樣子了。',...(hasSen?[`師兄${sen}：「第二十一個動作，你又忘了吸氣。」`]:[]),...(hasKoh?[`學弟${koh}在旁邊偷偷模仿你的轉身，被你抓個正著。`]:[]));
   else if(fam==='kumite')pool.push('師範：「手放下來，就是請對方打你的臉。手！」','「痛嗎？」「押忍，不痛。」其實痛死了。','對手喘著氣說：「押忍，再一場！」你們兩個都笑了。','黑帶前輩拍拍你的肩：「今天那一記中段，有打進來。」','你被下段踢掃倒在地，抬頭看到天花板的日光燈在晃。',...(hasSen?[`師兄${sen}：「下段踢不是用腳踢，是用整個身體砍。」`]:[]),...(hasKoh?[`學弟${koh}：「學長，等一下可以跟我再打一場嗎？」`]:[]));
   else if(fam==='taiso')pool.push('「再一百下！」師範的聲音比啞鈴還重。','互擊腹部的時候，前輩笑著說：「吸氣——然後忍住。」','跑完山，你躺在階梯上看雲，連手指都不想動。','小腿踢沙包踢到發紫，前輩說：「紫了，才會硬。」','你對著沙包說：「今天先放過你。」沙包沒有回答。');
@@ -2528,7 +2535,7 @@ function attrMul(a){if(a==='none')return 1;return .86+homeNow()[a]/300;}
 function* life(){
   const ks=['pow','spd','sta','tec','con'];let best=ks[0],worst=ks[0];
   for(const k of ks){if(S.pot[k]>S.pot[best])best=k;if(S.pot[k]<S.pot[worst])worst=k;}
-  say(`十六歲，高中二年級的春天。你推開台灣支部・${S.home.n}的木門，脫鞋、鞠躬，第一次喊出「押忍」。`);
+  say(`十五歲，高中一年級的春天。你推開台灣支部・${S.home.n}的木門，脫鞋、鞠躬，第一次喊出「押忍」。`);
   say(`師範看你打了幾下沙包，說你的<b>${STATN[best]}</b>是天生的，<b>${STATN[worst]}</b>得下苦功。`);
   if(S.route!=='kata')say(`支部交流會上，${S.rivalDojo}一個同年的<b>${esc(S.rival)}</b>把你踢倒。你們從此較上了勁。`);
   else say('你在交流會上看到黑帶前輩演武「觀空」，決定這輩子要把型練到極致。');
@@ -2715,7 +2722,7 @@ function* life(){
     if(ok){const res=yield* ownerMode();if(res==='closed')c='closed';}else c=S.flags.instDone?'staff':'life';
   }
   if(c==='staff'||c==='judge'||c==='life')c=yield* postCareer(c);
-  S.ending=c;log({dojo:'以道場主身分退休',judge:'以審判員身分退休',life:'在平凡的日子裡老去',closed:'道場結束營業',staff:'以指導員身分退休'}[c]);
+  S.ending=c;log({quit:'放棄了這段人生',dojo:'以道場主身分退休',judge:'以審判員身分退休',life:'在平凡的日子裡老去',closed:'道場結束營業',staff:'以指導員身分退休'}[c]);
   yield P('END','',[],'end');
 }
 function epithet(){
@@ -2738,8 +2745,9 @@ function epithet(){
   if(S.dojo)return '道場主';if(S.ending==='member')return '一般學員';if(S.rank>=6)return '黑帶拳士';return '永不放棄的修行者';
 }
 const ENDTXT={
+  quit:'有一天，你沒有再去道場。道着還掛在衣櫃裡，偶爾經過道場門口，你還是會停下來，聽一下裡面的「押忍」。',
   dojo:'道場的招牌已經有點褪色。每天傍晚，孩子們的「押忍」還是從窗戶傳出來。',
-  judge:'你拿著紅白旗站在場邊。看到年輕選手的下段踢，就會想起自己十六歲的那天。',
+  judge:'你拿著紅白旗站在場邊。看到年輕選手的下段踢，就會想起自己十五歲的那天。',
   life:'道着收在衣櫃深處。偶爾在公園看到有人練踢腿，你會停下來看很久。',
   staff:'你一直站在道場前面，直到學員比你還高。每年審查，你還是坐在審查席的中間。',
   member:'你沒有成為指導員，但每週三次，你還是準時出現在道場，對著鏡子打完一千次正拳。',
@@ -2818,25 +2826,34 @@ const RECRUIT={
   slogan:'',        // 招生標語
   flyer:'',         // 宣傳單圖檔（例如 'flyer.jpg'）
   dojos:[],         // [{n:'屏東道場',addr:'',time:''}]
-  phone:'',line:'',ig:'',fb:'',url:'',
+  phone:'',line:'',ig:'https://www.instagram.com/i.k.o.n.taiwan/',fb:'',url:'',
   note:''
 };
+const IG_URL='https://www.instagram.com/i.k.o.n.taiwan/';
+let RC_SHOWN=false,rcRAF=0;
 function recruitHTML(){
-  const R=RECRUIT;const ds=R.dojos.length?R.dojos:Object.values(HOMES).map(h=>({n:h.n}));
-  const link=(u,t)=>u?`<a class="opt" href="${esc(u)}" target="_blank" rel="noopener"><span class="l">${t}</span></a>`:'';
-  return `<div class="rc-head"><small>RECRUIT</small><b>學員招募中</b><span>${esc(R.name)}</span></div>
-  ${R.flyer?`<img class="rc-flyer" src="${esc(R.flyer)}" alt="道場宣傳單">`:''}
-  ${R.slogan?`<p class="rc-slogan">${esc(R.slogan)}</p>`:''}
-  <p>遊戲裡的人生，可以從真的道場開始。歡迎到道場看看。</p>
-  <ul class="rc-dojos">${ds.map(d=>`<li><b>${esc(d.n)}</b>${d.addr?`<span>${esc(d.addr)}</span>`:''}${d.time?`<span>${esc(d.time)}</span>`:''}</li>`).join('')}</ul>
-  ${R.note?`<p class="hint">${esc(R.note)}</p>`:''}
-  ${R.phone?`<p>電話：<a href="tel:${esc(R.phone)}">${esc(R.phone)}</a></p>`:''}
-  ${!R.phone&&!R.line&&!R.ig&&!R.fb&&!R.url?'<p class="hint">詳細上課時間與地點，歡迎直接到各道場詢問。</p>':''}
-  <div class="opts">${link(R.line,'LINE 詢問')}${link(R.ig,'Instagram')}${link(R.fb,'Facebook')}${link(R.url,'道場網站')}
-  <button class="opt primary" type="button" id="rcClose"><span class="l">押忍，知道了</span></button></div>`;
+  const age=(typeof S!=='undefined'&&S&&S.age)||'';
+  return `<button type="button" class="rc-x" id="rcX" aria-label="關閉">✕</button>
+  <div class="rc-head"><small>YOUR TURN</small><b>換你上場了！</b><span>極真空手道 中村道場 台灣支部</span></div>
+  <canvas id="rcCv" class="rc-cv" width="120" height="92"></canvas>
+  <p class="rc-p">${age>15?`遊戲裡，你已經從十五歲走到了 ${age} 歲。`:'遊戲裡，你才剛推開道場的門。'}</p>
+  <p class="rc-p">真正的道場沒有存檔，也不能重來。<br>但有一群人，正在等你喊出第一聲「押忍」。</p>
+  <div class="opts"><a class="opt primary rc-go" id="rcGo" href="${IG_URL}" target="_blank" rel="noopener"><span class="l">到道場 IG 看看</span><span class="s">@i.k.o.n.taiwan</span></a></div>
+  <button type="button" class="rc-later" id="rcClose">先看我的結語</button>`;
 }
-function showRecruit(){const m=$('#recruit');if(!m)return;m.querySelector('.rc-box').innerHTML=recruitHTML();m.hidden=false;chip([[784,.08],[1047,.12]]);
-  $('#rcClose').onclick=()=>{m.hidden=true;};m.onclick=e=>{if(e.target===m)m.hidden=true;};}
+function rcAnim(){const cv=$('#rcCv');if(!cv)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const t0=performance.now();
+  const f=now=>{const T=(now-t0)/1000;if($('#recruit').hidden)return;
+    x.fillStyle='#ffe7ef';x.fillRect(0,0,120,92);rRays(x,'#ffd4e2','#ffe7ef',60,46,T);
+    [[12,16],[104,14],[100,66],[14,64]].forEach(([a,b],i)=>rSpark(x,a,b,T+i*.3));rHeart(x,96,30+Math.sin(T*4)*2);
+    rChibi(x,34,8,2.6,{kind:'girl',pose:(Math.floor(T/1.6)%2)?'cta':'thumb',t:T,face:(Math.floor(T/1.6)%2)?'happy':'wink'});
+    rcRAF=requestAnimationFrame(f);};
+  cancelAnimationFrame(rcRAF);rcRAF=requestAnimationFrame(f);}
+function showRecruit(after){const m=$('#recruit');if(!m)return;RC_SHOWN=true;m.querySelector('.rc-box').innerHTML=recruitHTML();m.hidden=false;chip([[784,.08],[1047,.12]]);rcAnim();
+  const close=()=>{if(m.hidden)return;m.hidden=true;cancelAnimationFrame(rcRAF);document.removeEventListener('keydown',esc_);if(after)after();};
+  const esc_=e=>{if(e.key==='Escape')close();};document.addEventListener('keydown',esc_);
+  $('#rcClose').onclick=close;$('#rcX').onclick=close;$('#rcGo').addEventListener('click',()=>setTimeout(close,300));m.onclick=e=>{if(e.target===m)close();};
+}
+function armRecruit(){const k='kyk-rc-'+((G&&G.setup&&G.setup.seed)||0)+'-'+S.age;let seen=false;try{seen=localStorage.getItem('kyk-rc')===k;}catch(e){}RC_SHOWN=seen;if(seen)return;try{localStorage.setItem('kyk-rc',k);}catch(e){}clearTimeout(armRecruit._t);armRecruit._t=setTimeout(()=>{if(!RC_SHOWN&&!$('#end').hidden)showRecruit();},1200);}
 
 /* ===== 8-bit 音效 ===== */
 function chip(seq,type,vol,at){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=(at||AC.currentTime)+.02;
@@ -2846,8 +2863,9 @@ function fanfare(){if(!sndOn())return;try{AC=AC||new (window.AudioContext||windo
   chip([[N.E5,s],[N.G5,s],[N.C6,s*2],[N.B5,s],[N.G5,s],[N.E5,s*2],[N.D5,s],[N.E5,s],[N.G5,s],[N.A5,s],[N.G5,s*2],[N.C6,s*4]],'square',.045,t0);
   chip([[N.C3,s*4],[N.G2,s*4],[N.A2,s*4],[N.F2,s*2],[N.G2,s*2],[N.C3,s*4]],'triangle',.12,t0);}catch(e){}}
 
-/* ===== 開場動畫：十六歲的你，滑到了一支道場的影片 ===== */
+/* ===== 開場動畫：十五歲的你，滑到了一支道場的影片 ===== */
 let introRAF=0,introScene='room',iTok=0,iSpeed=1;
+const IVF={src:'',w:128,h:178,cols:10,n:98,fps:10,img:null};
 function ivfLoad(){}
 function pxRect(x,c,a,b,w,h){x.fillStyle=c;x.fillRect(a,b,w,h);}
 function drawIntro(t){
@@ -2893,72 +2911,100 @@ function introHide(){const el=$('#intro');el.classList.add('out');setTimeout(()=
 function introFinish(){iTok++;iSpeed=1;$('.iscreen').classList.remove('vid');fanfare();
   const f=iDone;iDone=null;introHide();if(f)setTimeout(f,350);}
 function playOpening(done){const el=$('#intro');iDone=done;ivfLoad();el.hidden=false;document.body.classList.add('introOn');introPlay();}
-/* ===== 開場「影片中的影片」：用 16-bit 像素重現道場的介紹影片 ===== */
+/* ===== 開場「影片中的影片」：Q 版可愛像素，內容照道場的介紹影片 ===== */
 const RW=120,RH=160;
-const RC={wall:'#efe4cc',wall2:'#e2d4b6',wood:'#8a5a32',wood2:'#6e4626',mat:'#6d7390',mat2:'#5f6582',mat3:'#7b81a0',ink:'#1d1a26',red:'#c8363a',red2:'#9e262c',gold:'#f2c24f',skin:'#f3c9a3',skin2:'#dca883',skin3:'#c48d6a',hair:'#2a1f2a',hair2:'#433442',gi:'#f7f4ec',gi2:'#d8d0c0',gi3:'#bdb3a2',belt:'#1b1b25',blue:'#3d5fa8',sky:'#9fd3ff',white:'#ffffff'};
-function rr(x,X,Y,w,h,c){x.fillStyle=c;x.fillRect(Math.round(X),Math.round(Y),Math.round(w),Math.round(h));}
-function rtext(x,txt,X,Y,size,color,shadow,weight){x.font=`${weight||900} ${size}px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif`;x.textBaseline='top';if(shadow){x.fillStyle=shadow;x.fillText(txt,X+1,Y+1);}x.fillStyle=color;x.fillText(txt,X,Y);}
-/* 人物（正面）：u=單位像素；o={hair:'pony'|'short', pose, t, older, mouth} */
-function rPerson(x,X,Y,u,o){
-  const R=(a,b,w,h,c)=>rr(x,X+a*u,Y+b*u,w*u,h*u,c);const t=o.t||0;const blink=(Math.floor(t*10)%28)===0;
-  if(o.hair==='pony'){const sw=Math.round(Math.sin(t*6)*1);R(17+sw,3,3,4,RC.hair);R(18+sw,7,3,5,RC.hair);R(19+sw,12,2,2,RC.hair2);}
-  R(7,0,10,3,RC.hair);R(6,2,12,3,RC.hair);R(8,0,4,1,RC.hair2);
-  R(7,4,10,10,RC.skin);R(16,5,1,8,RC.skin2);R(8,13,8,1,RC.skin2);
-  if(o.hair==='pony'){R(7,3,10,2,RC.hair);R(6,4,2,7,RC.hair);R(16,4,2,5,RC.hair);R(12,3,1,2,RC.hair2);}
-  else{R(7,3,10,2,RC.hair);R(6,4,1,5,RC.hair);R(17,4,1,5,RC.hair);if(o.older){R(6,4,1,2,'#8d8a96');R(17,4,1,2,'#8d8a96');}}
-  R(9,6,2,1,RC.hair);R(13,6,2,1,RC.hair);
-  if(blink){R(9,9,2,1,RC.ink);R(13,9,2,1,RC.ink);}else{R(9,8,2,2,RC.ink);R(13,8,2,2,RC.ink);R(9,8,1,1,RC.white);R(13,8,1,1,RC.white);}
-  if(o.hair==='pony'){R(8,10,1,1,'#f2a0a0');R(15,10,1,1,'#f2a0a0');}
-  if(o.older)R(10,11,4,1,RC.hair2);
-  if(o.mouth==='open'){R(11,11,2,2,'#8c2f34');R(11,11,2,1,RC.white);}else{R(10,12,4,1,'#9a3b3b');R(9,11,1,1,'#9a3b3b');R(14,11,1,1,'#9a3b3b');}
-  R(10,14,4,2,RC.skin2);
-  R(4,16,16,16,RC.gi);R(17,16,3,16,RC.gi2);R(4,16,1,16,RC.gi2);
-  R(10,16,4,2,RC.skin2);R(11,18,2,2,RC.skin2);
-  [[8,16],[9,18],[10,20],[11,22]].forEach(([a,b])=>R(a,b,2,2,RC.gi3));[[14,16],[13,18],[12,20]].forEach(([a,b])=>R(a,b,2,2,RC.gi3));
-  R(15,19,2,1,RC.ink);R(15,21,2,1,RC.ink);R(16,20,1,3,RC.ink);
-  R(5,18,2,2,RC.red);R(5,18,1,1,RC.gold);
-  R(4,30,16,3,RC.belt);R(11,30,3,3,'#2c2c3a');R(10,33,2,5,RC.belt);R(13,33,2,4,RC.belt);
-  if(o.older){R(17,31,1,1,RC.gold);R(19,31,1,1,RC.gold);}else R(18,31,1,1,RC.gold);
-  R(5,33,14,14,RC.gi);R(16,33,3,14,RC.gi2);R(11,40,2,7,RC.gi3);R(5,47,5,2,RC.skin);R(14,47,5,2,RC.skin);
-  const p=o.pose||'idle';
-  if(p!=='cross'&&p!=='thumb'&&p!=='cta'){R(1,17,3,12,RC.gi);R(1,17,1,12,RC.gi2);R(1,29,3,3,RC.skin);}
-  if(p==='idle'){R(20,17,3,12,RC.gi);R(22,17,1,12,RC.gi2);R(20,29,3,3,RC.skin);}
-  if(p==='punch'){R(20,19,13,3,RC.gi);R(20,21,13,1,RC.gi2);R(33,18,4,5,RC.skin);R(33,18,4,1,RC.skin2);}
-  if(p==='point'){R(20,15,3,4,RC.gi);R(22,11,3,4,RC.gi);R(24,7,3,4,RC.gi);R(25,4,3,3,RC.skin);R(26,1,1,3,RC.skin);}
-  if(p==='thumb'||p==='cross'){R(20,17,3,6,RC.gi);R(1,17,3,6,RC.gi);R(5,22,14,4,RC.gi);R(5,25,14,1,RC.gi2);R(12,21,4,4,RC.skin);if(p==='thumb'){R(13,18,2,3,RC.skin);}else R(6,22,3,3,RC.skin);}
-  if(p==='cta'){R(1,17,3,12,RC.gi);R(1,29,3,3,RC.skin);R(18,17,4,6,RC.gi);R(17,22,4,3,RC.gi2);R(12,21,8,6,RC.skin);R(12,21,8,1,RC.skin2);R(13,23,6,1,RC.skin3);R(14,18,4,4,RC.skin);R(15,18,2,1,RC.skin2);R(15,19,2,2,'#f6dcc4');}
+const RC={wall:'#f6ead2',wall2:'#ead9b8',wood:'#a8703f',wood2:'#7f5230',mat:'#7f8ab0',mat2:'#717ca2',mat3:'#97a1c4',ink:'#2a2236',red:'#e2474b',red2:'#a8303a',pink:'#ff9fb2',gold:'#ffd166',skin:'#ffd9b8',skin2:'#f2b993',skin3:'#d99a78',hair:'#3a2a3e',hair2:'#5c4562',gi:'#ffffff',gi2:'#e4ddd0',gi3:'#c9bfae',navy:'#22305e',belt:'#262033',white:'#ffffff',sky:'#9fd3ff'};
+function rr(x,X,Y,w,h,c){x.fillStyle=c;const x0=Math.round(X),y0=Math.round(Y);x.fillRect(x0,y0,Math.round(X+w)-x0,Math.round(Y+h)-y0);}
+function rtext(x,txt,X,Y,size,color,shadow,weight,align){x.font=`${weight||900} ${size}px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif`;x.textBaseline='top';x.textAlign=align||'left';
+  if(shadow){x.fillStyle=shadow;for(const [a,b] of [[-1,0],[1,0],[0,-1],[0,1],[1,1]])x.fillText(txt,X+a,Y+b);}x.fillStyle=color;x.fillText(txt,X,Y);x.textAlign='left';}
+/* Q 版人物：20×30 格，頭大身體小。o={kind:'girl'|'sensei'|'kid', pose, face, t} */
+function rChibi(x,X,Y,u,o){
+  const R=(a,b,w,h,c)=>rr(x,X+a*u,Y+b*u,w*u,h*u,c);const t=o.t||0;const k=o.kind||'girl';const p=o.pose||'idle';const f=o.face||'smile';
+  const blink=f!=='wink'&&(Math.floor(t*10)%30)===0;
+  const OL=(a,b,w,h)=>R(a,b,w,h,RC.ink);
+  // 後髮與馬尾
+  if(k==='girl'){OL(15,6,5,6);R(16,7,3,4,RC.hair);R(16,7,1,2,RC.hair2);R(15,9,2,2,'#1c1626');}
+  // 頭（圓臉＋外框）
+  const rows=[[4,15],[2,17],[1,18],[1,18],[1,18],[1,18],[1,18],[1,18],[1,18],[1,18],[1,18],[1,18],[2,17],[3,16],[5,14]];
+  rows.forEach(([l,r],y)=>OL(l-1+(y>0&&y<14?0:1),y,r-l+3-(y>0&&y<14?0:2),1));
+  rows.forEach(([l,r],y)=>{if(y>=3)R(l,y,r-l+1,1,RC.skin);});R(17,6,1,7,RC.skin2);R(5,14,10,1,RC.skin2);
+  // 頭髮：頭頂＋鬢角＋瀏海
+  rows.slice(0,4).forEach(([l,r],y)=>R(l,y,r-l+1,1,RC.hair));R(1,4,3,7,RC.hair);R(16,4,3,7,RC.hair);
+  if(k==='girl'){R(4,4,5,1,RC.hair);R(11,4,5,1,RC.hair);R(4,5,3,1,RC.hair);R(13,5,3,1,RC.hair);R(4,6,1,1,RC.hair);R(15,6,1,1,RC.hair);R(9,1,2,3,RC.skin);R(9,1,2,1,RC.hair2);R(3,11,1,2,RC.hair);R(16,11,1,2,RC.hair);R(6,2,2,1,RC.hair2);R(12,2,2,1,RC.hair2);}
+  else{R(4,4,4,1,RC.hair);R(9,4,3,1,RC.hair);R(13,4,3,1,RC.hair);R(4,5,2,1,RC.hair);R(10,5,1,1,RC.hair);R(14,5,2,1,RC.hair);
+  R(6,1,5,1,RC.hair2);R(5,2,2,1,RC.hair2);}
+  if(k==='sensei'){R(1,4,2,3,'#9d9aa8');R(17,4,2,3,'#9d9aa8');}
+  if(k==='kid'){R(8,0,4,1,RC.hair);}
+  // 眉、眼
+  const ex=[5,12];
+  if(k==='sensei'){R(4,6,4,1,RC.ink);R(12,6,4,1,RC.ink);}
+  else if(f==='fierce'){R(5,6,3,1,RC.ink);R(12,6,3,1,RC.ink);R(7,7,1,1,RC.ink);R(12,7,1,1,RC.ink);}
+  for(const [i,e] of ex.entries()){
+    if(blink||(f==='wink'&&i===1)||f==='happy'){R(e,9,3,1,RC.ink);R(e,8,1,1,RC.ink);R(e+2,8,1,1,RC.ink);}
+    else{R(e,7,3,4,RC.ink);R(e,7,1,1,RC.white);R(e+1,8,1,1,RC.white);R(e+1,10,2,1,'#5b4aa8');}
+  }
+  // 腮紅
+  if(k!=='sensei'){R(3,11,2,1,RC.pink);R(15,11,2,1,RC.pink);}
+  // 嘴
+  if(k==='sensei')R(8,11,4,1,RC.hair2);
+  if(f==='open'||f==='shout'){R(9,11,3,2,'#b03a48');R(9,11,3,1,RC.white);}
+  else if(f==='fierce'){R(9,12,3,1,RC.ink);}
+  else{R(9,12,3,1,'#b03a48');R(8,11,1,1,'#b03a48');R(12,11,1,1,'#b03a48');}
+  // 身體（道着）
+  OL(4,15,12,10);OL(5,24,10,6);
+  R(5,15,10,9,RC.gi);R(13,15,2,9,RC.gi2);R(8,15,4,2,RC.skin2);R(9,17,2,1,RC.skin2);R(7,15,1,3,RC.gi3);R(12,15,1,3,RC.gi3);
+  if(k==='girl'){R(12,17,1,1,RC.navy);R(11,18,2,1,RC.navy);R(12,19,1,2,RC.navy);R(11,20,1,1,RC.navy);}else{R(6,17,1,1,RC.red);R(13,18,1,2,RC.ink);}
+  R(5,21,10,2,RC.belt);R(9,21,2,2,'#3c3450');R(8,23,1,2,RC.belt);R(11,23,1,2,RC.belt);
+  if(k==='sensei'){R(13,21,1,1,RC.gold);R(14,21,1,1,RC.gold);}
+  if(p==='kick'){R(6,24,3,5,RC.gi);R(5,29,4,1,RC.skin);}
+  else{R(6,24,8,5,RC.gi);R(9,26,2,3,RC.gi3);R(5,29,4,1,RC.skin);R(11,29,4,1,RC.skin);}
+  // 手
+  const arm=(a,b,w,h)=>{OL(a-1,b-1,w+2,h+2);R(a,b,w,h,RC.gi);};const gl=k==='girl';const fist=(a,b,s)=>{OL(a-1,b-1,s+2,s+2);R(a,b,s,s,gl?'#fff':RC.skin);R(a,b,s,1,gl?'#e9e6ef':RC.skin2);if(gl)R(a,b+s-1,s,1,RC.navy);};
+  if(p==='idle'||p==='kick'){arm(3,16,2,6);fist(3,22,2);arm(15,16,2,6);fist(15,22,2);}
+  if(p==='punch'){arm(3,16,2,6);fist(3,22,2);arm(15,17,8,2);fist(23,16,4);}
+  if(p==='guard'){arm(3,15,2,4);fist(2,12,3);arm(15,15,2,4);fist(15,12,3);}
+  if(p==='point'){arm(3,16,2,6);fist(3,22,2);arm(15,12,2,5);arm(16,8,2,4);fist(16,5,3);R(17,2,1,3,gl?'#fff':RC.skin);}
+  if(p==='thumb'){arm(3,16,2,6);fist(3,22,2);arm(14,16,3,3);fist(12,15,3);R(13,12,1,3,gl?'#fff':RC.skin);}
+  if(p==='cross'){arm(4,17,12,3);fist(5,17,2);fist(13,17,2);}
+  if(p==='cta'){arm(3,16,2,6);fist(3,22,2);arm(14,16,4,3);fist(9,15,5);R(11,15,1,1,RC.skin3);}
+  if(p==='kick'){OL(9,23,12,4);R(10,24,9,2,RC.gi);R(10,25,9,1,RC.gi2);R(19,23,2,3,RC.skin);}
+  if(gl&&p!=='cross'&&p!=='guard'){R(3,17,2,2,RC.gold);R(3,18,1,1,'#3f6b3a');}
 }
-function rCreep(x,X,Y,u,rot){x.save();x.translate(X+12*u,Y+20*u);x.rotate(rot||0);x.translate(-12*u,-20*u);const R=(a,b,w,h,c)=>rr(x,a*u,b*u,w*u,h*u,c);
-  R(6,0,12,8,'#3a3348');R(8,3,8,6,'#e2b48f');R(8,5,8,2,'#111');R(5,8,14,24,'#4a4458');R(5,8,2,24,'#3a3348');R(11,8,2,20,'#3a3348');R(7,32,4,8,'#2b2b3d');R(13,32,4,8,'#2b2b3d');x.restore();}
-function rWall(x,ox){rr(x,0,0,RW,RH,RC.wall);for(let i=-1;i<8;i++)rr(x,((i*24+ox)%192+192)%192-24,0,2,96,RC.wall2);rr(x,0,92,RW,4,RC.wood);rr(x,0,96,RW,1,RC.wood2);}
-function rMat(x,y0){for(let r=0;y0+r*8<RH;r++)for(let c=0;c<16;c++)rr(x,c*8-(r%2)*4,y0+r*8,8,8,(r+c)%2?RC.mat:RC.mat2);rr(x,0,y0,RW,1,RC.mat3);}
-function rBanner(x,X,Y,s){rr(x,X,Y,62*s,40*s,'#fbf8f0');rr(x,X,Y,62*s,2*s,RC.ink);rr(x,X,Y+38*s,62*s,2*s,RC.ink);rtext(x,'中村道場',X+4*s,Y+4*s,13*s,RC.ink);rtext(x,'台灣支部',X+10*s,Y+20*s,10*s,RC.ink);rtext(x,'NAKAMURA DOJO TAIWAN',X+4*s,Y+32*s,4*s,RC.ink,null,700);}
-function rKanku(x,cx,cy,r,col){x.fillStyle=col;x.beginPath();x.arc(cx,cy,r,0,7);x.fill();x.fillStyle=RC.wall;x.beginPath();x.arc(cx,cy,r*.72,0,7);x.fill();x.fillStyle=col;x.beginPath();x.arc(cx,cy,r*.22,0,7);x.fill();
-  [[0,-1],[1,0],[0,1],[-1,0]].forEach(([a,b])=>{x.beginPath();x.moveTo(cx+a*r*.25,cy+b*r*.25);x.lineTo(cx+a*r*.85-b*r*.18,cy+b*r*.85+a*r*.18);x.lineTo(cx+a*r*.85+b*r*.18,cy+b*r*.85-a*r*.18);x.fill();});}
-function rSandbag(x,X,Y,sw,col){rr(x,X+5+sw,Y-30,1,30,'#55505f');rr(x,X+sw,Y,11,30,col);rr(x,X+sw,Y,11,3,RC.ink);rr(x,X+sw,Y+27,11,3,RC.ink);rr(x,X+8+sw,Y+3,2,24,'rgba(0,0,0,.18)');}
+function rCreep(x,X,Y,u,rot,hit){x.save();x.translate(X+10*u,Y+15*u);x.rotate(rot||0);x.translate(-10*u,-15*u);const R=(a,b,w,h,c)=>rr(x,a*u,b*u,w*u,h*u,c);
+  R(3,0,14,13,RC.ink);R(4,1,12,11,'#5d5373');R(6,4,8,7,'#e8c39e');R(6,6,8,2,'#111');R(7,6,2,1,'#888');R(11,6,2,1,'#888');
+  if(hit){R(6,9,2,1,RC.ink);R(12,9,2,1,RC.ink);R(8,10,4,1,'#b03a48');}else R(8,10,4,1,RC.ink);
+  R(4,13,12,13,RC.ink);R(5,14,10,11,'#6d6385');R(9,14,2,10,'#5d5373');R(5,26,4,4,RC.ink);R(11,26,4,4,RC.ink);
+  R(16,3,2,3,RC.sky);R(17,6,1,1,RC.sky);x.restore();}
+function rRoom(x,ox){rr(x,0,0,RW,RH,RC.wall);for(let i=-1;i<7;i++)rr(x,((i*24+ox)%168+168)%168-24,0,2,100,RC.wall2);rr(x,0,96,RW,4,RC.wood);rr(x,0,100,RW,1,RC.wood2);
+  for(let r=0;r<8;r++)for(let c=0;c<16;c++)rr(x,c*8-(r%2)*4,101+r*8,8,8,(r+c)%2?RC.mat:RC.mat2);rr(x,0,101,RW,1,RC.mat3);}
+function rBanner(x,X,Y,s){rr(x,X-1,Y-1,62*s+2,40*s+2,RC.ink);rr(x,X,Y,62*s,40*s,'#fffaf0');rr(x,X,Y,62*s,2*s,RC.red);rtext(x,'中村道場',X+4*s,Y+5*s,13*s,RC.ink);rtext(x,'台灣支部',X+10*s,Y+21*s,10*s,RC.ink);rtext(x,'NAKAMURA DOJO TAIWAN',X+4*s,Y+33*s,4*s,RC.ink,null,700);}
 function rSpark(x,X,Y,t,c){const k=Math.floor(t*8)%3;x.fillStyle=c||RC.gold;if(k<2){x.fillRect(X,Y-2,1,5);x.fillRect(X-2,Y,5,1);}if(k===1)x.fillRect(X-1,Y-1,3,3);}
-function rUI(x,vt,dur){const n=8;for(let i=0;i<n;i++){rr(x,3+i*14.4,3,12.4,1.5,'rgba(255,255,255,.35)');const f=Math.max(0,Math.min(1,vt/dur*n-i));if(f>0)rr(x,3+i*14.4,3,12.4*f,1.5,'#fff');}
-  rr(x,109,92,6,5,RC.red);rr(x,108,93,8,3,RC.red);rr(x,111,97,2,1,RC.red);rtext(x,'975',106,99,6,'#fff','#000',700);
-  rr(x,6,146,7,7,RC.gold);rr(x,7,147,5,5,RC.ink);rtext(x,'i.k.o.n.taiwan',15,146,7,'#fff','#000',700);}
+function rHeart(x,X,Y,c){x.fillStyle=c||RC.red;[[1,0,2,1],[4,0,2,1],[0,1,7,2],[1,3,5,1],[2,4,3,1],[3,5,1,1]].forEach(([a,b,w,h])=>x.fillRect(X+a,Y+b,w,h));}
+function rStar(x,cx,cy,r,c1,c2){x.fillStyle=c1;x.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr2=i%2?r*.55:r;x.lineTo(cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2);}x.fill();if(c2){x.fillStyle=c2;x.beginPath();for(let i=0;i<16;i++){const a=i*Math.PI/8,rr2=(i%2?r*.55:r)*.7;x.lineTo(cx+Math.cos(a)*rr2,cy+Math.sin(a)*rr2);}x.fill();}}
+function rRays(x,c1,c2,cx,cy,t){x.save();x.translate(cx,cy);x.rotate(t*.5);for(let i=0;i<14;i++){x.rotate(Math.PI/7);x.fillStyle=i%2?c1:c2;x.beginPath();x.moveTo(0,0);x.lineTo(-30,-200);x.lineTo(30,-200);x.fill();}x.restore();}
+function rSandbag(x,X,Y,sw,col){rr(x,X+5+sw,Y-30,1,30,'#6b6478');rr(x,X-1+sw,Y-1,13,32,RC.ink);rr(x,X+sw,Y,11,30,col);rr(x,X+sw,Y,11,3,'rgba(0,0,0,.25)');rr(x,X+sw,Y+27,11,3,'rgba(0,0,0,.25)');rr(x,X+2+sw,Y+4,2,20,'rgba(255,255,255,.3)');}
+function rUI(x,vt,dur){const n=8;for(let i=0;i<n;i++){rr(x,3+i*14.4,3,12.4,1.5,'rgba(255,255,255,.4)');const f=Math.max(0,Math.min(1,vt/dur*n-i));if(f>0)rr(x,3+i*14.4,3,12.4*f,1.5,'#fff');}
+  rHeart(x,108,92,RC.red);rtext(x,'975',106,99,6,'#fff','#000',700);rr(x,5,145,8,8,RC.ink);rr(x,6,146,6,6,RC.gold);rtext(x,'i.k.o.n.taiwan',15,146,7,'#fff','#000',700);}
 const REEL=[
-  {t:1.6,d:(x,lt,T)=>{rWall(x,0);rBanner(x,4,8,.75);rMat(x,112);
-     const hit=lt>.95;rPerson(x,26,30,2.4,{hair:'pony',pose:hit?'punch':'idle',t:T,mouth:lt>.6?'open':'smile'});
-     if(lt>.35){const cx=hit?78+(lt-.95)*140:120-(lt-.35)*70;rCreep(x,cx,40-(hit?(lt-.95)*60:0),2.2,hit?(lt-.95)*5:0);}
-     if(hit&&lt<1.35){rtext(x,'POW!',62,40,14,RC.gold,RC.red2);rSpark(x,104,56,T,'#fff');}}},
-  {t:3.05,d:(x,lt,T)=>{rWall(x,-lt*20);rBanner(x,8-lt*6,14,1.65);rMat(x,118);rPerson(x,74,98,1.25,{hair:'pony',pose:'idle',t:T});}},
-  {t:5.05,d:(x,lt,T)=>{rr(x,0,0,RW,RH,RC.wall);rKanku(x,60,56,46+Math.sin(T*3)*2,'#e7d6b0');rPerson(x,4,26,4.7,{hair:'pony',pose:'idle',t:T,mouth:'smile'});
-     rSpark(x,16,40,T);rSpark(x,104,30,T+.3);rSpark(x,98,96,T+.6);}},
-  {t:6.05,d:(x,lt,T)=>{rWall(x,lt*16);for(let i=0;i<3;i++){rr(x,10+i*36,18,26,40,'#cfe6f5');rr(x,22+i*36,18,2,40,RC.wall2);rr(x,10+i*36,37,26,2,RC.wall2);}
-     rMat(x,90);[[12,62,RC.red],[34,58,RC.ink],[96,62,RC.red]].forEach(([a,b,c],i)=>rSandbag(x,a,b,Math.round(Math.sin(T*3+i)*2),c));rPerson(x,52,92,1.3,{hair:'pony',pose:'idle',t:T});}},
-  {t:7.05,d:(x,lt,T)=>{rWall(x,0);rr(x,10,8,100,64,'#fbf8f0');rr(x,10,8,100,2,RC.ink);rKanku(x,60,32,18,RC.red);rtext(x,'I.K.O.N.',33,51,11,RC.ink);rtext(x,'屏東道場',38,62,8,RC.ink);
-     rMat(x,118);rPerson(x,62,74,1.6,{hair:'pony',pose:'point',t:T,mouth:'open'});rtext(x,'👍',20,100,18,'#000');}},
-  {t:7.55,d:(x,lt,T)=>{rr(x,0,0,RW,RH,RC.wall);for(let s=0;s<4;s++){rr(x,6,24+s*30,108,3,RC.wood);for(let i=0;i<7;i++){const c=['#c8363a','#3d5fa8','#f2c24f','#1d1a26','#45a85c'][(i+s*2)%5];rr(x,9+i*15,8+s*30,12,15,c);rr(x,9+i*15,8+s*30,12,3,'rgba(255,255,255,.35)');}}
-     rtext(x,'×99',78,130,12,RC.red,RC.ink);}},
-  {t:8.55,d:(x,lt,T)=>{rWall(x,0);rBanner(x,30,6,.95);rMat(x,112);rPerson(x,26,58,2.2,{hair:'short',older:true,pose:'cross',t:T});rSpark(x,40,56,T);rSpark(x,80,62,T+.4);
-     rPerson(x,86,104,.95,{hair:'pony',pose:'thumb',t:T});}},
-  {t:10.3,d:(x,lt,T)=>{rr(x,0,0,RW,RH,RC.red);x.save();x.translate(60,70);for(let i=0;i<12;i++){x.rotate(Math.PI/6);x.fillStyle=i%2?'#d9484c':RC.red2;x.beginPath();x.moveTo(0,0);x.lineTo(-30,-140);x.lineTo(30,-140);x.fill();}x.restore();
-     const b=Math.abs(Math.sin(T*8))*3;rPerson(x,6,22-b,4.5,{hair:'pony',pose:'cta',t:T,mouth:'open'});
-     for(let i=0;i<14;i++){const yy=(T*40+i*23)%RH,xx=(i*37)%RW;rr(x,xx,yy,2,2,[RC.gold,'#fff','#9fd3ff'][i%3]);}}}
+  {t:1.6,d:(x,lt,T)=>{rRoom(x,0);rBanner(x,4,8,.75);
+     const hit=lt>.95;rChibi(x,18,46,2.6,{kind:'girl',pose:hit?'punch':lt>.6?'guard':'idle',t:T,face:hit?'shout':lt>.35?'fierce':'smile'});
+     if(lt>.35){const cx=hit?72+(lt-.95)*150:120-(lt-.35)*80;rCreep(x,cx,56-(hit?(lt-.95)*70:0),2.2,hit?(lt-.95)*7:0,hit);}
+     if(hit&&lt<1.4){rStar(x,92,70,14,RC.gold,'#fff');rtext(x,'POW!',70,30,15,RC.red,'#fff');}}},
+  {t:3.05,d:(x,lt,T)=>{rRoom(x,-lt*20);rBanner(x,8-lt*6,12,1.65);rChibi(x,70,94,1.55,{kind:'girl',pose:'thumb',t:T,face:'happy'});rSpark(x,20,90,T);rSpark(x,104,20,T+.4);}},
+  {t:5.05,d:(x,lt,T)=>{rr(x,0,0,RW,RH,'#ffe7ef');rRays(x,'#ffd4e2','#ffe7ef',60,64,T);rChibi(x,16,14,4.4,{kind:'girl',pose:'idle',t:T,face:lt>1?'wink':'smile'});
+     [[14,30],[104,24],[98,110],[10,100]].forEach(([a,b],i)=>rSpark(x,a,b,T+i*.3));rHeart(x,100,60+Math.sin(T*4)*3);}},
+  {t:6.05,d:(x,lt,T)=>{rRoom(x,lt*16);for(let i=0;i<3;i++){rr(x,9+i*36,15,28,42,RC.ink);rr(x,10+i*36,16,26,40,'#cfeafa');rr(x,22+i*36,16,2,40,RC.wall2);rr(x,10+i*36,35,26,2,RC.wall2);}
+     [[12,64,RC.red],[34,60,RC.ink],[96,64,RC.red]].forEach(([a,b,c],i)=>rSandbag(x,a,b,Math.round(Math.sin(T*3+i)*2),c));rChibi(x,48,100,1.6,{kind:'girl',pose:'kick',t:T,face:'fierce'});}},
+  {t:7.05,d:(x,lt,T)=>{rRoom(x,0);rr(x,9,7,102,66,RC.ink);rr(x,10,8,100,64,'#fffaf0');x.fillStyle=RC.red;x.beginPath();x.arc(60,30,15,0,7);x.fill();x.fillStyle='#fffaf0';x.beginPath();x.arc(60,30,10,0,7);x.fill();x.fillStyle=RC.red;x.beginPath();x.arc(60,30,4,0,7);x.fill();
+     rtext(x,'I.K.O.N.',60,48,11,RC.ink,null,900,'center');rtext(x,'屏東道場',60,60,8,RC.ink,null,900,'center');
+     rChibi(x,58,84,2,{kind:'girl',pose:'point',t:T,face:'open'});rStar(x,26,112,10,RC.gold);rtext(x,'讚',20,106,12,RC.red2);}},
+  {t:7.55,d:(x,lt,T)=>{rr(x,0,0,RW,RH,RC.wall);for(let s=0;s<4;s++){rr(x,6,24+s*30,108,3,RC.wood);for(let i=0;i<7;i++){const c=['#e2474b','#4f7be0','#ffd166','#3a2a3e','#52b788'][(i+s*2)%5];const b=Math.round(Math.sin(T*10+i+s)*1);rr(x,8+i*15,7+s*30+b,14,17,RC.ink);rr(x,9+i*15,8+s*30+b,12,15,c);rr(x,9+i*15,8+s*30+b,12,3,'rgba(255,255,255,.4)');}}
+     rStar(x,96,134,13,RC.gold,'#fff');rtext(x,'×99',96,129,10,RC.red2,null,900,'center');}},
+  {t:8.55,d:(x,lt,T)=>{rRoom(x,0);rBanner(x,30,6,.95);rChibi(x,22,56,2.8,{kind:'sensei',pose:'cross',t:T,face:'smile'});rSpark(x,30,52,T);rSpark(x,92,60,T+.4);
+     rChibi(x,86,116,1.15,{kind:'kid',pose:'thumb',t:T,face:'happy'});rtext(x,'很優！',96,104,8,RC.red2,'#fff',900,'center');}},
+  {t:10.3,d:(x,lt,T)=>{rr(x,0,0,RW,RH,RC.red);rRays(x,'#f06a6e',RC.red2,60,70,T);
+     const b=Math.abs(Math.sin(T*8))*3;rChibi(x,16,22-b,4.4,{kind:'girl',pose:'cta',t:T,face:'open'});
+     for(let i=0;i<16;i++){const yy=(T*42+i*23)%RH,xx=(i*37)%RW;rr(x,xx,yy,2,2,[RC.gold,'#fff',RC.sky,RC.pink][i%4]);}}}
 ];
 const REEL_DUR=REEL[REEL.length-1].t;
 const REEL_CAPS=[[0,1.55,'遇到變態怎麼辦'],[1.6,3.05,'我們是中村道場'],[3.1,5.05,'臺灣最強的極真空手道'],[5.1,6.05,'我們的訓練環境'],[6.1,7.05,'讚！👍'],[7.1,7.55,'器材很多'],[7.6,8.55,'Sensei 很優'],[8.6,10.3,'趕快來報名！',1]];
@@ -2969,15 +3015,16 @@ async function introPlay(){
   const cap=$('#introCap');
   try{
     await iWait(400,tk);
-    await iType('十六歲那年的某個晚上。',tk,700);
+    await iType('十五歲那年，高一的某個晚上。',tk,700);
     await iType('你躺在床上，手指一直往下滑。',tk,600);
     await iType('一支道場的影片跳了出來。',tk,500);
     {chip([[1568,.04],[2093,.06]],'square',.03);const sc=$('.iscreen');sc.classList.add('vid');$('#iText').textContent='▶ i.k.o.n.taiwan 的影片';
-      const vc=$('#iVid'),vx=vc.getContext('2d');let vt=0,last=performance.now();bgmVideo();
+      ivfLoad();if(IVF.img&&!IVF.img.complete){$('#iText').textContent='▶ 影片載入中…';await Promise.race([new Promise(r=>{IVF.img.onload=r;IVF.img.onerror=r;}),iWait(6000,tk)]);$('#iText').textContent='▶ i.k.o.n.taiwan 的影片';}
+      const vc=$('#iVid');const useF=IVF.img&&IVF.img.complete&&IVF.img.naturalWidth>0;if(useF){vc.width=IVF.w;vc.height=IVF.h;}else{vc.width=120;vc.height=160;}const vx=vc.getContext('2d');vx.imageSmoothingEnabled=false;const DUR=useF?IVF.n/IVF.fps:REEL_DUR;let vt=0,last=performance.now();bgmVideo();
       await new Promise((res,rej)=>{const step=()=>{if(tk!==iTok){rej('skip');return;}const now=performance.now();vt+=(now-last)/1000*iSpeed;last=now;
-        drawReel(vx,Math.min(vt,REEL_DUR));
+        if(useF){const f=Math.min(IVF.n-1,Math.floor(vt*IVF.fps));vx.drawImage(IVF.img,(f%IVF.cols)*IVF.w,Math.floor(f/IVF.cols)*IVF.h,IVF.w,IVF.h,0,0,IVF.w,IVF.h);}else drawReel(vx,Math.min(vt,REEL_DUR));
         const c=REEL_CAPS.find(z=>vt>=z[0]&&vt<z[1]);const txt=c?c[2]:'';if(cap.textContent!==txt){cap.textContent=txt;cap.classList.toggle('hot',!!(c&&c[3]));}
-        if(vt>=REEL_DUR+.3)res();else requestAnimationFrame(step);};requestAnimationFrame(step);});
+        if(vt>=DUR+.3)res();else requestAnimationFrame(step);};requestAnimationFrame(step);});
       sc.classList.remove('vid');cap.textContent='';}
     await iType('……',tk,700);
     await iType('「好像，很帥。」',tk,900);
@@ -2998,16 +3045,17 @@ function showIntro(){
   const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
-const KEY='kyokushin-life-v36';
+const KEY='kyokushin-life-v37';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
 function clearSave(){try{localStorage.removeItem(KEY);}catch(e){}}
+function quitLife(){S.ending='quit';S.forcedEnd=null;S.mil=S.mil||{};S.mil.quit=S.age;log('放棄了這段人生','bad');return {kind:'end',title:'END',body:'',lines:[],opts:[]};}
 function startGame(setup,choices){
   newState(setup);const gen=life();let res=gen.next();
-  const done=[];
-  for(const ch of (choices||[])){if(res.done||res.value.kind==='end')break;if(String(ch).startsWith('alloc:')){applyAlloc(ch.slice(6));done.push(ch);continue;}if(ch==='cmd:stopauto'){S.auto=null;S.autoPref=false;done.push(ch);continue;}res=gen.next(ch);done.push(ch);}
-  G={setup,choices:done,gen,prompt:res.value};save();render();
+  const done=[];let quit=null;
+  for(const ch of (choices||[])){if(res.done||res.value.kind==='end')break;if(String(ch).startsWith('alloc:')){applyAlloc(ch.slice(6));done.push(ch);continue;}if(ch==='cmd:stopauto'){S.auto=null;S.autoPref=false;done.push(ch);continue;}if(ch==='cmd:quit'){quit=quitLife();done.push(ch);break;}res=gen.next(ch);done.push(ch);}
+  G={setup,choices:done,gen,prompt:quit||res.value};save();render();
 }
 let AC=null;
 function sndOn(){try{return localStorage.getItem('kl-snd')==='1';}catch(e){return false;}}
@@ -3145,14 +3193,14 @@ function render(){
 function birthY(){return S.year-S.age;}
 function logAge(l){return parseInt(l.w)-birthY();}
 function epiParas(){
-  const m=S.mil||{},c=S.champ,P=[];const home=S.home.n;const yrs=S.age-16;const sen=esc(S.npc.sen),koh=esc(S.npc.koh);
+  const m=S.mil||{},c=S.champ,P=[];const home=S.home.n;const yrs=S.age-15;const sen=esc(S.npc.sen),koh=esc(S.npc.koh);
   const W=(WCLS[S.wc]||{}).n||'';const fav=S.fav?MOVES[S.fav].n:'';const L=S.log||[];const has=re=>L.some(l=>re.test(l.t));const cnt=re=>L.filter(l=>re.test(l.t)).length;
   const add=(h,t)=>{if(t)P.push({h,t});};
   // 入門
-  {let t=`那年春天，十六歲的你在手機上滑到一支道場的影片，看了三遍。隔天放學，你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
+  {let t=vs('open',['那年春天，十五歲、剛上高一的你在手機上滑到一支道場的影片，看了三遍。','十五歲，高一的某個晚上，你本來只是在滑手機，滑到一支道場的影片，就再也滑不下去了。','你一直記得那個晚上：十五歲，功課還沒寫完，手機裡的影片重播到第三遍，你心裡有個聲音說：「去吧。」'])+`隔天放學，你推開${home}那扇有點卡的木門。汗水和榻榻米的味道迎面撲來，${S.used.npc_s1?`茶帶的師兄${sen}回頭看了你一眼，`:''}整個道場正在喊「押忍」。那時候你還不知道，這扇門一推開，就是 ${yrs} 年。`;
    if(S.flags.senBond)t+=`那天下課後，${sen}留下來教你用前腳控制距離，一直練到道場熄燈。他說：「你會比我強。」`;
    if(S.traits0&&S.traits0.length===2){const [a,b]=S.traits0.map(k=>TRAITS[k]);t+=a.pos&&b.pos?`你天生${a.n}，又${b.n}，大家都說你是塊料。`:!a.pos&&!b.pos?`你${a.n}，又${b.n}，沒有人看好你，可是你一直沒走。`:`你${(a.pos?a:b).n}，也${(a.pos?b:a).n}；好的那一面帶你往前，壞的那一面逼你長大。`;}
-   add('入門・十六歲',t);}
+   add('入門・十五歲',t);}
   // 十八歲
   {let t='';const p=S.flags.p18;
    if(p==='trainee')t+='高中畢業那年，同學去上大學、去上班，你選擇留在支部當見習指導員。每天早上第一個拉開道場的鐵門，晚上最後一個關燈。';
@@ -3196,7 +3244,7 @@ function epiParas(){
   // 引退
   {let t='';
    if(m.ret)t+=S.forced?`${m.ret} 歲，身體終於跟不上意志，你被迫從選手引退。那天你在更衣室坐了很久，才把護具一件一件拿下來。`:`${m.ret} 歲，你從選手引退。最後一場比賽結束，你對著空下來的場地，深深鞠了一躬。`;
-   const nx={dojo:'接下來的日子，你把全部的力氣都給了自己的道場。',closed:'你決定開一間自己的道場，把極真傳下去。',staff:'你選擇留在支部當專職指導員，從站在場上，變成站在學員前面。',judge:'你拿起紅白旗，成為審判員，換一個位置繼續待在賽場邊。',life:'你把道着收進衣櫃，回到平凡的生活。'}[S.ending];
+   const nx={dojo:'接下來的日子，你把全部的力氣都給了自己的道場。',closed:'你決定開一間自己的道場，把極真傳下去。',staff:'你選擇留在支部當專職指導員，從站在場上，變成站在學員前面。',judge:'你拿起紅白旗，成為審判員，換一個位置繼續待在賽場邊。',life:'你把道着收進衣櫃，回到平凡的生活。',quit:''}[S.ending];
    if(m.ret&&nx)t+=nx;
    add('從選手引退',t);}
   // 傳承
@@ -3226,16 +3274,178 @@ function epiParas(){
    if(L3.length)t+=`這一路上，還有很多說出來沒人相信的事：${L3.slice(0,5).join('、')}${L3.length>5?`……一共 ${L3.length} 件`:''}。每一件，後來都成了宵夜桌上被講了一百遍的故事。`;
    if(hn)t+=`這一生，你得到了 ${hn} 個稱號${hn>=3?`，從「${S.honors[0].n}」到「${S.honors[hn-1].n}」`:`：${S.honors.map(h=>'「'+h.n+'」').join('、')}`}。`;
    add('那些說出來沒人信的事',t);}
+  if(S.ending==='quit')add('放下',`${S.age} 歲那年的某一天，你沒有再去道場。沒有什麼特別的理由，只是那天下課後，你騎車經過道場門口，沒有停下來。可是那 ${S.age-15} 年流過的汗，一直都還在你身上。`);
   // 尾聲
-  add('尾聲',`從十六歲到 ${S.age} 歲，${yrs} 年。流過的汗可以把整座道場拖過一千遍，受過的傷早就數不清了。有人問你，這一路值不值得？你只是笑了笑，雙手在胸前交叉，輕輕說了一聲——押忍。`);
+  add('尾聲',vs('end',S.ending==='quit'?[
+    `從十五歲到 ${S.age} 歲，${yrs} 年。你沒有走到最後，可是那條腰帶你一直沒丟。偶爾經過道場，聽到裡面傳出「押忍」，你會在門口站一下，然後笑著走開。`,
+    `${yrs} 年，不長也不短。後來你很少提起空手道，只有在搬重物、在爬樓梯、在被生活打倒又站起來的時候，身體會比你先想起來——你練過。`]:[
+    `從十五歲到 ${S.age} 歲，${yrs} 年。流過的汗可以把整座道場拖過一千遍，受過的傷早就數不清了。有人問你，這一路值不值得？你只是笑了笑，雙手在胸前交叉，輕輕說了一聲——押忍。`,
+    `${yrs} 年過去，當年那個在手機上滑到道場影片的高一生，已經是別人口中的「${epithet()}」。今晚道場熄燈前，你又一個人對著鏡子打了一百下正拳。有些事情，一輩子都不會變。`,
+    `如果能回到十五歲那個晚上，對著手機發呆的自己，你想說什麼？你想了很久，最後只想說一句：「去吧，那扇門推得開。」然後，押忍。`,
+    `你這一生，換過好幾條腰帶，最後綁在腰上的那一條，已經磨到看不出顏色。${S.age} 歲的你把它摺好，放回道着袋，像${yrs} 年來的每一個晚上一樣。明天，還是要去道場。`]));
   return P;
 }
+function vs(k,a){let h=((S.setup&&S.setup.seed)|0)^0x9e37+(EPV|0)*7;for(const ch of k)h=(Math.imul(h,31)+ch.charCodeAt(0))>>>0;return a[(h+(EPV|0))%a.length];}
+let EPV=0;
+function epiFacts(){
+  const m=S.mil||{},c=S.champ,L=S.log||[];const cnt=re=>L.filter(l=>re.test(l.t)).length;
+  const big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');
+  const T=S.flags.shibucho?'支部長':S.flags.shihandai?'師範代':(S.dojo||S.flags.closedDojo)?'館長':S.flags.instDone?'老師':'學長';
+  return {m,big,T,name:esc(S.name),home:S.home.n,yrs:S.age-15,twn:(S.twc.kumite||0)+(S.twc.kata||0),fails:cnt(/審查不合格/),inj:S.flags.injN||0,
+    L3:(S.flags.epL||[]).filter(x=>x[0]!=='teach').map(x=>x[1].replace(/[「」]/g,'')),tL:(S.flags.tEvL||[]).map(x=>x.replace(/[「」]/g,'')),
+    pupil:S.pupil&&(S.pupil.tw||S.pupil.b)?S.pupil:null,koh:esc(S.npc.koh),sen:esc(S.npc.sen)};
+}
+function epiSpeech(){
+  const f=epiFacts(),T=f.T,P=[];const quit=S.ending==='quit';
+  const spk=f.pupil?`${T}一手帶大的弟子${esc(f.pupil.n)}`:S.dojo&&S.dojo.blacks?`${esc(S.dojo.name)}的黑帶弟子`:`${T}的學弟${f.koh}`;
+  const occ=quit?`今天是我們道場的週年茶會。${f.name}${T}已經很多年沒有回來了，可是我想講講${T}的事。`:vs('occ',[`今天是${f.name}${T}的 ${S.age} 歲生日，也是${T}站上榻榻米的第 ${f.yrs} 年。`,`今天大家聚在這裡，是為了感謝${f.name}${T}這 ${f.yrs} 年來為道場做的一切。`,`今天這場餐會，主角本人一直說不要辦。可是 ${f.yrs} 年了，總該讓我們說幾句話。`]);
+  P.push({h:'開場',t:`各位來賓、各位道場的夥伴，押忍！我是${spk}。${occ}我稿子寫了三天，手到現在都還在抖，請大家多多包涵。`});
+  const an=[];
+  if(f.big.length)an.push(`${f.big[0]}那天，我在觀眾席上哭得比${T}本人還慘。賽後${T}只問我一句：「你剛剛有沒有看到我第二回合那個踢？」`);
+  else if(f.twn)an.push(`${T}拿過 ${f.twn} 次全台冠軍，可是獎盃全部放在道場，家裡一座都沒有。${T}說，那些獎盃是大家的。`);
+  if(S.flags.hyaku)an.push(`百人組手那天，我是第 ${30+((S.setup&&S.setup.seed)||7)%60} 個上場的。我只記得${T}的眼神，從第一個人到最後一個人，都沒有變過。`);
+  if(f.fails)an.push(`很多人不知道，${T}的審查落榜過 ${f.fails} 次。${T}跟我說，那幾次落榜，比任何一座獎盃都重要。`);
+  if(f.inj>=2)an.push(`${T}受過 ${f.inj} 次傷，可是我從來沒有看過${T}請假。最誇張的一次，是拄著拐杖來道場喊口令。`);
+  if(S.flags.uchiDone)an.push(`${T}在日本當內弟子的時候，每個月寄一張明信片回道場，上面永遠只有兩個字：「押忍」。`);
+  if(S.rivalW+S.rivalL>=2&&S.route!=='kata')an.push(`${T}最常提起的人不是自己，是宿敵${esc(S.rival)}。兩個人交手 ${S.rivalW+S.rivalL} 次，私底下一起喝過的酒，比打過的回合還多。`);
+  if(S.dojo)an.push(`${esc(S.dojo.name)}剛開的時候，${T}自己掃地、自己修沙包、自己去發傳單。現在最多的時候有 ${S.dojo.peak} 個人擠在裡面，${T}還是每天第一個到。`);
+  else if(S.flags.closedDojo)an.push(`${esc(S.flags.closedDojo)}拉下鐵門那天晚上，${T}還是準時去道場練了兩個小時。`);
+  if(f.tL.length)an.push(`教課的時候，${T}遇過 ${S.flags.tEv} 件荒唐事，我最喜歡的是「${f.tL[(f.tL.length>1?1:0)]}」——${T}，對不起，我還是講了。`);
+  if(f.L3.length)an.push(`還有那次「${f.L3[0]}」……好，這個${T}不准我講，大家散會後自己去問。`);
+  if(!an.length)an.push(`${T}沒有拿過什麼大冠軍，可是每一次點到名字，${T}都站上了場。對我來說，那就是最強的。`);
+  const k=((S.setup&&S.setup.seed)|0)+EPV;const ord=an.map((t,i)=>[t,(i*7+k)%11]).sort((a,b)=>a[1]-b[1]).map(x=>x[0]).slice(0,4);
+  ord.forEach((t,i)=>P.push({h:i?'':'那些年',t}));
+  if(S.flags.married&&!S.flags.separated)P.push({h:'謝謝家人',t:`也要謝謝${T}的家人。這 ${f.yrs} 年，你們把${T}借給了道場，觀眾席上那個位置，你們從來沒有缺席過。`});
+  const lesson=vs('lesson',['倒下的時候，要比對手先站起來','押忍不是口號，是忍耐','每一次稽古，都要當成最後一次','輸了不要找理由，回道場就對了','對手是用來尊敬的，不是用來討厭的']);
+  P.push({h:'結尾',t:quit?`${T}後來沒有再來道場。可是每次綁腰帶，我都還會想起${T}教我的那個結，還有那句話：「${lesson}。」${T}，不管你在哪裡——押忍。`:`${T}教我最重要的一件事，不是怎麼踢、怎麼打，是「${lesson}」。最後，請大家站起來，一起跟${T}說一聲——押忍！`});
+  return P;
+}
+function epiNews(){
+  const f=epiFacts(),P=[],m=f.m,d=S.dojo;const c=S.champ;
+  const hl=S.ending==='quit'?`放下也是一種勇氣——${f.name}的 ${f.yrs} 年`:(c.world_kumite||c.world_kata)?`從${f.home}到世界之巔`:f.big.length?`站上全日本的台灣人`:S.flags.shibucho?`扛起台灣極真的人`:S.flags.hyaku?`一百個對手之後`:d?`在${(CITIES[d.city]||{}).short||''}點亮一盞道場的燈`:S.flags.closedDojo?`拉下鐵門之後`:`一條腰帶，${f.yrs} 年`;
+  const rep=vs('rep',['林佩君','陳冠宇','黃怡婷','吳建志','蔡雅雯']);
+  P.push({h:`【人物專訪】${hl}`,t:`<i>南台灣日報／記者 ${rep}</i><br>${S.age} 歲的${f.name}，道上的人叫${S.age>=40?'這位前輩':'這位選手'}「${epithet()}」。${f.yrs} 年前，${f.name}只是一個在手機上滑到道場影片、看了三遍的高一生。「隔天放學我就去了，」${f.name}回憶，「那扇木門有點卡，我推了兩次才推開。」`});
+  let t='';
+  if(f.big.length)t+=`那扇門後面，是${f.big.join('、')}的榮耀。`;else if(f.twn)t+=`那扇門後面，是 ${f.twn} 座全台冠軍獎盃。`;else t+=`那扇門後面沒有冠軍，只有日復一日的稽古。`;
+  if(m.black)t+=`${f.name} ${m.black} 歲繫上黑帶${f.fails?`，在那之前落榜過 ${f.fails} 次`:''}。`;
+  if(S.flags.uchiDone)t+=`之後遠赴日本本部當了三年內弟子，「冬天凌晨五點拖地，手會黏在地板上。」`;
+  if(S.flags.hyaku)t+=`更完成了被視為極真最高試煉的百人組手。問到感想，只回答：「第七十個人之後，就不記得了。」`;
+  {const ct=crownText();if(ct)t+=`最驚人的是${ct}，日本媒體一度以「台灣來的怪物」形容。`;}
+  P.push({h:'戰績',t});
+  t='';
+  if(S.flags.shibucho)t+=`如今${f.name}是台灣支部長，${S.branches&&S.branches.length?`派出 ${S.branches.length} 名弟子到各地開館，`:''}肩上扛的是整個台灣的極真。`;
+  else if(S.flags.shihandai)t+=`${m.shd} 歲獲任台灣支部師範代，是支部最資深的指導者之一。`;
+  if(d)t+=`${d.opened-birthY()} 歲那年開設的${esc(d.name)}，最多時有 ${d.peak} 名學員，培養出 ${d.blacks} 名黑帶${d.champs?`、${d.champs} 名全台冠軍`:''}。「學員繳的不是學費，是信任。」`;
+  else if(S.flags.closedDojo)t+=`${f.name}也開過道場，最後因經營困難結束營業。「那不是失敗，是學費，」${f.name}說，「很貴的學費。」`;
+  if(S.flags.jexp)t+=`退下選手身分後，${f.name}拿起紅白旗，至今擔任過 ${S.flags.jexp} 次審判。`;
+  if(f.L3.length)t+=`當然，也有荒唐的時候。說到「${f.L3[0]}」，${f.name}笑到說不出話。`;
+  if(t)P.push({h:'之後',t});
+  const q=vs('q',['不要怕輸。我輸過的比贏過的多，可是我還站在這裡。','先去練一次看看。練完覺得累，就對了。','腰帶的顏色會變，可是推開那扇門的勇氣不會。','每天練一點點。一點點，${yrs} 年，就很多了。','找一個比你強的人，然後每天去被他打。'].map(x=>x.replace('${yrs}',f.yrs)));
+  P.push({h:'給年輕人的話',t:`採訪最後，記者問${f.name}想對年輕人說什麼。${f.name}想了很久，說：「${q}」說完起身，雙手在胸前交叉，對記者鞠了一個躬——「押忍。」`});
+  return P;
+}
+function epiLetter(){
+  const f=epiFacts(),m=f.m,P=[];const quit=S.ending==='quit';const d=S.dojo;
+  P.push({h:'給十五歲的你',t:`十五歲的我：<br>你現在大概正盯著手機，那支道場影片看到第三遍了吧。我是 ${S.age} 歲的你。${vs('l0',['先說好，我不是來劇透的，我只是想叫你別怕。','我寫這封信，不是要告訴你答案，是想跟你說：門推開吧。','有些事情我想早一點告訴你，可是說了你大概也不會聽——你一直都是這樣。'])}`});
+  const hard=[];
+  hard.push(vs('lm',['你會窮好幾年。高中的零用錢只夠買一罐蛋白粉，你會把它省到過期。','你會窮到要去搬香腸、顧夜班，下班直接騎車去道場，道着袋裡永遠有一個冷掉的飯糰。','你會為了報名費猶豫很久，最後還是報了。那幾年你很窮，但你從來沒有覺得自己可憐。']));
+  if(f.fails)hard.push(`你會在審查會上落榜 ${f.fails} 次。落榜那天晚上你會哭，然後隔天照樣去道場。`);
+  if(f.inj)hard.push(`你會受 ${f.inj} 次傷。我不告訴你是哪幾次，你只要記得：好好復健，不要逞強。`);
+  if(S.forced)hard.push(`你的身體會比你的意志先放棄。那天在更衣室，你會坐很久。沒關係，坐久一點也沒關係。`);
+  if(S.flags.closedDojo)hard.push(`你會開一間道場，然後親手拉下它的鐵門。那會是你這輩子最難的一個晚上。`);
+  P.push({h:'你會吃的苦',t:hard.join('')});
+  const good=[];
+  if(m.black)good.push(`${m.black} 歲，你會繫上黑帶。打結的時候手會抖，不要笑自己。`);
+  if(f.big.length)good.push(`你會拿到${f.big.join('、')}。我知道你現在不信，我當年也不信。`);else if(f.twn)good.push(`你會拿 ${f.twn} 次全台冠軍。`);
+  if(S.flags.uchiDone)good.push('你會去日本當內弟子，在本部的冬天拖一千多天的地板。');
+  if(S.flags.hyaku)good.push('你會完成百人組手。第一百個人倒下的時候，你會聽不到任何聲音。');
+  if(S.flags.shibucho)good.push('你會成為台灣支部長。對，就是你，那個現在連正坐五分鐘都會腳麻的你。');else if(S.flags.shihandai)good.push('你會成為台灣支部師範代。');
+  if(d)good.push(`你會在${(CITIES[d.city]||{}).short||''}開一間自己的道場，最多的時候有 ${d.peak} 個人在裡面喊押忍。`);
+  if(f.pupil)good.push(`你會收一個叫${esc(f.pupil.n)}的弟子，那孩子會比你更好。這是你最驕傲的事。`);
+  if(!good.length)good.push('你不會拿到什麼了不起的冠軍。可是你會一直練下去，這件事本身就很了不起。');
+  P.push({h:'你會得到的',t:good.join('')});
+  const ppl=[];
+  if(S.npc&&S.npc.sen)ppl.push(`茶帶的師兄${f.sen}會照顧你，記得跟師兄說謝謝——說早一點。`);
+  if(S.route!=='kata'&&S.rivalW+S.rivalL>=2)ppl.push(`你會遇到一個叫${esc(S.rival)}的人，你們會打 ${S.rivalW+S.rivalL} 次。不要討厭那個人，那是你最好的老師。`);
+  if(S.flags.married)ppl.push(S.flags.separated?'你會成家，也會讓家人失望。晚上早點回家，這句話請你一定要聽。':'你會成家。觀眾席上那個為你大喊的人，請你好好珍惜。');
+  if(ppl.length)P.push({h:'你會遇到的人',t:ppl.join('')});
+  P.push({h:'最後',t:(quit?`最後，你會在 ${S.age} 歲那年放下。我不後悔，你也不要。那 ${f.yrs} 年的汗，一滴都沒有白流。`:`最後，我只有一個建議：${vs('la',['每一次稽古結束，都對道場鞠一個躬。','不要跟別人比，跟昨天的自己比。','累的時候，就去打沙包；難過的時候，也去打沙包。','多喝水。真的。'])}`)+`<br><br>${S.age} 歲的你　押忍`});
+  return P;
+}
+function epiRival(){
+  const f=epiFacts(),P=[],T=f.T;const R=S.route!=='kata'&&S.rivalW+S.rivalL>=3;
+  if(R){const rv=esc(S.rival),tot=S.rivalW+S.rivalL;
+    P.push({h:`宿敵${rv}的話`,t:`我是${rv}。你們要我講講${f.name}？${vs('r0',['好，可是我先說，我不會說好話。','……我想一下。給我一杯酒。','說真的，這個問題我想了 '+f.yrs+' 年。'])}`});
+    P.push({h:'交手',t:`我們交手 ${tot} 次，${f.name}贏 ${S.rivalW} 次，我贏 ${S.rivalL} 次。${S.rivalW>S.rivalL?'數字上我輸了，可是我一場都不記得自己是怎麼輸的，只記得自己是怎麼站起來的。':S.rivalW<S.rivalL?'數字上我贏了。可是每次贏完，我都要回去練得比上一次更兇，因為我知道下一次就不一定了。':'不分上下。我們兩個都很討厭這個數字。'}${vs('r1',[`最記得的是那一次，第二回合${f.name}一記中段踢進來，我整個人往後退了三步——那是我第一次怕一個人。`,`有一場延長賽，我們兩個都站不穩了，還在互相瞪。裁判喊停的時候，${f.name}先對我鞠了躬。`,`每次比賽前在走廊遇到，我們都不講話。可是如果哪一年名單上沒有${f.name}，我就會覺得那個大會很無聊。`])}`});
+    let t='';if(f.big.length)t+=`${f.name}拿到${f.big[0]}那天，我在觀眾席。我沒有拍手，我回家把沙包踢到天亮。`;
+    if(S.flags.hyaku)t+=`百人組手那天我也有上場。我是用盡全力在打的，${f.name}也知道，所以最後擁抱的時候，誰都沒有說話。`;
+    if(S.mil&&S.mil.ret)t+=`${S.mil.ret} 歲${f.name}從選手引退。那天我打電話過去，兩個人在電話兩頭沉默了一分鐘，然後一起笑出來。`;
+    if(t)P.push({h:'後來',t});
+    P.push({h:'最後',t:`要我說一句話嗎？${vs('r2',[`謝謝你，${f.name}。沒有你，我只會是個普通的選手。`,`${f.name}，下次喝酒，換你請。`,`這輩子能遇到一個這樣的對手，夠了。押忍。`])}`});
+  }else{const sn=f.sen;
+    P.push({h:`師兄${sn}的話`,t:`我是${sn}，${f.name}剛入門時的茶帶師兄。${S.used.npc_s2?'我後來回老家顧香腸店了，不過道場的事，我都有在看。':'這麼多年過去，我還是習慣叫一聲「學弟」。'}`});
+    P.push({h:'第一天',t:`${f.name}第一天來的時候，站在門口推了兩次門才推開，一臉緊張。${vs('s1',['我心想：這個大概撐不過三個月。','我教的第一個動作是正拳，打得歪七扭八，可是一直打，打到道場熄燈。','那天下課，只有' + f.name + '一個人留下來幫忙拖地。我就知道，這個會留下來。'])}`});
+    let t='';if(S.mil&&S.mil.black)t+=`${S.mil.black} 歲繫上黑帶那天，我送了一條毛巾。那條毛巾後來破了，聽說到現在還沒丟。`;
+    if(f.big.length)t+=`後來拿到${f.big.join('、')}，我在電視前面大叫，店裡的客人都嚇到了。`;else if(f.twn)t+=`後來拿了 ${f.twn} 次全台冠軍，每一次我都有到場，坐在最後一排。`;
+    if(S.flags.uchiDone)t+='去日本當內弟子那三年，我每個月都寄一箱香腸過去，聽說本部的人都很愛。';
+    if(S.dojo)t+=`開道場的時候，我包了一個大紅包，還幫忙掛招牌，結果掛歪了。`;
+    if(t)P.push({h:'這些年',t});
+    P.push({h:'最後',t:`當年我說過一句：「你會比我強。」${vs('s2',['我很高興我說對了。','現在想起來，我那時候其實是在說給自己聽的。','那是我這輩子說過最準的一句話。'])}押忍，學弟。`});
+  }
+  return P;
+}
+function epiFamily(){
+  const f=epiFacts(),m=f.m,P=[],d=S.dojo;
+  P.push({h:'媽媽的話',t:`我是${f.name}的媽媽。${vs('f0',['要我講孩子的事，我會講很久喔。','我不懂空手道，到現在還分不清楚型跟組手。','記者問我有什麼想說的，我想了好幾天。'])}`});
+  P.push({h:'那天晚上',t:`十五歲那年的某個晚上，這孩子拿著手機衝進廚房，說要去學空手道。我以為三分鐘熱度，${vs('f1',['結果一學就是 '+f.yrs+' 年。','還跟孩子說：「學費家裡出，可是零用錢不會變多喔。」孩子說好。','隔天就看到孩子在客廳對著空氣出拳，把我的花瓶打破了。'])}`});
+  const t1=[];t1.push('那幾年，我每天晚上都在洗道着。汗味很重，曬在陽台上，鄰居都知道我們家有人在練功夫。');
+  if(f.inj)t1.push(`孩子受過 ${f.inj} 次傷，每一次我都說不要再練了，每一次都沒有用。`);
+  if(f.fails)t1.push(`審查沒過的那幾次，孩子回家什麼都沒說，自己去洗澡洗很久。我在門外，假裝沒聽到。`);
+  const p=S.flags.p18;if(p==='trainee')t1.push('高中畢業說不上大學要去道場當見習指導員，我跟孩子的爸吵了一個禮拜，最後還是讓孩子去了。');else if(p==='uni')t1.push('上大學以後，晚上還是一樣去道場，我們家的飯永遠要留一份。');else if(p==='job')t1.push('高中畢業就去工作，下班直接去道場，我每天晚上十點幫孩子熱便當。');
+  P.push({h:'那幾年',t:t1.join('')});
+  const t2=[];
+  if(f.big.length)t2.push(`孩子拿到${f.big[0]}那天，我在家裡看直播，看不懂規則，可是看到孩子舉手，我就哭了。`);else if(f.twn)t2.push(`孩子拿了 ${f.twn} 次全台冠軍，獎盃我都擦得亮亮的。`);
+  if(S.flags.uchiDone)t2.push('孩子去日本那三年，我每個禮拜都看日本的天氣預報，冷的時候就打電話叫孩子穿外套。');
+  if(S.flags.hyaku)t2.push('百人組手那天我不敢去看，在家裡拜拜。');
+  if(d)t2.push(`後來孩子開了自己的道場，我去看過一次，一群小朋友對我大喊「押忍」，我也跟著喊了。`);
+  if(S.flags.married)t2.push(S.flags.kid?'後來孩子成家，也有了自己的孩子。看著教孫子綁腰帶，我才知道，原來時間過得這麼快。':'後來孩子成家了，另一半也很好，也常常幫忙洗道着。');
+  if(t2.length)P.push({h:'後來',t:t2.join('')});
+  P.push({h:'最後',t:S.ending==='quit'?`後來孩子說不練了。我沒有多問，只是把那條腰帶收進櫃子裡，到現在都還在。不管練不練，都是我最驕傲的孩子。`:`現在別人都叫「${f.T}」，我還是叫小名。${vs('f2',['不管多厲害，回家還是要吃飯。','我只希望孩子少受一點傷。','我這輩子學會的唯一一句日文，就是「押忍」。'])}`});
+  return P;
+}
+function epiBelt(){
+  const f=epiFacts(),m=f.m,P=[],d=S.dojo;const rn=S.rank>=6?`黑帶（${RANKS[S.rank]}）`:RANKS[S.rank];const washes=f.yrs*48;
+  P.push({h:'我是一條腰帶',t:`我是一條${rn}。準確地說，我是${f.name}這輩子綁過的第 ${S.rank+1} 條腰帶。${vs('b0',['在我之前，還有好幾條前輩，它們都被收在衣櫃最下面的鐵盒裡。','我不太會說話，可是我記得很多事。','我的工作很簡單：被綁緊，然後陪主人流汗。'])}`});
+  let t='';
+  t+=S.rank?`我的第一位前輩是一條白帶，十五歲那年被綁得歪七扭八，打結打了五分鐘。`:`我就是十五歲那年的第一條腰帶，被綁得歪七扭八，打結打了五分鐘。`;
+  if(m.black)t+=`${m.black} 歲那年，黑帶的前輩第一次被綁上去。聽說主人的手一直抖，結打了三次才打好。`;
+  if(f.fails)t+=`審查落榜的 ${f.fails} 次，前輩們都被默默收回袋子裡，那幾個晚上袋子裡特別安靜。`;
+  if(t)P.push({h:S.rank?'前輩們':'十五歲',t});
+  t=`算一算，這 ${f.yrs} 年我們這一家子大概被洗了 ${washes} 次。`;
+  if(S.flags.uchiDone)t+='我坐過飛機去日本，在本部的宿舍掛了三年，冬天曬不乾，主人就把我放在棉被裡烘。';
+  if(S.flags.hyaku)t+='百人組手那天，我被汗水泡到快要斷掉，可是我死都不能鬆開。我做到了。';
+  if(f.big.length)t+=`${f.big[0]}的頒獎台上，我也在。閃光燈很刺眼，主人的肚子一直在發抖。`;
+  if(f.inj)t+=`主人受傷的 ${f.inj} 次，我都被掛在牆上，看著主人一跛一跛地走進來，又一跛一跛地走出去。`;
+  P.push({h:'我們一起去過的地方',t});
+  t='';
+  if(d)t+=`現在我常常被掛在${esc(d.name)}的牆上。學員們經過會偷看我，小朋友還會問：「老師，那條是不是很厲害？」我很想回答，可是我只是一條腰帶。`;
+  else if(S.ending==='quit')t+='後來，我被摺好收進櫃子裡，很久沒有出門了。偶爾主人打開櫃子，會摸我一下，然後關上。我不怪主人，我只是有點想念汗水的味道。';
+  else t+='現在主人還是常常把我綁上，只是動作慢了一點，結打得比以前更好看了。';
+  P.push({h:'現在',t});
+  P.push({h:'最後',t:vs('b1',['如果腰帶也能說話，我只想說：謝謝你，從來沒有讓我鬆掉。','我的顏色已經磨淡了，可是被綁緊的感覺，我一次都沒有忘記。押忍——這句是我學主人的。','有一天我會被收進鐵盒，和前輩們放在一起。那時候我們會一起聊主人的事，聊很久很久。'])});
+  return P;
+}
+const EPI_VER=[['回憶','你的一生'],['致詞','弟子的致詞'],['專訪','報紙專訪'],['書信','給十五歲的自己'],['宿敵','對手／師兄的話'],['家人','媽媽的話'],['腰帶','腰帶的自述']];
+let EPI_CUR=0;
+function epiHTML(){const ps=[epiParas,epiSpeech,epiNews,epiLetter,epiRival,epiFamily,epiBelt][EPI_CUR]();
+  return `<div class="epitabs">${EPI_VER.map((v,i)=>`<button type="button" class="etab${i===EPI_CUR?' on':''}" data-ev="${i}">${v[0]}<small>${v[1]}</small></button>`).join('')}<button type="button" class="etab rr" data-ev="r">換個寫法<small>同一生</small></button></div>`+ps.map(p=>`${p.h?`<h4>${p.h}</h4>`:''}<p>${p.t}</p>`).join('');}
+function bindEpi(){const box=$('#epiBox');if(!box)return;box.onclick=e=>{const b=e.target.closest('.etab');if(!b)return;const v=b.dataset.ev;if(v==='r')EPV++;else EPI_CUR=+v;box.innerHTML='<b>結語</b>'+epiHTML();};}
 function epilogue(){return epiParas().map(p=>p.t).join('');}
 function lifeStages(){
   const m=S.mil||{};const L=(S.log||[]).filter(l=>!/講習會$|痊癒$/.test(l.t));
   const uEnd=L.find(l=>/日本內弟子結業/.test(l.t)),tEnd=L.find(l=>/台灣內弟子結業/.test(l.t));
   const PN={trainee:'見習指導員',uni:'大學生',job:'上班族'};
-  let b=[[16,'入門'],[18,'十八歲・'+(PN[S.flags.p18]||'出社會')]];
+  let b=[[15,'入門・高一'],[18,'十八歲・'+(PN[S.flags.p18]||'出社會')]];
   if(m.black)b.push([m.black,'繫上黑帶']);
   if(m.twuchi)b.push([m.twuchi,'台灣內弟子']);
   if(m.uchi)b.push([m.uchi,'日本內弟子']);
@@ -3248,7 +3458,7 @@ function lifeStages(){
   b.sort((x,y)=>x[0]-y[0]);const B=[];for(const x of b){const last=B[B.length-1];if(last&&last.a0===x[0])last.n+='・'+x[1];else B.push({a0:x[0],n:x[1],items:[]});}
   for(const l of L){const a=logAge(l);let st=B[0];for(const s of B)if(s.a0<=a)st=s;st.items.push({a,t:l.t,cls:l.cls});}
   B.forEach((s,i)=>{s.a1=i<B.length-1?Math.max(s.a0,B[i+1].a0-1):S.age;});
-  return B.filter(s=>s.items.length||s.a0===16);
+  return B.filter(s=>s.items.length||s.a0===15);
 }
 function stagesHTML(){
   return `<div class="epi life"><b>人生年表</b>${lifeStages().map((s,i)=>{const g=s.items.filter(x=>x.cls==='gold').length;
@@ -3351,13 +3561,13 @@ function shareCard(){
   return cv;
 }
 function renderEnd(){
-  const el=$('#end');const lines=G.prompt.lines;const d=S.dojo;
+  EPI_CUR=0;EPV=0;const el=$('#end');const lines=G.prompt.lines;const d=S.dojo;
   el.innerHTML=`<div class="eyebrow">${S.year} · ${S.age} 歲${S.forced?' · 被迫從選手引退':''}</div>
   <div class="hero"><div class="portrait"><canvas id="endSpr"></canvas></div>
     <div class="hinfo"><p class="ep">${epithet()}</p><div class="hname"><b>${esc(S.name)}</b>${beltPill(S.rank)}</div><div class="hsub">${specLabel()}・出身 ${S.home.n}</div></div></div>
   ${lines.length?`<div class="lines">${lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}
-  <div class="epi"><b>結語</b>${epiParas().map(p=>`<h4>${p.h}</h4><p>${p.t}</p>`).join('')}</div>
-  <p class="q">${ENDTXT[S.ending]||''}</p>
+  <div class="epi" id="epiBox"><b>結語</b>${epiHTML()}</div>
+  <p class="q" id="epiEnd">${ENDTXT[S.ending]||''}</p>
   ${(S.honors||[]).length?`<div class="epi"><b>獲得的稱號（${S.honors.length}）</b><div class="hlist">${S.honors.map(h=>`<span class="hchip"><b>${h.n}</b><small>${h.a} 歲</small></span>`).join('')}</div></div>`:''}
   ${stagesHTML()}
   <div class="endgrid">
@@ -3373,16 +3583,16 @@ function renderEnd(){
   ${S.titles.length?`<ul class="titles">${S.titles.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:'<p class="hint">沒有冠軍頭銜。但每一次站上場，都算數。</p>'}
   <div id="newAch"></div>
   <div class="opts">
+    <a class="opt rcbtn" id="btnRc2" href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener"><span class="l">想真的來練練看？</span><span class="s">前往道場 Instagram・i.k.o.n.taiwan</span></a>
     <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
     <div id="cardOut"></div>
-    <button class="opt" type="button" id="btnRc2"><span class="l">想真的來練練看？招生資訊</span></button>
     <button class="opt" type="button" id="btnSame"><span class="l">同一顆種子，重新來過</span></button>
     <button class="opt" type="button" id="btnNew"><span class="l">開始新的人生</span></button>
   </div>`;
   drawSprite($('#endSpr'),'front',SPR_BELT[S.rank],'#3a3550');
-  $('#btnRc2').onclick=()=>showRecruit();
-  if(G&&!G.rcShown){G.rcShown=1;setTimeout(()=>{if(G&&G.prompt&&G.prompt.kind==='end')showRecruit();},1800);}
+  $('#btnRc2').onclick=()=>chip([[784,.08],[1047,.12]]);
   {const fresh=recordRun();if(fresh.length)$('#newAch').innerHTML=`<div class="epi"><b>解鎖成就</b><p>${fresh.map(n=>'🏅 '+n).join('<br>')}</p></div>`;}
+  bindEpi();
   $('#btnCard').onclick=async()=>{
     try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(e){}
     const cv=shareCard();const url=cv.toDataURL('image/png');
@@ -3394,7 +3604,9 @@ function renderEnd(){
     const sb=$('#cardShare');if(sb)sb.onclick=async()=>{try{const blob=await (await fetch(url)).blob();const f=new File([blob],'kyokushin.png',{type:'image/png'});if(navigator.canShare&&navigator.canShare({files:[f]}))await navigator.share({files:[f],text:`極真人生・命運種子 ${String(G.setup.seed).padStart(6,'0')}`});else await navigator.share({text:`我在極真人生成為「${epithet()}」！命運種子 ${String(G.setup.seed).padStart(6,'0')}`});}catch(e){}};
   };
   $('#btnSame').onclick=()=>{startGame(G.setup,[]);window.scrollTo({top:0});};
-  $('#btnNew').onclick=()=>{G=null;clearSave();render();window.scrollTo({top:0});};
+  const goNew=()=>{G=null;clearSave();render();window.scrollTo({top:0});};
+  $('#btnNew').onclick=()=>{if(!RC_SHOWN)showRecruit(goNew);else goNew();};
+  armRecruit();
 }
 
 let startBuilt=false;
@@ -3449,6 +3661,11 @@ function initUI(){
 
   $('#btnGuideClose').addEventListener('click',()=>toggleGuide(false));
   let armed=false;
+  {let armed2=false;const gu=e=>{const b=e.currentTarget;const lab=b.querySelector('.l')||b;const orig=b.id==='btnGiveUp2'?'放棄・直接結算這段人生':'放棄・直接結算這段人生';if(!G||G.prompt.kind==='end')return;
+    if(!G||G.prompt.kind==='end')return;
+    if(!armed2){armed2=true;lab.textContent='再按一次，確定放棄並結算';setTimeout(()=>{armed2=false;lab.textContent=orig;},3000);return;}
+    armed2=false;lab.textContent=orig;G.choices.push('cmd:quit');G.prompt=quitLife();save();render();window.scrollTo({top:0});};
+    $('#btnGiveUp').addEventListener('click',gu);$('#btnGiveUp2').addEventListener('click',gu);}
   $('#btnQuit').addEventListener('click',e=>{
     if(!armed){armed=true;e.target.textContent='再按一次確認放棄';setTimeout(()=>{armed=false;e.target.textContent='放棄這段人生，回到首頁';},3000);return;}
     armed=false;e.target.textContent='放棄這段人生，回到首頁';G=null;clearSave();render();window.scrollTo({top:0});
