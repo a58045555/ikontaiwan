@@ -669,7 +669,7 @@ a.opt{text-decoration:none;color:inherit}
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.2・2026.10.12</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.2.1・2026.10.12</span></footer>
 </div>
 
 <script>
@@ -1460,9 +1460,8 @@ function* examPhase(){
   if(S.turn-S.lastPromo<examGap(I)||S.age<I.age)return;
   if(!I.extra){if(S.flags.extraNote!==n){S.flags.extraNote=n;say(`晉升${RANKS[n]}的條件：${I.extraTxt}。`);}return;}
   const parts=examParts(I);const es=examStatus();
-  if(S.money<I.fee+I.travel&&S.money<0){say(`<span class="lbl">${RANKS[n]}審查</span>已經符合報考資格，可是存款不夠繳審查費，這次只能先放棄。`);return;}
-  if(es.all<.5){const rc=examRec();say(`<span class="lbl">${RANKS[n]}審查</span>已經符合報考資格，但合格率只有 ${Math.round(es.all*100)}%，這次先不報名${rc?`，回去多練「${rc.n}」`:''}。合格率到 50% 會自動報名。`);return;}
-  const c='go';say(`<span class="lbl">自動報名</span>符合${RANKS[n]}審查資格，${I.abroad?'赴日本本部':''}報名審查（審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''}）・合格率約 ${Math.round(es.all*100)}%`);
+  const c=yield P(`${RANKS[n]}審查`,`${tipOnce('exam','四項都要合格才升級，看下方每一項的通過機率。不夠的話先不考，回去練弱的那一項。')}${I.abroad?'<b>三段以上要到日本本部審查</b>，由本部的師範審核，每年下半年一次。':''}指定型「${I.kata}」，四項都要合格。合格率約 <b>${Math.round(es.all*100)}%</b>。${examHTML(es,false)}`,
+    [{id:'go',rec:es.all>=.5,label:I.abroad?'赴日本本部報考':'報考',sub:`審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''} · 不合格不退費 · 合格機率約 ${Math.round(es.all*100)}%`},{id:'no',rec:es.all<.5,label:'這次不考，再練一陣子',sub:(()=>{const rc=examRec();return rc?`「${rc.part}」不足，建議多練「${rc.n}」`:'各項都準備好了';})()}]);
   if(c!=='go'){say(`這次沒有報考${RANKS[n]}審查。`);return;}
   S.money-=I.fee+I.travel;
   say(`<span class="tname">${RANKS[n]}審查${I.abroad?'・日本本部':''}</span>`);
@@ -2660,7 +2659,7 @@ function* life(){
       if(!auto){
         if(!badlyHurt()&&!S.hand)S.hand=drawHand();
         while(true){const opts=trainOpts();annotateTrain(opts);
-          c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+(S.flags.tips&&S.flags.tips.train?tipOnce('goal','看角色卡最下面：下一條腰帶的<b>合格率</b>，和紅字「不足 → 多練○○」。照著提示挑稽古就對了；合格率到 50% 就會<b>自動報名審查</b>。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
+          c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+(S.flags.tips&&S.flags.tips.train?tipOnce('goal','看角色卡最下面：下一條腰帶的<b>合格率</b>，和紅字「不足 → 多練○○」。照著提示挑稽古就對了；審查時間到了會問你要不要報考，金框是建議。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
           if(c==='life'){yield* lifeSetup();continue;}
           if(c==='kfocus'){const ex=EXK[Math.min(10,S.rank+1)];const kf=yield P('主練的型','練「基本・型」系列的牌時，主練的型修煉度漲最多，其他型只會小幅提升。型比賽和審查都看修煉度。',unlockedKata().map(x=>({id:x.n,label:`「${x.n}」 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)}${x.n===ex?' · 下一次審查要考':''}`})));S.kfocus=kf;continue;}
           if(c==='reroll'){const f=S.flags.rr||{};S.flags.rr={y:S.year,n:(f.y===S.year?f.n:0)+1};bump('spi',-2);S.hand=drawHand();say('你向師範要求換一套練法。');continue;}
