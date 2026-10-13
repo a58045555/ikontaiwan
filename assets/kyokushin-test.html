@@ -516,7 +516,7 @@ a.opt{text-decoration:none;color:inherit}
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
-      <ul><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
+      <ul><li><b>努力的天才</b>：本身是努力家（天生或後天都算），稽古累積六十次以上、幾乎沒休息過，就會變成「努力的天才」：所有成長 ×1.1，也能選全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
       <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自行加點）</summary>
@@ -1005,13 +1005,15 @@ function wpick(rr,K){const t=K.reduce((a,k)=>a+TRAIT_W(k),0);let x=rr()*t;for(co
 const LP={1:['開創者','leader'],2:['協調者','calm'],3:['表演者','hot'],4:['實踐者','hard'],5:['冒險者','swift'],6:['守護者','charm'],7:['研究者','study'],8:['實力派','strong'],9:['理想家','grit']};
 function lifePath(bd){const d=String(bd||'').replace(/\D/g,'');if(d.length!==8)return 0;let n=d.split('').reduce((a,c)=>a+ +c,0);while(n>9)n=String(n).split('').reduce((a,c)=>a+ +c,0);return n;}
 function traitsBday(bd,seed){const n=lifePath(bd);if(!n)return traitsFor(seed);const a=LP[n][1];const pool=traitsFor(seed).concat(traitsFor(seed+7919),traitsFor(seed+104729));
+  if(traitsFor(seed).includes('genius'))return [a,'genius'];
   const b=pool.find(k=>k!==a&&k!=='genius'&&!TRAIT_X.some(([x,y])=>(x===a&&y===k)||(x===k&&y===a)))||'lazy';return [a,b];}
 function traitsFor(seed){const rr=mulberry((seed*2654435761)>>>0);const K=Object.keys(TRAITS).filter(k=>!TRAITS[k].acq);let a=wpick(rr,K);let b;
   if(a==='genius'&&rr()<.7)return ['genius','proud'];
   for(let i=0;i<50;i++){b=wpick(rr,K);if(b==='genius'&&rr()<.7){[a,b]=['genius','proud'];break;}if(b!==a&&!TRAIT_X.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a)))break;}return [a,b];}
 const hasT=k=>!!(S&&S.traits&&S.traits.includes(k));
-Object.assign(TRAITS,{humble:{n:'謙虛',pos:1,acq:1,d:'不會自滿・審查 +1'}});
+Object.assign(TRAITS,{hgenius:{n:'努力的天才',pos:1,acq:1,d:'所有成長 ×1.1・可選全能型・靠稽古練出來的才能'},humble:{n:'謙虛',pos:1,acq:1,d:'不會自滿・審查 +1'}});
 const ACQ=[
+  {id:'hgenius_t',need:()=>hasT('hard')&&!hasT('genius')&&(S.flags.trainN||0)>=60&&(S.flags.restN||0)<=8,gain:'hgenius',why:'身為努力家，稽古累積了六十次以上、幾乎沒有休息過'},
   {id:'iron_t',need:()=>(S.trc||{}).taiso>=20&&(S.flags.injN||0)<=2,gain:'iron',cure:'frail',why:'體能・鍛體練了二十次以上而且很少受傷'},
   {id:'study_t',need:()=>(S.trc||{}).kihon>=26,gain:'study',cure:'clumsy',why:'基本・型練了二十六次以上'},
   {id:'hot_t',need:()=>(S.trc||{}).kumite>=26,gain:'hot',cure:'wimp',why:'組手練了二十六次以上'},
@@ -1042,7 +1044,7 @@ function traitCheck(){
 const MOODS={good:{n:'絕好調',g:1.1,b:3},normal:{n:'普通',g:1,b:0},slump:{n:'低潮',g:.85,b:-3},irr:{n:'焦躁',g:.95,b:-1,inj:1.3},smug:{n:'自滿',g:.85,b:-3}};
 const moodNow=()=>MOODS[S.mood||'normal'];
 function setMood(k,why){if((S.mood||'normal')===k)return;if(k==='smug'&&hasT('humble'))k='good';if(k==='slump'){S.flags.slumpN=(S.flags.slumpN||0)+1;const tp=tipAny('slump','「低潮」會讓成長和比賽變差。選「休養」、過一陣子，或在低潮事件裡找師範談，都能走出來。');if(tp)say(tp);}if(k==='slump'&&hasT('grit')){say('輸了，但你只是更用力地綁緊腰帶。');return;}S.mood=k;if(k!=='normal')say(`<span class="tg ${k==='good'?'up':'dn'}">${MOODS[k].n}</span>${why||''}`);}
-function traitG(){return (hasT('genius')?1.15:1)*(hasT('hard')?1.08:1)*(hasT('lazy')?.92:1)*(hasT('late')?(S.age<22?.88:S.age>=26?1.08:1):1)*moodNow().g;}
+function traitG(){return (hasT('genius')?1.15:1)*(hasT('hgenius')?1.1:1)*(hasT('hard')?1.08:1)*(hasT('lazy')?.92:1)*(hasT('late')?(S.age<22?.88:S.age>=26?1.08:1):1)*moodNow().g;}
 function bigT(T){return !!T&&['jp','jpw','world'].includes(T.id);}
 function clutchB(T){return bigT(T)?(hasT('clutch')?3:0)-(hasT('nerve')?3:0):0;}
 function trShare(){const t=S.trc||{};const n=(t.kihon||0)+(t.kumite||0)+(t.taiso||0);return n<2?{k:.33,m:.33}:{k:(t.kihon||0)/n,m:(t.kumite||0)/n};}
@@ -2689,7 +2691,7 @@ const CP_SAVE='<div class="cpnote">💾 進度已自動存檔。想休息隨時�
 function chapterNow(){return S.flags.ch3?['第三章','傳承']:S.flags.ch1?['第二章','選手時代']:['第一章','白帶到黑帶'];}
 function cpStats(){const t=S.titles.filter(x=>/優勝|完遂/.test(x)).length;return `<div class="cpst"><span><b>${S.age}</b>歲</span><span><b>${S.w}-${S.l}</b>${S.route==='kata'?'型戰績':'戰績'}</span><span><b>${t}</b>座冠軍</span><span><b>${Math.round(S.fame)}</b>名聲</span></div>`;}
 function* chooseStyle(){const st=S.st;const rec=st.pow>=st.spd&&st.pow>=st.tec?'punch':st.spd>=st.tec?'high':'low';
-  const ks=Object.keys(STYLES).filter(k=>k!=='basic'&&(k!=='all'||hasT('genius')));
+  const ks=Object.keys(STYLES).filter(k=>k!=='basic'&&(k!=='all'||hasT('genius')||hasT('hgenius')));
   const c=yield P('找到自己的風格',`升上藍帶那天，師範把你叫到一旁：「你的身體已經記住一些東西了。接下來，要決定你想怎麼打。」<br>你現在的力量 <b>${Math.round(st.pow)}</b>、速度 <b>${Math.round(st.spd)}</b>、技術 <b>${Math.round(st.tec)}</b>。`,
     ks.map(k=>({id:k,label:STYLES[k].n,sub:STYLES[k].d+(k===rec?' · 最適合你現在的能力':''),rec:k===rec})));
   S.style=c;const fs=STYLE_FAV[c];
@@ -3945,6 +3947,7 @@ const ACHS=[
   ['meimon','名門道場','培養出 12 名黑帶弟子',S=>!!S.dojo&&S.dojo.blacks>=12],
   ['closed','鐵門拉下','道場經營不下去',S=>!!S.flags.closedDojo],
   ['genius','天才','以天才的個性出生',S=>(S.traits0||[]).includes('genius')],
+  ['hgenius','努力的天才','靠稽古練成了天才',S=>(S.tAcq||[]).includes('hgenius')],
   ['allround','天才全能型','天才＋全能型的人生',S=>(S.traits0||[]).includes('genius')&&S.style==='all'],
   ['legend','傳說牌','抽到「中村師範來台講習」',S=>!!S.flags.legend],
   ['maxcard','一招到底','有一張稽古牌練到 MAX',S=>Object.values(S.clv||{}).some(n=>n>=18)],
