@@ -32,6 +32,8 @@
 - 已收到：屏東・左營（凱師範＋914＋傑克杜）→ assets/scenes/pingtung_raw.png
 - 已收到：鳳山・竹田（亨re＋9D）→ assets/scenes/fengshan_raw.png
 - 已收到：台南、苓雅（含麻糬）、楠梓、潮州、小港 → assets/scenes/*_raw.png（7 張全部到齊）
+- 使用者決定：正坐那幕（a5）也要每個道場各畫一張，保留不刪（2026-10-13）
+- 正坐場景待收：屏東・左營、鳳山・竹田、台南、苓雅、楠梓、潮州、小港（共 7 張）
 - 9D 臉模已完成：assets/masters/11_9d.png
 
 ## 已實作（測試版，尚未上線）
