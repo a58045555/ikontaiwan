@@ -31,7 +31,7 @@
 - 選道場後的推門畫面（a4），依道場換成有該道場 sensei 的版本；原本後半段「全員正坐、師範在前」那幕改為直接接 sensei 台詞。
 - 已收到：屏東・左營（凱師範＋914＋傑克杜）→ assets/scenes/pingtung_raw.png
 - 已收到：鳳山・竹田（亨re＋9D）→ assets/scenes/fengshan_raw.png
-- 待收：台南、苓雅（＋麻糬）、楠梓、潮州、小港
+- 已收到：台南、苓雅（含麻糬）、楠梓、潮州、小港 → assets/scenes/*_raw.png（7 張全部到齊）
 - 9D 臉模已完成：assets/masters/11_9d.png
 
 ## 已實作（測試版，尚未上線）
