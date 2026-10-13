@@ -1998,8 +1998,8 @@ const EVENTS=[
   {id:'mochi3',w:5,cond:()=>S.setup.home==='lingya'&&S.used.mochi2&&S.rank>=3,run:()=>ev('出門前的麻糬','比賽那天早上，你回道場拿護具。麻糬咬著你的腰帶尾巴不放，尾巴搖個不停。',
     [{l:'摸摸牠的頭：「等我回來。」',s:'鬥志↑↑ · 麻糬好感↑',do(){fx({spi:3});S.flags.mochi=(S.flags.mochi||0)+1;return '牠鬆口了，坐在門口目送你。';}},
      {l:'跟館主借小馬吊飾當護身符',s:'鬥志↑ 抗性↑ · 麻糬好感↑',do(){fx({spi:2,res:1});S.flags.mochi=(S.flags.mochi||0)+1;S.flags.mochiCharm=1;return '館主笑著拆下來給你：「比完要還。牠會找。」';}}])},
-  {id:'mochi4',w:5,cond:()=>S.setup.home==='lingya'&&S.used.mochi3&&S.age>=27,run:()=>ev('老狗麻糬','麻糬的嘴邊白了，跑不太動了。可是每天傍晚，牠還是會走到門口，等第一個來上課的人。',
-    [{l:'每次下課都帶牠散步',s:'體況↑ 鬥志↑ · 麻糬好感↑',do(){fx({hp:4,spi:2});S.flags.mochi=(S.flags.mochi||0)+1;return '你們走得很慢。牠走一段，就回頭看你有沒有跟上。';}},
+  {id:'mochi4',w:5,cond:()=>S.setup.home==='lingya'&&S.used.mochi3&&S.age>=22,run:()=>ev('麻糬的生日','今天是麻糬的生日。館主買了一個狗狗蛋糕，全道場的人圍成一圈唱生日快樂歌，麻糬坐在中間，尾巴掃得榻榻米沙沙響。',
+    [{l:'送牠一條新項圈',s:'鬥志↑ · 存款 −0.1 萬 · 麻糬好感↑',do(){fx({spi:2,money:-.1});S.flags.mochi=(S.flags.mochi||0)+1;return '館主說：「牠最喜歡的那個小馬，記得掛上去。」';}},
      {l:'拍一張全道場合照，讓牠坐正中間',s:'名聲↑ 鬥志↑ · 麻糬好感↑',do(){fx({fame:1,spi:3});S.flags.mochi=(S.flags.mochi||0)+1;return '照片洗出來，掛在道場牆上。最中間那個，笑得最開心。';}}])},
   {id:'senpai',cond:()=>S.age<=18,run:()=>ev('學長的下段踢','組手時學長毫不留情，你的大腿被下段踢踢到發紫。下課後他丟下一句：「痛，就記住了。」',
     [{l:'咬牙說「押忍」',s:'鬥志↑ 鍛體↑ 體況↓',fx:{spi:3,con:2,hp:-6},t:'隔週你又站到他面前。'},{l:'請學長教你怎麼擋',s:'技術↑',fx:{tec:3},t:'學長愣了一下，然後教你抬膝擋下段。'}])},
@@ -3176,17 +3176,15 @@ const RV=[[1.6,'b1'],[3.05,'b2'],[5.05,'b3'],[6.05,'b4'],[7.05,'b5'],[7.6,'b6'],
 
 const MASTER_LINE={pingtung:'「來了啊。先把鞋子擺好，再把心擺好。」',zuoying:'「在這裡，流的汗比說的話多。」',lingya:'「想變強？那就先學會被打。」',fengshan:'「基本做一萬次，就不叫基本了。」',zhutian:'「我們人少，但每個都是家人。」',tainan:'「慢慢來，比較快。」',xiaogang:'「飛機的聲音很吵，你的氣合要更大聲。」',nanzi:'「下課記得幫忙拖地。押忍。」',chaozhou:'「鄉下道場沒什麼，就是很能練。」'};
 function drawDojoBan(){const cv=$('#dojoBanCv');if(!cv)return;const im=SCNIMG.a3;const sel=document.querySelector('input[name=home]:checked');const hk=sel?sel.value:'pingtung';const H2=HOMES[hk]||{n:''};
-  if(im&&im.complete&&im.naturalWidth){const x=cv.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(im,20,40,200,90,0,0,200,90);
-    const ms=DOJO_M[hk]||[];let rx=196;for(let i=ms.length-1;i>=0;i--){const s2=MSIMG[ms[i]];if(!s2||!s2.complete||!s2.naturalWidth){if(s2&&!s2._wb){s2._wb=1;s2.addEventListener('load',drawDojoBan,{once:true});}continue;}const w=s2.naturalWidth,h=s2.naturalHeight;rx-=w;x.fillStyle='rgba(0,0,0,.3)';x.beginPath();x.ellipse(rx+w/2,63,w*.42,2.5,0,0,7);x.fill();x.drawImage(s2,rx,64-h);rx-=2;}
-    x.fillStyle='rgba(20,12,30,.35)';x.fillRect(0,62,200,28);}
+  if(im&&im.complete&&im.naturalWidth){const x=cv.getContext('2d');x.imageSmoothingEnabled=false;x.drawImage(im,20,40,200,90,0,0,200,90);x.fillStyle='rgba(20,12,30,.35)';x.fillRect(0,62,200,28);}
   else if(im&&!im._wb){im._wb=1;im.addEventListener('load',drawDojoBan,{once:true});}
-  const t=$('#dojoBanTxt');if(t)t.innerHTML=`<b>${H2.n}</b><span>${(DOJO_M[hk]||[]).filter(k=>k!=='mochi').map(k=>MNAME[k]).join('・')}在等你${(DOJO_M[hk]||[]).includes('mochi')?'（還有館狗麻糬）':''}。按下方「入門」推開門。</span>`;}
+  const t=$('#dojoBanTxt');if(t)t.innerHTML=`<b>${H2.n}</b><span>站在門口。選好之後，按下方「入門」推開門。</span>`;}
 
 function playEntry(hk,done){if(!scnOk('a4')||!scnOk('a5')){done();return;}
   let el=$('#entry');if(!el){el=document.createElement('div');el.id='entry';document.body.appendChild(el);}
   const H2=HOMES[hk]||{n:'道場'};el.innerHTML=`<div class="enbox"><canvas width="200" height="150"></canvas><p class="entx"></p><button type="button" class="enskip">略過 ▶</button></div>`;el.hidden=false;
   const cv=el.querySelector('canvas'),x=cv.getContext('2d'),tx=el.querySelector('.entx');const t0=performance.now();let fin=false,raf=0;
-  const mk=dojoMaster(hk);const lines=[[0,'a4',`你推開了${H2.n}的木門。`],[1.9,'a4','裡面的人一起回頭。'],[3.6,'a5',`${masterTitle(hk)}：${MASTER_LINE[hk]||'「押忍。」'}`,mk],[6.4,'a5','「押忍！」']];
+  const mk=dojoMaster(hk);const lines=[[0,'a4',`你推開了${H2.n}的木門。`],[1.9,'a4','裡面的人一起回頭。'],[3.6,'a5',`館主：${MASTER_LINE[hk]||'「押忍。」'}`],[6.4,'a5','「押忍！」']];
   const end=()=>{if(fin)return;fin=true;cancelAnimationFrame(raf);el.hidden=true;done();};
   const f=now=>{if(fin)return;const t=(now-t0)/1000;let cur=lines[0];for(const l of lines)if(t>=l[0])cur=l;
     drawStory(x,cur[1],t-(cur[1]==='a5'?3.6:0));if(tx.dataset.l!==cur[2]){tx.dataset.l=cur[2];tx.innerHTML=(cur[3]&&MHEAD[cur[3]]?`<img class="enhead" src="${MHEAD[cur[3]]}" alt="">`:'')+`<span>${esc(cur[2])}</span>`;if(cur[2]==='「押忍！」')chip([[392,.08],[523,.18]],'square',.05);}
@@ -3640,7 +3638,7 @@ function epiParas(){
    else if(S.flags.married)t+=`${m.married?`${m.married} 歲成家${S.flags.kid?'，後來有了孩子':''}。`:''}觀眾席上，總有一個位置是留給家人的，他們一直都在。`;
    else if(S.age>=32)t+='你沒有成家。道場就是你的家，學員就是你的家人。';
    add('身邊的人',t);}
-  if(S.setup.home==='lingya'&&(S.flags.mochi||0)>=2){const mo=S.flags.mochi;add('麻糬',mo>=4?`苓雅道場的館狗麻糬，是你在道場的第一個朋友。剛入門時牠不理你，後來每天下課都在門口等你。${S.flags.mochiCharm?'那個紅色小馬吊飾，你比完賽有乖乖還回去。':''}道場牆上那張合照裡，牠坐在正中間。很多年以後，你還是會在經過道場門口時，下意識地低頭看一眼。`:`苓雅道場的館狗麻糬，總是趴在榻榻米邊緣看你練習。你踢沙包，牠就數。你累了，牠就把肚子翻過來給你摸。`);}
+  if(S.setup.home==='lingya'&&(S.flags.mochi||0)>=2){const mo=S.flags.mochi;add('麻糬',mo>=4?`苓雅道場的館狗麻糬，是你在道場的第一個朋友。剛入門時牠不理你，後來每天下課都在門口等你。${S.flags.mochiCharm?'那個紅色小馬吊飾，你比完賽有乖乖還回去。':''}道場牆上那張合照裡，牠坐在正中間，笑得最開心。到現在，只要你推開苓雅道場的門，牠還是第一個跑過來的。`:`苓雅道場的館狗麻糬，總是趴在榻榻米邊緣看你練習。你踢沙包，牠就數。你累了，牠就把肚子翻過來給你摸。`);}
   // 荒唐事
   {const L3=(S.flags.epL||[]).filter(x=>x[0]!=='teach').map(x=>x[1].replace(/[「」]/g,''));const hn=(S.honors||[]).length;let t='';
    if(L3.length)t+=`這一路上，還有很多說出來沒人相信的事：${L3.slice(0,5).join('、')}${L3.length>5?`……一共 ${L3.length} 件`:''}。每一件，後來都成了宵夜桌上被講了一百遍的故事。`;
