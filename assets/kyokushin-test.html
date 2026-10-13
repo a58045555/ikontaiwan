@@ -516,7 +516,7 @@ a.opt{text-decoration:none;color:inherit}
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
-      <ul><li><b>努力的天才</b>：本身是努力家（天生或後天都算），稽古累積六十次以上、幾乎沒休息過，就會變成「努力的天才」：所有成長 ×1.1，也能選全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
+      <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
       <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自行加點）</summary>
@@ -609,7 +609,7 @@ a.opt{text-decoration:none;color:inherit}
       <div class="field">
         <label class="t" for="inBday">生日（選填）</label>
         <input class="inp" id="inBday" type="date" min="1920-01-01" max="2026-12-31">
-        <p class="hint" id="bdayHint">填了生日，就用「生命靈數」決定你的主要個性。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。</p>
+        <p class="hint" id="bdayHint">填了生日，就用「生命靈數」決定你的主要個性。出生年份不影響起始年齡，遊戲一律從 15 歲開始。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。</p>
       </div>
       <div class="field">
         <label class="t" for="inName">選手姓名</label>
@@ -1013,7 +1013,7 @@ function traitsFor(seed){const rr=mulberry((seed*2654435761)>>>0);const K=Object
 const hasT=k=>!!(S&&S.traits&&S.traits.includes(k));
 Object.assign(TRAITS,{hgenius:{n:'努力的天才',pos:1,acq:1,d:'所有成長 ×1.1・可選全能型・靠稽古練出來的才能'},humble:{n:'謙虛',pos:1,acq:1,d:'不會自滿・審查 +1'}});
 const ACQ=[
-  {id:'hgenius_t',need:()=>hasT('hard')&&!hasT('genius')&&(S.flags.trainN||0)>=60&&(S.flags.restN||0)<=8,gain:'hgenius',why:'身為努力家，稽古累積了六十次以上、幾乎沒有休息過'},
+  {id:'hgenius_t',need:()=>hasT('hard')&&!hasT('genius')&&S.age<=24&&(S.flags.trainN||0)>=24&&(S.flags.restN||0)<=1,gain:'hgenius',why:'身為努力家，二十四歲以前稽古就累積了二十四次、幾乎沒有休息過'},
   {id:'iron_t',need:()=>(S.trc||{}).taiso>=20&&(S.flags.injN||0)<=2,gain:'iron',cure:'frail',why:'體能・鍛體練了二十次以上而且很少受傷'},
   {id:'study_t',need:()=>(S.trc||{}).kihon>=26,gain:'study',cure:'clumsy',why:'基本・型練了二十六次以上'},
   {id:'hot_t',need:()=>(S.trc||{}).kumite>=26,gain:'hot',cure:'wimp',why:'組手練了二十六次以上'},
@@ -2697,6 +2697,12 @@ function* chooseStyle(){const st=S.st;const rec=st.pow>=st.spd&&st.pow>=st.tec?'
   S.style=c;const fs=STYLE_FAV[c];
   const f=yield P('得意技',`選定「${STYLES[c].n}」。從這個風格的招式裡挑一招當作得意技：比賽一定會帶在身上，威力 ×1.2、命中 +8，越常用越熟練。`,fs.map((k,i)=>({id:k,label:MOVES[k].n,sub:FAVS[k],rec:i===0})));
   S.fav=f;log(`確立戰鬥風格：${STYLES[c].n}・得意技「${MOVES[f].n}」`,'gold');say(`<b class="gold">你找到了自己的打法：${STYLES[c].n}。</b>得意技是「${MOVES[f].n}」。`);}
+function* offerAll(){S.flags.hgOffer=1;const cur=STYLES[S.style].n;
+  const c=yield P('努力的天才・全能型',`凱師範看完你的組手，推了推眼鏡：「你現在什麼都打得出來了。要不要試試看，不再只用一種打法？」<br>目前的戰鬥風格是「${cur}」。`,[
+    {id:'all',label:'轉成全能型',sub:'沒有弱點・組手攻防 +4・得意技保留'},
+    {id:'keep',label:`維持「${cur}」`,sub:'把自己最熟的打法練到極致'}]);
+  if(c==='all'){S.style='all';log('戰鬥風格轉為全能型','gold');say('<b class="gold">你的戰鬥風格變成了全能型。</b>');}
+  else say(`你搖搖頭：「我想把${cur}練到底。」凱師範笑了：「也好。」`);}
 function* cpBlack(){S.flags.ch1=1;const y=S.age-15;const ft=S.flags.failTot||0;
   const c=yield P('第一章 完・白帶到黑帶',`<div class="cphead"><small>CHAPTER 1 CLEAR</small><b>白帶到黑帶</b></div>從十五歲推開那扇門，到 ${S.age} 歲繫上黑帶，你走了 ${y} 年${ft?`，中間落榜過 ${ft} 次`:''}。${cpStats()}<p class="cpnext">下一章・<b>選手時代</b>：全日本、世界大賽、內弟子、開道場……</p>${CP_SAVE}`,[{id:'go',rec:true,label:'進入第二章',sub:'選手時代'},{id:'ff',label:'後面的人生交給命運',sub:'剩下的日子自動照「建議」過完，直接看結語'}],'chapter');
   if(c==='ff'){S.flags.ff=1;log('人生快轉','');}}
@@ -2734,6 +2740,7 @@ function* life(){
       S.yrs={rank:S.rank,t:S.titles.length,inj:S.flags.injN||0,m:S.money};}
     if(S.turn===0)S.yrs={rank:0,t:0,inj:0,m:S.money};
     if(S.style==='basic'&&S.rank>=2&&S.serviceLeft<=0)yield* chooseStyle();
+    if(hasT('hgenius')&&S.style!=='basic'&&S.style!=='all'&&!S.flags.hgOffer&&S.serviceLeft<=0)yield* offerAll();
     if(S.rank>=6&&!S.flags.ch1)yield* cpBlack();
     if(S.age>=30&&S.q===0&&S.flags.ch1&&!S.flags.cpW&&!S.flags.cpMid&&S.flags.instDone&&!['uchi','twuchi'].includes(S.path))yield* cpMid();
     if(S.flags.peakRet===2){S.mil=S.mil||{};S.mil.ret=S.age;log('從選手引退');say('你向支部長深深一鞠躬，宣布從選手引退。');break;}
@@ -4092,7 +4099,7 @@ function renderStart(){
     $('#inName').value=randName();$('#inSeed').value=String(randSeed()).padStart(6,'0');
     const sync=()=>{$('#startName').textContent=$('#inName').value.trim()||'新人';};
     $('#inName').addEventListener('input',sync);sync();
-    const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;const bd=$('#inBday').value;const lp=lifePath(bd);const TT=lp?traitsBday(bd,sd):traitsFor(sd);{const h=$('#bdayHint');if(h)h.innerHTML=lp?`你的生命靈數是 <b>${lp}</b>・<b>${LP[lp][0]}</b>，主要個性：<b>${TRAITS[LP[lp][1]].n}</b>`:'填了生日，就用「生命靈數」決定你的主要個性。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。';}
+    const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;const bd=$('#inBday').value;const lp=lifePath(bd);const TT=lp?traitsBday(bd,sd):traitsFor(sd);{const h=$('#bdayHint');if(h)h.innerHTML=lp?`你的生命靈數是 <b>${lp}</b>・<b>${LP[lp][0]}</b>，主要個性：<b>${TRAITS[LP[lp][1]].n}</b>（不影響起始年齡，一樣從 15 歲開始）`:'填了生日，就用「生命靈數」決定你的主要個性。出生年份不影響起始年齡，遊戲一律從 15 歲開始。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。';}
       $('#startTraits').innerHTML='個性　'+TT.map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}" title="${TRAITS[k].d}">${TRAITS[k].n}</span>`).join('')+`<span style="flex-basis:100%;font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.5">${TT.map(k=>TRAITS[k].n+'：'+TRAITS[k].d).join('<br>')}</span>`;};
     $('#btnReroll').onclick=()=>{$('#inSeed').value=String(randSeed()).padStart(6,'0');trSync();};
     $('#btnDaily').onclick=()=>{$('#inSeed').value=String(dailySeed()).padStart(6,'0');trSync();};
