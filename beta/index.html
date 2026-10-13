@@ -483,6 +483,12 @@ a.opt{text-decoration:none;color:inherit}
 .autopill button{border:0;background:var(--coral);color:#fff;font-size:11px;font-weight:700;padding:1px 6px}
 .bdtoast{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:400;background:#fff6c8;border:3px solid #26223b;border-radius:14px;padding:10px 16px;text-align:center;font-size:14px;line-height:1.6;box-shadow:0 6px 0 #26223b;animation:cpIn .5s cubic-bezier(.2,1.4,.4,1)}
 footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dashed var(--ink,#26223b);border-radius:10px;padding:8px 12px;background:#fffaf0}.dnote summary{font-weight:900;cursor:pointer}.dnote ol{margin:4px 0 0;padding-left:1.4em}.dnote p{margin:6px 0 0}
+.tbar{position:relative;height:22px;margin:6px 0;border:2px solid var(--ink,#26223b);border-radius:12px;background:linear-gradient(90deg,#eee 40%,#ffe14a 40%,#ffe14a 60%,#eee 60%);overflow:hidden}.tbar i{position:absolute;top:0;bottom:0;width:6px;background:#d9534f;left:0;animation:tbm 1.1s linear infinite alternate}@keyframes tbm{to{left:calc(100% - 6px)}}.tbar span{position:absolute;left:8px;top:2px;font-size:11px;font-weight:700;color:#26223b;opacity:.75}.tbar .bspd{position:absolute;right:2px;top:1px;font:inherit;font-size:11px;font-weight:900;border:1.5px solid #26223b;border-radius:8px;background:#fff;padding:0 6px;cursor:pointer}
+.bsum{font-size:16px;font-weight:900;text-align:center;margin:4px 0 6px}.bsum b.dn{color:#d9534f}.bsum b.up{color:#2f9a4a}.bdet summary{font-size:12px;opacity:.7;cursor:pointer}.ln.sensei{color:#b85a14}.ln.cheer{color:#2f9a4a}.ln.intel{font-size:12px;opacity:.85}
+.scene{position:relative}.scene.shake{animation:bshake .35s steps(4)}@keyframes bshake{25%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px)}75%{transform:translate(-2px,0)}}
+.dfloat{position:absolute;font-weight:900;font-size:22px;color:#fff;text-shadow:0 2px 0 #d9534f,0 0 4px #000;pointer-events:none;animation:dfl .9s ease-out forwards;z-index:5}.dfloat.foe{right:22%;top:18%}.dfloat.me{left:22%;top:52%}@keyframes dfl{from{transform:translateY(0) scale(1.3);opacity:1}to{transform:translateY(-34px) scale(1);opacity:0}}
+.bigcall{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:44px;font-weight:900;color:#ffe14a;text-shadow:0 3px 0 #d9534f,0 0 10px #000;pointer-events:none;animation:bigc 1.4s ease-out forwards;z-index:6;white-space:nowrap}@keyframes bigc{0%{transform:translate(-50%,-50%) scale(2.2);opacity:0}15%{transform:translate(-50%,-50%) scale(1);opacity:1}80%{opacity:1}100%{opacity:0}}
+.jrow{display:flex;align-items:center;gap:6px;margin:8px 0;flex-wrap:wrap}.jrow b{flex-basis:100%;font-size:13px}.jrow em{font-style:normal;font-weight:900;margin-left:auto}.jf{display:inline-block;min-width:40px;text-align:center;padding:4px 0;border:2px solid #26223b;border-radius:6px;background:#fff;font-weight:900;opacity:0;animation:jflip .4s forwards}.jf.me{background:#fff3c4}@keyframes jflip{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}.jres{text-align:center;font-size:30px;font-weight:900;margin-top:6px}.jres.w{color:#d9534f}.jres.l{color:#555}
 </style>
 
 <div class="app">
@@ -690,7 +696,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.6.1 搶先試玩・2026.10.13</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.7 搶先試玩・2026.10.13</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
 </div>
 
 <script>
@@ -1271,6 +1277,7 @@ function act(att,def,key,L,scout){
     if(em>1)notes.push('<span class="tg up">效果拔群</span>');else if(em<1)notes.push('<span class="tg dn">效果不佳</span>');
     if(m.leg){def.leg=Math.min(5,def.leg+1);if(def.leg===3)notes.push('<span class="tg">對手腳步不穩</span>');}
   }
+  if(att.me&&total>0&&(!att.best||total>att.best.d))att.best={n:m.n,d:total};
   L.push(LN(who,`${nm}：<b>${m.n}</b>${total>0?` <span class="dmg">−${total}</span>`:''}${notes.join('')}`));
   L.push(...extra);
   if(total>0)checkWaza(def,att,total,L);
@@ -1291,16 +1298,22 @@ function* battle(T,opp,rn,quick){
   let auto=quick,turn=1,limit=5,phase='本戰';const scout=!!S.flags.scout;
   let L=[LN('sys',`${opp.rival?'<span class="tg waza">宿敵</span>':''}${esc(foe.name)}（${esc(foe.sub)}・${TYPEN[foe.type]}）站上了場。`),LN('sys','主審：「正面に礼！お互いに礼！始め！」'),LN('sys',`提示：${TYPEN[foe.type]}${WEAK[foe.type]}，招式上有「拔群」標記的打起來最痛。`)];
   if(scout)L.push(LN('sys','你研究過對手的影片，命中率提高。'));
+  L.push(LN('sys intel',`<span class="tg">情報</span>常用：${FOE_SETS[foe.type].map(k=>MOVES[k].n).join('・')}`));
+  {const lm=(S.lossMem||{})[opp.name];if(lm)L.push(LN('sys intel',`<span class="tg dn">記憶</span>上次你輸給他：${esc(lm)}。這次不一樣。`));}
+  const SEN=(typeof MNAME!=='undefined'&&MNAME[dojoMaster(S.setup.home)])||'sensei';let cheer=0;const TELL={'下段':'他重心下沉，要踢下段！','中段':'他在找中段的空檔！','上段':'小心上段！','突':'他要衝進來打拳！'};
   const ttl=()=>`${T.short} 組手 ${rn} · ${phase} ${phase==='本戰'?turn:turn-5}/${phase==='本戰'?5:3}`;
   let result=null;
   while(!result){
-    let mk;
-    if(auto)mk=aiPick(me,foe);
-    else{mk=yield BP(me,foe,L,moveOpts(me,foe),ttl(),{phase,turn,limit});if(mk==='auto'){auto=true;mk=aiPick(me,foe);}if(!MOVES[mk]||MOVES[mk].ki>me.ki)mk=aiPick(me,foe);}
-    const fk=aiPick(foe,me);L=[];
+    let mk,fk,tb=false;
+    if(auto){mk=aiPick(me,foe);fk=aiPick(foe,me);}
+    else{fk=aiPick(foe,me);{const fm=MOVES[fk];const tl=fm.rest?'他在調整呼吸，現在是機會！':fm.guard?'他擺好架式在等你，別硬衝！':(TELL[fm.cat]||'注意他的動作！');L.push(LN('sys sensei',`<b>${esc(SEN)}</b>：「${tl}」`));}
+      mk=yield BP(me,foe,L,moveOpts(me,foe),ttl(),{phase,turn,limit});if(typeof mk==='string'&&mk.endsWith('!')){mk=mk.slice(0,-1);tb=true;}if(mk==='auto'){auto=true;mk=aiPick(me,foe);}if(!MOVES[mk]||MOVES[mk].ki>me.ki)mk=aiPick(me,foe);}
+    L=[];if(tb&&!MOVES[mk].rest&&!MOVES[mk].guard){L.push(LN('sys','<span class="tg crit">時機完美</span>威力提升'));me.atk*=1.12;}
     const mg=!!MOVES[mk].guard,fg=!!MOVES[fk].guard;
     const meFirst=mg&&!fg?true:fg&&!mg?false:(me.spd*(1-.08*me.leg)+r()*6)>=(foe.spd*(1-.08*foe.leg)+r()*6);
     if(meFirst){act(me,foe,mk,L,scout);act(foe,me,fk,L,false);}else{act(foe,me,fk,L,false);act(me,foe,mk,L,scout);}
+    if(tb&&!MOVES[mk].rest&&!MOVES[mk].guard)me.atk/=1.12;
+    if(!cheer&&me.hp>0&&me.hp<me.maxHp*.35&&foe.hp>0){cheer=1;me.ki=Math.min(me.kiMax,me.ki+1);L.push(LN('sys cheer',`場邊傳來師兄${esc(S.npc?S.npc.sen:'')}的聲音：「撐住！」<span class="tg">氣 +1</span>`));}
     if(me.guard&&!me.blocked)L.push('對手沒有正面攻來，你的架式落空了。');
     if(foe.guard&&!foe.blocked)L.push(`${esc(foe.name)}的架式落空了。`);
     me.guard=foe.guard=false;me.blocked=foe.blocked=0;
@@ -1322,6 +1335,8 @@ function* battle(T,opp,rn,quick){
     turn++;
     me.ki=Math.min(me.kiMax,me.ki+1);foe.ki=Math.min(foe.kiMax,foe.ki+1);
   }
+  if(!result.win){S.lossMem=S.lossMem||{};S.lossMem[opp.name]=result.method;const ks=Object.keys(S.lossMem);if(ks.length>40)delete S.lossMem[ks[0]];}
+  if(me.best)L.push(LN('sys',`<span class="tg crit">本場最強一擊</span>${esc(me.best.n)} −${me.best.d}`));
   if(!quick)yield BP(me,foe,L,[{id:'ok',label:result.win?'押忍！':'押忍……',wide:1}],`${T.short} 組手 ${rn} · ${result.win?'勝利':'落敗'}`,{phase:'結束',turn:0,limit:0});
   if(result.win)S.w++;else S.l++;
   const taken=Math.max(0,start-me.hp)/me.maxHp;
@@ -1341,7 +1356,7 @@ function kataScore(k){return (km(k.n)*.5+est('tec')*.25+S.st.spi*.1+k.d*2.5+kata
 function kataPow(){const ch=kataChoices();return Math.max(...ch.map(kataScore));}
 function mistakeP(k){return clamp((.03+(k.d*11-km(k.n))/150)*(hasT('clumsy')?1.4:1),.02,.6);}
 const toPts=x=>clamp(5+x/22,5,9.95);
-function judge(x){const a=[0,1,2,3,4].map(()=>toPts(x)+(r()-.5)*.4).sort((p,q)=>p-q);return (a[1]+a[2]+a[3])/3;}
+let JLAST=[];function judge(x){const a=[0,1,2,3,4].map(()=>toPts(x)+(r()-.5)*.4);JLAST=a.slice();a.sort((p,q)=>p-q);return (a[1]+a[2]+a[3])/3;}
 function* kataRound(T,i,R,quick){
   const id=oppIdent(T);const ch=kataChoices();
   const oppK=KATA_LIST[clamp(Math.floor((T.kbase-10)/9)+ri(0,1),0,8)];
@@ -1351,12 +1366,14 @@ function* kataRound(T,i,R,quick){
   else{
     const c=yield P(`${T.short}・型 ${roundName(R,i)}`,`型比賽只看評分：五位審判打分，去掉最高和最低取平均。比的是誰把型練得更透。對手 <b>${esc(id.name)}</b>（${esc(id.sub)}）將演武「${oppK.n}」。`,
       ch.map(x=>({id:x.n,label:`「${x.n}」 修煉度 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)} · 預估 ${toPts(kataScore(x)).toFixed(1)} 分 · 失誤機率約 ${Math.round(mistakeP(x)*100)}%`})));
-    k=ch.find(x=>x.n===c)||ch[0];
+    var kt=typeof c==='string'&&c.endsWith('!');k=ch.find(x=>x.n===(kt?c.slice(0,-1):c))||ch[0];
   }
-  let me=kataScore(k)+(r()-.5)*6;
+  let me=kataScore(k)+(r()-.5)*6+(typeof kt!=='undefined'&&kt?2:0);
   const miss=r()<mistakeP(k);if(miss)me-=8+r()*6;
   const op=T.kbase+i*3+oppK.d*1.5+(r()-.5)*10;
-  const a=judge(me),b=judge(op);const win=a===b?r()<.5:a>b;
+  const a=judge(me),JA=JLAST.slice(),b=judge(op),JB=JLAST.slice();const win=a===b?r()<.5:a>b;
+  if(!quick){const row=(arr,cls)=>arr.map((v,j)=>`<span class="jf ${cls}" style="animation-delay:${j*.35}s">${v.toFixed(1)}</span>`).join('');
+    yield P(`${T.short}・型 ${roundName(R,i)}・判定`,`${typeof kt!=='undefined'&&kt?'<span class="tg crit">節奏完美</span>':''}${miss?'<span class="tg dn">失誤</span>演武中腳步一晃，評審皺了一下眉。':''}<div class="jrow"><b>你「${k.n}」</b>${row(JA,'me')}<em>${a.toFixed(2)}</em></div><div class="jrow"><b>${esc(id.name)}「${oppK.n}」</b>${row(JB,'op')}<em>${b.toFixed(2)}</em></div><div class="jres ${win?'w':'l'}">${win?'勝':'敗'}</div>`,[{id:'ok',label:win?'押忍！':'押忍……'}]);}
   if(win)S.kw++;else S.kl++;
   S.hp=Math.max(5,S.hp-2);kmGain(k.n,1.5);
   return {win,id,k,miss,a,b};
@@ -3375,7 +3392,7 @@ function showIntro(){
   const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
-const KEY='kyokushin-life-v40';
+const KEY='kyokushin-life-v41';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
@@ -3559,8 +3576,13 @@ function beltPill(rk){return `<span class="beltpill" style="--belt:${PILL_BG[rk]
 const hpCls=f=>{const p=f.hp/f.maxHp;return p>.5?'g':p>.2?'y':'r';};
 function optsHTML(opts){return opts.map(o=>`<button type="button" class="opt${o.danger?' danger':''}${o.wide?' wide':''}${o.rec&&!o.disabled?' isrec':''}" data-id="${o.id}"${o.disabled?' disabled':''}><span class="l">${o.label}${o.rec&&!o.disabled?'<em class="rtag">建議</em>':''}</span>${o.sub?`<span class="s">${o.sub}</span>`:''}</button>`).join('');}
 function pipsHTML(i){if(!i||!i.limit)return '';const ext=i.phase==='延長戰';const n=ext?3:5,cur=ext?i.turn-5:i.turn;return `<span class="pips"><em>${i.phase}</em>${Array.from({length:n},(_,k)=>`<i class="${k<cur-1?'on':k===cur-1?'now':''}"></i>`).join('')}</span>`;}
+let BLAST=null;
+function bSpd(){try{return localStorage.getItem('kl-bspd')==='2'?2:1;}catch(e){return 1;}}
+function timingBar(){return `<div class="tbar"><i style="animation-duration:${1.1/bSpd()}s"></i><span>亮區按下招式＝時機完美</span><button type="button" class="bspd">${bSpd()===2?'2×':'1×'}</button></div>`;}
+let TB0=performance.now?performance.now():0;function tbHit(){const per=1100/bSpd();const ph=((performance.now()-TB0)%(per*2))/per;const x=ph<=1?ph:2-ph;return x>.4&&x<.6;}
 function renderBattle(p){
-  const m=p.me,f=p.foe;
+  const m=p.me,f=p.foe;const nb=!BLAST||BLAST.n!==f.name||m.hp>BLAST.m||f.hp>BLAST.f;const dm=nb?0:BLAST.m-m.hp,df=nb?0:BLAST.f-f.hp;BLAST={n:f.name,m:m.hp,f:f.hp};
+  const big=p.lines.join('').match(/合技一本|一本！|技有！/);
   const card=$('#card');
   card.className='battle';
   card.innerHTML=`
@@ -3583,12 +3605,16 @@ function renderBattle(p){
       <div class="row">KI<div class="ki">${Array.from({length:m.kiMax},(_,i)=>`<i class="${i<m.ki?'on':''}"></i>`).join('')}</div></div>
     </div>
   </div>
-  <div class="tbox"><div class="ph"><span>${esc(p.title)}</span>${pipsHTML(p.info)}</div>${p.lines.join('')}</div>
-  <div class="moves">${optsHTML(p.opts)}</div>
+  <div class="tbox"><div class="ph"><span>${esc(p.title)}</span>${pipsHTML(p.info)}</div>${(dm||df)?`<div class="bsum">你 <b class="${dm?'dn':''}">−${dm}</b>　／　對手 <b class="${df?'up':''}">−${df}</b></div>`:''}${p.lines.filter(l=>/ln sys/.test(l)).join('')}${p.lines.some(l=>!/ln sys/.test(l))?`<details class="bdet"><summary>詳細</summary>${p.lines.filter(l=>!/ln sys/.test(l)).join('')}</details>`:''}</div>
+  ${p.opts.length>1?timingBar():''}<div class="moves">${optsHTML(p.opts)}</div>
   <p class="bhelp">★ 技有：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每回合回 1 格</p>`;
   if(!drawPx($('#sprFoe'),foeKey(f)))drawSprite($('#sprFoe'),'front',SPR_BELT[f.belt]||'#2c2840',f.hair);
   if(!drawPx($('#sprMe'),'back_'+HERO_KEYS[Math.min(6,m.belt|0)]))drawSprite($('#sprMe'),'back',SPR_BELT[m.belt],m.hair);
-  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{if(!b.disabled)choose(b.dataset.id);}));
+  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;const id=b.dataset.id;const mv=MOVES[id];choose(mv&&!mv.rest&&!mv.guard&&tbHit()?id+'!':id);}));
+  {const sc=card.querySelector('.scene');const fx=(sel,v)=>{if(!v)return;const e=document.createElement('div');e.className='dfloat '+sel;e.textContent='−'+v;e.style.animationDuration=(0.9/bSpd())+'s';sc.appendChild(e);};fx('foe',df);fx('me',dm);
+   if(dm+df>0){sc.classList.add('shake');sc.style.animationDuration=(0.35/bSpd())+'s';}
+   if(big){const e=document.createElement('div');e.className='bigcall';e.textContent=big[0].replace('！','')+'！';e.style.animationDuration=(1.4/bSpd())+'s';sc.appendChild(e);}}
+  {const bs=card.querySelector('.bspd');if(bs)bs.onclick=()=>{try{localStorage.setItem('kl-bspd',bSpd()===2?'1':'2');}catch(e){}renderBattle(p);};}
 }
 function attrsHTML(h){return `<div class="attrs">${Object.keys(ATTRN).map(k=>`<div class="attr">${ATTRN[k]}<b>${Math.round(h[k])}</b><div class="bar sm t"><i style="width:${h[k]}%"></i></div></div>`).join('')}</div>`;}
 function reqsHTML(){
@@ -3669,7 +3695,9 @@ function render(){
   const tfx=TRAIN_FX&&TK[TRAIN_FX]?`<div class="trainfx"><canvas id="trainCv" width="240" height="120" data-id="${TRAIN_FX}"></canvas><span>${TRAIN_FX==='rest'?'休養':'稽古中'}・${TRAIN_FX==='rest'?'好好休息':esc(cardName(TRAIN_FX))}</span></div>`:'';TRAIN_FX=null;
   card.innerHTML=`${tfx}${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.map(l=>`<div>${l}</div>`).join('')}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div>${p.tag?`<div class="evtag t-${{'指導員事件':'teach','見習指導員事件':'teach','助教事件':'teach','道場經營事件':'dojo','稽古插曲':'train','生活插曲':'life','審判員事件':'judge'}[p.tag]||'x'}">${p.tag}</div>`:''}<h2>${p.title}</h2>${p.body?(()=>{const sp=speakerOf(p);return sp?`<div class="dlg"><img class="pxh${sp[0]==="mochi"?" dog":""}" src="${MHEAD[sp[0]]||PXHEAD[sp[0]]}" alt=""><div class="tb"><b>${esc(sp[1])}</b><p class="q">${p.body}</p></div></div>`:`<p class="q">${p.body}</p>`;})():''}${optArea}`;
   if(tfx)startTrainFx();
-  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>choose(b.dataset.id)));
+  const isKata=/・型 /.test(p.title||'')&&!/判定$/.test(p.title||'');
+  if(isKata){const mv=card.querySelector('.opts')||card.lastElementChild;mv.insertAdjacentHTML('beforebegin',timingBar().replace('亮區按下招式＝時機完美','亮區按下型＝節奏完美'));const bs=card.querySelector('.bspd');if(bs)bs.onclick=()=>{try{localStorage.setItem('kl-bspd',bSpd()===2?'1':'2');}catch(e){}render();};}
+  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>choose(isKata&&b.dataset.id!=='ok'&&tbHit()?b.dataset.id+'!':b.dataset.id)));
   $('#log').innerHTML=S.log.slice().reverse().map(x=>`<li class="${x.cls}"><span>${x.w}</span>${esc(x.t)}</li>`).join('');
 }
 function birthY(){return S.year-S.age;}
