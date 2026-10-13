@@ -516,7 +516,7 @@ a.opt{text-decoration:none;color:inherit}
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
-      <ul><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
+      <ul><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
       <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自行加點）</summary>
@@ -607,6 +607,11 @@ a.opt{text-decoration:none;color:inherit}
         <p class="hint">按「換一個」會換個性。相同種子＋相同選擇＝相同人生。<br>「今日人生」：今天所有人都拿到同一顆種子，玩完可以跟朋友比評價。</p>
       </div>
       <div class="field">
+        <label class="t" for="inBday">生日（選填）</label>
+        <input class="inp" id="inBday" type="date" min="1920-01-01" max="2026-12-31">
+        <p class="hint" id="bdayHint">填了生日，就用「生命靈數」決定你的主要個性。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。</p>
+      </div>
+      <div class="field">
         <label class="t" for="inName">選手姓名</label>
         <input class="inp" id="inName" maxlength="8" autocomplete="off">
       </div>
@@ -620,15 +625,7 @@ a.opt{text-decoration:none;color:inherit}
         <div class="seg two" id="wcSeg"></div>
         <p class="legend">實際的全日本體重別分五個量級。「無差別」是全台、全日本、世界大賽的組手，不分體重。</p>
       </fieldset>
-      <fieldset class="field">
-        <legend>戰鬥風格</legend>
-        <div class="seg two" id="styleSeg"></div>
-      </fieldset>
-      <fieldset class="field">
-        <legend>得意技（習慣的招式）</legend>
-        <p class="legend">從上面戰鬥風格的招式裡挑一招。比賽一定會帶在身上，威力 ×1.2、命中 +8，越常用越熟練（最多再 +15%）；大招在白帶時還不穩。</p>
-        <div class="seg two" id="favSeg"></div>
-      </fieldset>
+      <p class="legend" style="margin:0 0 12px">戰鬥風格和得意技，等練到藍帶時再決定。</p>
       <div class="opts">
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
@@ -670,7 +667,7 @@ a.opt{text-decoration:none;color:inherit}
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.5・2026.10.13</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.5.1・2026.10.13</span></footer>
 </div>
 
 <script>
@@ -731,6 +728,7 @@ const ROUTES={
 };
 const DIVN={kata:'型',kumite:'組手'};
 const STYLES={
+  basic:{n:'基本型',d:'還沒有固定的打法・升上藍帶後決定戰鬥風格'},
   low:{n:'下段踢型',d:'技術型・下段踢・膝蹴・踵落'},
   high:{n:'上段踢型',d:'速度型・中段踢・上段踢・後迴旋・胴迴旋'},
   punch:{n:'正拳型',d:'力量型・正拳・連打・膝蹴'},
@@ -903,7 +901,7 @@ const MOVES={
 const EFF={power:{'下段':1.5,'突':.7},tech:{'突':1.5,'上段':.7},speed:{'中段':1.5,'下段':.7}};
 const TYPEN={power:'力量型',tech:'技術型',speed:'速度型',none:'全能型'};
 const WEAK={power:'怕下段',tech:'怕正拳',speed:'怕中段'};
-const STYLE_TYPE={punch:'power',low:'tech',high:'speed',all:'none'};
+const STYLE_TYPE={punch:'power',low:'tech',high:'speed',all:'none',basic:'none'};
 const FOE_SETS={power:['renda','hiza','gedan','ibuki'],tech:['tsuki','chudan','uke','jodan'],speed:['jodan','ushiro','chudan','gedan']};
 const FAVS={
   gedan:'下段・免氣・穩定削弱對手腳步，打力量型拔群',
@@ -916,7 +914,7 @@ const FAVS={
   kakato:'上段・從上方劈下，會心率高',
   dokaiten:'上段・捨身大技，命中最低、一中就倒'
 };
-const STYLE_FAV={low:['gedan','hiza','kakato'],high:['chudan','jodan','ushiro','dokaiten'],punch:['tsuki','renda','hiza'],all:['tsuki','gedan','chudan','jodan']};
+const STYLE_FAV={basic:[],low:['gedan','hiza','kakato'],high:['chudan','jodan','ushiro','dokaiten'],punch:['tsuki','renda','hiza'],all:['tsuki','gedan','chudan','jodan']};
 const favM=()=>Math.min(1,(S.favUse||0)/60);
 function favMove(key){const m=MOVES[key];if(!S||S.fav!==key)return m;const weak=S.rank<3&&m.ki>=2;return {...m,pw:Math.round(m.pw*(1.2+.15*favM())),acc:m.acc+(weak?-4:8)+Math.round(4*favM()),fav:1};}
 function moveset(){
@@ -925,7 +923,8 @@ function moveset(){
     low:['gedan','tsuki',rk>=6?'kakato':rk>=3?'hiza':'uke','ibuki'],
     high:['chudan','tsuki',rk>=6?'ushiro':rk>=3?'jodan':'uke','ibuki'],
     punch:[rk>=3?'renda':'tsuki','gedan',rk>=6?'hiza':'uke','ibuki'],
-    all:['tsuki','gedan',rk>=6?'jodan':rk>=3?'chudan':'uke','ibuki']
+    all:['tsuki','gedan',rk>=6?'jodan':rk>=3?'chudan':'uke','ibuki'],
+    basic:['tsuki','gedan','uke','ibuki']
   }[S.style].slice();
   if(S.fav&&MOVES[S.fav]&&!base.includes(S.fav))base[1]=S.fav;
   return base;
@@ -952,14 +951,14 @@ const divs=()=>ROUTES[S.route].divs;
 function newState(setup){EP_TAG="";
   const rnd=mulberry(setup.seed);
   const H=HOMES[setup.home]||HOMES.pingtung;
-  S={setup,easy:true,fav:(STYLE_FAV[setup.style]||[]).includes(setup.fav)?setup.fav:((STYLE_FAV[setup.style]||[])[0]||null),r:rnd,name:setup.name,style:setup.style,wc:WCLS[setup.wc]?setup.wc:'middle',route:'dual',age:15,year:2026,q:0,turn:0,rank:0,
+  S={setup,easy:true,fav:(STYLE_FAV[setup.style]||[]).includes(setup.fav)?setup.fav:((STYLE_FAV[setup.style]||[])[0]||null),r:rnd,name:setup.name,style:STYLES[setup.style]?setup.style:'basic',wc:WCLS[setup.wc]?setup.wc:'middle',route:'dual',age:15,year:2026,q:0,turn:0,rank:0,
     st:{},pot:{},hp:100,wear:0,fame:0,money:1,w:0,l:0,kw:0,kl:0,titles:[],log:[],scene:[],flags:{seminars:0,kataB:0},path:'school',used:{},
     mult:1,serviceLeft:0,danYear:0,lastPromo:0,examFails:0,uchiStart:0,
     qJ:{kata:-99,kumite:-99},qW:{kata:-99,kumite:-99},qWTW:{kata:-99,kumite:-99},twc:{kata:0,kumite:0},champ:{},
     km:{'太極':20},kfocus:null,pts:0,hq:0,rivalW:0,rivalL:0,ending:null,forced:false,dojo:null,home:{n:H.n,fee:H.fee,pk:H.pk||{},coach:H.coach,equip:H.equip,partners:H.partners,mood:H.mood}};
   for(const k of ['pow','spd','sta','tec','con','res']){S.pot[k]=Math.round(55+rnd()*44);S.st[k]=12+rnd()*12+((WCLS[S.wc]||WCLS.middle).base[k]||0);}
   S.pot.spi=99;S.st.spi=20+rnd()*15;
-  S.traits=traitsFor(setup.seed);S.traits0=S.traits.slice();S.mood='normal';S.tAcq=[];if(S.style==='all'&&!S.traits.includes('genius')){S.style='low';if(!STYLE_FAV.low.includes(S.fav))S.fav='gedan';}
+  S.traits=setup.bday?traitsBday(setup.bday,setup.seed):traitsFor(setup.seed);S.traits0=S.traits.slice();S.mood='normal';S.tAcq=[];if(S.style==='all'&&!S.traits.includes('genius')){S.style='low';if(!STYLE_FAV.low.includes(S.fav))S.fav='gedan';}
   S.npc={sen:twName(),koh:twName()};S.bond={sen:0,koh:0,rival:0};
   S.rival=twName();S.rivalDojo=otherDojo();S.rivalType=pick(['power','tech','speed']);S.rivalEdge=(r()-.4)*8;S.rivalHair=pick(HAIR);
 }
@@ -1003,6 +1002,10 @@ const TRAITS={
 const TRAIT_X=[['iron','frail'],['hard','lazy'],['thrifty','spender'],['calm','temper'],['clutch','nerve'],['grit','glass'],['hot','lazy'],['calm','moody'],['swift','late'],['genius','late']];
 const TRAIT_W=k=>k==='genius'?.25:1;
 function wpick(rr,K){const t=K.reduce((a,k)=>a+TRAIT_W(k),0);let x=rr()*t;for(const k of K){x-=TRAIT_W(k);if(x<=0)return k;}return K[K.length-1];}
+const LP={1:['開創者','leader'],2:['協調者','calm'],3:['表演者','hot'],4:['實踐者','hard'],5:['冒險者','swift'],6:['守護者','charm'],7:['研究者','study'],8:['實力派','strong'],9:['理想家','grit']};
+function lifePath(bd){const d=String(bd||'').replace(/\D/g,'');if(d.length!==8)return 0;let n=d.split('').reduce((a,c)=>a+ +c,0);while(n>9)n=String(n).split('').reduce((a,c)=>a+ +c,0);return n;}
+function traitsBday(bd,seed){const n=lifePath(bd);if(!n)return traitsFor(seed);const a=LP[n][1];const pool=traitsFor(seed).concat(traitsFor(seed+7919),traitsFor(seed+104729));
+  const b=pool.find(k=>k!==a&&k!=='genius'&&!TRAIT_X.some(([x,y])=>(x===a&&y===k)||(x===k&&y===a)))||'lazy';return [a,b];}
 function traitsFor(seed){const rr=mulberry((seed*2654435761)>>>0);const K=Object.keys(TRAITS).filter(k=>!TRAITS[k].acq);let a=wpick(rr,K);let b;
   if(a==='genius'&&rr()<.7)return ['genius','proud'];
   for(let i=0;i<50;i++){b=wpick(rr,K);if(b==='genius'&&rr()<.7){[a,b]=['genius','proud'];break;}if(b!==a&&!TRAIT_X.some(([x,y])=>(x===a&&y===b)||(x===b&&y===a)))break;}return [a,b];}
@@ -1057,7 +1060,7 @@ function award(n,why){S.pts=(S.pts||0)+n;if(EZ()){const t=autoAlloc();say(`<span
 function applyAlloc(k){if(S&&S.pts>0&&STATN[k]&&S.st[k]<100){S.st[k]=Math.min(100,S.st[k]+PT_GAIN);S.pts--;return true;}return false;}
 const QN=['上半年','上半年','下半年','下半年'];
 function when(){return `${S.year} 年 ${QN[S.q]}・${S.age} 歲`;}
-const REC_KEEP=t=>t.startsWith('稽古方針')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
+const REC_KEEP=t=>t.startsWith('稽古方針')||t.startsWith('找到自己的風格')||t.startsWith('得意技')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
 function P(title,body,opts,kind){if(opts&&!REC_KEEP(title))opts.forEach(o=>{if(o.rec)o.rec=false;});const p={title,body,opts,eyebrow:when(),lines:S.scene,kind:kind||'choice',tag:EP_TAG||''};S.scene=[];return p;}
 function log(t,cls){S.log.push({w:`${S.year}·${S.q<2?'上':'下'}`,t,cls:cls||''});}
 function ageF(){const a=S.age;return a<=15?.45:a<=16?.78:a<=24?.9:a<=28?.7:a<=32?.45:.22;}
@@ -2685,6 +2688,13 @@ function attrMul(a){if(a==='none')return 1;return .86+homeNow()[a]/300;}
 const CP_SAVE='<div class="cpnote">💾 進度已自動存檔。想休息隨時可以關掉，下次打開會從這裡接著走。</div>';
 function chapterNow(){return S.flags.ch3?['第三章','傳承']:S.flags.ch1?['第二章','選手時代']:['第一章','白帶到黑帶'];}
 function cpStats(){const t=S.titles.filter(x=>/優勝|完遂/.test(x)).length;return `<div class="cpst"><span><b>${S.age}</b>歲</span><span><b>${S.w}-${S.l}</b>${S.route==='kata'?'型戰績':'戰績'}</span><span><b>${t}</b>座冠軍</span><span><b>${Math.round(S.fame)}</b>名聲</span></div>`;}
+function* chooseStyle(){const st=S.st;const rec=st.pow>=st.spd&&st.pow>=st.tec?'punch':st.spd>=st.tec?'high':'low';
+  const ks=Object.keys(STYLES).filter(k=>k!=='basic'&&(k!=='all'||hasT('genius')));
+  const c=yield P('找到自己的風格',`升上藍帶那天，師範把你叫到一旁：「你的身體已經記住一些東西了。接下來，要決定你想怎麼打。」<br>你現在的力量 <b>${Math.round(st.pow)}</b>、速度 <b>${Math.round(st.spd)}</b>、技術 <b>${Math.round(st.tec)}</b>。`,
+    ks.map(k=>({id:k,label:STYLES[k].n,sub:STYLES[k].d+(k===rec?' · 最適合你現在的能力':''),rec:k===rec})));
+  S.style=c;const fs=STYLE_FAV[c];
+  const f=yield P('得意技',`選定「${STYLES[c].n}」。從這個風格的招式裡挑一招當作得意技：比賽一定會帶在身上，威力 ×1.2、命中 +8，越常用越熟練。`,fs.map((k,i)=>({id:k,label:MOVES[k].n,sub:FAVS[k],rec:i===0})));
+  S.fav=f;log(`確立戰鬥風格：${STYLES[c].n}・得意技「${MOVES[f].n}」`,'gold');say(`<b class="gold">你找到了自己的打法：${STYLES[c].n}。</b>得意技是「${MOVES[f].n}」。`);}
 function* cpBlack(){S.flags.ch1=1;const y=S.age-15;const ft=S.flags.failTot||0;
   const c=yield P('第一章 完・白帶到黑帶',`<div class="cphead"><small>CHAPTER 1 CLEAR</small><b>白帶到黑帶</b></div>從十五歲推開那扇門，到 ${S.age} 歲繫上黑帶，你走了 ${y} 年${ft?`，中間落榜過 ${ft} 次`:''}。${cpStats()}<p class="cpnext">下一章・<b>選手時代</b>：全日本、世界大賽、內弟子、開道場……</p>${CP_SAVE}`,[{id:'go',rec:true,label:'進入第二章',sub:'選手時代'},{id:'ff',label:'後面的人生交給命運',sub:'剩下的日子自動照「建議」過完，直接看結語'}],'chapter');
   if(c==='ff'){S.flags.ff=1;log('人生快轉','');}}
@@ -2721,6 +2731,7 @@ function* life(){
         say(`<span class="lbl">${S.year-1} 年回顧</span>${b.length?b.join('・'):'平平淡淡地練了一整年。'}`);}
       S.yrs={rank:S.rank,t:S.titles.length,inj:S.flags.injN||0,m:S.money};}
     if(S.turn===0)S.yrs={rank:0,t:0,inj:0,m:S.money};
+    if(S.style==='basic'&&S.rank>=2&&S.serviceLeft<=0)yield* chooseStyle();
     if(S.rank>=6&&!S.flags.ch1)yield* cpBlack();
     if(S.age>=30&&S.q===0&&S.flags.ch1&&!S.flags.cpW&&!S.flags.cpMid&&S.flags.instDone&&!['uchi','twuchi'].includes(S.path))yield* cpMid();
     if(S.flags.peakRet===2){S.mil=S.mil||{};S.mil.ret=S.age;log('從選手引退');say('你向支部長深深一鞠躬，宣布從選手引退。');break;}
@@ -4075,24 +4086,21 @@ function renderStart(){
     $('#homeSeg').innerHTML=Object.entries(HOMES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="home" id="home-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span class="fee">學費 ${v.fee} 萬／季</span><span class="dtag">特色牌「${(Object.values(CARDS).find(c=>c.uniq===k)||{}).n||''}」</span></label>`).join('');
     $('#homeSeg').addEventListener('change',drawDojoBan);drawDojoBan();
     $('#wcSeg').innerHTML=Object.entries(WCLS).map(([k,v])=>`<label class="pickr"><input type="radio" name="wc" id="wc-${k}" value="${k}"${k==='middle'?' checked':''}><b>${v.n} <small>${v.kg}</small></b><span>${v.d}</span></label>`).join('');
-    $('#styleSeg').innerHTML=Object.entries(STYLES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="style" id="st-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span>${v.d}</span></label>`).join('');
-    const favSync=()=>{const st=(document.querySelector('input[name=style]:checked')||{}).value||'low';const cur=(document.querySelector('input[name=fav]:checked')||{}).value;const ok=STYLE_FAV[st];const pick=ok.includes(cur)?cur:ok[0];
-      $('#favSeg').innerHTML=ok.map(k=>`<label class="pickr"><input type="radio" name="fav" id="fav-${k}" value="${k}"${k===pick?' checked':''}><b>${MOVES[k].n}</b><span>${FAVS[k]}</span></label>`).join('');};
-    $('#styleSeg').addEventListener('change',favSync);favSync();
     $('#inName').value=randName();$('#inSeed').value=String(randSeed()).padStart(6,'0');
     const sync=()=>{$('#startName').textContent=$('#inName').value.trim()||'新人';};
     $('#inName').addEventListener('input',sync);sync();
-    const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;
-      {const g=traitsFor(sd).includes('genius');const allIn=document.querySelector('#st-all');if(allIn){allIn.disabled=!g;allIn.closest('label').style.opacity=g?1:.45;if(!g&&allIn.checked){document.querySelector('#st-low').checked=true;$('#styleSeg').dispatchEvent(new Event('change'));}}}$('#startTraits').innerHTML='個性　'+traitsFor(sd).map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}" title="${TRAITS[k].d}">${TRAITS[k].n}</span>`).join('')+`<span style="flex-basis:100%;font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.5">${traitsFor(sd).map(k=>TRAITS[k].n+'：'+TRAITS[k].d).join('<br>')}</span>`;};
+    const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;const bd=$('#inBday').value;const lp=lifePath(bd);const TT=lp?traitsBday(bd,sd):traitsFor(sd);{const h=$('#bdayHint');if(h)h.innerHTML=lp?`你的生命靈數是 <b>${lp}</b>・<b>${LP[lp][0]}</b>，主要個性：<b>${TRAITS[LP[lp][1]].n}</b>`:'填了生日，就用「生命靈數」決定你的主要個性。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。';}
+      $('#startTraits').innerHTML='個性　'+TT.map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}" title="${TRAITS[k].d}">${TRAITS[k].n}</span>`).join('')+`<span style="flex-basis:100%;font-size:11.5px;color:var(--muted);font-weight:400;line-height:1.5">${TT.map(k=>TRAITS[k].n+'：'+TRAITS[k].d).join('<br>')}</span>`;};
     $('#btnReroll').onclick=()=>{$('#inSeed').value=String(randSeed()).padStart(6,'0');trSync();};
     $('#btnDaily').onclick=()=>{$('#inSeed').value=String(dailySeed()).padStart(6,'0');trSync();};
     setTimeout(trSync,0);
+    $('#inBday').addEventListener('change',trSync);$('#inBday').addEventListener('input',trSync);
     $('#inSeed').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);trSync();});
     $('#startForm').addEventListener('submit',e=>{
       e.preventDefault();
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
-      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),style:q('style'),fav:q('fav')};
+      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
       playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});});
     });
     $('#btnAch').onclick=()=>{renderAch();const b=$('#achBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({behavior:'smooth'});};
