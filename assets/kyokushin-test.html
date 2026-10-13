@@ -461,6 +461,7 @@ a.opt{text-decoration:none;color:inherit}
 .ttile .tn em{position:absolute;top:-11px;right:8px;margin:0;box-shadow:0 0 0 2px var(--ink)}
 .autopill{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:1px 4px 1px 8px;background:var(--sel);color:var(--ink);box-shadow:0 0 0 2px var(--gold);margin:0 6px 4px 0}
 .autopill button{border:0;background:var(--coral);color:#fff;font-size:11px;font-weight:700;padding:1px 6px}
+.bdtoast{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:400;background:#fff6c8;border:3px solid #26223b;border-radius:14px;padding:10px 16px;text-align:center;font-size:14px;line-height:1.6;box-shadow:0 6px 0 #26223b;animation:cpIn .5s cubic-bezier(.2,1.4,.4,1)}
 </style>
 
 <div class="app">
@@ -516,7 +517,7 @@ a.opt{text-decoration:none;color:inherit}
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
-      <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶、橙帶時先用「基本型」打，升上藍帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
+      <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運種子決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶到藍帶先用「基本型」打，升上黃帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
       <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自行加點）</summary>
@@ -625,7 +626,7 @@ a.opt{text-decoration:none;color:inherit}
         <div class="seg two" id="wcSeg"></div>
         <p class="legend">實際的全日本體重別分五個量級。「無差別」是全台、全日本、世界大賽的組手，不分體重。</p>
       </fieldset>
-      <p class="legend" style="margin:0 0 12px">戰鬥風格和得意技，等練到藍帶時再決定。</p>
+      <p class="legend" style="margin:0 0 12px">戰鬥風格和得意技，等練到黃帶時再決定。</p>
       <div class="opts">
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
@@ -667,7 +668,7 @@ a.opt{text-decoration:none;color:inherit}
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.5.1・2026.10.13</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.6・2026.10.13</span></footer>
 </div>
 
 <script>
@@ -728,7 +729,7 @@ const ROUTES={
 };
 const DIVN={kata:'型',kumite:'組手'};
 const STYLES={
-  basic:{n:'基本型',d:'還沒有固定的打法・升上藍帶後決定戰鬥風格'},
+  basic:{n:'基本型',d:'還沒有固定的打法・升上黃帶後決定戰鬥風格'},
   low:{n:'下段踢型',d:'技術型・下段踢・膝蹴・踵落'},
   high:{n:'上段踢型',d:'速度型・中段踢・上段踢・後迴旋・胴迴旋'},
   punch:{n:'正拳型',d:'力量型・正拳・連打・膝蹴'},
@@ -1062,7 +1063,7 @@ function award(n,why){S.pts=(S.pts||0)+n;if(EZ()){const t=autoAlloc();say(`<span
 function applyAlloc(k){if(S&&S.pts>0&&STATN[k]&&S.st[k]<100){S.st[k]=Math.min(100,S.st[k]+PT_GAIN);S.pts--;return true;}return false;}
 const QN=['上半年','上半年','下半年','下半年'];
 function when(){return `${S.year} 年 ${QN[S.q]}・${S.age} 歲`;}
-const REC_KEEP=t=>t.startsWith('稽古方針')||t.startsWith('找到自己的風格')||t.startsWith('得意技')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
+const REC_KEEP=t=>t.startsWith('稽古方針')||t==='凱師範的邀請'||t.startsWith('找到自己的風格')||t.startsWith('得意技')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
 function P(title,body,opts,kind){if(opts&&!REC_KEEP(title))opts.forEach(o=>{if(o.rec)o.rec=false;});const p={title,body,opts,eyebrow:when(),lines:S.scene,kind:kind||'choice',tag:EP_TAG||''};S.scene=[];return p;}
 function log(t,cls){S.log.push({w:`${S.year}·${S.q<2?'上':'下'}`,t,cls:cls||''});}
 function ageF(){const a=S.age;return a<=15?.45:a<=16?.78:a<=24?.9:a<=28?.7:a<=32?.45:.22;}
@@ -1999,6 +2000,26 @@ function* ev(title,body,opts){
 }
 const H=k=>v=>{S.home[k]=clamp(S.home[k]+v,0,100);};
 const EVENTS=[
+  {id:'m_kai3',cond:()=>S.rank>=6,run:()=>ev('凱師範的黑帶','你第一次繫上黑帶那天，凱師範幫你把結重新打了一次：「黑帶不是終點。從今天起，你要開始被學弟看了。」',
+    [{l:'「押忍！我會做好榜樣。」',s:'名聲↑ 鬥志↑',fx:{fame:1,spi:2},t:'凱師範笑著拍了一下你的腰帶結。'},{l:'低頭看著黑帶說不出話',s:'鬥志↑↑',fx:{spi:3},t:'凱師範什麼都沒說，只是站在旁邊陪你。'}])},
+  {id:'m_914c',cond:()=>atHome('pingtung','zuoying')&&S.rank>=3,run:()=>ev('914 sensei 的型','審查前，914 sensei 把你留下來，一個動作一個動作地看你的型：「這裡，慢半拍。這裡，眼睛沒有看對手。」',
+    [{l:'照她說的重練二十次',s:'技術↑↑ 體況↓',fx:{tec:2,hp:-4},t:'第二十次，她終於點頭：「可以了。」'},{l:'請她示範一次',s:'技術↑ 鬥志↑',fx:{tec:1,spi:1},t:'她的型安靜得像在呼吸，你看到忘了眨眼。'}])},
+  {id:'m_jack3',cond:()=>atHome('pingtung','zuoying')&&S.age>=17,run:()=>ev('傑克杜 sensei 的比賽經驗','比賽前一晚，傑克杜 sensei 傳訊息給你：「明天第一場，不要急著出大招。前三十秒，先讓他知道你打不倒。」',
+    [{l:'照他說的打',s:'抗性↑ 鬥志↑',fx:{res:1,spi:2},t:'第一場，你穩穩撐過三十秒，對手的眼神開始變了。'},{l:'回他：「如果我想第一秒就打倒他呢？」',s:'力量↑ 鬥志↑',fx:{pow:1,spi:2},t:'他回了一個大笑的貼圖：「那就打給我看。」'}])},
+  {id:'m_zoe3',cond:()=>S.rank>=2&&S.age>=17,run:()=>ev('佐伊 sensei 的世界賽','佐伊 sensei 在支部講習會分享她站上世界大賽的經驗：「那天我很怕。可是我發現，對手也一樣怕。」',
+    [{l:'把這句話抄在筆記本上',s:'鬥志↑↑',fx:{spi:3},t:'後來每次比賽前，你都會翻到那一頁。'},{l:'下課後去問她怎麼練的',s:'耐力↑ 技術↑',fx:{sta:1,tec:1},t:'她瞇著眼笑：「每天多跑一圈。就這樣，跑了十年。」'}])},
+  {id:'m_kola3',cond:()=>atHome('lingya')&&S.age>=18,run:()=>ev('扣拉 sensei 的鬍子','扣拉 sensei 摸著山羊鬍看你組手，看完只說了一句：「你打得太好看了。比賽不是表演，打得醜一點，但要贏。」',
+    [{l:'改成貼身纏鬥',s:'力量↑ 抗性↑ 體況↓',fx:{pow:1,res:1,hp:-4},t:'打完你全身痠痛，但真的贏了。'},{l:'「我想打得好看，也要贏。」',s:'技術↑ 鬥志↑',fx:{tec:1,spi:2},t:'他愣了一下，然後大笑：「好，那你練給我看。」'}])},
+  {id:'m_hasen3',cond:()=>S.rank>=3,run:()=>ev('蛤森 sensei 的拖把比賽','聯合稽古結束，楠梓的蛤森 sensei 突然大喊：「拖地比賽！輸的請飲料！」全場二十個人抓起拖把衝出去。',
+    [{l:'全力衝刺',s:'速度↑ 耐力↑ 體況↓',fx:{spd:1,sta:1,hp:-3},t:'你第二名。第一名是笑到停不下來的蛤森 sensei。'},{l:'慢慢拖，負責請飲料',s:'名聲↑',fx:{fame:1,money:-.1},t:'大家都記住你了。'}])},
+  {id:'m_henre3',cond:()=>atHome('fengshan','zhutian')&&S.rank>=4,run:()=>ev('亨re sensei 的第一萬次','亨re sensei 遞給你一本小冊子，上面密密麻麻記著數字：「這是我的正拳紀錄。我到第一萬次那天，才覺得自己會打拳。」',
+    [{l:'開始自己記',s:'技術↑ 鬥志↑',fx:{tec:1,spi:2},t:'你在第一頁寫下：「第 1 次」。'},{l:'問他現在第幾次了',s:'鬥志↑↑',fx:{spi:3},t:'他翻到最後一頁：「三十四萬兩千一百零六。今天還沒打。」'}])},
+  {id:'m_9d2',cond:()=>!atHome('fengshan','zhutian')&&S.rank>=2,run:()=>ev('9D sensei 的演武','支部演武大會上，鳳山的 9D sensei 戴著白色拳套上台，一套組手演武打得全場尖叫。下台時她朝你這邊比了個讚。',
+    [{l:'也朝她比讚',s:'鬥志↑↑',fx:{spi:3},t:'她笑了：「下次換你上台。」'},{l:'跑去問她怎麼練的',s:'速度↑ 技術↑',fx:{spd:1,tec:1},t:'「沒有秘訣，就是每天都來。」'}])},
+  {id:'m_030c',cond:()=>atHome('chaozhou')&&S.age>=17,run:()=>ev('030 sensei 的鄉下合宿','030 sensei 帶大家去海邊合宿，在沙灘上練下段踢，練到太陽下山。收操時，他難得笑著說：「你們今天，很能練。」',
+    [{l:'再踢一百下',s:'耐力↑↑ 體況↓',fx:{sta:2,hp:-5},t:'他陪你踢完，牙套在夕陽下閃了一下。'},{l:'跳進海裡',s:'體況↑ 鬥志↑',fx:{hp:6,spi:1},t:'全道場的人都跟著跳下去，030 sensei 也是。'}])},
+  {id:'m_wee3',cond:()=>atHome('xiaogang')&&S.rank>=2,run:()=>ev('weeee sensei 的一句話','你輸了一場很重要的比賽，坐在場邊不說話。weeee sensei 走過來，坐在你旁邊，過了很久才開口：「……便當要不要吃？」',
+    [{l:'接過便當',s:'體況↑ 鬥志↑',fx:{hp:5,spi:2},t:'排骨很好吃。你突然覺得，好像還可以再打一次。'},{l:'「sensei，我還能變強嗎？」',s:'鬥志↑↑',fx:{spi:3},t:'他看著你：「你今天沒有退。這就夠了。」'}])},
   {id:'m_kai1',cond:()=>S.rank<=2&&S.age<=19,run:()=>ev('凱師範的笑容','第一次站上支部審查的會場，你的手在抖。凱師範從評審席走下來，笑著拍拍你的肩膀：「緊張的時候就笑。笑了，拳就鬆了。」',
     [{l:'真的笑出來',s:'鬥志↑↑',fx:{spi:3},t:'凱師範也笑了，眼睛瞇成一條線。'},{l:'「押忍！」繃緊身體',s:'技術↑ 鬥志↑',fx:{tec:1,spi:1},t:'凱師範點點頭：「好，那就用這個氣勢打。」'}])},
   {id:'m_kai2',cond:()=>atHome('pingtung','zuoying')&&S.age>=17,run:()=>ev('凱師範的宵夜','下課後凱師範請大家吃宵夜。滷味還沒上桌，他就轉頭問你：「你以後想怎麼跟空手道走下去？」',
@@ -2690,9 +2711,16 @@ function attrMul(a){if(a==='none')return 1;return .86+homeNow()[a]/300;}
 const CP_SAVE='<div class="cpnote">💾 進度已自動存檔。想休息隨時可以關掉，下次打開會從這裡接著走。</div>';
 function chapterNow(){return S.flags.ch3?['第三章','傳承']:S.flags.ch1?['第二章','選手時代']:['第一章','白帶到黑帶'];}
 function cpStats(){const t=S.titles.filter(x=>/優勝|完遂/.test(x)).length;return `<div class="cpst"><span><b>${S.age}</b>歲</span><span><b>${S.w}-${S.l}</b>${S.route==='kata'?'型戰績':'戰績'}</span><span><b>${t}</b>座冠軍</span><span><b>${Math.round(S.fame)}</b>名聲</span></div>`;}
+function* instAsk(){if(!['job','uni'].includes(S.path))return true;if(S.flags.instAskY===S.year)return false;S.flags.instAskY=S.year;
+  const c=yield P('凱師範的邀請',`${S.age} 歲，你繫上黑帶也有一陣子了。下課後凱師範把你叫到辦公室：「少年部那邊缺人。要不要考慮，正式成為指導員？」<br>指導員資格是開設自己道場、報名內弟子的必要條件。`,[
+    {id:'part',label:'成為指導員（兼職）',sub:'保留現在的工作或學業 · 下班後帶課 · 可以開道場、報名內弟子',rec:true},
+    {id:'full',label:'當專職指導員',sub:'指導員薪水 · 稽古效率 ×1.1 · 可以開道場、報名內弟子'},
+    {id:'no',label:'現在還不想',sub:'維持現在的生活 · 不能開道場 · 明年凱師範會再問（32 歲前要決定）'}]);
+  if(c==='no'){say('你搖搖頭：「我再想想。」凱師範點點頭：「門一直開著。」');return false;}
+  if(c==='full'){S.path='inst';S.mult=1.1;log('辭去工作，成為專職指導員');}return true;}
 function* chooseStyle(){const st=S.st;const rec=st.pow>=st.spd&&st.pow>=st.tec?'punch':st.spd>=st.tec?'high':'low';
   const ks=Object.keys(STYLES).filter(k=>k!=='basic'&&(k!=='all'||hasT('genius')||hasT('hgenius')));
-  const c=yield P('找到自己的風格',`升上藍帶那天，師範把你叫到一旁：「你的身體已經記住一些東西了。接下來，要決定你想怎麼打。」<br>你現在的力量 <b>${Math.round(st.pow)}</b>、速度 <b>${Math.round(st.spd)}</b>、技術 <b>${Math.round(st.tec)}</b>。`,
+  const c=yield P('找到自己的風格',`升上黃帶那天，師範把你叫到一旁：「你的身體已經記住一些東西了。接下來，要決定你想怎麼打。」<br>你現在的力量 <b>${Math.round(st.pow)}</b>、速度 <b>${Math.round(st.spd)}</b>、技術 <b>${Math.round(st.tec)}</b>。`,
     ks.map(k=>({id:k,label:STYLES[k].n,sub:STYLES[k].d+(k===rec?' · 最適合你現在的能力':''),rec:k===rec})));
   S.style=c;const fs=STYLE_FAV[c];
   const f=yield P('得意技',`選定「${STYLES[c].n}」。從這個風格的招式裡挑一招當作得意技：比賽一定會帶在身上，威力 ×1.2、命中 +8，越常用越熟練。`,fs.map((k,i)=>({id:k,label:MOVES[k].n,sub:FAVS[k],rec:i===0})));
@@ -2739,12 +2767,12 @@ function* life(){
         say(`<span class="lbl">${S.year-1} 年回顧</span>${b.length?b.join('・'):'平平淡淡地練了一整年。'}`);}
       S.yrs={rank:S.rank,t:S.titles.length,inj:S.flags.injN||0,m:S.money};}
     if(S.turn===0)S.yrs={rank:0,t:0,inj:0,m:S.money};
-    if(S.style==='basic'&&S.rank>=2&&S.serviceLeft<=0)yield* chooseStyle();
+    if(S.style==='basic'&&S.rank>=3&&S.serviceLeft<=0)yield* chooseStyle();
     if(hasT('hgenius')&&S.style!=='basic'&&S.style!=='all'&&!S.flags.hgOffer&&S.serviceLeft<=0)yield* offerAll();
     if(S.rank>=6&&!S.flags.ch1)yield* cpBlack();
     if(S.age>=30&&S.q===0&&S.flags.ch1&&!S.flags.cpW&&!S.flags.cpMid&&S.flags.instDone&&!['uchi','twuchi'].includes(S.path))yield* cpMid();
     if(S.flags.peakRet===2){S.mil=S.mil||{};S.mil.ret=S.age;log('從選手引退');say('你向支部長深深一鞠躬，宣布從選手引退。');break;}
-    if(!S.flags.instDone&&instOk()){S.flags.instDone=1;S.mil=S.mil||{};S.mil.inst=S.age;say('<b class="gold">取得指導員資格。</b>從今天起，你可以站在學員前面了。可以報名台灣支部內弟子，也可以籌備自己的道場。');log('取得指導員資格','gold');if(S.path==='trainee'){S.path='inst';S.mult=1.1;say('見習結束，你正式成為支部的指導員，開始領指導員薪水。');}yield* honor('inst');}
+    if(!S.flags.instDone&&instOk()&&(yield* instAsk())){S.flags.instDone=1;S.mil=S.mil||{};S.mil.inst=S.age;say('<b class="gold">取得指導員資格。</b>從今天起，你可以站在學員前面了。可以報名台灣支部內弟子，也可以籌備自己的道場。');log('取得指導員資格','gold');if(S.path==='trainee'){S.path='inst';S.mult=1.1;say('見習結束，你正式成為支部的指導員，開始領指導員薪水。');}yield* honor('inst');}
     if(S.age>=32&&!S.flags.instDone){S.forcedEnd='member';say('三十二歲了，你還沒取得指導員資格。你決定不再追逐段位和頭銜，以一般學員的身分繼續來道場流汗。');log('以一般學員身分結束修行','bad');break;}
     if(S.q===0&&S.turn>0)yield* appointChecks();
     if(S.age>=42||hpMax()<=30){S.forced=true;say(S.age>=42?'四十二歲。身體終於跟不上意志了。':'醫生看著X光片搖頭：舊傷累積太多，不能再上場了。');S.mil=S.mil||{};S.mil.ret=S.age;log('被迫從選手引退','bad');break;}
@@ -3325,7 +3353,7 @@ function showIntro(){
   const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
-const KEY='kyokushin-life-v39';
+const KEY='kyokushin-life-v40';
 const $=s=>document.querySelector(s);
 function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
@@ -3711,6 +3739,7 @@ function epiParas(){
    add('那些說出來沒人信的事',t);}
   if(S.ending==='quit')add('放下',`${S.age} 歲那年的某一天，你沒有再去道場。沒有什麼特別的理由，只是那天下課後，你騎車經過道場門口，沒有停下來。可是${S.age-15>=1?`那 ${S.age-15} 年`:'那段日子'}流過的汗，一直都還在你身上。`);
   // 尾聲
+  S.setup.bday&&lifePath(S.setup.bday)&&add('生命靈數',(n=>`你的生命靈數是 ${n}，${LP[n][0]}。${TRAITS[LP[n][1]].n}，是你出生時就帶著的東西；剩下的${S.age-15} 年，是你自己練出來的。`)(lifePath(S.setup.bday)));
   add('尾聲',vs('end',S.ending==='quit'?[
     `${yrs>=1?`從十五歲到 ${S.age} 歲，${yrs} 年。`:'不到一年。'}你沒有走到最後，可是那條腰帶你一直沒丟。偶爾經過道場，聽到裡面傳出「押忍」，你會在門口站一下，然後笑著走開。`,
     `${yrs>=1?`${yrs} 年`:'那段日子'}，不長也不短。後來你很少提起空手道，只有在搬重物、在爬樓梯、在被生活打倒又站起來的時候，身體會比你先想起來——你練過。`]:[
@@ -4021,7 +4050,7 @@ function shareCard(){
   x.fillStyle='#d9534f';x.font=`900 50px ${F}`;x.fillText(epithet(),420,240,420);
   x.fillStyle='#26223b';x.font=`900 72px ${F}`;x.fillText(S.name,420,330);
   x.font=`700 34px ${F}`;x.fillText(`${RANKS[S.rank]}・${S.age} 歲・${specLabel()}`,420,390);
-  x.font=`500 30px ${F}`;x.fillStyle='#4a4560';x.fillText(`出身 ${S.home.n}・${(WCLS[S.wc]||{}).n||''}・${STYLES[S.style].n}`,420,440);
+  x.font=`500 30px ${F}`;x.fillStyle='#4a4560';x.fillText(`出身 ${S.home.n}・${(WCLS[S.wc]||{}).n||''}・${STYLES[S.style].n}${S.setup.bday&&lifePath(S.setup.bday)?'・靈數 '+lifePath(S.setup.bday):''}`,420,440);
   x.fillText(`個性：${(S.traits||[]).map(k=>TRAITS[k].n).join('、')}`,420,490);
   x.fillText(`組手 ${S.w} 勝 ${S.l} 敗・型 ${S.kw} 勝 ${S.kl} 敗`,420,540);
   let y=620;x.fillStyle='#26223b';x.font=`900 36px ${F}`;x.fillText('主要頭銜',80,y);y+=20;x.font=`500 32px ${F}`;
@@ -4113,7 +4142,8 @@ function renderStart(){
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
       const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
-      playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});});
+      playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});
+        if(setup.bday&&setup.bday.slice(5)===todayStr().slice(5)){const t=document.createElement('div');t.className='bdtoast';t.innerHTML='🎂 <b>生日快樂！</b><br>今天是你的生日，道場的大家一起喊：「押忍！」';document.body.appendChild(t);chip([[523,.1],[659,.1],[784,.2]]);setTimeout(()=>t.remove(),4500);}});
     });
     $('#btnAch').onclick=()=>{renderAch();const b=$('#achBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({behavior:'smooth'});};
     $('#btnResume').onclick=()=>{const sv=loadSave();if(sv)startGame(sv.setup,sv.choices);};
