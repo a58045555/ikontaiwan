@@ -3271,18 +3271,18 @@ function recruitHTML(){
   return `<button type="button" class="rc-x" id="rcX" aria-label="關閉">✕</button>
   <div class="rc-head"><small>YOUR TURN</small><b>換你上場了！</b><span>極真空手道 中村道場 台灣支部</span></div>
   <canvas id="rcCv" class="rc-cv" width="180" height="135"></canvas>
-  <p class="rc-p">${age>15?`遊戲裡，你已經從十五歲走到了 ${age} 歲。`:'遊戲裡，你才剛推開道場的門。'}</p>
+  <p class="rc-p">${age>15?`遊戲裡，你已經從 15 歲走到了 ${age} 歲。`:'遊戲裡，你才剛推開道場的門。'}</p>
   <p class="rc-p">真正的道場沒有存檔，也不能重來。<br>但有一群人，正在等你喊出第一聲「押忍」。</p>
   <div class="opts"><a class="opt primary rc-go" id="rcGo" href="${IG_URL}" target="_blank" rel="noopener"><span class="l">到道場 IG 看看</span><span class="s">@i.k.o.n.taiwan</span></a></div>
   <button type="button" class="rc-later" id="rcClose">先看我的結語</button>`;
 }
 function rcAnim(){const cv=$('#rcCv');if(!cv)return;const x=cv.getContext('2d');x.imageSmoothingEnabled=false;const t0=performance.now();
   const f=now=>{const T=Math.max(0,(now-t0)/1000);if($('#recruit').hidden)return;
-    if(scnOk('b3')&&scnOk('b8')&&scnOk('b2')){x.imageSmoothingEnabled=false;const L=[['b3',0,18,'換你了！',112,10],['b8',8,28,'押忍！',108,8],['b2',30,46,'等你喔！',104,12]];const per=2.4;const i=Math.floor(T/per)%3,ph=(T%per)/per;const [k,y0,y1,tx,bx,by]=L[i];
+    if(scnOk('b3')&&scnOk('b8')&&scnOk('b2')){x.imageSmoothingEnabled=false;const L=[['b3',0,18,'換你了！',90,113],['b8',8,28,'押忍！',90,113],['b2',30,46,'等你喔！',90,113]];const per=2.4;const i=Math.floor(T/per)%3,ph=(T%per)/per;const [k,y0,y1,tx,bx,by]=L[i];
       const sy=Math.round(y0+(y1-y0)*ph);const pop=ph<.08?1+(.08-ph)*1.2:1;x.save();x.translate(90,67);x.scale(pop,pop);x.drawImage(SCNIMG[k],0,sy,180,135,-90,-67,180,135);x.restore();
       if(ph<.06){x.fillStyle=`rgba(255,255,255,${1-ph/.06})`;x.fillRect(0,0,180,135);}
       [[10,12],[168,20],[164,118],[14,112]].forEach(([a,b],j)=>rSpark(x,a,b,T+j*.3,'#fff6c8'));
-      if(ph>.12){const bw=tx.length*11+12;x.fillStyle='#fff';x.fillRect(bx-bw/2,by,bw,18);x.fillRect(bx-4,by+18,6,4);x.fillStyle='#26223b';x.fillRect(bx-bw/2,by-1,bw,1);x.fillRect(bx-bw/2,by+18,bw,1);x.fillRect(bx-bw/2-1,by,1,18);x.fillRect(bx+bw/2,by,1,18);rtext(x,tx,bx,by+3,11,'#d9356a',null,900,'center');}
+      if(ph>.12){const bw=tx.length*11+12;x.fillStyle='#fff';x.fillRect(bx-bw/2,by,bw,18);x.fillStyle='#26223b';x.fillRect(bx-bw/2,by-1,bw,1);x.fillRect(bx-bw/2,by+18,bw,1);x.fillRect(bx-bw/2-1,by,1,18);x.fillRect(bx+bw/2,by,1,18);rtext(x,tx,bx,by+3,11,'#d9356a',null,900,'center');}
       rcRAF=requestAnimationFrame(f);return;}
     x.setTransform(1.5,0,0,1.47,0,0);
     x.fillStyle='#ffe7ef';x.fillRect(0,0,120,92);rRays(x,'#ffd4e2','#ffe7ef',60,46,T);
