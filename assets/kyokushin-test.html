@@ -473,6 +473,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 .tleft{display:inline-block;width:70px;height:7px;margin-left:6px;background:#ddd;box-shadow:0 0 0 2px #26223b;vertical-align:1px}.tleft i{display:block;height:100%;background:#3f6fd8}.atb{flex:1;height:6px;background:#e4dccb;box-shadow:0 0 0 2px #26223b;margin-left:6px;position:relative}.atb i{display:block;height:100%;background:#9a93b0}.atb.me i{background:#f2c24f}.atb.full i{background:#ffe14a;animation:atbf .6s ease-in-out infinite alternate}@keyframes atbf{to{background:#ff9a3c}}.side{display:inline-block;font-style:normal;font-size:11px;font-weight:900;line-height:16px;width:16px;text-align:center;margin-right:4px;box-shadow:0 0 0 2px #26223b;vertical-align:1px}.side.aka{background:#d9534f;color:#fff}.side.shiro{background:#fff;color:#26223b}.tg.aka{background:#d9534f;color:#fff}.tg.shiro{background:#fff;color:#26223b}
 .st7 .t>b{position:relative}.st7 .capb{position:absolute;right:0;top:-9px;font-size:9px;line-height:1;color:#d9534f}.st7 .sh{display:block;font-size:9.5px;font-weight:700;opacity:.65;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:clip}
 .ln.vs{line-height:1.7}.ln.vs .tg{margin-left:4px}details.bhelp summary{cursor:pointer;text-align:center}
+.banner,.scene .banner{writing-mode:horizontal-tb!important;display:flex!important;flex-direction:column;align-items:center;justify-content:center;gap:6px;letter-spacing:0!important}.banner b{display:block;line-height:1;font-weight:900}
 </style>
 
 <div class="app">
@@ -3707,7 +3708,7 @@ function renderBattle(p){
   card.innerHTML=`
   <div class="scene">
     <div class="win w1"></div>
-    <div class="banner">押忍</div>
+    <div class="banner"><b>押</b><b>忍</b></div>
     <div class="plat foe"></div><div class="plat me"></div>
     <canvas class="spr foe${f.flash?' hit':''}" id="sprFoe"></canvas>
     <canvas class="spr me${m.flash?' hit':''}" id="sprMe"></canvas>
