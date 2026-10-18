@@ -216,3 +216,8 @@
 - 建議 GoatCounter（免費、不用 cookie、不記個資）；需使用者註冊取得代號。
 - 計數：開啟遊戲、開始人生、結算、點 IG、點預約。
 - P26 已實作於測試版 v110：GoatCounter 代號 ikontaiwan（https://ikontaiwan.goatcounter.com）。只在 a58045555.github.io 計數（beta 以 beta/ 前綴分開）；事件：開始人生、玩到結局、點道場IG、道場巡禮、分享卡。上線後才會有數據。
+
+### 美術：Canva 生圖流程（2026-10-18 使用者接上 Canva）
+- 參考圖從 GitHub raw（assets-masters）匯入 Canva → generate-image（像素風、同角色、極真實戰架式、綠底）→ 取回 133×200 預覽圖 → 去背縮成高 84 像素。
+- 9D 實戰架式已放進測試版 v111（戰鬥／道場巡禮用；事件仍用雙手交叉圖）。原圖：masters/12_9d_kamae_canva.jpg。
+- 其餘 9 位 sensei 可用同流程補實戰架式。
