@@ -3878,7 +3878,7 @@ function battleTut(){let done=0;try{done=+localStorage.getItem('kl-tut')||0;}cat
   let i=0;const d=document.createElement('div');d.className='btut';const show=()=>{d.innerHTML=`<div class="btbox"><small>第一次比賽 ${i+1}/3</small><b>${T[i][0]}</b><p>${T[i][1]}</p><div class="btbtn"><button type="button" class="btskip">略過</button><button type="button" class="btnext">${i<2?'下一步 ▶':'押忍！開打'}</button></div></div>`;
     d.querySelector('.btnext').onclick=()=>{i++;if(i>=3)close();else show();};d.querySelector('.btskip').onclick=close;};
   const close=()=>{try{localStorage.setItem('kl-tut','1');}catch(e){}d.remove();};
-  setTimeout(()=>{show();document.body.appendChild(d);},1700);}
+  setTimeout(()=>{if(!document.querySelector('#card.battle'))return;show();document.body.appendChild(d);const iv=setInterval(()=>{if(!document.body.contains(d)){clearInterval(iv);return;}if(!document.querySelector('#card.battle')){clearInterval(iv);d.remove();}},500);},1700);}
 function renderBattle(p){
   {const i=p.info||{};TBW=i.tz||.2;TBS=i.ts||1;}
   const m=p.me,f=p.foe;const nb=!BLAST||BLAST.n!==f.name||m.hp>BLAST.m||f.hp>BLAST.f;const dm=nb?0:BLAST.m-m.hp,df=nb?0:BLAST.f-f.hp;BLAST={n:f.name,m:m.hp,f:f.hp};
