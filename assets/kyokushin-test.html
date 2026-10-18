@@ -4353,7 +4353,7 @@ function renderStart(){
     $('#homeSeg').innerHTML=Object.entries(HOMES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="home" id="home-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span class="fee">學費 ${v.fee} 萬／季</span><span class="dtag">特色牌「${(Object.values(CARDS).find(c=>c.uniq===k)||{}).n||''}」</span></label>`).join('');
     $('#homeSeg').addEventListener('change',drawDojoBan);drawDojoBan();
     $('#wcSeg').innerHTML=Object.entries(WCLS).map(([k,v])=>`<label class="pickr"><input type="radio" name="wc" id="wc-${k}" value="${k}"${k==='middle'?' checked':''}><b>${v.n} <small data-kg="${k}">${v.kg}</small></b><span>${v.d}</span></label>`).join('');
-    $('#inName').value=randName();$('#inSeed').value=String(randSeed()).padStart(6,'0');
+    let autoNm=$('#inName').value=randName(false);$('#inSeed').value=String(randSeed()).padStart(6,'0');
     const sync=()=>{$('#startName').textContent=$('#inName').value.trim()||'新人';};
     $('#inName').addEventListener('input',sync);sync();
     const trSync=()=>{const sd=parseInt($('#inSeed').value,10)||0;const bd=$('#inBday').value;const lp=lifePath(bd);const TT=lp?traitsBday(bd,sd):traitsFor(sd);{const h=$('#bdayHint');if(h)h.innerHTML=lp?`你的生命靈數是 <b>${lp}</b>・<b>${LP[lp][0]}</b>，主要個性：<b>${TRAITS[LP[lp][1]].n}</b>（不影響起始年齡，一樣從 15 歲開始）`:'填了生日，就用「生命靈數」決定你的主要個性。出生年份不影響起始年齡，遊戲一律從 15 歲開始。不填的話，由命運種子隨機決定。只在你的手機上計算，不會上傳。';}
@@ -4363,12 +4363,12 @@ function renderStart(){
     setTimeout(trSync,0);
     $('#inBday').addEventListener('change',trSync);$('#inBday').addEventListener('input',trSync);
     $('#inSeed').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);trSync();});
-    document.querySelectorAll('input[name=sex]').forEach(r=>r.addEventListener('change',()=>{const f=document.querySelector('input[name=sex]:checked').value==='f';document.querySelectorAll('[data-kg]').forEach(e=>e.textContent=f?WKG_F[e.dataset.kg]:WCLS[e.dataset.kg].kg);}));
+    document.querySelectorAll('input[name=sex]').forEach(r=>r.addEventListener('change',()=>{const f=document.querySelector('input[name=sex]:checked').value==='f';if($('#inName').value===autoNm){autoNm=$('#inName').value=randName(f);sync();}document.querySelectorAll('[data-kg]').forEach(e=>e.textContent=f?WKG_F[e.dataset.kg]:WCLS[e.dataset.kg].kg);}));
     $('#startForm').addEventListener('submit',e=>{
       e.preventDefault();
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
-      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName()).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
+      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName(q('sex')==='f')).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
       playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});
         if(setup.bday&&setup.bday.slice(5)===todayStr().slice(5)){const t=document.createElement('div');t.className='bdtoast';t.innerHTML='🎂 <b>生日快樂！</b><br>今天是你的生日，道場的大家一起喊：「押忍！」';document.body.appendChild(t);chip([[523,.1],[659,.1],[784,.2]]);setTimeout(()=>t.remove(),4500);}});
     });
