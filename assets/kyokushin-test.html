@@ -939,9 +939,9 @@ const MOVES={
 };
 const EFF={power:{'下段':1.5,'突':.7},tech:{'突':1.5,'上段':.7},speed:{'中段':1.5,'下段':.7}};
 const TYPEN={power:'力量型',tech:'技術型',speed:'速度型',none:'全能型'};
-const WEAK={power:'怕下段',tech:'怕正拳',speed:'怕中段'};
+const WEAK={power:'怕下段',tech:'怕正拳',speed:'怕中段',none:'沒有明顯弱點'};
 const STYLE_TYPE={punch:'power',low:'tech',high:'speed',all:'none',basic:'none'};
-const FOE_SETS={power:['renda','hiza','gedan','ibuki'],tech:['tsuki','chudan','uke','jodan'],speed:['jodan','ushiro','chudan','gedan']};
+const FOE_SETS={power:['renda','hiza','gedan','ibuki'],tech:['tsuki','chudan','uke','jodan'],speed:['jodan','ushiro','chudan','gedan'],none:['tsuki','chudan','gedan','hiza','jodan','uke']};
 const FAVS={
   gedan:'下段・免氣・穩定削弱對手腳步，打力量型拔群',
   tsuki:'突・免氣・最穩的基本技，打技術型拔群',
@@ -1416,33 +1416,33 @@ function* battle(T,opp,rn,quick){
 }
 /* ===== sensei 道場巡禮 ===== */
 const TOUR_T={id:'tour',name:'sensei 道場巡禮',short:'道場巡禮',open:false,q:0,base:0,rounds:10};
-const TOUR=[ // 暫定設定：類型／得意技／特殊能力，待使用者提供真實專長後修正
-  {k:'xiaogang',dojo:'小港道場',type:'speed',str:70,sp:'先手',spd:'開場行動條就是滿的',hi:'「來啦！先說好，我出手很快喔。」',win:'「好！腳步比上次穩多了。下一站加油！」',lose:'「速度不是只有快，還要準。再來！」',mod:f=>{f.g=100;}},
-  {k:'chaozhou',dojo:'潮州道場',type:'tech',str:74,sp:'反擊',spd:'受け反擊的威力 +40%',hi:'「你打過來，我就打回去。準備好了嗎？」',win:'「不錯，沒有被我騙到。」',lose:'「急什麼？看清楚再出手。」',mod:f=>{f.ukeMul=1.4;f.moves=['tsuki','chudan','uke','uke','jodan'];}},
-  {k:'nanzi',dojo:'楠梓道場',type:'power',str:78,sp:'鐵壁',spd:'防禦 +12%',hi:'「打吧，看你能不能打動我。」',win:'「……有點痛。好，算你過關。」',lose:'「打不動就換個地方打。下段呢？」',mod:f=>{f.def*=1.12;}},
-  {k:'tainan',dojo:'台南道場',type:'speed',str:76,sp:'連打',spd:'正拳連打命中 +6',hi:'「嘿嘿，今天陪你玩玩。」',win:'「哈！被你抓到節奏了。」',lose:'「別停下來！停下來就被我打。」',mod:f=>{f.moves=['renda','renda','tsuki','hiza','jodan','ibuki'];f.accB=6;}},
-  {k:'lingya',dojo:'苓雅道場',type:'power',str:84,sp:'麻糬應援',spd:'體力剩三成時，麻糬在場邊叫一聲，回復 15%',hi:'「麻糬也在看喔。你可別輸給一隻狗。」',win:'「麻糬搖尾巴了，牠承認你了。」',lose:'「麻糬說：汪。意思是再練練。」',mod:f=>{f.mochi=1;}},
-  {k:'fengshan',dojo:'鳳山・竹田道場',type:'tech',str:87,sp:'下段崩し',spd:'下段一次削兩格腳步',hi:'「腳顧好。等一下你就知道為什麼。」',win:'「站得住我的下段，你的根基夠了。」',lose:'「腳軟了吧？基本功回去多蹲。」',mod:f=>{f.legX=2;f.moves=['gedan','gedan','tsuki','chudan','uke','ibuki'];}},
-  {k:'d9',dojo:'鳳山道場',type:'speed',str:85,sp:'白拳套',spd:'突き命中 +8、威力 +6%',hi:'（9D sensei 戴上白色拳套，對你比了個讚。）「今天陪你打。」',win:'「押忍！這一拳有打到心裡。」',lose:'「拳頭要收回來才打得出下一拳。再來！」',mod:f=>{f.accB=8;f.punchMul=1.06;f.moves=['tsuki','renda','tsuki','hiza','jodan','ibuki'];}},
-  {k:'sensei',dojo:'屏東・左營道場',type:'tech',str:94,sp:'上段',spd:'上段會心率 +12%',hi:'「從白帶看你到現在，讓我看看你長到哪了。」',win:'「……很好。你已經不是當年那個小白帶了。」',lose:'「上段要看準時機。你太早出了。」',mod:f=>{f.critB=.12;f.moves=['tsuki','chudan','jodan','ushiro','uke','ibuki'];}},
-  {k:'shihandai',dojo:'師範代',type:'tech',str:98,sp:'讀招',spd:'受け會先一步擺好，命中 +8',hi:'「你的習慣，我都記得。」',win:'「你改掉了。很好，這才是真的進步。」',lose:'「同樣的招，用第三次就被看穿了。」',mod:f=>{f.accB=8;f.ukeMul=1.25;}},
-  {k:'shihan',dojo:'台灣支部',type:'power',str:103,sp:'不動',spd:'要打掉四成體力才算技有，體力 +10%',hi:'凱師範慢慢綁好黑帶：「押忍。全力來。」',win:'凱師範點點頭：「押忍。你可以出去教人了。」',lose:'凱師範扶你起來：「很好的一戰。再來，隨時。」',mod:f=>{f.wazaTh=.4;f.maxHp=Math.round(f.maxHp*1.1);f.hp=f.maxHp;}}
+const TOUR=[ // P30：類型依使用者提供；強度依使用者排序；前 7 站順序隨機，後 3 站固定
+  {k:'xiaogang',dojo:'小港道場',type:'power',str:71,sp:'重拳',spd:'正拳威力 +10%',hi:'「來啦！先說好，我的拳很重喔。」',win:'「好！腳步比上次穩多了。下一站加油！」',lose:'「被打到就退？站穩，再來！」',mod:f=>{f.punchMul=1.1;}},
+  {k:'chaozhou',dojo:'潮州道場',type:'tech',str:73,sp:'反擊',spd:'受け反擊的威力 +40%',hi:'「你打過來，我就打回去。準備好了嗎？」',win:'「不錯，沒有被我騙到。」',lose:'「急什麼？看清楚再出手。」',mod:f=>{f.ukeMul=1.4;f.moves=['tsuki','chudan','uke','uke','jodan'];}},
+  {k:'shihandai',dojo:'師範代',type:'tech',str:76,sp:'讀招',spd:'受け會先一步擺好，命中 +8',hi:'「你的習慣，我都記得。」',win:'「你改掉了。很好，這才是真的進步。」',lose:'「同樣的招，用第三次就被看穿了。」',mod:f=>{f.accB=8;f.ukeMul=1.25;}},
+  {k:'d9',dojo:'鳳山道場',type:'speed',str:79,sp:'白拳套',spd:'突き命中 +8、威力 +6%',hi:'（9D sensei 戴上白色拳套，對你比了個讚。）「今天陪你打。」',win:'「押忍！這一拳有打到心裡。」',lose:'「拳頭要收回來才打得出下一拳。再來！」',mod:f=>{f.accB=8;f.punchMul=1.06;f.moves=['tsuki','renda','tsuki','hiza','jodan','ibuki'];}},
+  {k:'fengshan',dojo:'鳳山・竹田道場',type:'tech',str:82,sp:'下段崩し',spd:'下段一次削兩格腳步',hi:'「腳顧好。等一下你就知道為什麼。」',win:'「站得住我的下段，你的根基夠了。」',lose:'「腳軟了吧？基本功回去多蹲。」',mod:f=>{f.legX=2;f.moves=['gedan','gedan','tsuki','chudan','uke','ibuki'];}},
+  {k:'tainan',dojo:'台南道場',type:'power',str:85,sp:'連打',spd:'正拳連打命中 +6',hi:'「嘿嘿，今天陪你玩玩。」',win:'「哈！被你抓到節奏了。」',lose:'「別停下來！停下來就被我打。」',mod:f=>{f.moves=['renda','renda','tsuki','hiza','jodan','ibuki'];f.accB=6;}},
+  {k:'lingya',dojo:'苓雅道場',type:'none',str:88,sp:'麻糬應援',spd:'體力剩三成時，麻糬在場邊叫一聲，回復 15%',hi:'「麻糬也在看喔。你可別輸給一隻狗。」',win:'「麻糬搖尾巴了，牠承認你了。」',lose:'「麻糬說：汪。意思是再練練。」',mod:f=>{f.mochi=1;}},
+  {k:'nanzi',dojo:'楠梓道場',type:'power',str:94,sp:'鐵壁',spd:'防禦 +12%',hi:'「打吧，看你能不能打動我。」',win:'「……有點痛。好，算你過關。」',lose:'「打不動就換個地方打。下段呢？」',mod:f=>{f.def*=1.12;}},
+  {k:'sensei',dojo:'屏東・左營道場',type:'none',str:98,sp:'上段',spd:'上段會心率 +12%',hi:'「從白帶看你到現在，讓我看看你長到哪了。」',win:'「……很好。你已經不是當年那個小白帶了。」',lose:'「上段要看準時機。你太早出了。」',mod:f=>{f.critB=.12;f.moves=['tsuki','chudan','jodan','ushiro','uke','ibuki'];}},
+  {k:'shihan',dojo:'台灣支部',type:'none',str:103,sp:'不動',spd:'要打掉四成體力才算技有，體力 +10%',hi:'凱師範慢慢綁好黑帶：「押忍。全力來。」',win:'凱師範點點頭：「押忍。你可以出去教人了。」',lose:'凱師範扶你起來：「很好的一戰。再來，隨時。」',mod:f=>{f.wazaTh=.4;f.maxHp=Math.round(f.maxHp*1.1);f.hp=f.maxHp;}}
 ];
 const tourName=t=>t.k==='d9'?'9D sensei':MNAME[t.k];
 function tourBest(){try{return +localStorage.getItem('kl-tour')||0;}catch(e){return 0;}}
 function tourOk(){return !!S&&S.rank>=6;}
 function* tour(quick){
   const best=tourBest();
-  yield P('sensei 道場巡禮',`用你這輩子練到的最好狀態，從小港一路打到台灣支部，依序挑戰 10 位 sensei。<br>每贏一場體況會回復一些，輸了就結束。${best?`<br>你目前的最佳紀錄：<b>第 ${best} 站</b>。`:''}<br><small>（各 sensei 的專長為暫定設定）</small>`,[{id:'go',label:'押忍！出發',wide:1}]);
-  let reached=0;
-  for(let i=0;i<TOUR.length;i++){
-    const t=TOUR[i],nm=tourName(t);
+  yield P('sensei 道場巡禮',`用你這輩子練到的最好狀態，挑戰 10 位 sensei。前 7 站的順序每次都不一樣，最後三站固定是蛤森、傑克杜、凱師範。<br>每贏一場體況會回復一些，輸了就結束。${best?`<br>你目前的最佳紀錄：<b>第 ${best} 站</b>。`:''}<br><small>（各 sensei 的特殊能力為暫定設定）</small>`,[{id:'go',label:'押忍！出發',wide:1}]);
+  let reached=0;const ORD=TOUR.slice(0,7);for(let a=ORD.length-1;a>0;a--){const b=Math.floor(r()*(a+1));[ORD[a],ORD[b]]=[ORD[b],ORD[a]];}ORD.push(...TOUR.slice(7));
+  for(let i=0;i<ORD.length;i++){
+    const t=ORD[i],nm=tourName(t);
     if(!quick)yield P(`第 ${i+1} 站・${nm}`,`<b>${t.dojo}</b>・${TYPEN[t.type]}<br><span class="tg crit">${t.sp}</span>${t.spd}<br><br>${t.hi}`,[{id:'go',label:'押忍！',wide:1}]);
     const opp={name:nm,sub:t.dojo,type:t.type,hair:'#2c2840',belt:6,str:t.str,wc:S.wc,mk:t.k,boss:t};
     const res=yield* battle(TOUR_T,opp,`第 ${i+1} 站`,quick);
     if(!res.win){if(!quick)yield P(`第 ${i+1} 站・${nm}`,`${t.lose}<br><br>巡禮在第 ${i+1} 站結束。`,[{id:'ok',label:'押忍……',wide:1}]);break;}
     reached=i+1;S.hp=Math.min(100,S.hp+30);S.injury=null;
-    if(!quick&&i<TOUR.length-1)yield P(`第 ${i+1} 站・${nm}`,`${t.win}<br><br>體況回復到 ${Math.round(S.hp)}。下一站：${tourName(TOUR[i+1])}。`,[{id:'go',label:'繼續',wide:1}]);
+    if(!quick&&i<ORD.length-1)yield P(`第 ${i+1} 站・${nm}`,`${t.win}<br><br>體況回復到 ${Math.round(S.hp)}。下一站：${tourName(ORD[i+1])}。`,[{id:'go',label:'繼續',wide:1}]);
   }
   if(!quick){try{if(reached>tourBest())localStorage.setItem('kl-tour',String(reached));}catch(e){}}
   if(!quick)yield P(reached>=10?'巡禮制霸！':'巡禮結果',reached>=10?`10 位 sensei 全部打贏了。<br>凱師範：「押忍。台灣支部，交給你們這一代了。」`:`這次走到第 ${reached} 站。${reached>best?'<br><b>刷新最佳紀錄！</b>':''}`,[{id:'back',label:'回到人生結算',wide:1}]);
