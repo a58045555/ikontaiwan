@@ -695,9 +695,10 @@ const atHome=(...ks)=>ks.includes(S.setup.home);
 function dojoMaster(hk){return (DOJO_M[hk]||['shihan'])[0];}
 function masterTitle(hk){return MNAME[dojoMaster(hk)];}
 const PXIMG={};if(typeof Image!=='undefined')for(const k in PX){const im=new Image();im.src=PX[k];PXIMG[k]=im;}
+for(const k in MIMG)PXIMG['m_'+k]=MIMG[k];
 function drawPx(cv,key){const im=PXIMG[key];if(!im||!im.complete||!im.naturalWidth){if(im&&!im._wait){im._wait=1;im.addEventListener('load',()=>{try{if(G)render();}catch(e){}},{once:true});}return false;}
   cv.width=im.naturalWidth;cv.height=im.naturalHeight;const x=cv.getContext('2d');x.clearRect(0,0,cv.width,cv.height);x.drawImage(im,0,0);cv.classList.add('hpx');return true;}
-function foeKey(f){if(f.rival)return 'rival';const k=HERO_KEYS[Math.min(6,f.belt|0)];let h=0;for(const ch of String(f.name||''))h=(h*31+ch.charCodeAt(0))>>>0;return (h%2?'sen_':'koh_')+k;}
+function foeKey(f){if(f.rival)return 'rival';if(f.mk&&PXIMG['m_'+f.mk])return 'm_'+f.mk;const k=HERO_KEYS[Math.min(6,f.belt|0)];let h=0;for(const ch of String(f.name||''))h=(h*31+ch.charCodeAt(0))>>>0;return (h%2?'sen_':'koh_')+k;}
 const HERO_KEYS=['white','orange','blue','yellow','green','brown','black'];const HEROIMG={};
 if(typeof Image!=='undefined')for(const k of HERO_KEYS){const im=new Image();im.src=HERO_PNG[k];HEROIMG[k]=im;}
 function heroImg(rk){return HEROIMG[HERO_KEYS[Math.min(6,rk|0)]];}
@@ -1236,7 +1237,7 @@ function dmgCalc(att,def,m,crit,em){
 }
 const LN=(cls,h)=>`<div class="ln ${cls}">${h}</div>`;
 function checkWaza(victim,attacker,d,L){
-  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000:.3)){attacker.waza++;L.push(LN('sys',`<span class="tg waza">技有！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個技有`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
+  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000:(victim.wazaTh||.3))){attacker.waza++;L.push(LN('sys',`<span class="tg waza">技有！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個技有`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
 }
 function act(att,def,key,L,scout,force){
   const m=att.me?favMove(key):MOVES[key];if((att.hp<=0&&!force)||def.hp<=0)return;if(att.me&&m.fav)S.favUse=(S.favUse||0)+1;
@@ -1247,21 +1248,21 @@ function act(att,def,key,L,scout,force){
   const hits=m.hits||1;let total=0;const notes=[];const extra=[];
   for(let h=0;h<hits;h++){
     if((att.hp<=0&&!force)||def.hp<=0)break;
-    const acc=clamp((m.acc+(att.tec-def.spd)*.4+(scout&&att.me?5:0)-(att.press||0)*6)/100,.25,1);
+    const acc=clamp((m.acc+(att.tec-def.spd)*.4+(scout&&att.me?5:0)-(att.press||0)*6+(att.accB||0))/100,.25,1);
     if(r()>acc){notes.push(`<span class="tg dn">${h?'第二擊落空':'被閃開'}</span>`);continue;}
     const em=(EFF[def.type]||{})[m.cat]||1;
-    const crit=r()<.05+(att.me&&hasT('rash')?.05:0)+att.tec/1500+(m.crit||0)+(att.hp<att.maxHp*.3?att.spi/1000:0)-(def.me?est('res')/1500:0);
-    let d=dmgCalc(att,def,m,crit,em);
+    const crit=r()<.05+(att.me&&hasT('rash')?.05:0)+att.tec/1500+(m.crit||0)+(att.hp<att.maxHp*.3?att.spi/1000:0)-(def.me?est('res')/1500:0)+(att.critB||0);
+    let d=dmgCalc(att,def,m,crit,em);if(att.punchMul&&m.cat==='突')d=Math.round(d*att.punchMul);
     if(def.guard){
       d=Math.round(d*.3);def.guard=false;def.blocked=1;
-      const cd=dmgCalc(def,att,MOVES.uke,false,1);att.hp=Math.max(0,att.hp-cd);att.flash=1;
+      const cd=Math.round(dmgCalc(def,att,MOVES.uke,false,1)*(def.ukeMul||1));att.hp=Math.max(0,att.hp-cd);att.flash=1;
       extra.push(LN(def.me?'me':'foe',`${esc(def.name)}：<b>受け</b>擋下大半力道並反擊 <span class="dmg">−${cd}</span>`));
       checkWaza(att,def,cd,extra);if(att.hp<=0&&!att.finisher)att.finisher='受け・反擊';
     }
     def.hp=Math.max(0,def.hp-d);total+=d;def.flash=1;
     if(crit)notes.push('<span class="tg crit">會心一擊</span>');
     if(em>1)notes.push('<span class="tg up">效果拔群</span>');else if(em<1)notes.push('<span class="tg dn">效果不佳</span>');
-    if(m.leg){def.leg=Math.min(5,def.leg+1);if(def.leg===3)notes.push('<span class="tg">對手腳步不穩</span>');}
+    if(m.leg){def.leg=Math.min(5,def.leg+(att.legX||1));if(def.leg===3)notes.push('<span class="tg">對手腳步不穩</span>');}
   }
   if(att.me&&total>0&&(!att.best||total>att.best.d))att.best={n:m.n,d:total};
   L.push(LN(who,`${nm}：<b>${m.n}</b>${total>0?` <span class="dmg">−${total}</span>`:''}${notes.join('')}`));
@@ -1269,7 +1270,7 @@ function act(att,def,key,L,scout,force){
   if(total>0)checkWaza(def,att,total,L);
   if(def.hp<=0&&!def.finisher)def.finisher=m.n;
 }
-function snapF(f){const o={me:!!f.me,name:f.name,sub:f.sub,rival:!!f.rival,type:f.type,maxHp:f.maxHp,hp:f.hp,ki:f.ki,kiMax:f.kiMax,waza:f.waza,leg:f.leg,belt:f.belt,hair:f.hair,wc:f.wc,flash:!!f.flash};f.flash=0;return o;}
+function snapF(f){const o={me:!!f.me,name:f.name,sub:f.sub,rival:!!f.rival,type:f.type,maxHp:f.maxHp,hp:f.hp,ki:f.ki,kiMax:f.kiMax,waza:f.waza,leg:f.leg,belt:f.belt,hair:f.hair,wc:f.wc,mk:f.mk,flash:!!f.flash};f.flash=0;return o;}
 function BP(me,foe,L,opts,title,info){return {kind:'battle',eyebrow:when(),title,info:info||{},me:snapF(me),foe:snapF(foe),lines:L.slice(),opts};}
 function moveOpts(me,foe){
   const o=me.moves.map(k=>{const m=favMove(k);const em=(EFF[foe.type]||{})[m.cat]||1;
@@ -1294,17 +1295,17 @@ function wcApply(me,foe){
 const FOE_ADJ=2.2;
 const ATB_RATE=f=>Math.max(4,10*(1+(f.spd*(1-.08*f.leg)*(1-.04*(f.press||0))-60)/100));
 function* battle(T,opp,rn,quick){
-  const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);const start=me.hp;
+  const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);if(opp.mk)foe.mk=opp.mk;const start=me.hp;
   me.side='aka';foe.side='shiro';
   let auto=quick,t=0,end=50,phase='本戰';const scout=!!S.flags.scout;
-  me.g=30+r()*30;foe.g=30+r()*30;let last=null,fNext=aiPick(foe,me),spiOn=false;
+  let last=null,fNext=null,spiOn=false;me.g=30+r()*30;foe.g=30+r()*30;if(opp.boss)opp.boss.mod(foe);fNext=aiPick(foe,me);
   let L=[LN('sys',`${opp.rival?'<span class="tg waza">宿敵</span>':''}<span class="tg aka">赤</span>你　對　<span class="tg shiro">白</span>${esc(foe.name)}（${esc(foe.sub)}・${TYPEN[foe.type]}）`),LN('sys','主審：「正面に礼！お互いに礼！始め！」')];
   {const d=WIDX[foe.wc]-WIDX[me.wc];L.push(LN('sys intel',`<span class="tg">體格</span>對手${WCLS[foe.wc].n}${d>0?`，比你重 ${d} 級：他每一擊更重、更扛打，靠速度多出手`:d<0?`，比你輕 ${-d} 級：他行動條比較快，你一擊比較重`:'，跟你同量級'}`));}
   L.push(LN('sys',`提示：${TYPEN[foe.type]}${WEAK[foe.type]}，招式上有「拔群」標記的打起來最痛。`));
   if(scout)L.push(LN('sys','你研究過對手的影片，命中率提高。'));
   L.push(LN('sys intel',`<span class="tg">情報</span>常用：${FOE_SETS[foe.type].map(k=>MOVES[k].n).join('・')}`));
   {const lm=(S.lossMem||{})[opp.name];if(lm)L.push(LN('sys intel',`<span class="tg dn">記憶</span>上次你輸給他：${esc(lm)}。這次不一樣。`));}
-  const SEN=(typeof MNAME!=='undefined'&&MNAME[dojoMaster(S.setup.home)])||'sensei';let cheer=0;const TELL={'下段':'他重心下沉，要踢下段！','中段':'他在找中段的空檔！','上段':'小心上段！','突':'他要衝進來打拳！'};
+  const SEN=T.id==='tour'?`師兄 ${S.npc?S.npc.sen:''}`:(typeof MNAME!=='undefined'&&MNAME[dojoMaster(S.setup.home)])||'sensei';let cheer=0;const TELL={'下段':'他重心下沉，要踢下段！','中段':'他在找中段的空檔！','上段':'小心上段！','突':'他要衝進來打拳！'};
   const ttl=()=>`${T.short} 組手 ${rn} · ${phase}`;
   const info=()=>({phase,t,end,len:phase==='本戰'?50:30,mg:me.g,fg:foe.g});
   const fdo=(x,y,k,force)=>{ // one action with ATB extras
@@ -1347,6 +1348,7 @@ function* battle(T,opp,rn,quick){
       if(me.hp<=0&&foe.hp<=0){me.hp=1;foe.hp=1;L.push(LN('sys','雙方同時倒地——又都撐著站了起來！'));}
     }
     if(!spiOn&&me.hp>0&&foe.hp>0&&(phase==='延長戰'||me.hp/me.maxHp<foe.hp/foe.maxHp-.15)&&S.st.spi>=40){spiOn=true;L.push(LN('sys cheer',`<span class="tg crit">鬥志燃起</span>落後也不退，攻擊力提升`));}
+    if(foe.mochi===1&&foe.hp>0&&foe.hp<foe.maxHp*.3&&me.hp>0){foe.mochi=2;const h=Math.round(foe.maxHp*.15);foe.hp+=h;L.push(LN('sys cheer',`場邊的麻糬「汪！」了一聲，${esc(foe.name)}重新站穩 <span class="heal">+${h}</span>`));}
     if(!cheer&&me.hp>0&&me.hp<me.maxHp*.35&&foe.hp>0){cheer=1;me.ki=Math.min(me.kiMax,me.ki+1);L.push(LN('sys cheer',`場邊傳來師兄${esc(S.npc?S.npc.sen:'')}的聲音：「撐住！」<span class="tg">氣 +1</span>`));}
     if(foe.hp<=0){result={win:true,method:foe.awase?'合技一本勝':`一本勝・${foe.finisher||''}`};L.push(LN('sys','<span class="tg waza">一本！</span>你贏了'));break;}
     if(me.hp<=0){result={win:false,method:me.awase?'合技一本負':`一本負・${me.finisher||''}`};L.push(LN('sys','<span class="tg dn">一本……</span>你被擊倒了'));break;}
@@ -1373,6 +1375,52 @@ function* battle(T,opp,rn,quick){
   let inj=null;if(r()<(taken*.14+(result.win?0:.03)+(S.hp<35?.05:0))*injMul())inj=injure(1);
   return {win:result.win,method:result.method,inj};
 }
+/* ===== sensei 道場巡禮 ===== */
+const TOUR_T={id:'tour',name:'sensei 道場巡禮',short:'道場巡禮',open:false,q:0,base:0,rounds:10};
+const TOUR=[ // 暫定設定：類型／得意技／特殊能力，待使用者提供真實專長後修正
+  {k:'xiaogang',dojo:'小港道場',type:'speed',str:70,sp:'先手',spd:'開場行動條就是滿的',hi:'「來啦！先說好，我出手很快喔。」',win:'「好！腳步比上次穩多了。下一站加油！」',lose:'「速度不是只有快，還要準。再來！」',mod:f=>{f.g=100;}},
+  {k:'chaozhou',dojo:'潮州道場',type:'tech',str:74,sp:'反擊',spd:'受け反擊的威力 +40%',hi:'「你打過來，我就打回去。準備好了嗎？」',win:'「不錯，沒有被我騙到。」',lose:'「急什麼？看清楚再出手。」',mod:f=>{f.ukeMul=1.4;f.moves=['tsuki','chudan','uke','uke','jodan'];}},
+  {k:'nanzi',dojo:'楠梓道場',type:'power',str:78,sp:'鐵壁',spd:'防禦 +12%',hi:'「打吧，看你能不能打動我。」',win:'「……有點痛。好，算你過關。」',lose:'「打不動就換個地方打。下段呢？」',mod:f=>{f.def*=1.12;}},
+  {k:'tainan',dojo:'台南道場',type:'speed',str:76,sp:'連打',spd:'正拳連打命中 +6',hi:'「嘿嘿，今天陪你玩玩。」',win:'「哈！被你抓到節奏了。」',lose:'「別停下來！停下來就被我打。」',mod:f=>{f.moves=['renda','renda','tsuki','hiza','jodan','ibuki'];f.accB=6;}},
+  {k:'lingya',dojo:'苓雅道場',type:'power',str:84,sp:'麻糬應援',spd:'體力剩三成時，麻糬在場邊叫一聲，回復 15%',hi:'「麻糬也在看喔。你可別輸給一隻狗。」',win:'「麻糬搖尾巴了，牠承認你了。」',lose:'「麻糬說：汪。意思是再練練。」',mod:f=>{f.mochi=1;}},
+  {k:'fengshan',dojo:'鳳山・竹田道場',type:'tech',str:87,sp:'下段崩し',spd:'下段一次削兩格腳步',hi:'「腳顧好。等一下你就知道為什麼。」',win:'「站得住我的下段，你的根基夠了。」',lose:'「腳軟了吧？基本功回去多蹲。」',mod:f=>{f.legX=2;f.moves=['gedan','gedan','tsuki','chudan','uke','ibuki'];}},
+  {k:'d9',dojo:'鳳山道場',type:'speed',str:85,sp:'白拳套',spd:'突き命中 +8、威力 +6%',hi:'（9D sensei 戴上白色拳套，對你比了個讚。）「今天陪你打。」',win:'「押忍！這一拳有打到心裡。」',lose:'「拳頭要收回來才打得出下一拳。再來！」',mod:f=>{f.accB=8;f.punchMul=1.06;f.moves=['tsuki','renda','tsuki','hiza','jodan','ibuki'];}},
+  {k:'sensei',dojo:'屏東・左營道場',type:'tech',str:94,sp:'上段',spd:'上段會心率 +12%',hi:'「從白帶看你到現在，讓我看看你長到哪了。」',win:'「……很好。你已經不是當年那個小白帶了。」',lose:'「上段要看準時機。你太早出了。」',mod:f=>{f.critB=.12;f.moves=['tsuki','chudan','jodan','ushiro','uke','ibuki'];}},
+  {k:'shihandai',dojo:'師範代',type:'tech',str:98,sp:'讀招',spd:'受け會先一步擺好，命中 +8',hi:'「你的習慣，我都記得。」',win:'「你改掉了。很好，這才是真的進步。」',lose:'「同樣的招，用第三次就被看穿了。」',mod:f=>{f.accB=8;f.ukeMul=1.25;}},
+  {k:'shihan',dojo:'台灣支部',type:'power',str:103,sp:'不動',spd:'要打掉四成體力才算技有，體力 +10%',hi:'凱師範慢慢綁好黑帶：「押忍。全力來。」',win:'凱師範點點頭：「押忍。你可以出去教人了。」',lose:'凱師範扶你起來：「很好的一戰。再來，隨時。」',mod:f=>{f.wazaTh=.4;f.maxHp=Math.round(f.maxHp*1.1);f.hp=f.maxHp;}}
+];
+if(typeof Image!=='undefined'&&typeof MHEAD!=='undefined'&&MHEAD.d9){const a=new Image();a.src=MHEAD.d9;PXIMG['m_d9']=a;}
+const tourName=t=>t.k==='d9'?'9D sensei':MNAME[t.k];
+function tourBest(){try{return +localStorage.getItem('kl-tour')||0;}catch(e){return 0;}}
+function tourOk(){return !!S&&S.rank>=6;}
+function* tour(quick){
+  const best=tourBest();
+  yield P('sensei 道場巡禮',`用你這輩子練到的最好狀態，從小港一路打到台灣支部，依序挑戰 10 位 sensei。<br>每贏一場體況會回復一些，輸了就結束。${best?`<br>你目前的最佳紀錄：<b>第 ${best} 站</b>。`:''}<br><small>（各 sensei 的專長為暫定設定）</small>`,[{id:'go',label:'押忍！出發',wide:1}]);
+  let reached=0;
+  for(let i=0;i<TOUR.length;i++){
+    const t=TOUR[i],nm=tourName(t);
+    if(!quick)yield P(`第 ${i+1} 站・${nm}`,`<b>${t.dojo}</b>・${TYPEN[t.type]}<br><span class="tg crit">${t.sp}</span>${t.spd}<br><br>${t.hi}`,[{id:'go',label:'押忍！',wide:1}]);
+    const opp={name:nm,sub:t.dojo,type:t.type,hair:'#2c2840',belt:6,str:t.str,wc:S.wc,mk:t.k,boss:t};
+    const res=yield* battle(TOUR_T,opp,`第 ${i+1} 站`,quick);
+    if(!res.win){if(!quick)yield P(`第 ${i+1} 站・${nm}`,`${t.lose}<br><br>巡禮在第 ${i+1} 站結束。`,[{id:'ok',label:'押忍……',wide:1}]);break;}
+    reached=i+1;S.hp=Math.min(100,S.hp+30);S.injury=null;
+    if(!quick&&i<TOUR.length-1)yield P(`第 ${i+1} 站・${nm}`,`${t.win}<br><br>體況回復到 ${Math.round(S.hp)}。下一站：${tourName(TOUR[i+1])}。`,[{id:'go',label:'繼續',wide:1}]);
+  }
+  if(!quick){try{if(reached>tourBest())localStorage.setItem('kl-tour',String(reached));}catch(e){}}
+  if(!quick)yield P(reached>=10?'巡禮制霸！':'巡禮結果',reached>=10?`10 位 sensei 全部打贏了。<br>凱師範：「押忍。台灣支部，交給你們這一代了。」`:`這次走到第 ${reached} 站。${reached>best?'<br><b>刷新最佳紀錄！</b>':''}`,[{id:'back',label:'回到人生結算',wide:1}]);
+  return reached;
+}
+let GT=null;
+function dcopy(o){if(Array.isArray(o))return o.map(dcopy);if(o&&typeof o==='object'&&Object.getPrototypeOf(o)===Object.prototype){const r={};for(const k in o)r[k]=dcopy(o[k]);return r;}return o;}
+function startTour(){
+  if(!G||GT||!tourOk())return;
+  const S0=S;const T=dcopy(S0);S=T;
+  const pk=S0.peakSt||{};for(const k in pk)S.st[k]=Math.max(S.st[k],pk[k]);
+  S.hp=100;S.injury=null;S.auto=null;S.flags.ff=0;S.scene=[];S.curT=TOUR_T;
+  GT={S0,G0:G};G={...G,gen:tour(false),choices:[]};G.prompt=G.gen.next().value;render();window.scrollTo({top:0});
+}
+function endTour(){if(!GT)return;S=GT.S0;G=GT.G0;GT=null;render();window.scrollTo({top:0});}
+function gtChoose(id){const res=G.gen.next(id);if(res.done||!res.value){endTour();return;}const wb=G.prompt.kind==='battle';G.prompt=res.value;render();sfx();if(!(wb&&G.prompt.kind==='battle'))window.scrollTo({top:0,behavior:'smooth'});}
 function boutLine(rn,opp,res){return `<div class="bout ${res.win?'w':'l'}"><span class="rd">${rn}</span><span class="op">${esc(opp.name)}${opp.rival?'<em>宿敵</em>':''}</span><span class="res">${res.method}</span></div>`;}
 
 /* ===== 型比賽 ===== */
@@ -1881,6 +1929,7 @@ function fiveRecap(){
   say(`<div class="recap"><small>${o.age}→${n.age} 歲・五年回顧</small><div>${bits.join('・')}</div><p>${line}</p></div>`);
 }
 function yearTick(){
+  S.peakSt=S.peakSt||{};for(const k of ['pow','spd','sta','tec','con','res','spi'])S.peakSt[k]=Math.max(S.peakSt[k]||0,S.st[k]);
   if(S.age>=20&&S.age%5===0)fiveRecap();
   if(S.bond){if(S.flags.senBond&&S.age<=22)bondUp('sen',5);if(S.flags.kohTrained&&S.age<=32)bondUp('koh',3);}
   branchTick();
@@ -3423,7 +3472,7 @@ function showIntro(){
 let G=null;
 const KEY='kyokushin-life-v42';
 const $=s=>document.querySelector(s);
-function save(){try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
+function save(){if(typeof GT!=='undefined'&&GT)return;try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));}catch(e){}}
 function loadSave(){try{return JSON.parse(localStorage.getItem(KEY)||'null');}catch(e){return null;}}
 function clearSave(){try{localStorage.removeItem(KEY);}catch(e){}}
 function quitLife(){S.ending='quit';S.forcedEnd=null;S.mil=S.mil||{};S.mil.quit=S.age;log('放棄了這段人生','bad');return {kind:'end',title:'END',body:'',lines:[],opts:[]};}
@@ -3590,6 +3639,7 @@ function drawTrainFx(x,kind,t){x.imageSmoothingEnabled=false;x.clearRect(0,0,240
 function startTrainFx(){cancelAnimationFrame(trainRAF);const cv=$('#trainCv');if(!cv)return;const x=cv.getContext('2d');const kind=TK[cv.dataset.id]||'line';const t0=performance.now();
   const f=now=>{if(!document.body.contains(cv))return;try{const tt=(now-t0)/1000;if(!drawTrainImg(x,kind,tt))drawTrainFx(x,kind,tt);}catch(e){}trainRAF=requestAnimationFrame(f);};trainRAF=requestAnimationFrame(f);}
 function choose(id){
+  if(GT){gtChoose(id);return;}
   if(String(id).startsWith('alloc:')){if(applyAlloc(id.slice(6))){G.choices.push(id);save();render();}return;}
   if(id==='cmd:stopauto'){if(S.auto){S.auto=null;S.autoPref=false;G.choices.push(id);save();render();}return;}
   if(id==='cmd:ff'){if(!S.flags.ff&&G.prompt.kind!=='end'){S.flags.ff=1;log('人生快轉','');G.choices.push(id);ffRun();save();render();window.scrollTo({top:0});}return;}
@@ -3639,6 +3689,7 @@ function renderBattle(p){
   ${p.opts.length>1?timingBar():''}<div class="moves">${optsHTML(p.opts)}</div>
   <p class="bhelp">★ 技有：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每次出手回 1 格<br>「速」是行動條：速度越快越早輪到你，快很多時能連續出手；雙方同時滿就會相打ち</p>`;
   if(!drawPx($('#sprFoe'),foeKey(f)))drawSprite($('#sprFoe'),'front',SPR_BELT[f.belt]||'#2c2840',f.hair);
+  if(foeKey(f)==='m_d9'){const c=$('#sprFoe');c.style.setProperty('width','84px','important');c.style.height='84px';c.style.top='44px';c.style.right='64px';c.style.boxShadow='0 0 0 3px #26223b';}
   if(!drawPx($('#sprMe'),'back_'+HERO_KEYS[Math.min(6,m.belt|0)]))drawSprite($('#sprMe'),'back',SPR_BELT[m.belt],m.hair);
   card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{if(b.disabled)return;const id=b.dataset.id;const mv=MOVES[id];choose(mv&&!mv.rest&&!mv.guard&&tbHit()?id+'!':id);}));
   {const sc=card.querySelector('.scene');const fx=(sel,v)=>{if(!v)return;const e=document.createElement('div');e.className='dfloat '+sel;e.textContent='−'+v;e.style.animationDuration=(0.9/bSpd())+'s';sc.appendChild(e);};fx('foe',df);fx('me',dm);
@@ -4171,6 +4222,7 @@ function renderEnd(){
   <div id="newAch"></div>
   <div class="opts">
     <a class="opt rcbtn" id="btnRc2" href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener"><span class="l">想真的來練練看？</span><span class="s">前往道場 Instagram・i.k.o.n.taiwan</span></a>
+    ${tourOk()?`<button class="opt" type="button" id="btnTour"><span class="l">sensei 道場巡禮</span><span class="s">用巔峰狀態連戰 10 位 sensei${tourBest()?`・最佳紀錄 第 ${tourBest()} 站`:""}</span></button>`:""}
     <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
     <div id="cardOut"></div>
     <button class="opt" type="button" id="btnSame"><span class="l">同一顆種子，重新來過</span></button>
@@ -4181,6 +4233,7 @@ function renderEnd(){
   {const fresh=recordRun();if(fresh.length)$('#newAch').innerHTML=`<div class="epi"><b>解鎖成就</b><p>${fresh.map(n=>'🏅 '+n).join('<br>')}</p></div>`;}
   bindEpi();
   bindA2hs();
+  {const bt=$('#btnTour');if(bt)bt.onclick=startTour;}
   $('#btnCard').onclick=async()=>{
     try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(e){}
     const cv=shareCard();const url=cv.toDataURL('image/png');
