@@ -1001,6 +1001,7 @@ function newState(setup){EP_TAG="";
   S.traits=setup.bday?traitsBday(setup.bday,setup.seed):traitsFor(setup.seed);S.traits0=S.traits.slice();S.mood='normal';S.tAcq=[];if(S.style==='all'&&!S.traits.includes('genius')){S.style='low';if(!STYLE_FAV.low.includes(S.fav))S.fav='gedan';}
   S.npc={sen:twName(),koh:twName()};S.bond={sen:0,koh:0,rival:0};
   S.rival=twNameO();S.rivalDojo=otherDojo();S.rivalType=pick(['power','tech','speed']);S.rivalEdge=(r()-.4)*8;S.rivalHair=pick(HAIR);
+  if(setup.test){S.rank=6;for(const k in S.st)S.st[k]=Math.max(S.st[k],88);S.peakSt=Object.assign({},S.st);}
 }
 function say(h){S.scene.push(h);}
 function tipAny(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key])return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>提示</b>　${t}</span>`;}
@@ -4369,8 +4370,8 @@ function renderStart(){
       e.preventDefault();
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
-      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName(q('sex')==='f')).slice(0,8),mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
-      playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});
+      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName(q('sex')==='f')).slice(0,8),test:$('#inName').value.trim()==='測試帳號'?1:undefined,mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
+      playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});if(setup.test&&tourOk())startTour();
         if(setup.bday&&setup.bday.slice(5)===todayStr().slice(5)){const t=document.createElement('div');t.className='bdtoast';t.innerHTML='🎂 <b>生日快樂！</b><br>今天是你的生日，道場的大家一起喊：「押忍！」';document.body.appendChild(t);chip([[523,.1],[659,.1],[784,.2]]);setTimeout(()=>t.remove(),4500);}});
     });
     $('#btnAch').onclick=()=>{renderAch();const b=$('#achBox');b.hidden=!b.hidden;if(!b.hidden)b.scrollIntoView({behavior:'smooth'});};
