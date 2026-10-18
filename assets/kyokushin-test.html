@@ -471,7 +471,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 .bigcall{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);font-size:44px;font-weight:900;color:#ffe14a;text-shadow:0 3px 0 #d9534f,0 0 10px #000;pointer-events:none;animation:bigc 1.4s ease-out forwards;z-index:6;white-space:nowrap}@keyframes bigc{0%{transform:translate(-50%,-50%) scale(2.2);opacity:0}15%{transform:translate(-50%,-50%) scale(1);opacity:1}80%{opacity:1}100%{opacity:0}}
 .jrow{display:flex;align-items:center;gap:6px;margin:8px 0;flex-wrap:wrap}.jrow b{flex-basis:100%;font-size:13px}.jrow em{font-style:normal;font-weight:900;margin-left:auto}.jf{display:inline-block;min-width:40px;text-align:center;padding:4px 0;border:2px solid #26223b;border-radius:6px;background:#fff;font-weight:900;opacity:0;animation:jflip .4s forwards}.jf.me{background:#fff3c4}@keyframes jflip{from{transform:rotateX(90deg);opacity:0}to{transform:none;opacity:1}}.jres{text-align:center;font-size:30px;font-weight:900;margin-top:6px}.jres.w{color:#d9534f}.jres.l{color:#555}
 .tleft{display:inline-block;width:70px;height:7px;margin-left:6px;background:#ddd;box-shadow:0 0 0 2px #26223b;vertical-align:1px}.tleft i{display:block;height:100%;background:#3f6fd8}.atb{flex:1;height:6px;background:#e4dccb;box-shadow:0 0 0 2px #26223b;margin-left:6px;position:relative}.atb i{display:block;height:100%;background:#9a93b0}.atb.me i{background:#f2c24f}.atb.full i{background:#ffe14a;animation:atbf .6s ease-in-out infinite alternate}@keyframes atbf{to{background:#ff9a3c}}.side{display:inline-block;font-style:normal;font-size:11px;font-weight:900;line-height:16px;width:16px;text-align:center;margin-right:4px;box-shadow:0 0 0 2px #26223b;vertical-align:1px}.side.aka{background:#d9534f;color:#fff}.side.shiro{background:#fff;color:#26223b}.tg.aka{background:#d9534f;color:#fff}.tg.shiro{background:#fff;color:#26223b}
-.st7 .sh{display:block;font-size:9.5px;font-weight:700;opacity:.65;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:clip}
+.st7 .t>b{position:relative}.st7 .capb{position:absolute;right:0;top:-9px;font-size:9px;line-height:1;color:#d9534f}.st7 .sh{display:block;font-size:9.5px;font-weight:700;opacity:.65;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:clip}
 .ln.vs{line-height:1.7}.ln.vs .tg{margin-left:4px}details.bhelp summary{cursor:pointer;text-align:center}
 </style>
 
@@ -960,7 +960,7 @@ const homeNow=()=>S.path==='uchi'?UCHI_HOME:S.home;
 const pk=()=>homeNow().pk||{};
 const otherDojo=()=>pick(Object.values(HOMES).filter(h=>h.n!==S.home.n)).n;
 const rankB=()=>S.rank*1.3;
-const est=k=>k==='spi'?S.st.spi:Math.min(115,S.st[k]+rankB());
+const est=k=>k==='spi'?S.st.spi:Math.min(115+capB(k),S.st[k]+rankB());
 const divs=()=>ROUTES[S.route].divs;
 
 function newState(setup){EP_TAG="";
@@ -1072,22 +1072,35 @@ function specInfo(){const t=S.trc||{};const k=t.kihon||0,m=t.kumite||0,n=k+m;
 const kataSpec=()=>specInfo().kb;
 const kumiSpec=()=>specInfo().mb;
 function specLabel(){return specInfo().n;}
-function autoAlloc(){const ks=['pow','spd','sta','tec','con','res'];const got={};while(S.pts>0){const c=ks.filter(k=>S.st[k]<100);if(!c.length)break;const k=c.reduce((a,b)=>S.st[b]<S.st[a]?b:a);applyAlloc(k);got[k]=(got[k]||0)+1;}return Object.entries(got).map(([k,n])=>`${STATN[k]}+${n}`).join('、');}
+function autoAlloc(){const ks=['pow','spd','sta','tec','con','res'];const got={};while(S.pts>0){const c=ks.filter(k=>S.st[k]<capOf(k));if(!c.length)break;const k=c.reduce((a,b)=>S.st[b]<S.st[a]?b:a);applyAlloc(k);got[k]=(got[k]||0)+1;}return Object.entries(got).map(([k,n])=>`${STATN[k]}+${n}`).join('、');}
 function award(n,why){S.pts=(S.pts||0)+n;if(EZ()){const t=autoAlloc();say(`<span class="tg crit">+${n} 修煉點</span>${why||''}・自動分配：${t}`);}else say(`<span class="tg crit">+${n} 修煉點</span>${why||''}`);}
-function applyAlloc(k){if(S&&S.pts>0&&STATN[k]&&S.st[k]<100){S.st[k]=Math.min(100,S.st[k]+PT_GAIN);S.pts--;return true;}return false;}
+function applyAlloc(k){if(S&&S.pts>0&&STATN[k]&&S.st[k]<capOf(k)){S.st[k]=Math.min(capOf(k),S.st[k]+PT_GAIN);S.pts--;return true;}return false;}
 const QN=['上半年','上半年','下半年','下半年'];
 function when(){return `${S.year} 年 ${QN[S.q]}・${S.age} 歲`;}
 const REC_KEEP=t=>t.startsWith('稽古方針')||t==='凱師範的邀請'||t.startsWith('找到自己的風格')||t.startsWith('得意技')||t.endsWith('審查')||TOURN.some(T=>T.name===t);
 function P(title,body,opts,kind){if(opts&&!REC_KEEP(title))opts.forEach(o=>{if(o.rec)o.rec=false;});const p={title,body,opts,eyebrow:when(),lines:S.scene,kind:kind||'choice',tag:EP_TAG||''};S.scene=[];return p;}
 function log(t,cls){S.log.push({w:`${S.year}·${S.q<2?'上':'下'}`,t,cls:cls||''});}
 function ageF(){const a=S.age;return a<=15?.45:a<=16?.78:a<=24?.9:a<=28?.7:a<=32?.45:.22;}
-function grow(k,amt){const cur=S.st[k],pot=S.pot[k];const room=Math.max(0,(pot-cur)/pot);S.st[k]=clamp(cur+amt*.95*Math.pow(room,.5)*ageF()*S.mult*injG()*lifeG()*traitG()*(k==='spi'&&hasT('hot')?1.3:1)*(k==='pow'&&hasT('strong')?1.2:1)*(k==='spd'&&hasT('swift')?1.2:1)*(.75+r()*.5),0,100);}
+function grow(k,amt){const cur=S.st[k],pot=S.pot[k];const room=Math.max(0,(pot-cur)/pot);S.st[k]=clamp(cur+amt*.95*Math.pow(room,.5)*ageF()*S.mult*injG()*lifeG()*traitG()*(k==='spi'&&hasT('hot')?1.3:1)*(k==='pow'&&hasT('strong')?1.2:1)*(k==='spd'&&hasT('swift')?1.2:1)*(.75+r()*.5),0,Math.max(100,capOf(k)));}
+const BREAK=[[S=>S.titles.some(t=>/世界大賽（組手）優勝/.test(t)),'pow',5,'世界組手冠軍'],[S=>S.titles.some(t=>/世界大賽（型）優勝/.test(t)),'tec',5,'世界型冠軍'],[S=>S.titles.some(t=>/三冠王/.test(t)),'spd',5,'三冠王'],[S=>S.titles.some(t=>/完全製霸/.test(t)),'sta',5,'完全製霸'],[S=>!!S.flags.hyaku,'res',5,'百人組手'],[S=>!!S.flags.shibucho,'con',5,'台灣支部長'],[S=>!!S.flags.uchiDone,'spi',5,'日本內弟子']];
+function capB(k){if(!S)return 0;let b=Math.min(5,(S.capX||{})[k]||0);for(const [f,kk,v] of BREAK)if(kk===k&&f(S))b+=v;return b;}
+const capOf=k=>100+capB(k);
+function sideOk(){return S.rank>=6&&['pow','spd','sta','tec','con'].filter(k=>S.st[k]>=Math.min(S.pot[k],capOf(k))-1.5).length>=3;}
+function sideBreak(pref){S.capX=S.capX||{};const ks=(pref?[pref]:['pow','spd','sta','tec','con','res']).filter(k=>(S.capX[k]||0)<5);if(!ks.length)return '';const k=ks.reduce((a,b)=>(S.st[b]/capOf(b))>(S.st[a]/capOf(a))?b:a);S.capX[k]=(S.capX[k]||0)+1;S.st[k]=Math.min(capOf(k),S.st[k]+1);return `<span class="tg crit">突破</span>${STATN[k]}上限 +1（${capOf(k)}）`;}
+function sideRun(c){
+  if(c==='side_mus'){S.money-=6;bump('hp',-12);S.fame+=2;const b=sideBreak();say(`你帶著道著出國，到陌生的道場一間一間去請教。${b}`);log('出國武者修行');return '武者修行';}
+  if(c==='side_koh'){S.fame+=1.5;S.hq=(S.hq||0)+2;grow('spi',1.5);bump('hp',-3);if(S.bond)bondUp('koh',4);say('你帶著後進一起稽古。教別人的時候，自己也看清了很多東西。<span class="tg">本部評價 +2</span>');return '帶後進稽古';}
+  if(c==='side_ken'){const fk=focusKata();kmGain(fk,9);let b='';if(r()<.35)b=sideBreak('tec');say(`你把「${fk}」拆開來一個動作一個動作研究。${b}`);return '型的研究';}
+  if(c==='side_jud'){S.money-=1;S.flags.jexp=(S.flags.jexp||0)+2;S.fame+=1;say('你參加了審判講習，學會從場外看比賽。');return '審判講習';}
+  return '';
+}
+function staffCap(d){return Math.min(10,3+Math.floor(Math.max(0,(d.students||0)-90)/45)+(S.flags.shibucho?1:0));}
 function bump(k,v){
   if(k==='hp')S.hp=clamp(S.hp+v,0,hpMax());
   else if(k==='money')S.money+=v;
   else if(k==='fame')S.fame=Math.max(0,S.fame+v);
   else if(k==='wear'){S.wear=clamp(S.wear+v,0,90);S.hp=Math.min(S.hp,hpMax());}
-  else S.st[k]=clamp(S.st[k]+v,0,100);
+  else S.st[k]=clamp(S.st[k]+v,0,capOf(k));
 }
 function fx(o){for(const k in o)bump(k,o[k]);}
 const val=k=>k in S.st?S.st[k]:S[k];
@@ -1186,7 +1199,7 @@ const TOURN=[
     can:d=>S.rank>=3&&S.age>=16&&S.path!=='uchi'},
   {id:'jp',name:'全日本選手權',short:'全日本',q:3,base:60,inc:2,rounds:6,kbase:80,kr:4,fame:18,prize:20,fee:4,sem:1.5,semFee:3,open:true,kata:true,desc:'型與無差別組手的最高舞台。八強可取得世界大賽資格。報名費含機票住宿。',
     can:d=>S.year%4!==3&&jpOk(d)},
-  {id:'world',name:'全世界空手道選手權',short:'世界大賽',q:3,base:58,inc:2,rounds:7,kbase:83,kr:5,fame:35,prize:50,fee:8,sem:2,semFee:4,open:true,kata:true,desc:'四年一度，全世界的極真拳士齊聚東京。報名費含機票住宿。',
+  {id:'world',name:'全世界空手道選手權',short:'世界大賽',q:3,base:63,inc:2.5,rounds:7,kbase:83,kr:5,fame:35,prize:50,fee:8,sem:2,semFee:4,open:true,kata:true,desc:'四年一度，全世界的極真拳士齊聚東京。報名費含機票住宿。',
     can:d=>S.year%4===3&&worldOk(d)}
 ];
 const tDivs=T=>divs().filter(d=>(d==='kumite'||T.kata)&&T.can(d));
@@ -1299,7 +1312,7 @@ function* battle(T,opp,rn,quick){
   const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);if(opp.mk)foe.mk=opp.mk;const start=me.hp;
   me.side='aka';foe.side='shiro';
   let auto=quick,t=0,end=50,phase='本戰';const scout=!!S.flags.scout;
-  let last=null,fNext=null,spiOn=false;me.g=30+r()*30;foe.g=30+r()*30;if(opp.boss)opp.boss.mod(foe);if(!quick)me.g=Math.max(me.g,100-ATB_RATE(me)+.01,foe.g);fNext=aiPick(foe,me);
+  let last=null,fNext=null,spiOn=false;me.g=30+r()*30;foe.g=30+r()*30;if(opp.boss)opp.boss.mod(foe);if(!quick){const rm=ATB_RATE(me),rf=ATB_RATE(foe),tf2=Math.ceil(Math.max(0,100-foe.g)/rf)+Math.ceil(100/rf),tm=Math.ceil(Math.max(0,100-me.g)/rm);if(tm>=tf2)me.g=100-rm*(tf2-1)+.01;}fNext=aiPick(foe,me);
   const wd=WIDX[foe.wc]-WIDX[me.wc];
   let L=[LN('sys vs',`${opp.rival?'<span class="tg waza">宿敵</span>':''}<span class="tg aka">赤</span>你 對 <span class="tg shiro">白</span><b>${esc(foe.name)}</b>　${esc(foe.sub)}・${TYPEN[foe.type]}・${WCLS[foe.wc].n}<span class="tg up">${WEAK[foe.type]}</span>${wd?`<span class="tg ${wd>0?'dn':'up'}">${wd>0?'比你重':'比你輕'} ${Math.abs(wd)} 級</span>`:''}${(S.lossMem||{})[opp.name]?'<span class="tg dn">上次輸過</span>':''}`),
     LN('info',`主審：「正面に礼！お互いに礼！始め！」${scout?'你研究過對手的影片，命中率提高。':''}常用：${FOE_SETS[foe.type].map(k=>MOVES[k].n).join('・')}。${wd>0?'他比你重：每一擊更重、更扛打，靠速度多出手。':wd<0?'他比你輕：行動條比較快，你一擊比較重。':''}${(S.lossMem||{})[opp.name]?`上次你輸給他：${esc(S.lossMem[opp.name])}。`:''}`)];
@@ -1307,6 +1320,7 @@ function* battle(T,opp,rn,quick){
   const ttl=()=>`${T.short} 組手 ${rn} · ${phase}`;
   const info=()=>({phase,t,end,len:phase==='本戰'?50:30,mg:me.g,fg:foe.g,tz:clamp(.2*clamp(.7+.3*S.hp/80,.7,1)*(1+clamp((me.tec-foe.tec)/100,-.25,.25)),.1,.28),ts:clamp(1-(foe.spd-me.spd)/300,.85,1.1)});
   const fdo=(x,y,k,force)=>{ // one action with ATB extras
+    if(!x.me&&!me.acted&&!auto&&!x.first){x.first=1;L.push(LN('sys','<span class="tg dn">對手先出手</span>他比你快，搶先動了'));}if(x.me)me.acted=1;
     if(x.guard&&!force){if(x.me)L.push(LN('sys','對手沒有正面攻來，你的架式落空了。'));else L.push(LN('sys',`${esc(x.name)}的架式落空了。`));x.guard=false;}
     x.ki=Math.min(x.kiMax,x.ki+1);if(MOVES[k].ki>x.ki)k=aiPick(x,y);
     const atkM=x.me&&spiOn?1+S.st.spi/900:1;const combo=last===x&&!MOVES[k].rest&&!MOVES[k].guard;
@@ -1430,7 +1444,7 @@ function kataScore(k){return (km(k.n)*.5+est('tec')*.25+S.st.spi*.1+k.d*2.5+kata
 function kataPow(){const ch=kataChoices();return Math.max(...ch.map(kataScore));}
 function mistakeP(k){return clamp((.03+(k.d*11-km(k.n))/150)*(hasT('clumsy')?1.4:1),.02,.6);}
 const toPts=x=>clamp(5+x/22,5,9.95);
-let JLAST=[];function judge(x){const a=[0,1,2,3,4].map(()=>toPts(x)+(r()-.5)*.4);JLAST=a.slice();a.sort((p,q)=>p-q);return (a[1]+a[2]+a[3])/3;}
+let JLAST=[];function judge(x){const a=[0,1,2,3,4].map(()=>Math.min(10,toPts(x)+(r()-.5)*.4));JLAST=a.slice();a.sort((p,q)=>p-q);return (a[1]+a[2]+a[3])/3;}
 function* kataRound(T,i,R,quick){
   const id=oppIdent(T);const ch=kataChoices();
   const oppK=KATA_LIST[clamp(Math.floor((T.kbase-10)/9)+ri(0,1),0,8)];
@@ -1438,7 +1452,7 @@ function* kataRound(T,i,R,quick){
   let k;
   if(quick)k=ch.reduce((a,b)=>exp(b)>exp(a)?b:a,ch[0]);
   else{
-    const c=yield P(`${T.short}・型 ${roundName(R,i)}`,`型比賽只看評分：五位審判打分，去掉最高和最低取平均。比的是誰把型練得更透。對手 <b>${esc(id.name)}</b>（${esc(id.sub)}）將演武「${oppK.n}」。`,
+    const c=yield P(`${T.short}・型 ${roundName(R,i)}`,`型比賽只看評分：五位審判各打 5.00～10.00 分，去掉最高和最低取平均。分數看你的型修煉度、型的難度、技術和鬥志，每位審判的眼光再有一點點差異。對手 <b>${esc(id.name)}</b>（${esc(id.sub)}）將演武「${oppK.n}」。`,
       ch.map(x=>({id:x.n,label:`「${x.n}」 修煉度 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)} · 預估 ${toPts(kataScore(x)).toFixed(1)} 分 · 失誤機率約 ${Math.round(mistakeP(x)*100)}%`})));
     var kt=typeof c==='string'&&c.endsWith('!');k=ch.find(x=>x.n===(kt?c.slice(0,-1):c))||ch[0];
   }
@@ -1858,7 +1872,7 @@ function* manage(owner,forced){
   if(S.money>=3)opts.push({id:'promo',label:'招生宣傳',sub:'花費 3 萬 · 學員↑'});
   if(S.money>=6&&d.equip<100)opts.push({id:'equip',label:'添購設備',sub:'花費 6 萬 · 設備↑ 招生更容易'});
   opts.push({id:'teach',label:'親自加強指導',sub:'口碑↑ 學員比較不會流失'+(owner?'':' · 自己的稽古效果減少')});
-  if(d.students>=25&&(d.staff||0)<3&&S.money>=2)opts.push({id:'hire',label:'聘請專任指導員',sub:`花費 2 萬 · 人事費每半年 +2.5 萬 · 可帶的學員 +30 · 品質↑（目前 ${d.staff||0} 位）`});
+  const pro=(d.blacks||0)>(d.staffB||0);if(d.students>=25&&(d.staff||0)<staffCap(d)&&S.money>=(pro?.5:2))opts.push({id:'hire',label:pro?'提拔黑帶弟子當指導員':'聘請專任指導員',sub:`花費 ${pro?'0.5':'2'} 萬 · 人事費每半年 +2.5 萬 · 可帶的學員 +30 · 品質↑（目前 ${d.staff||0}/${staffCap(d)} 位${pro?` · 可提拔的黑帶弟子 ${(d.blacks||0)-(d.staffB||0)} 位`:''}）`});
   if(!d.kids&&S.money>=2)opts.push({id:'kids',label:'開設少年部',sub:'花費 2 萬 · 學員上限 +30'});
   if(d.kids&&S.money>=1)opts.push({id:'school',label:'到學校、社區推廣',sub:'花費 1 萬 · 少年部學員↑ · 周邊競爭↓'});
   if(!d.women&&d.students>=15&&S.money>=2)opts.push({id:'women',label:'開設女子部',sub:'花費 2 萬 · 學員上限 +20'});
@@ -1880,7 +1894,7 @@ function* manage(owner,forced){
   if(c==='promo'){S.money-=3;extra=Math.round(ri(5,12)*(1+S.fame/100));}
   if(c==='equip'){S.money-=6;d.equip=Math.min(100,d.equip+15);}
   if(c==='teach'){d.mood+=owner?10:8;if(!owner)S.flags.teachHalf=1;}
-  if(c==='hire'){S.money-=2;d.staff=(d.staff||0)+1;log(`聘請第 ${d.staff} 位專任指導員`);}
+  if(c==='hire'){const pro=(d.blacks||0)>(d.staffB||0);S.money-=pro?.5:2;d.staff=(d.staff||0)+1;if(pro){d.staffB=(d.staffB||0)+1;say('你把一位一路帶上來的黑帶弟子叫到面前：「從今天起，你也是指導員了。」');}log(`${pro?'提拔黑帶弟子成為':'聘請'}第 ${d.staff} 位專任指導員`);}
   if(c==='kids'){S.money-=2;d.kids=true;d.cap+=30;extra=8;log('開設少年部');}
   if(c==='school'){S.money-=1;extra=ri(4,9);d.cx=Math.max(0,(d.cx||0)-.01);}
   if(c==='women'){S.money-=2;d.women=1;d.cap+=20;extra=5;log('開設女子部');}
@@ -2015,7 +2029,7 @@ function* uniCup(){
   say(`<span class="tname">大專盃・${DIVN[div]}</span><b>${nm}</b>`);
   if(pl===0)award(1,'大專盃優勝');
 }
-function hqTier(){const h=S.hq||0;return h>=100?'支部長候選':h>=60?'受到信賴':h>=30?'受到注意':'沒沒無聞';}
+function hqTier(){const h=S.hq||0;return h>=200?'極真之柱':h>=160?'本部功勞賞・下一級 200':h>=130?'本部特別表揚・下一級 160':h>=100?(S.flags.shibucho?'下一級 130：本部特別表揚':'支部長候選'):h>=60?'受到信賴':h>=30?'受到注意':'沒沒無聞';}
 function shibuchoReqs(){return [{n:'日本內弟子結業',ok:!!S.flags.uchiDone},{n:'台灣支部師範代',ok:!!S.flags.shihandai},{n:'四段',ok:S.rank>=9},{n:'滿 40 歲',ok:S.age>=40},{n:`本部評價 100（目前 ${Math.round(S.hq||0)}・${hqTier()}）`,ok:(S.hq||0)>=100}];}
 function shibuchoGoal(){return '本部評價 100、四段、滿 40 歲，並已擔任台灣支部師範代';}
 function* ownerMode(){
@@ -2079,7 +2093,9 @@ function bondHTML(){const b=S.bond||{};const rows=[];
   if(!rows.length)return '';
   return `<div class="bondrow"><span class="bt">夥伴羈絆</span>${rows.map(([r2,n,v])=>`<span class="bd${v>=100?' max':''}"><small>${r2}</small>${esc(n)}<i><u style="width:${v}%"></u></i></span>`).join('')}</div>`;}
 function* branchAffairs(mult){
+  for(const [th,k,f] of [[130,'hq1',5],[160,'hq2',8],[200,'hq3',12]])if((S.hq||0)>=th&&!(S.honors||[]).some(h=>h.k===k)){S.fame+=f;yield* honor(k);}
   const opts=[];
+  if((S.hq||0)>=160&&S.money>=12&&(S.flags.wcY||0)<=S.year-2)opts.push({id:'wcup',label:'主辦世界大會台灣區預選',sub:'本部功勞賞解鎖 · 花費 12 萬 · 名聲↑↑ · 本部評價 +8'});
   if(S.flags.shibucho&&discAvail()>0&&S.money>=10&&(S.flags.brY||0)<=S.year-2)opts.push({id:'branch',label:'派弟子到其他地區開分館',sub:`可派的黑帶弟子 ${discAvail()} 人 · 已有分館 ${(S.branches||[]).length} 間 · 目標：全台製霸`});
   if(S.money>=6)opts.push({id:'abroad',label:'參加海外講習會',sub:'花費 6 萬 · 技術↑ 鬥志↑ · 本部評價 +4'});
   if(S.money>=4)opts.push({id:'goodwill',label:'舉辦國際親善大賽',sub:'花費 4 萬 · 名聲↑ · 本部評價 +5，辦得好再加'});
@@ -2089,11 +2105,12 @@ function* branchAffairs(mult){
   if((S.q===3||mult)&&S.money>=2)opts.push({id:'escort',label:'陪同台灣代表隊出國比賽',sub:'花費 2 萬 · 本部評價 +4'});
   opts.push({id:'none',label:'這次先專心自己的事',sub:''});
   {const order=['merch2','merch','asia','goodwill','escort','abroad','none'];const has=id=>opts.some(o=>o.id===id)&&(id!=='asia'||S.fame>=45);const ri=order.find(has);opts.forEach(o=>o.rec=o.id===ri);}
-  const c=yield P('支部事務',`日本本部會看你為支部做了多少事。本部評價 <b>${Math.round(S.hq)}</b> / 100（${hqTier()}）${S.flags.shibucho?'（你已是支部長）':'。'+shibuchoGoal()+'，才有機會被任命為台灣支部長'}。`,opts);
+  const c=yield P('支部事務',`日本本部會看你為支部做了多少事。本部評價 <b>${Math.round(S.hq)}</b>${(S.hq||0)<100?' / 100':''}（${hqTier()}）${S.flags.shibucho?'（你已是支部長）':'。'+shibuchoGoal()+'，才有機會被任命為台灣支部長'}。`,opts);
   const s0=snap();const h0=S.hq;
   if(c==='abroad'){S.money-=6;grow('tec',1.6);grow('spi',1.6);S.flags.seminars++;S.hq+=4;say('你在海外講習會上和各國師範交換心得。');}
   if(c==='goodwill'){S.money-=4;S.fame+=3;S.hq+=5;S.flags.hosted=1;if(r()<.5+S.fame/200){S.hq+=3;say('親善大賽辦得有聲有色，海外代表隊都說明年還要來。');}else say('親善大賽順利結束。');}
   if(c==='asia'){S.money-=10;S.flags.hosted=1;const ok=r()<clamp(.4+S.fame/200+(S.dojo?.1:0)+S.hq/400,.2,.9);if(ok){S.hq+=12;S.fame+=8;say('<b class="gold">亞洲杯圓滿成功</b>，本部特別發函致謝。');log('主辦亞洲杯成功','gold');}else{S.hq-=6;S.money-=3;say('<span class="bad">亞洲杯場地和賽程出包，被各國代表抱怨。</span>');log('主辦亞洲杯出包','bad');}}
+  if(c==='wcup'){S.money-=12;S.flags.wcY=S.year;S.fame+=8;S.hq+=8;say('<b class="gold">世界大會台灣區預選</b>在你的主辦下順利完成，各國選手第一次認識了台灣支部。');log('主辦世界大會台灣區預選','gold');}
   if(c==='escort'){S.money-=2;S.fame+=2;S.hq+=4;say('你陪著年輕的台灣代表隊出國，在場邊幫他們綁好每一條腰帶。');}
   if(c==='merch'){S.money-=5;S.flags.merch=1;S.hq+=2;say('支部的第一批周邊商品上架了，比賽會場的攤位前排起了隊。');log('推出支部周邊商品','gold');}
   if(c==='merch2'){S.money-=8;S.flags.merch=2;S.hq+=2;say('聯名護具和限定道着推出，海外分部也來詢問代理。');log('周邊商品加開新品線','gold');}
@@ -2520,7 +2537,10 @@ const HONORS={
   shibu:{n:'台灣支部長',t:'從今天起，你肩上扛的是整個台灣的極真。'},
   dojo:{n:'一國一城之主',t:'自己的道場掛上了台灣支部的招牌。第一天，你比所有學員都早到。'},
   zenkoku:{n:'全台製霸',t:'北、中、南、東，台灣支部的招牌掛滿了全台灣。'},
-  godan:{n:'五段・師範',t:'五段。腰帶上的金線有五條，每一條都是十年。'}
+  godan:{n:'五段・師範',t:'五段。腰帶上的金線有五條，每一條都是十年。'},
+  hq1:{n:'本部特別表揚',t:'日本本部寄來一張表揚狀，上面寫著你的名字和「台灣支部」。'},
+  hq2:{n:'本部功勞賞',t:'本部的年度大會上，你被請上台。台下有很多你從前只在影片裡看過的人。'},
+  hq3:{n:'極真之柱',t:'館長握著你的手說：「台灣有你，我很放心。」'}
 };
 function* honor(k){
   const H=HONORS[k];if(!H)return;S.honors=S.honors||[];if(S.honors.some(h=>h.k===k))return;
@@ -2598,7 +2618,9 @@ function* crownCheck(){
   }
 }
 function crownText(){const cs=S.crowns||[];if(!cs.length)return '';
-  return cs.map(c=>`${c.y} 年的${DIVN[c.div]}${c.perfect?'完全製霸':'三冠王'}`).join('、');}
+  const g={};cs.forEach(c=>{const k=DIVN[c.div]+(c.perfect?'完全製霸':'三冠王');(g[k]=g[k]||[]).push(c.y);});
+  return Object.entries(g).map(([k,ys])=>ys.length===1?`${ys[0]} 年的${k}`:`${k} ×${ys.length}（${ys.length<=3?ys.join('、'):ys[0]+'–'+ys[ys.length-1]}）`).join('、');}
+function crownLatest(){const cs=S.crowns||[];if(!cs.length)return '';const c=cs[cs.length-1];const k=DIVN[c.div]+(c.perfect?'完全製霸':'三冠王');const n=cs.filter(x=>x.div===c.div&&!!x.perfect===!!c.perfect).length;return `${c.y} 年的${k}${n>1?`（第 ${n} 次）`:''}`;}
 
 /* ===== 從選手引退之後：指導員／審判員／平凡生活（都還能練、都還有可能） ===== */
 const TEACH_EV3=[
@@ -2961,6 +2983,12 @@ function* life(){
         if(!badlyHurt()&&S.hand)for(const id of S.hand)opts.push({id,label:cardName(id),sub:CARDS[id].s});
         opts.push({id:'rest',label:TRAIN.rest.n,sub:TRAIN.rest.s});
         if(S.injury)opts.push({id:'rehab',label:TRAIN.rehab.n,sub:TRAIN.rehab.s});
+        if(!badlyHurt()&&sideOk()){
+          opts.push({id:'side_mus',label:'武者修行（出國）',sub:`花費 6 萬 · 體況 −12 · 突破：一項能力上限 +1（每項最多 +5）· 名聲↑`,big:1,icon:'突',disabled:S.money<6});
+          opts.push({id:'side_koh',label:'帶後進稽古',sub:'名聲↑ 本部評價↑ · 鬥志↑ · 體況 −3',big:1,icon:'導'});
+          opts.push({id:'side_ken',label:'型的研究',sub:'主練的型修煉度大幅↑ · 技術上限突破機率',big:1,icon:'研'});
+          if(S.rank>=6)opts.push({id:'side_jud',label:'審判講習',sub:'花費 1 萬 · 審判經驗↑ · 名聲↑',big:1,icon:'審',disabled:S.money<1});
+        }
         if(!badlyHurt()&&rerollLeft()>0)opts.push({id:'reroll',label:`換牌（今年還剩 ${rerollLeft()} 次・鬥志 −2）`,sub:''});
         if(!badlyHurt()&&S.rank>=6&&!S.flags.teach&&S.path!=='uchi')opts.push({id:'assist',label:'申請少年部助教',sub:S.flags.instDone?'每季 +1.5 萬 · 累積指導資歷':'取得指導員資格 · 每季 +1.5 萬 · 累積指導資歷',big:1,icon:'助'});
         if(!badlyHurt()&&!S.dojo&&S.flags.instDone&&S.age>=24&&S.path!=='uchi'&&S.path!=='twuchi'&&S.flags.openTry!==S.year){const rq=dojoReqs();const miss=rq.filter(x=>!x.ok);opts.push({id:'open',label:'申請開設道場',sub:miss.length?`還差：${miss.map(x=>x.n).join('、')}`:'需支部長審核 · 一年一次 · 以台灣支部名義開設',big:1,icon:'館',disabled:miss.length>0});}
@@ -2990,6 +3018,7 @@ function* life(){
       if(!auto&&!TX(c))S.lastTrain=null;
       if(c==='retire'){S.mil=S.mil||{};S.mil.ret=S.age;log('從選手引退');say('你向支部長深深一鞠躬，宣布從選手引退。');break;}
       if(c==='open'){const ok=yield* openDojo();label=ok?'籌備道場':'籌備落空';}
+      else if(String(c).startsWith('side_'))label=sideRun(c);
       else if(c==='assist'){S.flags.teach=1;grow('tec',1.5);grow('spi',1.5);label='擔任少年部助教';log('擔任少年部助教');}
       else{
         const T=TX(c);label=T.n+(T.card?` Lv${cardLv(c)+1}`:'')+(auto?'（半年稽古的後半）':'');
@@ -3495,7 +3524,7 @@ function momentSnap(){const c=S.champ||{};return {rank:S.rank,c:{...c},cr:(S.cro
 function momentCheck(b){if(!b||!S||(S.flags&&S.flags.ff))return;const c=S.champ||{};const M=[];
   if(c.world_kumite&&!b.c.world_kumite)M.push(['世界大賽','組手冠軍','站上世界的頂點']);
   if(c.world_kata&&!b.c.world_kata)M.push(['世界大賽','型冠軍','站上世界的頂點']);
-  if((S.crowns||[]).length>b.cr){const ct=crownText();M.push([ct.includes('完全製霸')?'完全製霸':'三冠王',ct||'','同一年，日本大賽全部拿下']);}
+  if((S.crowns||[]).length>b.cr){const ct=crownLatest();M.push([ct.includes('完全製霸')?'完全製霸':'三冠王',ct||'','同一年，日本大賽全部拿下']);}
   if(S.flags.hyaku&&!b.h)M.push(['百人組手','完遂','第一百人倒下的那一刻']);
   if(c.jp_kumite&&!b.c.jp_kumite)M.push(['全日本','組手冠軍','日本的頂點']);
   if(c.jp_kata&&!b.c.jp_kata)M.push(['全日本','型冠軍','日本的頂點']);
@@ -3747,7 +3776,7 @@ function render(){
   const hm=hpMax();const hpv=Math.round(S.hp);const rb=rankB();
   const es=examStatus();
   const pts=S.pts||0;
-  $('#stats').innerHTML=(pts>0?`<div class="ptsbar"><b>可分配修煉點 ${pts}</b><span>點一下能力就 +${PT_GAIN}</span></div>`:'')+`<div class="st7${pts>0?' alloc':''}">`+Object.keys(STATN).map(k=>{const b=S.st[k],bonus=k==='spi'?0:Math.min(rb,100-b);const tag=pts>0?'button':'div';return `<${tag} class="t"${pts>0?` type="button" data-alloc="${k}"`:''}><span>${STATN[k]}<small class="sh">${STATH[k]}</small>${pts>0?' <em>+</em>':''}</span><b>${Math.round(est(k))}</b><div class="bar"><i style="width:${b.toFixed(1)}%"></i>${bonus>0?`<u style="left:${b.toFixed(1)}%;width:${bonus.toFixed(1)}%"></u>`:''}</div></${tag}>`;}).join('')+
+  $('#stats').innerHTML=(pts>0?`<div class="ptsbar"><b>可分配修煉點 ${pts}</b><span>點一下能力就 +${PT_GAIN}</span></div>`:'')+`<div class="st7${pts>0?' alloc':''}">`+Object.keys(STATN).map(k=>{const b=S.st[k],bonus=k==='spi'?0:Math.min(rb,100-b);const tag=pts>0?'button':'div';return `<${tag} class="t"${pts>0?` type="button" data-alloc="${k}"`:''}><span>${STATN[k]}<small class="sh">${STATH[k]}</small>${pts>0?' <em>+</em>':''}</span><b>${Math.round(est(k))}${capB(k)?`<sup class="capb">+${capB(k)}</sup>`:''}</b><div class="bar"><i style="width:${Math.min(100,b).toFixed(1)}%"></i>${bonus>0?`<u style="left:${b.toFixed(1)}%;width:${bonus.toFixed(1)}%"></u>`:''}</div></${tag}>`;}).join('')+
     `<div class="t"><span>體況</span><b>${hpv}</b><div class="bar ${hpv<35?'r':hpv<60?'y':'g'}"><i style="width:${S.hp.toFixed(1)}%"></i>${S.wear>0?`<s style="width:${100-hm}%"></s>`:''}</div></div></div>`+
     bondHTML()+`<div class="exline"><span>${es?examSummary(es):'<b>已達五段</b>'}${!S.flags.instDone&&S.age>=26?'・<b class="bad">32 歲前需指導員資格</b>':''}</span><button type="button" id="btnMore">明細</button></div>`;
   document.querySelectorAll('[data-alloc]').forEach(b=>b.onclick=()=>choose('alloc:'+b.dataset.alloc));
