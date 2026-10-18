@@ -693,7 +693,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.7・2026.10.13</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.8・2026.10.18</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
 </div>
 
 <script>
@@ -2932,7 +2932,7 @@ const KG_R={ll:[54,60],light:[60,70],middle:[70,80],lh:[80,90],heavy:[90,100]},K
 function kgNow(){const r=kgR();return r[0]+((S.kgD||0)+1)/2*(r[1]-r[0]);}
 function kgDrift(g){const dr=.07*(g.pow||0)+.02*(g.con||0)-.05*(g.sta||0)-.03*(g.spd||0);S.kgD=Math.max(-1.2,Math.min(S.wc==='heavy'?1:1.4,(S.kgD||0)*.92+dr));}
 function kgHTML(){if(S.kgD==null)return '';const d=Math.max(-1,Math.min(1,S.kgD)),p=Math.round(Math.abs(d)*5),q=Math.round(Math.abs(d)*4);const r=kgR();
-  const fx=Math.abs(d)<.1?'<span>標準體型・沒有加減</span>':d>0?`<span class="up">攻擊 +${p}%</span><span class="up">體力 +${q}%</span><span class="dn">速度 −${p}</span>`:`<span class="up">速度 +${p}</span><span class="dn">攻擊 −${p}%</span><span class="dn">體力 −${q}%</span>`;
+  const fx=p<1?'<span>標準體型・沒有加減</span>':d>0?`<span class="up">攻擊 +${p}%</span>${q?`<span class="up">體力 +${q}%</span>`:''}<span class="dn">速度 −${p}</span>`:`<span class="up">速度 +${p}</span><span class="dn">攻擊 −${p}%</span>${q?`<span class="dn">體力 −${q}%</span>`:''}`;
   return `<div class="kgline"><div class="kgt"><b>體重</b><span>${WCLS[S.wc].n}・<b>${kgNow().toFixed(1)} kg</b>${S.kgD>1&&S.wc!=='heavy'?'<em class="dn">　超重，比賽前要過磅</em>':''}</span></div><div class="kgg"><i style="left:${((Math.max(-1.2,Math.min(1.4,S.kgD))+1)/2*100).toFixed(0)}%"></i></div><div class="kgfx">${fx}</div></div>`;}
 function* cpRetire(){S.flags.ch3=1;const big=S.titles.filter(x=>/優勝|完遂/.test(x)).length;
   const c=yield P('第二章 完・選手時代',`<div class="cphead"><small>CHAPTER 2 CLEAR</small><b>選手時代</b></div>${S.age} 歲，你從選手的位置退下來。${big?`這些年你拿下 ${big} 座冠軍，`:''}最後一次綁緊號碼布的感覺，你會記很久。${cpStats()}<p class="cpnext">最終章・<b>傳承</b>：道場、學生、支部……把極真交給下一代。</p>${CP_SAVE}`,[
