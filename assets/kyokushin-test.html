@@ -3769,6 +3769,7 @@ const b64e=u=>{let s='';for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.ap
 const b64d=t=>{t=t.replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const s=atob(t);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u;};
 async function mkCode(){const j=JSON.stringify({s:G.setup,c:G.choices});const raw=new TextEncoder().encode(j);try{const buf=await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer();return 'KLZ1.'+b64e(new Uint8Array(buf));}catch(e){return 'KLJ1.'+b64e(raw);}}
 async function readCode(t){t=(t||'').trim().replace(/\s+/g,'');const m=/^KL([ZJ])1\.(.+)$/.exec(t);if(!m)throw new Error('格式不對');let u=b64d(m[2]);if(m[1]==='Z')u=new Uint8Array(await new Response(new Blob([u]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer());const o=JSON.parse(new TextDecoder().decode(u));if(!o.s||!Array.isArray(o.c))throw new Error('內容不完整');return o;}
+function confirmBox(title,msg,okLabel,cb){const d=document.createElement('div');d.className='kgame codem';d.innerHTML=`<div class="kgbox"><b>${title}</b><p style="margin:0;font-size:14px;line-height:1.6;text-align:left">${msg}</p><button type="button" class="opt wide cfok" style="background:#d9484f;color:#fff"><span class="l">${okLabel}</span></button><button type="button" class="opt wide cfno"><span class="l">取消，繼續玩</span></button></div>`;d.querySelector('.cfno').onclick=()=>d.remove();d.onclick=e=>{if(e.target===d)d.remove();};d.querySelector('.cfok').onclick=()=>{d.remove();cb();};document.body.appendChild(d);}
 function codeModal(html){const d=document.createElement('div');d.className='kgame codem';d.innerHTML=`<div class="kgbox">${html}<button type="button" class="opt wide cmx"><span class="l">關閉</span></button></div>`;d.querySelector('.cmx').onclick=()=>d.remove();d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);return d;}
 async function showCode(){if(!G||G.trial)return;const c=await mkCode();const d=codeModal(`<small>存檔碼</small><b>複製起來，換裝置時貼上</b><textarea readonly rows="5">${c}</textarea><button type="button" class="opt wide cmc"><span class="l">複製存檔碼</span><span class="s">建議貼到 LINE 的記事本或傳給自己</span></button>`);const ta=d.querySelector('textarea');ta.onclick=()=>ta.select();d.querySelector('.cmc').onclick=()=>{const ok=()=>{d.querySelector('.cmc .l').textContent='已複製 ✓';};try{navigator.clipboard.writeText(c).then(ok,()=>{ta.select();document.execCommand('copy');ok();});}catch(e){ta.select();try{document.execCommand('copy');ok();}catch(_){}}};}
 function importCode(){const d=codeModal(`<small>輸入存檔碼</small><b>貼上之前複製的存檔碼</b><textarea rows="5" placeholder="KLZ1.…"></textarea><p class="cmerr"></p><button type="button" class="opt wide cmgo"><span class="l">讀取並繼續</span><span class="s">會取代這台裝置上目前的存檔</span></button>`);
@@ -4180,7 +4181,7 @@ function render(){
   card.innerHTML=`${tfx}${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.slice(0,3).map(l=>`<div>${l}</div>`).join('')}${p.lines.length>3?`<details class="prevmore"><summary>還有 ${p.lines.length-3} 則</summary>${p.lines.slice(3).map(l=>`<div>${l}</div>`).join('')}</details>`:''}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div>${p.tag?`<div class="evtag t-${{'指導員事件':'teach','見習指導員事件':'teach','助教事件':'teach','道場經營事件':'dojo','稽古插曲':'train','生活插曲':'life','審判員事件':'judge','人生岔路':'dojo'}[p.tag]||'x'}">${p.tag}</div>`:''}<h2>${p.title}</h2>${p.body?(()=>{const sp=speakerOf(p);if(sp){const m=/^<span class="tipbox">[\s\S]*?<\/span>/.exec(p.body);const tip=m?m[0]:'',bd=m?p.body.slice(tip.length):p.body;return `${tip?`<p class="q">${tip}</p>`:''}<div class="dlg"><img class="pxh${sp[0]==="mochi"?" dog":""}" src="${MHEAD[sp[0]]||PXHEAD[sp[0]]}" alt=""><div class="tb"><b>${esc(sp[1])}</b><p class="q">${bd}</p></div></div>`;}return sp?'':`<p class="q">${p.body}</p>`;})():''}${optArea}`;
   if(tfx)startTrainFx();
   const isKata=/・型 /.test(p.title||'')&&!/判定$/.test(p.title||'');
-  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.id;const k=isKata&&KATA_LIST.find(x=>x.n===id);if(k)kataGame(k);else choose(id);}));
+  card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.id;const k=isKata&&KATA_LIST.find(x=>x.n===id);if(k)kataGame(k);else if(id==='ff'&&p.kind==='chapter')confirmBox('確定把後面交給命運嗎？','剩下的人生會自動照「建議」過完，直接看結語，<b>中間不能再自己選</b>。','確定，直接看結局',()=>choose(id));else choose(id);}));
   $('#log').innerHTML=S.log.slice().reverse().map(x=>`<li class="${x.cls}"><span>${x.w}</span>${esc(x.t)}</li>`).join('');
 }
 function kataGame(k){const card=$('#card');const n=kataBeats(k),z=kataZone(k),dur=Math.max(.7,1.15-.05*(k.d-1));let h=0,st=0,best=0,i=0,busy=0;
@@ -4755,14 +4756,12 @@ function initUI(){
   let armed=false;
   {let armed2=false;const gu=e=>{const b=e.currentTarget;const lab=b.querySelector('.l')||b;const orig=b.id==='btnGiveUp2'?'放棄・直接結算這段人生':'放棄・直接結算這段人生';if(!G||G.prompt.kind==='end')return;
     if(!G||G.prompt.kind==='end')return;
-    if(!armed2){armed2=true;lab.textContent='再按一次，確定放棄並結算';setTimeout(()=>{armed2=false;lab.textContent=orig;},3000);return;}
-    armed2=false;lab.textContent=orig;G.choices.push('cmd:quit');G.prompt=quitLife();save();render();window.scrollTo({top:0});};
+    confirmBox('確定要放棄這段人生嗎？',`${esc(S.name)}現在 ${S.age} 歲。放棄後會直接結算、看結語和年表，<b>這段人生不能再繼續</b>。`,'確定放棄並結算',()=>{if(!G||G.prompt.kind==='end')return;G.choices.push('cmd:quit');G.prompt=quitLife();save();render();window.scrollTo({top:0});});};
     $('#btnGiveUp').addEventListener('click',gu);$('#btnGiveUp2').addEventListener('click',gu);}
-  $('#btnFF').addEventListener('click',()=>{if(G&&G.prompt.kind!=='end')choose('cmd:ff');});
+  $('#btnFF').addEventListener('click',()=>{if(G&&G.prompt.kind!=='end')confirmBox('確定直接看結局嗎？','剩下的人生會自動照「建議」過完，<b>中間的選擇都不能再自己決定</b>。','確定快轉到結局',()=>{if(G&&G.prompt.kind!=='end')choose('cmd:ff');});});
   $('#btnFFN').addEventListener('click',()=>{if(G&&!GT&&G.prompt.kind!=='end')ffNextRun();});
   $('#btnQuit').addEventListener('click',e=>{
-    if(!armed){armed=true;e.target.textContent='再按一次確認放棄';setTimeout(()=>{armed=false;e.target.textContent='放棄這段人生，回到首頁';},3000);return;}
-    armed=false;e.target.textContent='放棄這段人生，回到首頁';G=null;clearSave();render();window.scrollTo({top:0});
+    confirmBox('確定要回到首頁嗎？','這段人生的存檔會<b>直接刪除</b>，不會結算，也不能再繼續。想保留的話，先用「📋 存檔碼」存起來。','確定刪除並回到首頁',()=>{G=null;clearSave();render();window.scrollTo({top:0});});
   });
 }
 function boot(data){
