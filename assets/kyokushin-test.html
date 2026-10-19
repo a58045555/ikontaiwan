@@ -466,7 +466,8 @@ a.opt{text-decoration:none;color:inherit}
 .bdtoast{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:400;background:#fff6c8;border:3px solid #26223b;border-radius:14px;padding:10px 16px;text-align:center;font-size:14px;line-height:1.6;box-shadow:0 6px 0 #26223b;animation:cpIn .5s cubic-bezier(.2,1.4,.4,1)}
 footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dashed var(--ink,#26223b);border-radius:10px;padding:8px 12px;background:#fffaf0}.dnote summary{font-weight:900;cursor:pointer}.dnote ol{margin:4px 0 0;padding-left:1.4em}.dnote p{margin:6px 0 0}
 .tbar{position:relative;margin-left:2px!important;margin-right:2px!important;height:22px;margin:6px 0;border:2px solid var(--ink,#26223b);border-radius:12px;background:linear-gradient(90deg,#eee 40%,#ffe14a 40%,#ffe14a 60%,#eee 60%);overflow:hidden}.tbar i{position:absolute;top:0;bottom:0;width:6px;background:#d9534f;left:0;animation:tbm 1.1s linear infinite alternate}@keyframes tbm{to{left:calc(100% - 6px)}}.tbar span{position:absolute;left:8px;top:2px;font-size:11px;font-weight:700;color:#26223b;opacity:.75}.kgame{position:fixed;inset:0;z-index:60;background:rgba(20,16,40,.72);display:grid;place-items:center;padding:16px}.kgbox{background:#f4ecd8;border:3px solid #26223b;box-shadow:0 6px 0 #26223b;padding:14px;width:min(360px,100%);display:flex;flex-direction:column;gap:10px;text-align:center}.kgbox small{font-weight:800;color:#b85a14}.kgbox>b{font-size:17px}.kdots{display:flex;justify-content:center;gap:8px}.kdots i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 2px #26223b;background:#fff}.kdots i.ok{background:#ffe14a}.kdots i.ng{background:#d9534f}.kcombo{font-weight:800}.kcombo b{font-size:20px;color:#d9484f}.kgame.flash .kgbox{animation:kfl .25s}.kgame.miss .kgbox{animation:bshake .3s steps(4)}@keyframes kfl{50%{box-shadow:0 6px 0 #26223b,0 0 0 6px #ffe14a}}.khit{min-height:56px}.khit .l{font-size:20px!important}
-.atbh .bspd{background:#fff!important;color:#26223b!important;opacity:1!important;box-shadow:none;padding:1px 8px;font-size:12px;letter-spacing:0;min-height:0;width:auto}.atbwait .tbar i{animation-play-state:paused;opacity:.25}.atbwait .tbar span{opacity:0}.atbwait .tbar::after{content:'速度條蓄力中…輪到你才能出招（點畫面跳過）';position:absolute;left:0;right:0;top:2px;text-align:center;font-size:11px;font-weight:700;color:#26223b}.atbwait .moves .opt:not([data-id="auto"]){opacity:.45;filter:grayscale(.6)}.tbar .bspd{position:relative;vertical-align:1px;margin-left:6px;letter-spacing:0;font:inherit;font-size:11px;font-weight:900;border:1.5px solid #26223b;border-radius:8px;background:#fff;padding:0 6px;cursor:pointer}
+.atbh .bspd{background:#fff!important;color:#26223b!important;opacity:1!important;box-shadow:none;padding:1px 8px;font-size:12px;letter-spacing:0;min-height:0;width:auto}.tellc{margin:6px 2px 0;padding:6px 10px;background:#fff7dc;border:2px solid #26223b;font-size:13px;font-weight:700;color:#b85a14;line-height:1.45}.tellc b{color:#26223b;margin-right:2px}.tellc em{display:block;font-style:normal;font-size:12px;color:#26223b;opacity:.8}.lmimg{width:44px;height:44px;object-fit:cover;object-position:50% 20%;image-rendering:pixelated;vertical-align:middle;margin-right:6px;background:#efe6cf;border:2px solid #26223b}
+.atbwait .tbar i{animation-play-state:paused;opacity:.25}.atbwait .tbar span{opacity:0}.atbwait .tbar::after{content:'速度條蓄力中…輪到你才能出招（點畫面跳過）';position:absolute;left:0;right:0;top:2px;text-align:center;font-size:11px;font-weight:700;color:#26223b}.atbwait .moves .opt:not([data-id="auto"]){opacity:.45;filter:grayscale(.6)}.tbar .bspd{position:relative;vertical-align:1px;margin-left:6px;letter-spacing:0;font:inherit;font-size:11px;font-weight:900;border:1.5px solid #26223b;border-radius:8px;background:#fff;padding:0 6px;cursor:pointer}
 .bsum{font-size:16px;font-weight:900;text-align:center;margin:4px 0 6px}.bsum b.dn{color:#d9534f}.bsum b.up{color:#2f9a4a}.bdet summary{font-size:12px;opacity:.7;cursor:pointer}.ln.sensei{color:#b85a14}.ln.cheer{color:#2f9a4a}.ln.intel{font-size:12px;opacity:.85}
 .scene{position:relative}.scene.shake{animation:bshake .35s steps(4)}@keyframes bshake{25%{transform:translate(-3px,1px)}50%{transform:translate(3px,-1px)}75%{transform:translate(-2px,0)}}
 .dfloat{position:absolute;font-weight:900;font-size:22px;color:#fff;text-shadow:0 2px 0 #d9534f,0 0 4px #000;pointer-events:none;animation:dfl .9s ease-out forwards;z-index:5}.dfloat.foe{right:22%;top:18%}.dfloat.me{left:22%;top:52%}@keyframes dfl{from{transform:translateY(0) scale(1.3);opacity:1}to{transform:translateY(-34px) scale(1);opacity:0}}
@@ -1309,8 +1310,8 @@ function act(att,def,key,L,scout,force){
     let d=dmgCalc(att,def,m,crit,em);if(att.punchMul&&m.cat==='突')d=Math.round(d*att.punchMul);
     if(def.guard){
       d=Math.round(d*.3);def.guard=false;def.blocked=1;
-      const cd=Math.round(dmgCalc(def,att,MOVES.uke,false,1)*(def.ukeMul||1));att.hp=Math.max(0,att.hp-cd);att.flash=1;
-      extra.push(LN(def.me?'me':'foe',`${esc(def.name)}：<b>受け</b>擋下大半力道並反擊 <span class="dmg">−${cd}</span>`));
+      const rd=def.read;def.read=0;const cd=Math.round(dmgCalc(def,att,MOVES.uke,false,1)*(def.ukeMul||1)*(rd?1.5:1));att.hp=Math.max(0,att.hp-cd);att.flash=1;if(rd){def.ki=Math.min(def.kiMax,def.ki+1);def.readOk=(def.readOk||0)+1;}
+      extra.push(LN(def.me?'me':'foe',`${rd?'<span class="tg crit">看穿！</span>':''}${esc(def.name)}：<b>受け</b>擋下大半力道並反擊 <span class="dmg">−${cd}</span>${rd?'<span class="tg">氣 +1</span>':''}`));
       checkWaza(att,def,cd,extra);if(att.hp<=0&&!att.finisher)att.finisher='受け・反擊';
     }
     def.hp=Math.max(0,def.hp-d);total+=d;def.flash=1;
@@ -1352,7 +1353,7 @@ function wcApply(me,foe){
 const FOE_ADJ=2.2;
 const ATB_RATE=f=>Math.max(4,10*(1+(f.spd*(1-.08*f.leg)*(1-.04*(f.press||0))-60)/130));
 function* battle(T,opp,rn,quick){
-  const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);const grudge=!!(S.lossMem||{})[opp.name]&&T.id!=='tour';if(grudge)me.atk*=1.03;const kuy=!!S.flags.kuyashii&&T.id!=='tour'&&T.id!=='trial';if(kuy){me.atk*=1.03;S.flags.kuyashii=0;}if(opp.mk)foe.mk=opp.mk;const start=me.hp;
+  const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);const grudge=!!(S.lossMem||{})[opp.name]&&T.id!=='tour';if(grudge)me.atk*=1.03;const kuy=!!S.flags.kuyashii&&T.id!=='tour'&&T.id!=='trial';if(kuy){me.atk*=1.03;S.flags.kuyashii=0;}if(opp.mk)foe.mk=opp.mk;const start=me.hp,hp0=S.hp;
   me.side='aka';foe.side='shiro';BEVQ=[];BTL=[];if(!quick&&T.id!=='trial')gm('第一次親自對戰');let firstPage=1;
   let auto=quick,t=0,end=50,phase='本戰';const scout=!!S.flags.scout;
   let last=null,fNext=null,spiOn=false;me.g=30+r()*30;foe.g=30+r()*30;if(opp.boss)opp.boss.mod(foe);if(!quick){const rm=ATB_RATE(me),rf=ATB_RATE(foe),tf2=Math.ceil(Math.max(0,100-foe.g)/rf)+Math.ceil(100/rf),tm=Math.ceil(Math.max(0,100-me.g)/rm);if(tm>=tf2)me.g=100-rm*(tf2-1)+.01;}fNext=aiPick(foe,me);
@@ -1364,8 +1365,8 @@ function* battle(T,opp,rn,quick){
   const ttl=()=>`${T.short} 組手 ${rn} · ${phase}`;
   const info=()=>({first:firstPage?(firstPage=0,1):0,phase,t,end,len:phase==='本戰'?50:30,mg:me.g,fg:foe.g,mr:ATB_RATE(me),fr:ATB_RATE(foe),tz:clamp((.12+.006*Math.min(10,S.rank|0)+(S.flags&&S.flags.firstEasy?.04:0))*clamp(.7+.3*S.hp/80,.7,1)*(1+clamp((me.tec-foe.tec)/100,-.2,.2)),.07,.2),ts:clamp(1-(foe.spd-me.spd)/300,.85,1.1)});
   const fdo=(x,y,k,force)=>{ // one action with ATB extras
-    if(!x.me&&!me.acted&&!auto&&!x.first){x.first=1;L.push(LN('sys','<span class="tg dn">對手先出手</span>他比你快，搶先動了'));}if(x.me){me.acted=1;me.sg=(me.sg||0)+1;}
-    if(x.guard&&!force){if(x.me)L.push(LN('sys','對手沒有正面攻來，你的架式落空了。'));else L.push(LN('sys',`${esc(x.name)}的架式落空了。`));x.guard=false;}
+    if(!x.me&&!me.acted&&!auto&&!x.first){x.first=1;L.push(LN('sys','<span class="tg dn">對手先出手</span>他比你快，搶先動了'));}if(x.me){me.acted=1;me.sg=(me.sg||0)+1;const em=(EFF[y.type]||{})[MOVES[k].cat]||1;if(em<1&&!MOVES[k].rest&&!MOVES[k].guard)me.bad=(me.bad||0)+1;if(em>1)me.good=(me.good||0)+1;}
+    if(x.guard&&!force){x.read=0;if(x.me)L.push(LN('sys','對手沒有正面攻來，你的架式落空了。'));else L.push(LN('sys',`${esc(x.name)}的架式落空了。`));x.guard=false;}
     x.ki=Math.min(x.kiMax,x.ki+1);if(MOVES[k].ki>x.ki)k=aiPick(x,y);
     const atkM=x.me&&spiOn?1+S.st.spi/900:1;const combo=last===x&&!MOVES[k].rest&&!MOVES[k].guard;
     const mul=atkM*(combo?1.08:1);x.atk*=mul;
@@ -1378,9 +1379,9 @@ function* battle(T,opp,rn,quick){
   const ask=function*(){
     let mk;
     if(auto)mk=aiPick(me,foe);
-    else{const fm=MOVES[fNext];const tl=fm.rest?'他在調整呼吸，現在是機會！':fm.guard?'他擺好架式在等你，別硬衝！':(TELL[fm.cat]||'注意他的動作！');L.push(LN('sys sensei',`<b>${esc(SEN)}</b>：「${tl}」`));
-      const meK=Math.min(me.kiMax,me.ki+1);const k0=me.ki;me.ki=meK;mk=yield BP(me,foe,L,moveOpts(me,foe),ttl(),info());me.ki=k0;
-      if(typeof mk==='string'&&mk.endsWith('!')){mk=mk.slice(0,-1);tb=true;}if(mk==='auto'){auto=true;mk=aiPick(me,foe);}if(!MOVES[mk]||MOVES[mk].ki>meK||(MOVES[mk].sp&&(me.spUsed||(me.sg||0)<SG_MAX)))mk=aiPick(me,foe);}
+    else{const fm=MOVES[fNext];const tl=fm.rest?'他在調整呼吸，現在是機會！':fm.guard?'他擺好架式在等你，別硬衝！':(TELL[fm.cat]||'注意他的動作！');
+      const meK=Math.min(me.kiMax,me.ki+1);const k0=me.ki;me.ki=meK;const fa=!fm.rest&&!fm.guard;mk=yield BP(me,foe,L,moveOpts(me,foe),ttl(),Object.assign(info(),{tell:{who:SEN,t:tl,atk:fa}}));me.ki=k0;
+      if(typeof mk==='string'&&mk.endsWith('!')){mk=mk.slice(0,-1);tb=true;}if(mk==='auto'){auto=true;mk=aiPick(me,foe);}if(!MOVES[mk]||MOVES[mk].ki>meK||(MOVES[mk].sp&&(me.spUsed||(me.sg||0)<SG_MAX)))mk=aiPick(me,foe);if(mk==='uke'&&!fm.rest&&!fm.guard)me.read=1;}
     L=[];return mk;
   };
   while(!result){
@@ -1425,6 +1426,14 @@ function* battle(T,opp,rn,quick){
   if(result.win&&grudge){L.push(LN('sys',`<span class="tg crit">雪恥！</span>你終於贏了${esc(foe.name)}`));S.fame+=1;delete S.lossMem[opp.name];}
   if(!result.win){S.lossMem=S.lossMem||{};S.lossMem[opp.name]=result.method;const ks=Object.keys(S.lossMem);if(ks.length>40)delete S.lossMem[ks[0]];}
   if(me.best)L.push(LN('sys',`<span class="tg crit">本場最強一擊</span>${esc(me.best.n)} −${me.best.d}`));
+  if(me.readOk)L.push(LN('sys',`<span class="tg crit">看穿</span>這場讀對 ${me.readOk} 次對手的招`));
+  if(!result.win&&!quick&&!auto){const why=[];const sr=ATB_RATE(foe)/ATB_RATE(me);
+    if((me.bad||0)>=2)why.push(`你用了 ${me.bad} 次「效果不佳」的招。他是${TYPEN[foe.type]}，${WEAK[foe.type]}——看按鈕上的「拔群」。`);
+    if(hp0<50)why.push(`上場時體況只有 ${Math.round(hp0)}%，一開始血就比較少。大賽前一季多休養。`);
+    if(sr>1.3)why.push(`他比你快 ${sr.toFixed(1)} 倍，常常連續出手。多練速度，或在我喊招的時候用「受け」等他。`);
+    if(wd>0)why.push(`他比你重 ${wd} 級，硬碰硬吃虧。`);
+    if(!why.length)why.push((me.readOk||0)===0&&me.acted?'差一點。下次聽我喊招，用「受け」看穿他一次，局面就不一樣。':'差距不大，再練一季就追得上。');
+    L.push(LN('sys sensei',`<b>${esc(SEN)}</b>：「${why.slice(0,2).join('<br>')}」`));}
   if(!quick)yield BP(me,foe,L,[{id:'ok',label:result.win?'押忍！':'押忍……',wide:1}],`${T.short} 組手 ${rn} · ${result.win?'勝利':'落敗'}`,{phase:'結束',t:0,end:0});
   if(result.win)S.w++;else S.l++;
   const taken=Math.max(0,start-me.hp)/me.maxHp;
@@ -1501,7 +1510,7 @@ function* kataRound(T,i,R,quick){
   if(quick)k=ch.reduce((a,b)=>exp(b)>exp(a)?b:a,ch[0]);
   else{
     const c=yield P(`${T.short}・型 ${roundName(R,i)}`,`型比賽只看評分：五位審判各打 5.00～10.00 分，去掉最高和最低取平均。選好型之後要<b>連續抓準每一拍</b>：修煉度越高黃區越寬，型越難拍數越多、黃區越窄；全部連續命中＝完美演武。對手 <b>${esc(id.name)}</b>（${esc(id.sub)}）將演武「${oppK.n}」。`,
-      ch.map(x=>({id:x.n,label:`「${x.n}」 修煉度 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)} · 預估 ${toPts(kataScore(x)).toFixed(1)} 分 · 失誤機率約 ${Math.round(mistakeP(x)*100)}%`})));
+      ch.map(x=>({id:x.n,rec:x===ch.reduce((a,b)=>exp(b)>exp(a)?b:a,ch[0]),label:`「${x.n}」 修煉度 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)} · 預估 ${toPts(kataScore(x)).toFixed(1)} 分 · 失誤機率約 ${Math.round(mistakeP(x)*100)}%`})));
     const kp=kataParse(c);var kt=kp.kt,rh=kp.rh;k=ch.find(x=>x.n===kp.n)||ch[0];
   }
   if(typeof rh==='undefined')var rh=null;
@@ -2977,8 +2986,9 @@ function* lifeSum(){const big=S.titles.filter(x=>/優勝/.test(x)).length;const 
 const LEARNABLE=['tsuki','renda','gedan','chudan','hiza','jodan','ushiro','kakato','dokaiten','uke'];
 const MV_LV={tsuki:0,gedan:0,uke:0,renda:4,chudan:4,hiza:4,jodan:5,kakato:6,ushiro:6,dokaiten:7};
 const STYLE_LEARN={low:['gedan','hiza','chudan','kakato','tsuki','uke'],high:['chudan','jodan','ushiro','dokaiten','gedan','uke'],punch:['tsuki','renda','hiza','chudan','gedan','uke'],all:LEARNABLE};
+function mvImg(k){if(typeof POSE==='undefined'||MOVES[k].guard||MOVES[k].rest)return '';const bk=HERO_KEYS[Math.min(6,S.rank|0)];const key=(FEM()?'hp_f_':'hp_m_')+(MOVES[k].cat==='突'?'punch':'kick')+'_'+bk;return POSE[key]?`<img class="lmimg" src="${POSE[key]}" alt="">`:'';}
 function* learnMove(why){if(S.style==='basic')return;const cur=moveset();const sl=STYLE_LEARN[S.style]||LEARNABLE;const pool=sl.filter(k=>!cur.includes(k)&&(MV_LV[k]||0)<=S.rank);const later=sl.filter(k=>!cur.includes(k)&&(MV_LV[k]||0)>S.rank).map(k=>`${MOVES[k].n}（${RANKS[MV_LV[k]]}）`);if(!pool.length)return;const pick=[];const p2=pool.slice();while(pick.length<3&&p2.length)pick.push(p2.splice(Math.floor(r()*p2.length),1)[0]);
-  const c=yield P('領悟新招',`${why}之後，師範把你叫到一旁：「你可以開始練新的招了。挑一個。」<br><small>${STYLES[S.style].n}能學的招式。身上最多帶 4 招（息吹固定），學了新招要換掉一招。${later.length?`<br>之後還能學：${later.join('、')}`:''}</small>`,pick.map(k=>({id:k,label:MOVES[k].n,sub:`${MOVES[k].cat}・威${MOVES[k].pw}${MOVES[k].hits?'×'+MOVES[k].hits:''}・命${MOVES[k].acc}・氣 ${MOVES[k].ki}`})).concat([{id:'none',label:'先不學',sub:'維持現在的招式'}]));
+  const c=yield P('領悟新招',`${why}之後，師範把你叫到一旁：「你可以開始練新的招了。挑一個。」<br><small>${STYLES[S.style].n}能學的招式。身上最多帶 4 招（息吹固定），學了新招要換掉一招。${later.length?`<br>之後還能學：${later.join('、')}`:''}</small>`,pick.map(k=>({id:k,label:`${mvImg(k)}${MOVES[k].n}${(STYLE_FAV[S.style]||[]).includes(k)?'<em class="rtag">本命</em>':''}`,sub:`${FAVS[k]?FAVS[k]+'・':MOVES[k].cat+'・'}威${MOVES[k].pw}${MOVES[k].hits?'×'+MOVES[k].hits:''}・命${MOVES[k].acc}・氣 ${MOVES[k].ki}`})).concat([{id:'none',label:'先不學',sub:'維持現在的招式'}]));
   if(c==='none'||!MOVES[c])return;const slots=cur.filter(k=>k!=='ibuki');
   const d=yield P('換掉哪一招？',`學會了「${MOVES[c].n}」。要用它換掉哪一招？`,slots.map(k=>({id:k,label:`換掉 ${MOVES[k].n}`,sub:`${MOVES[k].cat}・威${MOVES[k].pw}・命${MOVES[k].acc}`})).concat([{id:'keep',label:'先收著不換',sub:'之後學新招時還能再選'}]));
   if(d==='keep'||!slots.includes(d)){say(`你把「${MOVES[c].n}」記在筆記本上。`);return;}
@@ -3134,7 +3144,7 @@ function* life(){
         while(true){const opts=trainOpts();annotateTrain(opts);
           c=yield P('稽古方針（半年）',((S.hand||[]).some(i=>CARDS[i].r>=1)?tipAny('rare','抽到藍色 R 以上的稀有牌了！稀有牌效果比較好，看到可以優先考慮。'):'')+((S.hand||[]).some(i=>CARDS[i].fam==='job')?tipAny('job','打工牌：選了這半年就去打工賺錢，稽古只會小幅進步。缺錢時再選。'):'')+(S.flags.tips&&S.flags.tips.train?tipOnce('goal','看角色卡最下面：下一條腰帶的<b>合格率</b>，和紅字「不足 → 多練○○」。照著提示挑稽古就對了；審查時間到了會問你要不要報考，金框是建議。'):'')+tipOnce('train','稽古是抽牌：每半年抽 3 張，選 1 張練半年。<b>休養</b>永遠可以選，每年可以<b>換牌</b>一次。同一張牌練越多次，等級越高、效果越好。')+trainPrompt()+'・選好的稽古會持續半年',opts);
           if(c==='life'){yield* lifeSetup();continue;}
-          if(c==='kfocus'){const ex=EXK[Math.min(10,S.rank+1)];const kf=yield P('主練的型','練「基本・型」系列的牌時，主練的型修煉度漲最多，其他型只會小幅提升。型比賽和審查都看修煉度。',unlockedKata().map(x=>({id:x.n,label:`「${x.n}」 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)}${x.n===ex?' · 下一次審查要考':''}`})));S.kfocus=kf;continue;}
+          if(c==='kfocus'){const ex=EXK[Math.min(10,S.rank+1)];const kf=yield P('主練的型','練「基本・型」系列的牌時，主練的型修煉度漲最多，其他型只會小幅提升。型比賽和審查都看修煉度。',(()=>{const ch=kataChoices(),ev=k=>kataScore(k)-mistakeP(k)*11,best=ch.reduce((a,b)=>ev(b)>ev(a)?b:a,ch[0]);return unlockedKata().map(x=>({id:x.n,rec:x===best,label:`「${x.n}」 ${Math.round(km(x.n))}%`,sub:`難度 ${'★'.repeat(x.d)}${x.n===ex?' · 下一次審查要考':''}${x===best?' · 型比賽目前首選':ch.includes(x)?' · 型比賽可選':' · 比賽還用不到'}`}));})());S.kfocus=kf;continue;}
           if(c==='reroll'){const f=S.flags.rr||{};S.flags.rr={y:S.year,n:(f.y===S.year?f.n:0)+1};bump('spi',-2);S.hand=drawHand();say('你向師範要求換一套練法。');continue;}
           break;}
         S.hand=null;
@@ -3865,8 +3875,9 @@ function optsHTML(opts){return opts.map(o=>`<button type="button" class="opt${o.
 function pipsHTML(i){if(!i||!i.end)return '';const rem=Math.max(0,i.end-i.t),len=i.len||50;return `<span class="pips"><em>${i.phase}</em><span class="tleft"><i style="width:${(rem/len*100).toFixed(0)}%"></i></span></span>`;}
 const atbRow=(v,me)=>v==null?'':`<div class="row">速<div class="atb${me?' me':''}${v>=100?' full':''}"><i style="width:${Math.min(100,v).toFixed(0)}%"></i></div></div>`;
 let BLAST=null;
-function bSpd(){try{return localStorage.getItem('kl-bspd')==='1'?1:2;}catch(e){return 2;}}
+function bSpd(){if(typeof S!=='undefined'&&S&&S.flags&&S.flags.firstEasy)return 1;try{return localStorage.getItem('kl-bspd')==='1'?1:2;}catch(e){return 2;}}
 let TBW=.2,TBS=1;
+function tellHTML(i){const t=i&&i.tell;if(!t)return '';return `<div class="tellc"><b>${esc(t.who)}</b>「${t.t}」${t.atk?'<em>→ 按「受け」看穿：反擊 ×1.5、氣 +1</em>':''}</div>`;}
 function timingBar(){const l=(50-TBW*50).toFixed(1),r=(50+TBW*50).toFixed(1);return `<div class="tbar" style="background:linear-gradient(90deg,#eee ${l}%,#ffe14a ${l}%,#ffe14a ${r}%,#eee ${r}%)"><i style="animation-duration:${(1.1*TBS).toFixed(2)}s"></i><span>黃區按招＝時機完美・寬 ${Math.round(TBW*100)}%（升段變寬）</span></div>`;}
 function tbHit(){const bar=document.querySelector('.tbar'),c=bar&&bar.querySelector('i');if(!c)return false;const B=bar.getBoundingClientRect(),C=c.getBoundingClientRect();const x=(C.left+C.width/2-B.left)/B.width;return Math.abs(x-.5)<=TBW/2;}
 
@@ -3953,7 +3964,7 @@ function renderBattle(p){
       <div class="row">KI<div class="ki">${Array.from({length:m.kiMax},(_,i)=>`<i class="${i<m.ki?'on':''}"></i>`).join('')}</div></div>
     </div>
   </div>
-  ${p.opts.length>1?atbTrack(p.info)+((dm||df)?`<div class="bsum top">你 <b class="${dm?'dn':''}">−${dm}</b>　／　對手 <b class="${df?'up':''}">−${df}</b></div>`:'')+timingBar()+`<div class="moves">${optsHTML(p.opts)}</div>`+TBOX:TBOX+`<div class="moves">${optsHTML(p.opts)}</div>`}
+  ${p.opts.length>1?atbTrack(p.info)+((dm||df)?`<div class="bsum top">你 <b class="${dm?'dn':''}">−${dm}</b>　／　對手 <b class="${df?'up':''}">−${df}</b></div>`:'')+tellHTML(p.info)+timingBar()+`<div class="moves">${optsHTML(p.opts)}</div>`+TBOX:TBOX+`<div class="moves">${optsHTML(p.opts)}</div>`}
   <details class="bhelp"><summary>怎麼打？</summary>★ 技有：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每次出手回 1 格<br>「行動條」：赤是你、白是對手，誰先跑到右邊誰先出手；速度越快跑越快，快很多時能連續出手（他 ×2）；雙方同時到就會相打ち。下段傷腳、壓到場邊都會讓對手變慢<br>黃色區：體況好、技術贏對手會變寬；對手比你快，游標會變快</details>`;
   if(!drawPx($('#sprFoe'),foeKey(f)))drawSprite($('#sprFoe'),'front',SPR_BELT[f.belt]||'#2c2840',f.hair);
   if(!drawPx($('#sprMe'),(FEM()?'fback_':'back_')+HERO_KEYS[Math.min(6,m.belt|0)]))drawSprite($('#sprMe'),'back',SPR_BELT[m.belt],m.hair);
