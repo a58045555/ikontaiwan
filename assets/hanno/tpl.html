@@ -1,0 +1,227 @@
+<title>反應組手</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&family=Press+Start+2P&display=swap">
+<style>
+/* Layout: one-screen dojo arcade — sensei on a lit wooden floor up top, three stacked block buttons below that mirror head / body / legs. */
+:root{
+  --night:#141933; --night2:#222a52; --paper:#f3ecdc; --paper2:#e7dcc4; --ink:#26223b; --muted:#a3abd6;
+  --aka:#d9484f; --gold:#f2c24f; --teal:#3a9d90; --wood1:#8a5a33; --wood2:#6e4426; --wall:#efe2c7;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-px:"Press Start 2P",ui-monospace,monospace;
+  color-scheme:dark;
+}
+html,body{height:100%}
+[hidden]{display:none!important}
+body{margin:0;background:var(--night);color:var(--paper);font-family:var(--f-body);-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none}
+#app{height:100%;max-width:480px;margin:0 auto;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;box-sizing:border-box;gap:10px}
+.scr{flex:1;display:flex;flex-direction:column;gap:10px;min-height:0}
+h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balance}
+.brand{display:flex;align-items:center;gap:10px}
+.seal{background:var(--aka);color:#fff;font-weight:900;font-size:14px;line-height:1.1;padding:6px 8px;box-shadow:3px 3px 0 #0008;display:flex;flex-direction:column;align-items:center}
+.sub{color:var(--muted);font-size:13px}
+.card{background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:0 4px 0 #0007;padding:12px}
+.rules{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;font-size:14px;align-items:center}
+.rules b{font-family:var(--f-px);font-size:10px;background:var(--ink);color:var(--gold);padding:4px 6px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;overflow:auto;min-height:0;padding-bottom:4px}
+.sen{display:flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);padding:6px;cursor:pointer;font:inherit;text-align:left;box-shadow:0 3px 0 #0007}
+.sen:focus-visible,.blk:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sen img{width:40px;height:40px;image-rendering:pixelated;object-fit:contain;background:var(--paper2)}
+.sen span{display:flex;flex-direction:column;min-width:0}
+.sen b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sen small{font-size:11px;color:#6a6280}
+.sen i{font-style:normal;font-size:11px;color:var(--aka);font-weight:700}
+.foot{font-size:11px;color:var(--muted);text-align:center;line-height:1.5}
+.foot a{color:var(--gold)}
+/* play */
+.hud{display:flex;justify-content:space-between;align-items:center;font-family:var(--f-px);font-size:11px}
+.hud .hearts{color:var(--aka);font-size:16px;letter-spacing:2px;font-family:var(--f-body)}
+.hud .sc b{font-size:20px;color:var(--gold)}
+.stage{position:relative;flex:1;min-height:200px;border:3px solid var(--ink);overflow:hidden;background:linear-gradient(var(--wall) 0 58%,var(--wood1) 58% 100%)}
+.stage::before{content:"";position:absolute;left:0;right:0;top:58%;bottom:0;background:repeating-linear-gradient(90deg,transparent 0 46px,var(--wood2) 46px 48px)}
+.stage .ban{position:absolute;right:10px;top:10px;background:var(--aka);color:#fff;font-weight:900;font-size:14px;line-height:1.2;padding:6px 6px;display:flex;flex-direction:column}
+.sp{position:absolute;left:50%;bottom:6%;height:78%;transform:translateX(-50%);image-rendering:pixelated;transition:transform .08s}
+.sp.lunge{transform:translateX(-50%) scale(1.12)}
+.sp.twitch{animation:tw .25s 2}
+@keyframes tw{50%{transform:translateX(-46%) scale(1.04)}}
+.zone{position:absolute;left:8%;right:8%;opacity:0;background:rgba(217,72,79,.22);border:3px dashed var(--aka);transition:opacity .08s}
+.zone.on{opacity:1}
+.call{position:absolute;left:0;right:0;top:12%;text-align:center;font-weight:900;font-size:40px;color:#fff;-webkit-text-stroke:2px var(--ink);paint-order:stroke;text-shadow:0 4px 0 var(--ink);opacity:0;transform:scale(.6);transition:opacity .06s,transform .06s;pointer-events:none}
+.call.on{opacity:1;transform:scale(1)}
+.call.feint{color:#cfc8ba}
+.fx{position:absolute;left:0;right:0;top:44%;text-align:center;font-weight:900;font-size:26px;pointer-events:none;opacity:0}
+.fx.go{animation:fx .7s ease-out}
+@keyframes fx{0%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-40px) scale(1)}}
+.fx.ok{color:var(--gold);-webkit-text-stroke:1.5px var(--ink);paint-order:stroke}
+.fx.ng{color:#fff;-webkit-text-stroke:1.5px var(--aka);paint-order:stroke}
+.stage.hit{animation:shk .3s steps(4)}
+@keyframes shk{25%{transform:translate(-5px,2px)}50%{transform:translate(5px,-2px)}75%{transform:translate(-3px,0)}}
+.stage.hit::after{content:"";position:absolute;inset:0;background:var(--aka);opacity:.25}
+.tbar{height:8px;background:var(--night2);border:2px solid var(--ink)}
+.tbar i{display:block;height:100%;width:0;background:var(--gold)}
+.blks{display:grid;grid-template-rows:repeat(3,1fr);gap:8px;height:38%;min-height:190px}
+.blk{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:0 4px 0 #0008;font:inherit;padding:0 14px;cursor:pointer;touch-action:manipulation}
+.blk b{font-size:22px;font-weight:900}
+.blk small{font-size:12px;color:#6a6280;font-weight:700}
+.blk:active,.blk.pr{transform:translateY(3px);box-shadow:0 1px 0 #0008;background:var(--gold)}
+.blk[data-z="上段"] b::before{content:"▲ ";color:var(--aka)}
+.blk[data-z="中段"] b::before{content:"■ ";color:var(--aka)}
+.blk[data-z="下段"] b::before{content:"▼ ";color:var(--aka)}
+.hint{font-size:12px;color:var(--muted);text-align:center;min-height:1.2em}
+/* result */
+.res{text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+.res .big{font-family:var(--f-px);font-size:44px;color:var(--aka);line-height:1.2}
+.belt{display:inline-block;padding:4px 14px;font-weight:900;border:3px solid var(--ink)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;width:100%}
+.stats div{background:var(--paper2);padding:6px 4px;display:flex;flex-direction:column}
+.stats span{font-size:11px;color:#6a6280}
+.stats b{font-size:18px;font-variant-numeric:tabular-nums}
+.say{font-size:15px;line-height:1.6;text-align:left;width:100%}
+.say b{color:var(--aka)}
+.btns{display:grid;gap:8px}
+.btn{font:inherit;font-weight:900;font-size:16px;padding:12px;border:3px solid var(--ink);background:var(--paper);color:var(--ink);box-shadow:0 4px 0 #0008;cursor:pointer;text-align:center;text-decoration:none;display:block}
+.btn.pri{background:var(--aka);color:#fff}
+.btn.gold{background:var(--gold)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cnt{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-px);font-size:56px;color:var(--aka);-webkit-text-stroke:2px var(--ink);paint-order:stroke;pointer-events:none}
+@media (prefers-reduced-motion:reduce){.stage.hit,.fx.go,.sp.twitch{animation:none}.fx.go{opacity:1}}
+</style>
+
+<div id="app">
+  <section class="scr" id="scrSel">
+    <div class="brand"><div class="seal"><span>押</span><span>忍</span></div><div><h1>反應組手</h1><div class="sub">sensei 喊招，你出受け。能擋幾招？</div></div></div>
+    <div class="card rules">
+      <b>上段</b><span>打頭　→ 按最上面「上段受け」</span>
+      <b>中段</b><span>打身體 → 按中間「中段受け」</span>
+      <b>下段</b><span>踢大腿 → 按最下面「脛受け」</span>
+      <b>!?</b><span>沒有喊招只是作勢＝<strong>假動作，不要動</strong></span>
+      <b>♥×3</b><span>擋錯、太慢、被騙都會扣一顆</span>
+    </div>
+    <div class="sub">選一位 sensei（越往後越快）</div>
+    <div class="grid" id="senGrid"></div>
+    <div class="foot">以極真空手道中村道場台灣支部為藍本的非官方作品・人物與數值為虛構<br>招式請在道場由指導員帶著練，不要對朋友試打<br><a href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener">IG @i.k.o.n.taiwan</a>・<a href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">玩《極真人生》</a></div>
+  </section>
+
+  <section class="scr" id="scrPlay" hidden>
+    <div class="hud"><span class="hearts" id="hearts">♥♥♥</span><span id="senName" style="font-family:var(--f-body);font-weight:700;font-size:13px"></span><span class="sc">擋下 <b id="score">0</b></span></div>
+    <div class="stage" id="stage">
+      <div class="ban"><span>押</span><span>忍</span></div>
+      <div class="zone" data-z="上段" style="top:16%;height:19%"></div>
+      <div class="zone" data-z="中段" style="top:35%;height:25%"></div>
+      <div class="zone" data-z="下段" style="top:60%;height:34%"></div>
+      <img class="sp" id="sp" alt="sensei">
+      <div class="call" id="call"></div>
+      <div class="fx" id="fx"></div>
+      <div class="cnt" id="cnt" hidden></div>
+    </div>
+    <div class="tbar"><i id="tb"></i></div>
+    <div class="blks">
+      <button type="button" class="blk" id="b1" data-z="上段"><b>上段受け</b><small>擋頭・方向鍵↑／1</small></button>
+      <button type="button" class="blk" id="b2" data-z="中段"><b>中段受け</b><small>擋身體・→／2</small></button>
+      <button type="button" class="blk" id="b3" data-z="下段"><b>脛受け</b><small>抬腳擋下段・↓／3</small></button>
+    </div>
+    <div class="hint" id="hint">連續 0</div>
+  </section>
+
+  <section class="scr" id="scrRes" hidden>
+    <div class="card res" id="resCard"></div>
+    <div class="btns">
+      <button type="button" class="btn pri" id="again">再來一次</button>
+      <div class="row2"><button type="button" class="btn" id="other">換一位 sensei</button><button type="button" class="btn gold" id="copy">複製成績</button></div>
+      <a class="btn" href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener">想真的練？道場 IG 預約體驗</a>
+      <a class="btn" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">玩《極真人生》</a>
+    </div>
+    <textarea id="copyTxt" readonly hidden style="width:100%;font:13px var(--f-body);color:var(--ink);background:var(--paper)"></textarea>
+  </section>
+</div>
+
+<script>
+const A=__ASSETS__;
+const SEN=[
+  {k:'xiaogang',n:'weeee sensei',d:'小港道場',t:'power'},
+  {k:'chaozhou',n:'030 sensei',d:'潮州道場',t:'tech'},
+  {k:'shihandai',n:'914 sensei',d:'師範代',t:'tech'},
+  {k:'d9',n:'9D sensei',d:'鳳山道場',t:'speed'},
+  {k:'fengshan',n:'亨re sensei',d:'鳳山・竹田道場',t:'tech'},
+  {k:'tainan',n:'佐伊 sensei',d:'台南道場',t:'power'},
+  {k:'lingya',n:'扣拉 sensei',d:'苓雅道場',t:'all'},
+  {k:'nanzi',n:'蛤森 sensei',d:'楠梓道場',t:'power'},
+  {k:'sensei',n:'傑克杜 sensei',d:'屏東・左營道場',t:'all'},
+  {k:'shihan',n:'凱師範',d:'台灣支部',t:'all'}];
+const MOVES={
+  power:[['上段','f','上段蹴り！',2],['中段','p','中段突き！',5],['中段','f','中段蹴り！',2],['下段','f','下段蹴り！',3]],
+  tech:[['上段','f','上段蹴り！',3],['中段','p','中段突き！',3],['中段','f','中段蹴り！',3],['下段','f','下段蹴り！',3]],
+  speed:[['上段','f','上段蹴り！',3],['中段','p','中段突き！',4],['中段','f','中段蹴り！',2],['下段','f','下段蹴り！',3]],
+  all:[['上段','f','上段蹴り！',3],['中段','p','中段突き！',3],['中段','f','中段蹴り！',3],['下段','f','下段蹴り！',3]]};
+const BELTS=[[0,'白帶','#f3ecdc','#26223b'],[8,'橙帶','#f08a3c','#fff'],[16,'藍帶','#3f6fd8','#fff'],[25,'黃帶','#f2c24f','#26223b'],[35,'綠帶','#3f9a5a','#fff'],[48,'茶帶','#7a4a26','#fff'],[62,'黑帶','#1b1830','#f2c24f']];
+const $=s=>document.querySelector(s);
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+let AC=null;function tone(f,d,type,v){try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t=AC.currentTime+.01,o=AC.createOscillator(),g=AC.createGain();o.type=type||'square';o.frequency.value=f;g.gain.setValueAtTime(v||.05,t);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);}catch(e){}}
+function vib(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+function beltOf(n){let b=BELTS[0];for(const x of BELTS)if(n>=x[0])b=x;return b;}
+
+/* ---------- select ---------- */
+function renderSel(){const best=store.get('rk-best',{});
+  $('#senGrid').innerHTML=SEN.map((s,i)=>`<button type="button" class="sen" data-i="${i}"><img src="${A.h[s.k]}" alt=""><span><b>${s.n}</b><small>${s.d}・${'★'.repeat(1+Math.floor(i/2))}</small><i>${best[s.k]?`最佳 ${best[s.k]} 招・${beltOf(best[s.k])[1]}`:'還沒挑戰'}</i></span></button>`).join('');
+  document.querySelectorAll('.sen').forEach(b=>b.onclick=()=>start(+b.dataset.i));}
+function show(id){['#scrSel','#scrPlay','#scrRes'].forEach(s=>$(s).hidden=s!==id);}
+
+/* ---------- play ---------- */
+let G=null,TM=[];
+const later=(f,ms)=>{const t=setTimeout(()=>{TM=TM.filter(x=>x!==t);f();},ms);TM.push(t);return t;};
+function clearT(){TM.forEach(clearTimeout);TM=[];cancelAnimationFrame(G&&G.raf);}
+function start(i){clearT();const s=SEN[i];
+  G={i,s,score:0,lives:3,combo:0,max:0,perf:0,tot:0,phase:'idle',cur:null,W0:1300-i*45,feintFrom:s.t==='tech'?8:s.t==='all'?14:22,comboFrom:s.t==='speed'?6:s.t==='all'?12:18};
+  $('#senName').textContent=s.n;$('#sp').src=A.k[s.k];upd();show('#scrPlay');
+  const c=$('#cnt');c.hidden=false;let n=3;const tick=()=>{if(n>0){c.textContent=n;tone(660,.08);n--;later(tick,600);}else{c.textContent='始め！';tone(990,.15);later(()=>{c.hidden=true;next();},500);}};tick();}
+function upd(){$('#hearts').textContent='♥'.repeat(G.lives)+'♡'.repeat(3-G.lives);$('#score').textContent=G.score;$('#hint').textContent=G.combo>=3?`連續 ${G.combo}！`:`連續 ${G.combo}`;}
+function speed(){return Math.max(.42,1-G.score*.016);}
+function next(delay){if(G.phase==='over')return;G.phase='idle';G.cur=null;
+  const gap=delay!=null?delay:(380+Math.random()*620)*Math.max(.6,1-G.score*.01)*(G.s.t==='speed'?.85:1);later(launch,gap);}
+function pickMove(){const L=MOVES[G.s.t];const tot=L.reduce((a,m)=>a+m[3],0);let x=Math.random()*tot;for(const m of L){x-=m[3];if(x<0)return m;}return L[0];}
+function launch(){if(G.phase==='over')return;
+  const sp=$('#sp'),call=$('#call');
+  if(G.score>=G.feintFrom&&Math.random()<.16){G.phase='feint';G.cur={t0:performance.now(),W:700};
+    call.textContent='！？';call.className='call on feint';sp.classList.remove('twitch');void sp.offsetWidth;sp.classList.add('twitch');tone(220,.05,'triangle');
+    bar(700,true);const tok=G.cur;later(()=>{if(G.phase!=='feint'||G.cur!==tok)return;G.score++;G.combo++;G.max=Math.max(G.max,G.combo);fx('沒上當！','ok');tone(520,.06);reset();upd();next();},700);return;}
+  const m=pickMove();const W=Math.max(360,G.W0*speed());G.phase='atk';G.tot++;
+  G.cur={z:m[0],t0:performance.now(),W};
+  sp.src=m[1]==='p'?A.p[G.s.k]:A.f[G.s.k];sp.classList.add('lunge');
+  call.textContent=m[2];call.className='call on';
+  document.querySelectorAll('.zone').forEach(z=>z.classList.toggle('on',z.dataset.z===m[0]));
+  tone(m[0]==='上段'?880:m[0]==='中段'?660:440,.07);
+  bar(W);const tok=G.cur;later(()=>{if(G.phase==='atk'&&G.cur===tok)fail('來不及！');},W);}
+function bar(W,grey){const tb=$('#tb');tb.style.background=grey?'#a3abd6':'';const t0=performance.now();const f=()=>{const p=Math.max(0,1-(performance.now()-t0)/W);tb.style.width=(p*100)+'%';if(p>0&&(G.phase==='atk'||G.phase==='feint'))G.raf=requestAnimationFrame(f);else tb.style.width='0';};cancelAnimationFrame(G.raf);f();}
+function reset(){const sp=$('#sp');sp.classList.remove('lunge');$('#call').className='call';document.querySelectorAll('.zone').forEach(z=>z.classList.remove('on'));later(()=>{if(G.phase!=='atk')sp.src=A.k[G.s.k];},180);}
+function fx(t,c){const e=$('#fx');e.textContent=t;e.className='fx '+c;void e.offsetWidth;e.className='fx go '+c;}
+function press(z){if(!G||$('#scrPlay').hidden)return;const b=document.querySelector(`.blk[data-z="${z}"]`);b.classList.add('pr');setTimeout(()=>b.classList.remove('pr'),90);
+  if(G.phase==='feint'){fail('被假動作騙了！');return;}
+  if(G.phase!=='atk')return;
+  if(z!==G.cur.z){fail('擋錯了！');return;}
+  const dt=performance.now()-G.cur.t0,perf=dt<G.cur.W*.45;G.phase='res';
+  G.score++;G.combo++;G.max=Math.max(G.max,G.combo);if(perf)G.perf++;
+  fx(perf?'完美受け！':'押忍！','ok');tone(perf?1320:990,.07);if(perf)tone(1760,.09,'square',.03);vib(15);reset();upd();
+  const dbl=G.score>=G.comboFrom&&Math.random()<.3;next(dbl?160:undefined);}
+function fail(why){if(G.phase==='over')return;G.phase='res';G.lives--;G.combo=0;
+  const st=$('#stage');st.classList.remove('hit');void st.offsetWidth;st.classList.add('hit');fx(why,'ng');tone(140,.18,'sawtooth');vib([40,30,60]);reset();upd();
+  if(G.lives<=0){G.phase='over';later(end,900);}else next(700);}
+
+/* ---------- result ---------- */
+const SAY={白帶:'先把眼睛睜開。看對手的肩膀和腰，不要只看手。',橙帶:'開始看得到了。下一步是不要猜，等他真的出招再擋。',藍帶:'反應不錯。上段和中段分清楚，擋錯比擋慢更痛。',黃帶:'有在練的樣子。假動作要忍住，身體不要先動。',綠帶:'很穩。接下來練的是連續技，擋完馬上準備下一招。',茶帶:'這個反應，道場裡的組手可以打了。',黑帶:'押忍。你的受け，已經可以教學弟妹了。'};
+function end(){clearT();const s=G.s,sc=G.score;const best=store.get('rk-best',{});const nb=!best[s.k]||sc>best[s.k];if(nb){best[s.k]=sc;store.set('rk-best',best);}
+  const b=beltOf(sc);
+  $('#resCard').innerHTML=`<div class="sub" style="color:#6a6280">對手・${s.n}（${s.d}）</div><div style="font-weight:700">擋下</div><div class="big">${sc}</div><div>招${nb&&sc>0?'・<b style="color:var(--aka)">新紀錄！</b>':`・最佳 ${best[s.k]}`}</div>
+    <span class="belt" style="background:${b[2]};color:${b[3]}">${b[1]}級反應</span>
+    <div class="stats"><div><span>完美受け</span><b>${G.perf}</b></div><div><span>最長連續</span><b>${G.max}</b></div><div><span>sensei 出招</span><b>${G.tot}</b></div></div>
+    <p class="say"><b>${s.n}：</b>「${SAY[b[1]]}」</p>`;
+  show('#scrRes');}
+function shareText(){return `我在「反應組手」擋下 ${G.score} 招（對手：${G.s.n}・${beltOf(G.score)[1]}級反應）！你能擋幾招？\n極真空手道中村道場台灣支部 IG @i.k.o.n.taiwan\n玩《極真人生》：https://a58045555.github.io/ikontaiwan/`;}
+$('#again').onclick=()=>start(G.i);
+$('#other').onclick=()=>{renderSel();show('#scrSel');};
+$('#copy').onclick=()=>{const t=shareText();const ta=$('#copyTxt');const ok=()=>{$('#copy').textContent='已複製 ✓';setTimeout(()=>$('#copy').textContent='複製成績',1500);};
+  try{navigator.clipboard.writeText(t).then(ok,()=>{ta.hidden=false;ta.value=t;ta.select();});}catch(e){ta.hidden=false;ta.value=t;ta.select();}};
+document.querySelectorAll('.blk').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();press(b.dataset.z);}));
+document.addEventListener('keydown',e=>{const m={ArrowUp:'上段','1':'上段',ArrowRight:'中段','2':'中段',ArrowDown:'下段','3':'下段'}[e.key];if(m&&!$('#scrPlay').hidden){e.preventDefault();press(m);}});
+renderSel();
+</script>
