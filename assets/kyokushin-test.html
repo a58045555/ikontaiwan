@@ -657,7 +657,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       <div class="opts">
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span><span class="s">完整人生・約 30 分鐘・自動存檔</span></button>
         <button class="opt" type="button" id="btnTrial"><span class="l">⚡ 先玩 3 分鐘體驗</span><span class="s">第一堂課＋第一場對練，看看極真是什麼感覺</span></button>
-        <a class="opt" id="btnHanno" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block"><span class="l" style="display:block">🥊 小遊戲：反應組手</span><span class="s" style="display:block">sensei 喊上段、中段、下段，20 秒內你能擋幾招？</span></a>
+        <a class="opt" id="btnHanno" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block"><span class="l" style="display:block">🥊 小遊戲：反應組手</span><span class="s" style="display:block">sensei 喊上段、中段、下段，15 秒內你能擋幾招？</span></a>
         <button class="opt" type="button" id="btnImport"><span class="l">📥 輸入存檔碼</span><span class="s">換了手機或瀏覽器？貼上存檔碼接著玩</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
         <button class="opt" type="button" id="btnAch"><span class="l">成就・插曲圖鑑・歷代紀錄</span><span class="s" id="achSub"></span></button>
@@ -685,6 +685,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <article id="card" aria-live="polite"></article>
     <button class="opt ffbtn" type="button" id="btnFFN" hidden><span class="l">⏩ 快轉到下個大事件</span><span class="s">照「建議」自動過，遇到審查、比賽或重要選擇就停（最多兩年）</span></button>
     <button class="opt ffbtn" type="button" id="btnFF" hidden><span class="l">⏩ 人生快轉，直接看結局</span><span class="s">剩下的日子自動照「建議」過完，結語一樣會寫進去</span></button>
+    <a class="quit" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="align-self:center;color:var(--headsub)">🥊 休息一下，玩反應組手（15 秒）</a>
     <button class="quit" type="button" id="btnCode" style="align-self:center;color:var(--headsub)">📋 存檔碼（換手機也能接著玩）</button>
     <button class="quit" type="button" id="btnGiveUp2" style="align-self:center;color:var(--headsub)">放棄・直接結算這段人生</button>
     <section class="px more" id="moreBox" aria-label="詳細資料">
@@ -4597,6 +4598,7 @@ function renderEnd(){
     ${tourOk()?`<button class="opt" type="button" id="btnTour"><span class="l">sensei 道場巡禮</span><span class="s">用巔峰狀態連戰 10 位 sensei${tourBest()?`・最佳紀錄 第 ${tourBest()} 站`:""}</span></button>`:""}
     <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
     <div id="cardOut"></div>
+    <a class="opt" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block"><span class="l" style="display:block">🥊 小遊戲：反應組手</span><span class="s" style="display:block">換個方式練：sensei 喊招，15 秒內你能擋幾招？</span></a>
     <button class="opt" type="button" id="btnSame"><span class="l">同樣的開局，重新來過</span></button>
     <button class="opt" type="button" id="btnNew"><span class="l">開始新的人生</span></button>
   </div>`;
