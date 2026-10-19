@@ -29,6 +29,7 @@ h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balanc
 #scrSel{flex:none}
 .sen{display:flex;align-items:center;gap:8px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);padding:6px;cursor:pointer;font:inherit;text-align:left;box-shadow:0 3px 0 #0007}
 .sen:focus-visible,.blk:focus-visible,.btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.sen.lock{opacity:.55;cursor:not-allowed}.sen.lock img{filter:grayscale(1)}
 .sen img{width:40px;height:40px;image-rendering:pixelated;object-fit:contain;background:var(--paper2)}
 .sen span{display:flex;flex-direction:column;min-width:0}
 .sen b{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -65,6 +66,8 @@ h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balanc
 .blks{display:grid;grid-template-rows:repeat(3,1fr);gap:8px;height:38%;min-height:190px}
 .blk{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:0 4px 0 #0008;font:inherit;padding:0 14px;cursor:pointer;touch-action:manipulation}
 .blk b{font-size:22px;font-weight:900}
+.blk.glow{background:var(--gold);animation:glow .6s infinite alternate}@keyframes glow{to{box-shadow:0 4px 0 #0008,0 0 0 4px var(--aka)}}
+.prac{position:absolute;left:8px;right:8px;bottom:8px;background:var(--ink);color:var(--paper);font-size:14px;padding:8px 10px;border:2px solid var(--gold);display:flex;gap:8px;align-items:center}.prac b{color:var(--gold)}
 .blk small{font-size:12px;color:#6a6280;font-weight:700}
 .blk:active,.blk.pr{transform:translateY(3px);box-shadow:0 1px 0 #0008;background:var(--gold)}
 .blk[data-z="上段"] b::before{content:"▲ ";color:var(--aka)}
@@ -101,7 +104,7 @@ h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balanc
       <b>♥×3</b><span>擋錯、太慢、被騙都會扣一顆</span>
       <b>15秒</b><span>時間到或三顆心用完就結算</span>
     </div></details>
-    <div class="sub">每場 15 秒，選一位 sensei（越往後出招越快）</div>
+    <div class="sub">每場 15 秒。拿到綠帶（擋下 13 招）就解鎖下一位 sensei，越後面出招越快。</div>
     <div class="grid" id="senGrid"></div>
     <div class="foot">以極真空手道中村道場台灣支部為藍本的非官方作品・人物與數值為虛構<br>招式請在道場由指導員帶著練，不要對朋友試打<br><a href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener">IG @i.k.o.n.taiwan</a>・<a href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">玩《極真人生》</a></div>
   </section>
@@ -117,6 +120,7 @@ h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balanc
       <div class="call" id="call"></div>
       <div class="fx" id="fx"></div>
       <div class="cnt" id="cnt" hidden></div>
+      <div class="prac" id="prac" hidden></div>
     </div>
     <div class="tbar"><i id="tb"></i></div>
     <div class="blks">
@@ -131,7 +135,9 @@ h1{margin:0;font-weight:900;font-size:30px;letter-spacing:.06em;text-wrap:balanc
     <div class="card res" id="resCard"></div>
     <div class="btns">
       <button type="button" class="btn pri" id="again">再來一次</button>
-      <div class="row2"><button type="button" class="btn" id="other">換一位 sensei</button><button type="button" class="btn gold" id="copy">複製成績</button></div>
+      <button type="button" class="btn gold" id="mkImg">產生限動成績圖</button>
+      <div id="imgOut" hidden style="text-align:center;font-size:13px;color:var(--muted)"></div>
+      <div class="row2"><button type="button" class="btn" id="other">換一位 sensei</button><button type="button" class="btn" id="copy">複製成績文字</button></div>
       <a class="btn" href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener">想真的練？道場 IG 預約體驗</a>
       <a class="btn" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">玩《極真人生》</a>
     </div>
@@ -166,19 +172,34 @@ function vib(p){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
 function beltOf(n){let b=BELTS[0];for(const x of BELTS)if(n>=x[0])b=x;return b;}
 
 /* ---------- select ---------- */
+const NEED=13;
+function unlocked(i,best){return i===0||location.hash==='#all'||(best[SEN[i-1].k]||0)>=NEED;}
 function renderSel(){const best=store.get('rk-best',{});if(Object.keys(best).length)$('#rulesBox').open=false;
-  $('#senGrid').innerHTML=SEN.map((s,i)=>`<button type="button" class="sen" data-i="${i}"><img src="${A.h[s.k]}" alt=""><span><b>${s.n}</b><small>${s.d}・${'★'.repeat(1+Math.floor(i/2))}</small><i>${best[s.k]?`最佳 ${best[s.k]} 招・${beltOf(pts(best[s.k],i))[1]}`:'還沒挑戰'}</i></span></button>`).join('');
-  document.querySelectorAll('.sen').forEach(b=>b.onclick=()=>start(+b.dataset.i));}
+  $('#senGrid').innerHTML=SEN.map((s,i)=>!unlocked(i,best)?`<button type="button" class="sen lock" disabled><img src="${A.h[s.k]}" alt=""><span><b>${s.n}</b><small>${s.d}・${'★'.repeat(1+Math.floor(i/2))}</small><i>🔒 前一位拿到綠帶解鎖</i></span></button>`:`<button type="button" class="sen" data-i="${i}"><img src="${A.h[s.k]}" alt=""><span><b>${s.n}</b><small>${s.d}・${'★'.repeat(1+Math.floor(i/2))}</small><i>${best[s.k]?`最佳 ${best[s.k]} 招・${beltOf(pts(best[s.k],i))[1]}`:'還沒挑戰'}</i></span></button>`).join('');
+  document.querySelectorAll('.sen:not(.lock)').forEach(b=>b.onclick=()=>start(+b.dataset.i));}
 function show(id){['#scrSel','#scrPlay','#scrRes'].forEach(s=>$(s).hidden=s!==id);}
 
 /* ---------- play ---------- */
 let G=null,TM=[];
 const later=(f,ms)=>{const t=setTimeout(()=>{TM=TM.filter(x=>x!==t);f();},ms);TM.push(t);return t;};
 function clearT(){TM.forEach(clearTimeout);TM=[];if(G){cancelAnimationFrame(G.raf);cancelAnimationFrame(G.craf);}}
-function start(i){clearT();const s=SEN[i];$('#tb').style.width='0';
+function start(i,skipTut){if(!skipTut&&!store.get('rk-tut',0)){practice(i);return;}clearT();const s=SEN[i];$('#tb').style.width='0';$('#prac').hidden=true;
   G={i,s,score:0,lives:3,combo:0,max:0,perf:0,tot:0,miss:{},slow:0,fooled:0,phase:'idle',cur:null,W0:1100-i*72,gap0:760-i*52,feintP:i<1?0:Math.min(.22,.05+i*.017+(s.t==='tech'?.04:0)),dblP:Math.min(.4,i*.04+(s.t==='speed'?.08:0)),tEnd:0};$('#clock').textContent=(ROUND/1000).toFixed(1);
   $('#senName').textContent=s.n;$('#sp').src=A.k[s.k];upd();show('#scrPlay');
   const c=$('#cnt');c.hidden=false;let n=3;const tick=()=>{if(n>0){c.textContent=n;tone(660,.08);n--;later(tick,600);}else{c.textContent='開始！';tone(990,.15);later(()=>{c.hidden=true;G.tEnd=performance.now()+ROUND;clock();next();},500);}};tick();}
+function practice(i){clearT();const s=SEN[i];show('#scrPlay');$('#senName').textContent='練習・'+s.n;$('#clock').textContent='練習';$('#sp').src=A.k[s.k];
+  G={i,s,score:0,lives:3,combo:0,max:0,perf:0,tot:0,miss:{},slow:0,fooled:0,phase:'prac',cur:null,tEnd:0,W0:9999,gap0:900,feintP:0,dblP:0};upd();
+  const P=[['上段','f','上段踢！','頭被打：按最上面'],['中段','p','中段拳！','身體被打：按中間'],['下段','f','下段踢！','大腿被踢：按最下面'],[null,null,'！？','假動作：忍住不要按']];let n=0;const pr=$('#prac');pr.hidden=false;
+  const step=()=>{if(n>=P.length){pr.innerHTML='<b>練習完成！</b>正式開始，15 秒計時。';store.set('rk-tut',1);later(()=>{pr.hidden=true;start(i,true);},1300);return;}
+    const m=P[n];G.cur={z:m[0],t0:performance.now(),W:99999};G.phase=m[0]?'patk':'pfeint';
+    $('#sp').src=m[1]==='p'?A.p[s.k]:m[1]==='f'?A.f[s.k]:A.k[s.k];$('#sp').classList.toggle('lunge',!!m[0]);if(!m[0]){$('#sp').classList.remove('twitch');void $('#sp').offsetWidth;$('#sp').classList.add('twitch');}
+    $('#call').textContent=m[2];$('#call').className='call on'+(m[0]?'':' feint');document.querySelectorAll('.zone').forEach(z=>z.classList.toggle('on',z.dataset.z===m[0]));
+    document.querySelectorAll('.blk').forEach(b=>b.classList.toggle('glow',b.dataset.z===m[0]));
+    pr.innerHTML=`<b>練習 ${n+1}/4</b>${m[3]}${m[0]?'（亮起的按鈕）':'，2 秒後自動通過'}`;tone(660,.07);
+    if(!m[0])later(()=>{if(G.phase==='pfeint'){G.phase='pres';fx('沒上當！','ok');n++;reset();document.querySelectorAll('.blk').forEach(b=>b.classList.remove('glow'));later(step,700);}},2000);};
+  G.pracOk=()=>{fx('押忍！','ok');tone(990,.07);n++;reset();document.querySelectorAll('.blk').forEach(b=>b.classList.remove('glow'));later(step,700);};
+  G.pracNg=(t)=>{fx(t,'ng');tone(140,.15,'sawtooth');};
+  later(step,500);}
 function left(){return G.tEnd?Math.max(0,G.tEnd-performance.now()):ROUND;}
 function clock(){if(!G||G.phase==='over')return;const l=left();const c=$('#clock');c.textContent=(l/1000).toFixed(1);c.style.color=l<5000?'var(--aka)':'';if(l<=0){timeUp();return;}G.craf=requestAnimationFrame(clock);}
 function timeUp(){if(G.phase==='over')return;G.phase='over';TM.forEach(clearTimeout);TM=[];reset();fx('時間到！','ok');tone(990,.12);tone(1320,.2,'square',.03);setTimeout(end,1000);}
@@ -203,6 +224,8 @@ function bar(W,grey){const tb=$('#tb');tb.style.background=grey?'#a3abd6':'';con
 function reset(){const sp=$('#sp');sp.classList.remove('lunge');$('#call').className='call';document.querySelectorAll('.zone').forEach(z=>z.classList.remove('on'));later(()=>{if(G.phase!=='atk')sp.src=A.k[G.s.k];},180);}
 function fx(t,c){const e=$('#fx');e.textContent=t;e.className='fx '+c;void e.offsetWidth;e.className='fx go '+c;}
 function press(z){if(!G||$('#scrPlay').hidden)return;const b=document.querySelector(`.blk[data-z="${z}"]`);b.classList.add('pr');setTimeout(()=>b.classList.remove('pr'),90);
+  if(G.phase==='patk'){if(z===G.cur.z){G.phase='pres';G.pracOk();}else G.pracNg(`是${G.cur.z}！`);return;}
+  if(G.phase==='pfeint'){G.pracNg('假動作，不要按！');return;}
   if(G.phase==='feint'){G.fooled=(G.fooled||0)+1;fail('被假動作騙了！');return;}
   if(G.phase!=='atk')return;
   if(z!==G.cur.z){G.miss=G.miss||{};G.miss[G.cur.z]=(G.miss[G.cur.z]||0)+1;fail(`是${G.cur.z}！`);return;}
@@ -222,14 +245,26 @@ function end(){clearT();const s=G.s,sc=G.score;const best=store.get('rk-best',{}
     <span class="belt" style="background:${b[2]};color:${b[3]}">${b[1]}級反應</span><div class="sub" style="color:#6a6280">${G.lives>0?'撐滿 15 秒':'三顆心用完'}・越快的 sensei 出招越多，才擋得到黑帶</div>
     <div class="stats"><div><span>完美防守</span><b>${G.perf}</b></div><div><span>最長連續</span><b>${G.max}</b></div><div><span>sensei 出招</span><b>${G.tot}</b></div></div>
     <p class="say"><b>${s.n}：</b>「${SAY[b[1]]}」</p>${tipLine()}`;
-  show('#scrRes');}
+  $('#imgOut').hidden=true;show('#scrRes');}
 function tipLine(){const m=G.miss||{};const worst=Object.keys(m).sort((a,b)=>m[b]-m[a])[0];const L=[];
   if(worst)L.push(`${worst}擋錯 ${m[worst]} 次：先看 sensei 喊的字和亮起的紅框，再按對應高度的按鈕。`);
   if(G.slow)L.push(`太慢 ${G.slow} 次：手指先放在中間那顆，上下移動比較快。`);
   if(G.fooled)L.push(`被假動作騙 ${G.fooled} 次：看到「！？」就忍住不要按。`);
   return L.length?`<div class="say" style="font-size:13px;color:#4a4560">${L.map(x=>'・'+x).join('<br>')}</div>`:'';}
-function shareText(){return `我在「反應組手」15 秒擋下 ${G.score} 招（對手：${G.s.n}・${beltOf(pts(G.score,G.i))[1]}級反應）！你能擋幾招？\n極真空手道中村道場台灣支部 IG @i.k.o.n.taiwan\n玩《極真人生》：https://a58045555.github.io/ikontaiwan/`;}
-$('#again').onclick=()=>start(G.i);
+function storyImg(){const W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');const F='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';
+  const sc=G.score,b=beltOf(sc),s=G.s;
+  x.fillStyle='#141933';x.fillRect(0,0,W,H);x.fillStyle='#f3ecdc';x.fillRect(60,200,W-120,1340);x.fillStyle='#d9484f';x.fillRect(60,200,W-120,18);
+  x.textAlign='center';x.fillStyle='#26223b';x.font=`900 84px ${F}`;x.fillText('反應組手',W/2,340);
+  x.font=`500 34px ${F}`;x.fillStyle='#6a6280';x.fillText(`對手・${s.n}（${s.d}）`,W/2,400);
+  return new Promise(res=>{const im=new Image();im.onload=()=>{x.imageSmoothingEnabled=false;const h=300,w=im.width*h/im.height;x.fillStyle='#e7dcc4';x.fillRect(W/2-170,450,340,340);x.drawImage(im,W/2-w/2,470,w,h);x.strokeStyle='#26223b';x.lineWidth=8;x.strokeRect(W/2-170,450,340,340);
+    x.fillStyle='#26223b';x.font=`700 46px ${F}`;x.fillText('15 秒擋下',W/2,880);x.fillStyle='#d9484f';x.font=`900 260px ${F}`;x.fillText(String(sc),W/2,1120);x.fillStyle='#26223b';x.font=`700 46px ${F}`;x.fillText('招',W/2,1190);
+    x.fillStyle=b[2];x.fillRect(W/2-230,1240,460,110);x.strokeRect(W/2-230,1240,460,110);x.fillStyle=b[3];x.font=`900 60px ${F}`;x.fillText(`${b[1]}級反應`,W/2,1318);
+    x.fillStyle='#4a4560';x.font=`500 34px ${F}`;x.fillText(`完美防守 ${G.perf}・最長連續 ${G.max}`,W/2,1430);
+    x.fillStyle='#f2c24f';x.font=`900 52px ${F}`;x.fillText('你能擋幾招？',W/2,1640);x.fillStyle='#f3ecdc';x.font=`700 40px ${F}`;x.fillText('極真空手道中村道場台灣支部',W/2,1720);x.fillText('IG @i.k.o.n.taiwan',W/2,1780);x.fillStyle='#a3abd6';x.font=`500 30px ${F}`;x.fillText('a58045555.github.io/ikontaiwan/hanno',W/2,1840);
+    res(cv);};im.src=A.h[s.k];});}
+$('#mkImg').onclick=async()=>{const cv=await storyImg();const o=$('#imgOut');o.hidden=false;o.innerHTML=`<img src="${cv.toDataURL('image/png')}" alt="限動成績圖" style="width:70%;border:3px solid var(--ink)"><div>長按圖片即可儲存，分享到 IG 限時動態</div>`;o.scrollIntoView({behavior:'smooth',block:'nearest'});};
+function shareText(){return `我在「反應組手」15 秒擋下 ${G.score} 招（對手：${G.s.n}・${beltOf(pts(G.score,G.i))[1]}級反應）！你能擋幾招？\n極真空手道中村道場台灣支部 IG @i.k.o.n.taiwan\n來挑戰：https://a58045555.github.io/ikontaiwan/hanno/`;}
+$('#again').onclick=()=>start(G.i,true);
 $('#other').onclick=()=>{renderSel();show('#scrSel');};
 $('#copy').onclick=()=>{const t=shareText();const ta=$('#copyTxt');const ok=()=>{$('#copy').textContent='已複製 ✓';setTimeout(()=>$('#copy').textContent='複製成績',1500);};
   try{navigator.clipboard.writeText(t).then(ok,()=>{ta.hidden=false;ta.value=t;ta.select();});}catch(e){ta.hidden=false;ta.value=t;ta.select();}};
