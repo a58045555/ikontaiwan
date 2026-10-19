@@ -552,7 +552,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <details><summary>受傷</summary>
       <ul><li><b>輕傷</b>：稽古效果 ×0.8，大約三到六個月痊癒。</li><li><b>中度傷</b>：稽古效果 ×0.55，比賽開場體力較低。</li><li><b>重傷</b>：只能休養或復健，不能比賽、不能審查。</li><li>受傷時能力會直接下降（輕傷少、重傷多），中度以上的傷沒好之前每季還會再掉一點。</li><li>28 歲起速度開始衰退，30 歲耐力、33 歲力量、35 歲鍛體也會跟著下降；技術和鬥志不會。</li><li>一般組組手最多打到 35 歲（型沒有年齡限制）；28 歲起會不時問你要不要引退，最近兩年拿過冠軍時引退是「巔峰引退」（名聲 +8、成就「完美落幕」）。</li><li><b>體重</b>：重量訓練、鍛體會增重，跑山、晨跑、山籠會減重。量級內偏重：攻擊、體力↑ 速度↓；偏輕相反。超過量級上限時，比賽前要過磅：減重或升一級。</li><li>選「休養」恢復最快，「復健」可以邊恢復邊練一點抗性。受傷沒好又受傷，傷勢會加重。</li></ul></details>
     <details><summary>組手對戰</summary>
-      <ul><li>每回合從四招選一招。招式分突、下段、中段、上段，對手分力量型、技術型、速度型，打中弱點會「效果拔群」：力量型怕下段、技術型怕正拳、速度型怕中段。</li><li>大招要用「氣」，每回合回 1 點；息吹可以回氣。受け・反擊能擋下攻擊再反打。</li><li>一次打掉三成體力算<b>技有</b>，兩個技有就是一本。本戰 5 回合，平手打延長 3 回合，再平手比試割片數。</li><li>不想一招一招打，可以按「交給本能」自動打完。</li></ul></details>
+      <ul><li>每回合從四招選一招。招式分突、下段、中段、上段，對手分力量型、技術型、速度型，打中弱點會「效果拔群」：力量型怕下段、技術型怕正拳、速度型怕中段。</li><li>大招要用「氣」，每回合回 1 點；息吹可以回氣。受け・反擊能擋下攻擊再反打。</li><li>一次打掉三成體力算<b>有效</b>，兩個有效就是一本。本戰 5 回合，平手打延長 3 回合，再平手比試割片數。</li><li>不想一招一招打，可以按「交給本能」自動打完。</li></ul></details>
     <details><summary>型比賽</summary>
       <p>每一輪選一個型演武。難度越高分數越高，但技術不夠時容易失誤。五位審判舉旗，拿到三支旗就晉級。</p></details>
     <details><summary>講習會</summary>
@@ -657,6 +657,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       <div class="opts">
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span><span class="s">完整人生・約 30 分鐘・自動存檔</span></button>
         <button class="opt" type="button" id="btnTrial"><span class="l">⚡ 先玩 3 分鐘體驗</span><span class="s">第一堂課＋第一場對練，看看極真是什麼感覺</span></button>
+        <a class="opt" id="btnHanno" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block"><span class="l" style="display:block">🥊 小遊戲：反應組手</span><span class="s" style="display:block">sensei 喊上段、中段、下段，20 秒內你能擋幾招？</span></a>
         <button class="opt" type="button" id="btnImport"><span class="l">📥 輸入存檔碼</span><span class="s">換了手機或瀏覽器？貼上存檔碼接著玩</span></button>
         <button class="opt" type="button" id="btnResume" hidden><span class="l">繼續上次的人生</span><span class="s" id="resumeSub"></span></button>
         <button class="opt" type="button" id="btnAch"><span class="l">成就・插曲圖鑑・歷代紀錄</span><span class="s" id="achSub"></span></button>
@@ -700,7 +701,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.8・2026.10.19</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v1.9・2026.10.19</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
 </div>
 
 <script>
@@ -961,7 +962,7 @@ const FAVS={
   renda:'突・連打兩下，打技術型拔群',
   chudan:'中段・打速度型拔群',
   hiza:'中段・近身威力大，打速度型拔群',
-  jodan:'上段・一擊就可能技有，命中低',
+  jodan:'上段・一擊就可能有效，命中低',
   ushiro:'上段・後迴旋，威力大、容易被看穿',
   kakato:'上段・從上方劈下，會心率高',
   dokaiten:'上段・捨身大技，命中最低、一中就倒'
@@ -1294,7 +1295,7 @@ function dmgCalc(att,def,m,crit,em){
 }
 const LN=(cls,h)=>`<div class="ln ${cls}">${h}</div>`;
 function checkWaza(victim,attacker,d,L){
-  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000:(victim.wazaTh||.3))){attacker.waza++;L.push(LN('sys',`<span class="tg waza">技有！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個技有`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
+  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000:(victim.wazaTh||.3))){attacker.waza++;L.push(LN('sys',`<span class="tg waza">有效！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個有效`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
 }
 let BEVQ=[],BTL=[];var REPLAY=false,GM_SEEN=new Set();function gm(n){if(REPLAY||GM_SEEN.has(n))return;GM_SEEN.add(n);try{if(typeof gc==='function')gc(n,true);}catch(e){}}
 function act(att,def,key,L,scout,force){
@@ -1415,7 +1416,7 @@ function* battle(T,opp,rn,quick){
     if(me.hp<=0){result={win:false,method:me.awase?'合技一本負':`一本負・${me.finisher||''}`};L.push(LN('sys','<span class="tg dn">一本……</span>你被擊倒了'));break;}
     if(t>=end){
       const pm=me.hp/me.maxHp,pf=foe.hp/foe.maxHp;
-      if(me.waza!==foe.waza){result={win:me.waza>foe.waza,method:(me.waza>foe.waza?'判定勝':'判定負')+'（技有）'};}
+      if(me.waza!==foe.waza){result={win:me.waza>foe.waza,method:(me.waza>foe.waza?'判定勝':'判定負')+'（有效）'};}
       else if(phase==='本戰'){
         if(Math.abs(pm-pf)>=.12)result={win:pm>pf,method:pm>pf?'判定勝':'判定負'};
         else{phase='延長戰';end+=30;L.push(LN('sys','<span class="tg crit">旗判定平手</span>進入延長戰！'));}
@@ -1459,7 +1460,7 @@ const TOUR=[ // P30：類型依使用者提供；強度依使用者排序；前 
   {k:'lingya',dojo:'苓雅道場',type:'none',str:88,sp:'麻糬應援',spd:'體力剩三成時，麻糬在場邊叫一聲，回復 15%',hi:'「麻糬也在看喔。你可別輸給一隻狗。」',win:'「麻糬搖尾巴了，牠承認你了。」',lose:'「麻糬說：汪。意思是再練練。」',mod:f=>{f.mochi=1;}},
   {k:'nanzi',dojo:'楠梓道場',type:'power',str:96,sp:'鐵壁',spd:'防禦 +12%',hi:'「打吧，看你能不能打動我。」',win:'「……有點痛。好，算你過關。」',lose:'「打不動就換個地方打。下段呢？」',mod:f=>{f.def*=1.12;}},
   {k:'sensei',dojo:'屏東・左營道場',type:'none',str:101,sp:'上段',spd:'上段會心率 +12%',hi:'「從白帶看你到現在，讓我看看你長到哪了。」',win:'「……很好。你已經不是當年那個小白帶了。」',lose:'「上段要看準時機。你太早出了。」',mod:f=>{f.critB=.12;f.moves=['tsuki','chudan','jodan','ushiro','uke','ibuki'];}},
-  {k:'shihan',dojo:'台灣支部',type:'none',str:107,sp:'不動',spd:'要打掉四成體力才算技有，體力 +10%',hi:'凱師範慢慢綁好黑帶：「押忍。全力來。」',win:'凱師範點點頭：「押忍。你可以出去教人了。」',lose:'凱師範扶你起來：「很好的一戰。再來，隨時。」',mod:f=>{f.wazaTh=.4;f.maxHp=Math.round(f.maxHp*1.1);f.hp=f.maxHp;}}
+  {k:'shihan',dojo:'台灣支部',type:'none',str:107,sp:'不動',spd:'要打掉四成體力才算有效，體力 +10%',hi:'凱師範慢慢綁好黑帶：「押忍。全力來。」',win:'凱師範點點頭：「押忍。你可以出去教人了。」',lose:'凱師範扶你起來：「很好的一戰。再來，隨時。」',mod:f=>{f.wazaTh=.4;f.maxHp=Math.round(f.maxHp*1.1);f.hp=f.maxHp;}}
 ];
 const tourName=t=>t.k==='d9'?'9D sensei':MNAME[t.k];
 function tourBest(){try{return +localStorage.getItem('kl-tour')||0;}catch(e){return 0;}}
@@ -2252,7 +2253,7 @@ const EVENTS=[
     [{l:'湊過去聽他講什麼',s:'鬥志↑↑',fx:{spi:3},t:'你笑到忘記緊張，上場時腳步變輕了。'},{l:'自己默默熱身',s:'耐力↑',fx:{sta:2},t:'他經過你身邊，拍了一下你的背：「放鬆！」'}])},
   {id:'m_henre1',cond:()=>atHome('fengshan','zhutian'),run:()=>ev('亨re sensei 的基本','亨re sensei 讓全道場做正拳，一做就是三百下。他走過每一個人身邊，只說同一句話：「基本做一萬次，就不叫基本了。」',
     [{l:'一下都不偷懶',s:'技術↑↑ 耐力↑',fx:{tec:2,sta:1},t:'第三百下，你終於聽到自己的拳破風的聲音。'},{l:'邊做邊數到第幾萬次了',s:'鬥志↑',fx:{spi:2},t:'算了一下，還差九千兩百下。'}])},
-  {id:'m_henre2',cond:()=>!atHome('fengshan','zhutian')&&S.rank>=3,run:()=>ev('亨re sensei 的判定','比賽中你一記上段踢擦過對手的頭。主審是鳳山的亨re sensei，他看了很久，舉起旗子——技有。',
+  {id:'m_henre2',cond:()=>!atHome('fengshan','zhutian')&&S.rank>=3,run:()=>ev('亨re sensei 的判定','比賽中你一記上段踢擦過對手的頭。主審是鳳山的亨re sensei，他看了很久，舉起旗子——有效。',
     [{l:'賽後去謝謝他',s:'名聲↑',fx:{fame:1},t:'他說：「不用謝我。那一腳是你自己練來的。」'},{l:'回去把那一腳練到更乾淨',s:'技術↑ 速度↑',fx:{tec:1,spd:1},t:'下一次，你要讓所有人都不用猶豫。'}])},
   {id:'m_9d',cond:()=>atHome('fengshan','zhutian')&&S.age<=19,run:()=>ev('9D sensei 的拳套','9D sensei 戴著白色拳套，對你比了個讚：「今天陪你打。你負責出拳，我負責讓你知道哪裡沒打好。」',
     [{l:'「押忍！麻煩 9D sensei 了！」',s:'技術↑ 速度↑ 體況↓',fx:{tec:1,spd:1,hp:-4},t:'一個小時後，你知道了十七個沒打好的地方。'},{l:'問她怎麼當上師範代的',s:'鬥志↑↑',fx:{spi:3},t:'她笑著說：「就是每天都來，來到大家習慣我在。」'}])},
@@ -3024,7 +3025,7 @@ function mvImg(k){if(typeof POSE==='undefined'||MOVES[k].guard||MOVES[k].rest)re
 
 /* ===== 道場的道理（選錯時的說明）・道場的人情・你可以記住的事 ===== */
 function lesson(k,t){S.flags.lsn=S.flags.lsn||{};const n=S.flags.lsn[k]||0;S.flags.lsn[k]=n+1;if(n>=1)return;const who=S.setup&&S.setup.home?masterTitle(S.setup.home):'師範';say(`<span class="lesson"><b>📝 ${esc(who)}：</b>${t}</span>`);}
-function careTick(){const F=S.flags,sen=esc(S.npc.sen),koh=esc(S.npc.koh);
+function careTick(){if(!(S.setup&&S.setup.v>=19))return;const F=S.flags,sen=esc(S.npc.sen),koh=esc(S.npc.koh);
   if(S.hp<30&&S.year-(F.careHp||-9)>=2){F.careHp=S.year;bump('hp',4);say(`<span class="talk care">師兄${sen}看了你一眼：「臉色這麼差，今天別硬撐。」他塞給你一罐運動飲料。<span class="tg">體況 +4</span></span>`);return;}
   if(F.adv&&F.adv.t===S.turn-1&&F.careL!==F.adv.t){F.careL=F.adv.t;grow('spi',1);say(`<span class="talk care">學弟${koh}拎著兩杯珍奶出現：「學長，輸一場而已。下次一起雪恥！」<span class="tg">鬥志 +1</span></span>`);return;}
   if(S.examFails>=2&&!F.careEx){F.careEx=1;grow('spi',1);const who=masterTitle(S.setup.home);say(`<span class="talk care">${esc(who)}拍拍你的肩：「我年輕的時候也落榜過。落榜的人，最後都比較會教人。」<span class="tg">鬥志 +1</span></span>`);return;}
@@ -3035,7 +3036,7 @@ const KNOW={
   exam:{t:'審查看的是全面',p:'升級審查要看基本、移動、型、體力和組手。平常就要每一項都練，不要只練喜歡的。'},
   kata:{t:'型要反覆練',p:'型是對假想敵的實戰練習。同一個型反覆練到身體記住，才算真的會。'},
   rule:{t:'極真組手規則',p:'極真的組手可以用拳和踢直接打擊，但不能用手攻擊臉部，所以打頭部只能用踢。'},
-  judge:{t:'怎麼決定勝負',p:'一擊讓對手倒地或失去戰意是「一本」，造成明顯傷害是「技有」，兩個技有就合計一本；都沒有時才看判定和延長戰。'},
+  judge:{t:'怎麼決定勝負',p:'一擊讓對手倒地或失去戰意是「一本」，造成明顯傷害是「有效」，兩個有效就合計一本；都沒有時才看判定和延長戰。'},
   gedan:{t:'下段踢的威力',p:'下段迴旋踢踢大腿，連續踢中會讓對手站不穩，是極真組手最基本也最重要的武器。'},
   ibuki:{t:'息吹',p:'息吹是極真的呼吸法，用丹田深深吐氣，用來調整呼吸、集中精神，也讓身體準備好挨打。'},
   weight:{t:'量級與無差別',p:'全日本選手權是不分量級的「無差別」大賽，體重別大賽才依體重分級。'},
@@ -3773,7 +3774,7 @@ function sfx(){const p=G&&G.prompt;if(!p)return;const L=(p.lines||[]).join('');
   if(p.kind==='end')beep([[392,.12],[523,.12],[659,.12],[784,.3]]);
   else if(/class="gold"|優勝|合格，晉升/.test(L))beep([[523,.09],[659,.09],[784,.09],[1047,.22]]);
   else if(/一本！|合技一本/.test(L))beep([[196,.08],[147,.18]]);
-  else if(/技有/.test(L))beep([[330,.06],[247,.1]]);
+  else if(/有效！|（有效）/.test(L))beep([[330,.06],[247,.1]]);
   else beep([[880,.025]]);}
 
 function momentSnap(){const c=S.champ||{};return {rank:S.rank,c:{...c},cr:(S.crowns||[]).length,h:!!S.flags.hyaku,sd:!!S.flags.shihandai,sb:!!S.flags.shibucho,zk:!!S.flags.zenkoku,tw:(S.twc.kumite||0)+(S.twc.kata||0)};}
@@ -4012,7 +4013,7 @@ function battleTut(){let done=0;try{done=+localStorage.getItem('kl-tut')||0;}cat
 function renderBattle(p){
   {const i=p.info||{};TBW=i.tz||.2;TBS=i.ts||1;}
   const m=p.me,f=p.foe;const nb=!BLAST||BLAST.n!==f.name||m.hp>BLAST.m||f.hp>BLAST.f;const dm=nb?0:BLAST.m-m.hp,df=nb?0:BLAST.f-f.hp;BLAST={n:f.name,m:m.hp,f:f.hp};
-  const big=p.lines.join('').match(/合技一本|一本！|技有！/);
+  const big=p.lines.join('').match(/合技一本|一本！|有效！/);
   const card=$('#card');
   const TBOX=`<div class="tbox"><div class="ph"><span>${esc(p.title)}</span>${pipsHTML(p.info)}</div>${(dm||df)&&!(p.opts.length>1)?`<div class="bsum">你 <b class="${dm?'dn':''}">−${dm}</b>　／　對手 <b class="${df?'up':''}">−${df}</b></div>`:''}${p.lines.filter(l=>/ln sys/.test(l)).join('')}${p.lines.some(l=>!/ln sys/.test(l))?`<details class="bdet"><summary>詳細</summary>${p.lines.filter(l=>!/ln sys/.test(l)).join('')}</details>`:''}</div>`;
   card.className='battle';
@@ -4037,7 +4038,7 @@ function renderBattle(p){
     </div>
   </div>
   ${p.opts.length>1?atbTrack(p.info)+((dm||df)?`<div class="bsum top">你 <b class="${dm?'dn':''}">−${dm}</b>　／　對手 <b class="${df?'up':''}">−${df}</b></div>`:'')+tellHTML(p.info)+timingBar()+`<div class="moves">${optsHTML(p.opts)}</div>`+TBOX:TBOX+`<div class="moves">${optsHTML(p.opts)}</div>`}
-  <details class="bhelp"><summary>怎麼打？</summary>★ 技有：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每次出手回 1 格<br>「行動條」：赤是你、白是對手，誰先跑到右邊誰先出手；速度越快跑越快，快很多時能連續出手（他 ×2）；雙方同時到就會相打ち。下段傷腳、壓到場邊都會讓對手變慢<br>黃色區：體況好、技術贏對手會變寬；對手比你快，游標會變快</details>`;
+  <details class="bhelp"><summary>怎麼打？</summary>★ 有效：一招打掉三成體力，兩顆就是一本<br>藍色方塊是氣，大招要用氣，每次出手回 1 格<br>「行動條」：赤是你、白是對手，誰先跑到右邊誰先出手；速度越快跑越快，快很多時能連續出手（他 ×2）；雙方同時到就會相打ち。下段傷腳、壓到場邊都會讓對手變慢<br>黃色區：體況好、技術贏對手會變寬；對手比你快，游標會變快</details>`;
   if(!drawPx($('#sprFoe'),foeKey(f)))drawSprite($('#sprFoe'),'front',SPR_BELT[f.belt]||'#2c2840',f.hair);
   if(!drawPx($('#sprMe'),(FEM()?'fback_':'back_')+HERO_KEYS[Math.min(6,m.belt|0)]))drawSprite($('#sprMe'),'back',SPR_BELT[m.belt],m.hair);
   if(p.info&&p.info.first){vsSplash(p);battleTut();}else if(p.info&&p.info.tl&&p.info.tl.length){atbLock(1);playTL(p);}else playPoses(p);
@@ -4646,7 +4647,7 @@ function renderStart(){
       e.preventDefault();
       const seed=parseInt($('#inSeed').value,10)||randSeed();
       const q=n=>document.querySelector(`input[name=${n}]:checked`).value;
-      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName(q('sex')==='f')).slice(0,8),test:$('#inName').value.trim()==='測試帳號'?1:undefined,mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined};
+      const setup={seed,daily:seed===dailySeed()?todayStr():undefined,name:($('#inName').value.trim()||randName(q('sex')==='f')).slice(0,8),test:$('#inName').value.trim()==='測試帳號'?1:undefined,mode:'easy',route:'dual',home:q('home'),wc:q('wc'),sex:q('sex')==='f'?'f':'m',bday:lifePath($('#inBday').value)?$('#inBday').value:undefined,v:19};
       ENTRY_F=setup.sex==='f';playEntry(setup.home,()=>{startGame(setup,[]);window.scrollTo({top:0});if(setup.test&&tourOk())startTour();
         if(setup.bday&&setup.bday.slice(5)===todayStr().slice(5)){const t=document.createElement('div');t.className='bdtoast';t.innerHTML='🎂 <b>生日快樂！</b><br>今天是你的生日，道場的大家一起喊：「押忍！」';document.body.appendChild(t);chip([[523,.1],[659,.1],[784,.2]]);setTimeout(()=>t.remove(),4500);}});
     });
