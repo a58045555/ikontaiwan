@@ -24,5 +24,7 @@ for v,fn in [('ENTRY_VID','a/entry_m.mp4'),('ENTRY_VID_F','a/entry_f.mp4')]:
     m=re.search(r"const "+v+r"='data:video/mp4;base64,([A-Za-z0-9+/=]+)'",s);assert m,v
     open(outdir+'/'+fn,'wb').write(base64.b64decode(m.group(1)));moved+=len(m.group(0))
     s=s[:m.start()]+f"const {v}='{fn}'"+s[m.end():]
+head=open('/tmp/claude-0/-home-claude/f556f125-0689-57e6-a6bb-af45f15b5a95/scratchpad/rel_head.html').read()
+s=head+s+'\n</body>\n</html>\n'
 open(outdir+'/index.html','w').write(s)
 print('files',nfiles,'moved chars',moved,'index bytes',len(s.encode()))

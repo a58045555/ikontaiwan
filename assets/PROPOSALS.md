@@ -414,3 +414,4 @@
 - P43：build_rel.py 把 POSE、AGEPX、TRN、TRN_F、TRNPATCH、MHIP、SCN_F 的圖與兩段進門影片拆成 a/ 底下的檔案（222 檔），index.html 4.5MB → 1.45MB；SCN（開場動畫）與主角/sensei 小圖仍內嵌。
 - 存檔 KEY v42 → v43（舊存檔重置），測試帳號保留。頁尾 v1.8・2026.10.19。
 - GitHub main aee0fee、分支 release-v1.8。測試 artifact 維持單檔版。
+- v1.8.1：拆檔版漏了 <head>（viewport），手機上整頁被縮小；build_rel.py 補回原本的 head（OG、icon、manifest、viewport）。
