@@ -275,10 +275,10 @@ function storyImg(){const W=1080,H=1920,cv=document.createElement('canvas');cv.w
     x.fillStyle='#26223b';x.font=`700 46px ${F}`;x.fillText('15 秒擋下',W/2,880);x.fillStyle='#d9484f';x.font=`900 260px ${F}`;x.fillText(String(sc),W/2,1120);x.fillStyle='#26223b';x.font=`700 46px ${F}`;x.fillText('招',W/2,1190);
     x.fillStyle=b[2];x.fillRect(W/2-230,1240,460,110);x.strokeRect(W/2-230,1240,460,110);x.fillStyle=b[3];x.font=`900 60px ${F}`;x.fillText(`${b[1]}級反應`,W/2,1318);
     x.fillStyle='#4a4560';x.font=`500 34px ${F}`;x.fillText(`完美防守 ${G.perf}・最長連續 ${G.max}`,W/2,1430);
-    x.fillStyle='#f2c24f';x.font=`900 52px ${F}`;x.fillText('你能擋幾招？',W/2,1640);x.fillStyle='#f3ecdc';x.font=`700 40px ${F}`;x.fillText('極真空手道中村道場台灣支部',W/2,1720);x.fillText('IG @i.k.o.n.taiwan',W/2,1780);x.fillStyle='#a3abd6';x.font=`500 30px ${F}`;x.fillText('a58045555.github.io/ikontaiwan/hanno',W/2,1840);
+    x.fillStyle='#f2c24f';x.font=`900 52px ${F}`;x.fillText('你能擋幾招？',W/2,1640);x.fillStyle='#f3ecdc';x.font=`700 40px ${F}`;x.fillText('極真空手道中村道場台灣支部',W/2,1720);x.fillText('IG @i.k.o.n.taiwan',W/2,1780);x.fillStyle='#a3abd6';x.font=`500 30px ${F}`;x.fillText('reurl.cc/WzZor9',W/2,1840);
     res(cv);};im.src=A.h[s.k];});}
 $('#mkImg').onclick=async()=>{const cv=await storyImg();const o=$('#imgOut');o.hidden=false;o.innerHTML=`<img src="${cv.toDataURL('image/png')}" alt="限動成績圖" style="width:70%;border:3px solid var(--ink)"><div>長按圖片即可儲存，分享到 IG 限時動態</div>`;o.scrollIntoView({behavior:'smooth',block:'nearest'});};
-function shareText(){return `我在「反應組手」15 秒擋下 ${G.score} 招（對手：${G.s.n}・${beltOf(pts(G.score,G.i))[1]}級反應）！你能擋幾招？\n極真空手道中村道場台灣支部 IG @i.k.o.n.taiwan\n來挑戰：https://a58045555.github.io/ikontaiwan/hanno/`;}
+function shareText(){return `我在「反應組手」15 秒擋下 ${G.score} 招（對手：${G.s.n}・${beltOf(pts(G.score,G.i))[1]}級反應）！你能擋幾招？\n極真空手道中村道場台灣支部 IG @i.k.o.n.taiwan\n來挑戰：https://reurl.cc/WzZor9`;}
 $('#again').onclick=()=>start(G.i,true);
 $('#other').onclick=()=>{renderSel();show('#scrSel');};
 $('#copy').onclick=()=>{const t=shareText();const ta=$('#copyTxt');const ok=()=>{$('#copy').textContent='已複製 ✓';setTimeout(()=>$('#copy').textContent='複製成績',1500);};
