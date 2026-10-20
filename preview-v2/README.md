@@ -11,3 +11,5 @@ https://a58045555.github.io/ikontaiwan/preview-v2/
 結局示範使用獨立進度空間，不覆寫你的進度：https://a58045555.github.io/ikontaiwan/preview-v2/ending-preview.html
 
 驗證：node validation/verify-mentors.cjs；node validation/verify-yearbook.cjs；node validation/verify-ending-stories.cjs；node validation/verify-ending-folio.cjs。
+
+手機直接體驗三位弟子的年度指導（獨立示範進度，不覆寫正式或測試版進度）：https://a58045555.github.io/ikontaiwan/preview-v2/mentors-preview.html
