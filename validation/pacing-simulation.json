@@ -1,0 +1,271 @@
+{
+  "kind": "automated simulation, not player data",
+  "policy": "repeat training; otherwise first recommended or first enabled option",
+  "runs": 24,
+  "rows": [
+    {
+      "entry": "youth",
+      "seed": 110003,
+      "age": 60,
+      "rank": 9,
+      "firstBlack": 24,
+      "trainingChoices": 52,
+      "planningCommands": 52,
+      "otherChoices": 690,
+      "commands": 742
+    },
+    {
+      "entry": "youth",
+      "seed": 111880,
+      "age": 60,
+      "rank": 10,
+      "firstBlack": 23,
+      "trainingChoices": 52,
+      "planningCommands": 50,
+      "otherChoices": 771,
+      "commands": 821
+    },
+    {
+      "entry": "youth",
+      "seed": 113757,
+      "age": 60,
+      "rank": 9,
+      "firstBlack": 22,
+      "trainingChoices": 52,
+      "planningCommands": 52,
+      "otherChoices": 792,
+      "commands": 844
+    },
+    {
+      "entry": "youth",
+      "seed": 115634,
+      "age": 60,
+      "rank": 10,
+      "firstBlack": 27,
+      "trainingChoices": 52,
+      "planningCommands": 51,
+      "otherChoices": 466,
+      "commands": 517
+    },
+    {
+      "entry": "youth",
+      "seed": 117511,
+      "age": 60,
+      "rank": 9,
+      "firstBlack": 25,
+      "trainingChoices": 52,
+      "planningCommands": 52,
+      "otherChoices": 734,
+      "commands": 786
+    },
+    {
+      "entry": "youth",
+      "seed": 119388,
+      "age": 60,
+      "rank": 9,
+      "firstBlack": 24,
+      "trainingChoices": 52,
+      "planningCommands": 52,
+      "otherChoices": 689,
+      "commands": 741
+    },
+    {
+      "entry": "practice",
+      "seed": 110003,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 29,
+      "trainingChoices": 90,
+      "planningCommands": 41,
+      "otherChoices": 64,
+      "commands": 105
+    },
+    {
+      "entry": "practice",
+      "seed": 111880,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 26,
+      "trainingChoices": 90,
+      "planningCommands": 39,
+      "otherChoices": 56,
+      "commands": 95
+    },
+    {
+      "entry": "practice",
+      "seed": 113757,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 26,
+      "trainingChoices": 90,
+      "planningCommands": 38,
+      "otherChoices": 55,
+      "commands": 93
+    },
+    {
+      "entry": "practice",
+      "seed": 115634,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 28,
+      "trainingChoices": 90,
+      "planningCommands": 41,
+      "otherChoices": 58,
+      "commands": 99
+    },
+    {
+      "entry": "practice",
+      "seed": 117511,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 25,
+      "trainingChoices": 90,
+      "planningCommands": 37,
+      "otherChoices": 55,
+      "commands": 92
+    },
+    {
+      "entry": "practice",
+      "seed": 119388,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 26,
+      "trainingChoices": 90,
+      "planningCommands": 37,
+      "otherChoices": 53,
+      "commands": 90
+    },
+    {
+      "entry": "adult",
+      "seed": 110003,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 44,
+      "trainingChoices": 60,
+      "planningCommands": 29,
+      "otherChoices": 50,
+      "commands": 79
+    },
+    {
+      "entry": "adult",
+      "seed": 111880,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 43,
+      "trainingChoices": 60,
+      "planningCommands": 30,
+      "otherChoices": 49,
+      "commands": 79
+    },
+    {
+      "entry": "adult",
+      "seed": 113757,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 43,
+      "trainingChoices": 60,
+      "planningCommands": 30,
+      "otherChoices": 53,
+      "commands": 83
+    },
+    {
+      "entry": "adult",
+      "seed": 115634,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 44,
+      "trainingChoices": 60,
+      "planningCommands": 32,
+      "otherChoices": 52,
+      "commands": 84
+    },
+    {
+      "entry": "adult",
+      "seed": 117511,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 42,
+      "trainingChoices": 60,
+      "planningCommands": 28,
+      "otherChoices": 49,
+      "commands": 77
+    },
+    {
+      "entry": "adult",
+      "seed": 119388,
+      "age": 60,
+      "rank": 8,
+      "firstBlack": 42,
+      "trainingChoices": 60,
+      "planningCommands": 27,
+      "otherChoices": 47,
+      "commands": 74
+    },
+    {
+      "entry": "mature",
+      "seed": 110003,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 59,
+      "trainingChoices": 30,
+      "planningCommands": 18,
+      "otherChoices": 31,
+      "commands": 49
+    },
+    {
+      "entry": "mature",
+      "seed": 111880,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 58,
+      "trainingChoices": 30,
+      "planningCommands": 22,
+      "otherChoices": 33,
+      "commands": 55
+    },
+    {
+      "entry": "mature",
+      "seed": 113757,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 58,
+      "trainingChoices": 30,
+      "planningCommands": 18,
+      "otherChoices": 32,
+      "commands": 50
+    },
+    {
+      "entry": "mature",
+      "seed": 115634,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 59,
+      "trainingChoices": 30,
+      "planningCommands": 20,
+      "otherChoices": 34,
+      "commands": 54
+    },
+    {
+      "entry": "mature",
+      "seed": 117511,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 57,
+      "trainingChoices": 30,
+      "planningCommands": 17,
+      "otherChoices": 30,
+      "commands": 47
+    },
+    {
+      "entry": "mature",
+      "seed": 119388,
+      "age": 60,
+      "rank": 6,
+      "firstBlack": 57,
+      "trainingChoices": 30,
+      "planningCommands": 18,
+      "otherChoices": 31,
+      "commands": 49
+    }
+  ]
+}

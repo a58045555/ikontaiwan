@@ -49,3 +49,6 @@ jobs:
 
       - name: Check scheduled training, trial age and save preservation
         run: node validation/verify-playflow.cjs
+
+      - name: Check optional training plans and decision clarity
+        run: node validation/verify-pacing.cjs

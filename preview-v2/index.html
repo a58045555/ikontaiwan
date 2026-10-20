@@ -18,6 +18,8 @@
 <style>
 .career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}
 .point-help{font-size:13px;line-height:1.7;margin:8px 0 0;color:var(--muted)}.ptsbar{flex-wrap:wrap;gap:6px}.ptsbar .chipbtn{margin-left:auto;font-size:12px;min-height:36px;color:var(--ink);background:var(--paper2)}
+
+.train-estimate,.pace-result{font-size:13px;line-height:1.7;color:var(--ink2);margin:8px 0 12px}.pace-result{padding:8px 10px;background:var(--paper2);border-left:3px solid var(--teal)}
 </style>
 </head>
 <body>
@@ -1110,29 +1112,43 @@ function supportEcho(){
   if(S.used.npc_k1&&(S.bond.koh||0)>=8)return '學弟'+esc(S.npc.koh)+'在場邊喊：「你以前教我的，今天換我替你加油！」';
   if(S.used.npc_s1&&(S.bond.sen||0)>=8)return '師兄'+esc(S.npc.sen)+'拍拍你的背：「上次一起練的那招，今天試試看。」';return '';
 }
+function paceTraining(p){return !!p&&p.kind!=='battle'&&p.kind!=='end'&&(/^稽古方針/.test(p.title||'')||p.title==='生活裡的稽古（半年）');}
+function paceTrainingChoice(id){return !!CARDS[id]||['rest','rehab','practice-basics','practice-rest'].includes(id);}
+function paceResult(count,startTurn){
+ const note=document.createElement('p');note.className='pace-result';note.setAttribute('role','status');
+ note.textContent=count?'已安排 '+count+' 次稽古'+(S.turn>startTurn?'，推進 '+(S.turn-startTurn)+' 季':'（本季尚未結束）')+'。停在「'+(G.prompt?.title||'下一步')+'」，請你決定。':'這次沒有推進，請自行選擇下一步。';
+ $('#card').prepend(note);
+}
 function pacePick(p,policy,last){
-  const opts=(p.opts||[]).filter(o=>!o.disabled),rest=opts.find(o=>o.id==='rest');
+  const opts=(p.opts||[]).filter(o=>!o.disabled),rest=opts.find(o=>o.id==='rest'||o.id==='practice-rest'),practice=p.title==='生活裡的稽古（半年）';
   if((badlyHurt()||S.hp<40||(policy==='safe'&&S.hp<65))&&rest)return rest.id;
   let cards=opts.filter(o=>CARDS[o.id]);
-  if(policy==='repeat'&&last==='rest'&&rest)return rest.id;
-  if(policy==='repeat'&&last){const exact=cards.find(o=>o.id===last);if(exact)return exact.id;
-    const fam=TX(last)&&TX(last).fam,matching=cards.filter(o=>TX(o.id).fam===fam);if(matching.length)cards=matching;}
-  if(policy==='exam'){const rec=examRec(),matching=rec&&cards.filter(o=>TX(o.id).fam===rec.id);if(matching&&matching.length)cards=matching;}
+  if(policy==='repeat'&&['rest','practice-rest'].includes(last)&&rest)return rest.id;
+  if(policy==='repeat'&&last){
+    const exact=opts.find(o=>o.id===last&&paceTrainingChoice(o.id));if(exact)return exact.id;
+    const fam=TX(last)&&TX(last).fam,matching=fam&&cards.filter(o=>TX(o.id).fam===fam);if(matching&&matching.length)cards=matching;
+    else if(practice)return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
+  }
+  if(policy==='exam'){
+    const rec=examRec(),matching=rec&&cards.filter(o=>TX(o.id).fam===rec.id);
+    if(matching&&matching.length)cards=matching;
+    else if(practice)return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
+  }else if(practice&&!(policy==='repeat'&&last&&TX(last)))return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
   cards.sort((a,b)=>previewTrain(a.id).risk-previewTrain(b.id).risk);return cards[0]?cards[0].id:rest?rest.id:null;
 }
 function paceRun(policy){
-  let last=null;for(let i=G.choices.length-1;i>=0;i--){if(CARDS[G.choices[i]]||G.choices[i]==='rest'){last=G.choices[i];break;}}
+  let last=null;for(let i=G.choices.length-1;i>=0;i--){if(paceTrainingChoice(G.choices[i])){last=G.choices[i];break;}}
   const start=S.turn;let count=0;
   while(G.prompt&&G.prompt.kind!=='end'&&count<100&&S.turn-start<8){
-    if(!/^稽古方針/.test(G.prompt.title||''))break;
+    if(!paceTraining(G.prompt))break;
     const id=pacePick(G.prompt,policy,last);if(!id)break;G.choices.push(id);const next=G.gen.next(id);
     if(next.done)throw new Error('稽古流程提前結束');G.prompt=next.value;liveAutoPoints();count++;
   }return count;
 }
 function paceDialog(){
-  if(!G||GT||G.trial||!/^稽古方針/.test(G.prompt.title||''))return;
-  const d=codeModal('<b>安排接下來的稽古</b><label for="pacePolicy">怎麼選牌？</label><select class="inp" id="pacePolicy"><option value="repeat">沿用上次稽古，沒抽到時選同類</option><option value="exam">優先補審查弱項</option><option value="safe">優先低風險與休養</option></select><p class="hint">體況不足會先休養。遇到事件、比賽、審查或章節就停下來，最多推進兩年。每次實際選擇都會存檔。</p><button type="button" class="opt pace-go"><span class="l">開始安排</span></button>');
-  d.querySelector('.pace-go').onclick=()=>{const button=d.querySelector('.pace-go');if(button.disabled)return;button.disabled=true;const policy=d.querySelector('select').value;try{paceRun(policy);save();render();d.remove();window.scrollTo({top:0});}catch(e){button.disabled=false;button.textContent='稍後再試';console.error(e);}};
+  if(!G||GT||G.trial||!paceTraining(G.prompt))return;
+  const d=codeModal('<b>安排接下來的稽古</b><label for="pacePolicy">怎麼選牌？</label><select class="inp" id="pacePolicy"><option value="repeat">沿用上次稽古，沒抽到時選同類</option><option value="exam">優先補審查弱項</option><option value="safe">優先低風險與休養</option></select><p class="hint">體況不足會先休養。只代選練習，不代選交流、教學或人生方向；遇到新事件、比賽、審查就停下來，最多推進兩年。實際選擇會保留在存檔。</p><button type="button" class="opt pace-go"><span class="l">開始安排</span></button>');
+  d.querySelector('.pace-go').onclick=()=>{const button=d.querySelector('.pace-go');if(button.disabled)return;button.disabled=true;const policy=d.querySelector('select').value;try{const startTurn=S.turn,count=paceRun(policy);save();render();d.remove();paceResult(count,startTurn);window.scrollTo({top:0});}catch(e){button.disabled=false;button.textContent='稍後再試';console.error(e);}};
 }
 
 
@@ -2533,7 +2549,7 @@ function twSel(){
     {n:'組手',sc:(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4*(.72+.28*Math.min(1,S.hp/80))+S.st.spi*.1,f:'力速耐技、體況'},
     {n:'心・態度',sc:S.st.spi*.55+Math.min(16,(S.flags.teachY||0)*4)+Math.min(10,S.flags.seminars*2)+(S.flags.twEntered>=S.year-1?4:0),f:'鬥志、指導資歷、講習、出賽'}
   ].map(p=>({...p,need,pr:partP(p.sc,need)}));
-  return {parts,all:parts.reduce((a,p)=>a*p.pr,1),displayAll:parts.reduce((a,p)=>a*p.displayPr,1)};
+  return {parts,all:parts.reduce((a,p)=>a*p.pr,1),displayAll:parts.reduce((a,p)=>a*(p.displayPr??p.pr),1)};
 }
 function examHTMLRows(es){return `<div class="exs">`+es.parts.map(p=>`<div class="exr"><span class="exn">${p.n}</span><span class="exv">${Math.round(p.sc)}<small>/${p.need}</small></span><div class="bar sm ${(p.displayPr??p.pr)>.75?'g':(p.displayPr??p.pr)>.35?'y':'r'}"><i style="width:${((p.displayPr??p.pr)*100).toFixed(0)}%"></i></div><span class="exp">${Math.round((p.displayPr??p.pr)*100)}%</span><span class="exf">${p.f}</span></div>`).join('')+`</div>`;}
 function* uniCup(){
@@ -3428,6 +3444,7 @@ function previewTrain(k){
   let extra='';if(T.prep){const fk=focusKata(),m=km(fk);extra=`「${fk}」+${Math.max(1,Math.round(kataGainAmt(T)*(1-m/110)*injG()*lifeG()*2))}%`;}
   return {g:out.slice(0,4).map(([n,v])=>`${n}+${v<1?v.toFixed(1):Math.round(v)}`),risk,hp,extra};
 }
+function trainingRiskLabel(T,pv){return T.inj>0?'受傷約 '+(pv.risk>0?pv.risk:'<1')+'%':'本項無受傷判定';}
 function annotateTrain(opts){
   const rec=examRec();
   opts.forEach(o=>{if(TX(o.id)){o.tile=1;o.pv=previewTrain(o.id);o.rec=false;}else o.chip=1;});
@@ -4674,7 +4691,7 @@ function render(){
   if(!G){renderStart();return;}
   $('#seedVal').textContent=String(G.setup.seed).padStart(6,'0');
   if(p.kind==='end'){renderEnd();return;}
-  {const ff=$('#btnFF');if(ff)ff.hidden=!((S.age>=50||S.flags.ch3||S.flags.cpW)&&!S.flags.ff&&p.kind!=='battle'&&p.kind!=='chapter');}{const fn=$('#btnFFN');if(fn)fn.hidden=!(S.turn>=2&&!GT&&!G.trial&&!S.flags.ff&&/^稽古方針/.test(p.title||''));}
+  {const ff=$('#btnFF');if(ff)ff.hidden=!((S.age>=50||S.flags.ch3||S.flags.cpW)&&!S.flags.ff&&p.kind!=='battle'&&p.kind!=='chapter');}{const fn=$('#btnFFN');if(fn)fn.hidden=!(S.turn>=2&&!GT&&!G.trial&&!S.flags.ff&&paceTraining(p));}
   const inBattle=p.kind==='battle';
   {const b=$('#btnPupils');if(b){const list=discipleList();b.hidden=!!G.trial||inBattle||!list.length;b.textContent='弟子名冊';b.setAttribute('aria-label','查看弟子名冊，共 '+list.length+' 位');}}
   {const b=$('#btnYearbook');if(b){b.hidden=!!G.trial||inBattle;b.textContent='年度回顧';b.setAttribute('aria-label','查看 '+S.year+' 年的年度回顧');}}
@@ -4724,7 +4741,7 @@ function render(){
   card.className='px card';
   {const slim=!p.opts.some(o=>o.tile)&&!/審查|過磅|加點/.test(p.title||'')&&!(S.pts>0)&&p.kind!=='chapter'&&!SLIM_OFF;const pn=$('#panels');pn.classList.toggle('slim',slim);const hs=$('#hslim');hs.innerHTML=`<b>${esc(S.name)}</b><span>${RANKS[S.rank]}・${S.age} 歲・體況 ${Math.round(S.hp)}${S.injury?'・<em>受傷中</em>':''}</span><i>角色卡 ▾</i>`;hs.onclick=()=>{SLIM_OFF=1;pn.classList.remove('slim');};}SLIM_OFF=0;
   const tiles=p.opts.filter(o=>o.tile),chips=p.opts.filter(o=>o.chip&&!o.big),bigs=p.opts.filter(o=>o.big);
-  const optArea=tiles.length?`<div class="tgrid">${tiles.map(o=>{const X=TX(o.id);const ic=TICON[X.fam]||['?','var(--muted)'];const v=o.pv;const lv=X.card?cardLv(o.id)+1:0;const cc=X.card?cardCnt(o.id):0;const pips=X.card?(lv>=5?'<span class="mx">MAX</span>':`<span class="pg">${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}</span>`):'';return `<button type="button" class="opt ttile${o.rec?' rec':''}${X.card?' card r'+X.rar:''}" data-id="${o.id}"><span class="tn"><i style="background:${ic[1]}">${ic[0]}</i><span>${o.label}${S&&S.flags.adv&&S.turn-S.flags.adv.t<=4&&(X.fam===S.flags.adv.f||(S.flags.adv.f==='rest'&&o.id==='rest'))?'<em class="advtag">賽後建議</em>':''}</span></span>${X.card?`<span class="cmeta"><b class="rar">${['普通','稀有','超稀有','傳說'][X.rar]||RARN[X.rar]}</b><small class="lv">Lv${lv}${lv>=5?pips:`・熟練 ${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}`}</small></span><span class="cs">${esc(X.s)}</span>`:''}<span class="tg2">${v.g.map(x=>`<u>${x}</u>`).join('')}${v.extra?`<u class="k">${v.extra}</u>`:''}</span><span class="tr"><span class="${v.hp<0?'bad':'good'}">體況 ${v.hp>0?'+':''}${v.hp}</span>${v.risk?`<span class="${v.risk>=8?'bad':''}">受傷 ${v.risk}%</span>`:'<span>無風險</span>'}${X.cost?`<span>花 ${X.cost} 萬</span>`:''}${X.pay?`<span class="good">存款 +${X.pay} 萬／季</span>`:''}</span></button>`;}).join('')}</div>${bigs.length?`<div class="bigrow">${bigs.map(o=>`<button type="button" class="opt bigopt" data-id="${o.id}"${o.disabled?' disabled':''}><i>${o.icon||'★'}</i><span><span class="l">${o.label}</span><span class="s">${o.sub||''}</span></span></button>`).join('')}</div>`:''}${chips.length?`<div class="xrow">${chips.map(o=>`<button type="button" class="opt xbtn${o.danger?' danger':''}" data-id="${o.id}"><span class="l">${o.label}</span></button>`).join('')}</div>`:''}`:`<div class="opts">${optsHTML(p.opts)}</div>`;
+  const optArea=tiles.length?`<p class="train-estimate">${/^稽古方針/.test(p.title)?'每季預估；此安排持續半年。':'成長參考。'}體況、熟練度與事件會影響結果。</p><div class="tgrid">${tiles.map(o=>{const X=TX(o.id);const ic=TICON[X.fam]||['?','var(--muted)'];const v=o.pv;const lv=X.card?cardLv(o.id)+1:0;const cc=X.card?cardCnt(o.id):0;const pips=X.card?(lv>=5?'<span class="mx">MAX</span>':`<span class="pg">${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}</span>`):'';return `<button type="button" class="opt ttile${o.rec?' rec':''}${X.card?' card r'+X.rar:''}" data-id="${o.id}"><span class="tn"><i style="background:${ic[1]}">${ic[0]}</i><span>${o.label}${S&&S.flags.adv&&S.turn-S.flags.adv.t<=4&&(X.fam===S.flags.adv.f||(S.flags.adv.f==='rest'&&o.id==='rest'))?'<em class="advtag">賽後建議</em>':''}</span></span>${X.card?`<span class="cmeta"><b class="rar">${['普通','稀有','超稀有','傳說'][X.rar]||RARN[X.rar]}</b><small class="lv">Lv${lv}${lv>=5?pips:`・熟練 ${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}`}</small></span><span class="cs">${esc(X.s)}</span>`:''}<span class="tg2">${v.g.map(x=>`<u>${x}</u>`).join('')}${v.extra?`<u class="k">${v.extra}</u>`:''}</span><span class="tr"><span class="${v.hp<0?'bad':'good'}">體況 ${v.hp>0?'+':''}${v.hp}</span><span class="${v.risk>=8?'bad':''}">${esc(trainingRiskLabel(X,v))}</span>${X.cost?`<span>花 ${X.cost} 萬</span>`:''}${X.pay?`<span class="good">存款 +${X.pay} 萬／季</span>`:''}</span></button>`;}).join('')}</div>${bigs.length?`<div class="bigrow">${bigs.map(o=>`<button type="button" class="opt bigopt" data-id="${o.id}"${o.disabled?' disabled':''}><i>${o.icon||'★'}</i><span><span class="l">${o.label}</span><span class="s">${o.sub||''}</span></span></button>`).join('')}</div>`:''}${chips.length?`<div class="xrow">${chips.map(o=>`<button type="button" class="opt xbtn${o.danger?' danger':''}" data-id="${o.id}"><span class="l">${o.label}</span></button>`).join('')}</div>`:''}`:`<div class="opts">${optsHTML(p.opts)}</div>`;
   const tfx=TRAIN_FX&&TK[TRAIN_FX]?`<div class="trainfx"><canvas id="trainCv" width="240" height="120" data-id="${TRAIN_FX}"></canvas><span>${TRAIN_FX==='rest'?'休養':'稽古中'}・${TRAIN_FX==='rest'?'好好休息':esc(cardName(TRAIN_FX))}</span></div>`:'';TRAIN_FX=null;
   card.innerHTML=`${tfx}${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.slice(0,3).map(l=>`<div>${pointCopy(l)}</div>`).join('')}${p.lines.length>3?`<details class="prevmore"><summary>還有 ${p.lines.length-3} 則</summary>${p.lines.slice(3).map(l=>`<div>${pointCopy(l)}</div>`).join('')}</details>`:''}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div>${p.tag?`<div class="evtag t-${{'指導員事件':'teach','見習指導員事件':'teach','助教事件':'teach','道場經營事件':'dojo','稽古插曲':'train','生活插曲':'life','審判員事件':'judge','人生岔路':'dojo'}[p.tag]||'x'}">${p.tag}</div>`:''}<h2>${p.title}</h2>${p.body?(()=>{const sp=speakerOf(p);if(sp){const m=/^<span class="tipbox">[\s\S]*?<\/span>/.exec(p.body);const tip=m?m[0]:'',bd=m?p.body.slice(tip.length):p.body;return `${tip?`<p class="q">${tip}</p>`:''}<div class="dlg"><img class="pxh${sp[0]==="mochi"?" dog":""}" src="${MHEAD[sp[0]]||PXHEAD[sp[0]]}" alt=""><div class="tb"><b>${esc(sp[1])}</b><p class="q">${bd}</p></div></div>`;}return sp?'':`<p class="q">${p.body}</p>`;})():''}${optArea}`;
   if(tfx)startTrainFx();

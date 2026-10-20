@@ -45,4 +45,13 @@ test('existing saved unlock stays usable when a new high score cannot save',()=>
 test('double activation cannot skip more than one sensei or restart countdown',()=>{const h=harness(known);h.run('newRound(0);G.score=10;G.phase="over";end()');h.el('#next').onclick();const before=h.run('G');h.el('#next').onclick();assert.equal(h.run('G'),before);assert.equal(h.run('G.i'),1);h.advance(3000);assert.equal(h.run('G.tot'),1);});
 test('advancement rechecks saved eligibility before starting',()=>{const h=harness(known);h.run('newRound(0);G.score=10;G.phase="over";end()');h.data.delete('rk-best');h.el('#next').onclick();assert.equal(h.run('G.i'),0);assert.equal(h.run('G.finished'),true);});
 
+
+for(let level=0;level<10;level++)for(const seed0 of [110003,113757])test('novel attack sequence level '+level+' seed '+seed0,()=>{
+ const best=Object.fromEntries(['xiaogang','chaozhou','shihandai','d9','fengshan','tainan','lingya','nanzi','sensei','shihan'].map(k=>[k,15]));
+ const h=harness({...known,'rk-best':JSON.stringify(best)});
+ h.run('globalThis.seqSeed='+seed0+';Math.random=()=>{seqSeed=(1664525*seqSeed+1013904223)>>>0;return seqSeed/4294967296};start('+level+')');
+ for(let tick=0;tick<1100&&!h.run('G.finished');tick++){h.advance(25);if(h.run('G.phase==="atk"&&performance.now()-G.cur.t0>=150'))h.run('press(G.cur.z)');}
+ assert.equal(h.run('G.finished'),true);assert.equal(h.run('G.reason'),'time');assert.equal(h.run('G.lives'),3);assert.ok(h.run('G.score>=NEED'));assert.equal(h.run('metrics().accuracy'),100);assert.ok(h.run('metrics().average>=150&&metrics().average<=175'));assert.equal(h.run('G.responses.length'),h.run('G.blocked'));assert.equal(h.run('nextChallengeIndex()'),level<9?level+1:null);
+});
+
 console.log(checks+' reaction game checks passed');
