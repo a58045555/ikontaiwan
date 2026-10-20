@@ -1,11 +1,13 @@
-# 極真人生 v2.3 手機測試版
+# 極真人生 v2.4 手機測試版
 
 https://a58045555.github.io/ikontaiwan/preview-v2/
 
-結語展示：https://a58045555.github.io/ikontaiwan/preview-v2/ending-preview.html
+新人生使用規則 21：最多同時帶 3 名弟子、一生最多 6 名，獨立個性、專長、指導、升帶、比賽與離場紀錄。每年一次團體指導或重點陪伴；師徒路線會建議適時再收徒。主畫面與結語完整紀錄可查看名冊。
 
-結語改為修行紀念冊，保留人生總覽、年度回顧與人生故事三個重點。故事濃縮為回望、同行、給自己，最多三篇；道場、休養、家人、師徒與對手經歷融入相應文章。完整事件、稱號、戰績與同開局重玩移至完整紀錄視窗，紀念卡另開預覽。
+結語維持回望、同行、給自己三篇，新增 6 種回憶開場、6 種信件開頭、5 種書信收尾、各結局 3 種尾聲，以及依弟子個性的聲音。文字由命運與實際人生紀錄選出；不消耗遊戲亂數，同份存檔讀取保持一致。
 
-年度回顧仍可逐年查看能力、收支、戰績與選擇。存檔繼續使用 kyokushin-preview-v20，結局示範使用獨立進度空間。故事排版只讀取資料，不更動修行數值、亂數或結局條件。
+舊規則 19／20 存檔保留原來的單一愛徒流程，繼續使用原本進度空間；新版多弟子需開啟新人生。每日挑戰以存檔的規則版本驗證。
 
-驗證：node validation/verify-yearbook.cjs；node validation/verify-ending-stories.cjs；node validation/verify-ending-folio.cjs。
+結局示範使用獨立進度空間，不覆寫你的進度：https://a58045555.github.io/ikontaiwan/preview-v2/ending-preview.html
+
+驗證：node validation/verify-mentors.cjs；node validation/verify-yearbook.cjs；node validation/verify-ending-stories.cjs；node validation/verify-ending-folio.cjs。
