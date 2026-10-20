@@ -41,3 +41,5 @@ jobs:
         run: node validation/verify-release.cjs
       - name: Check reaction kumite and next-level progression
         run: node validation/verify-hanno.cjs
+      - name: Check compact records and visible character setup
+        run: node validation/verify-compact.cjs

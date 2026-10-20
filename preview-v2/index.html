@@ -660,7 +660,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
         <input class="inp" id="inName" maxlength="8" autocomplete="off">
       </div>
 <div class="field"><label class="t" for="inEntry">從哪個時刻推門？</label><select class="inp" id="inEntry"><option value="youth">15 歲・青春競技</option><option value="practice">15 歲・終身修行</option><option value="adult">30 歲・成年入門</option><option value="mature">45 歲・第一次入門</option></select><p class="hint" id="entryHint"></p></div><div class="field"><label class="t" for="inAim">這段人生想往哪裡走？</label><select class="inp" id="inAim"><option value="balanced">先探索看看</option><option value="champion">挑戰冠軍</option><option value="teacher">教出下一代</option><option value="dojo">開自己的道場</option><option value="uchi">內弟子與日本研修</option><option value="life">讓修行陪伴日常</option></select><p class="hint">志向用來提示長期方向，不會限制你選其他道路。</p></div>
-<details id="advancedSetup"><summary>自訂角色：生日、性別、道場與量級</summary>      <div class="field">
+<div id="advancedSetup" class="setup-visible" role="group" aria-label="自訂角色">      <div class="field">
         <label class="t" for="inBday">生日（選填）</label>
         <input class="inp" id="inBday" type="date" min="1920-01-01" max="2026-12-31">
         <p class="hint" id="bdayHint">填了生日，就用「生命靈數」決定你的主要個性。出生年份不影響起始年齡，入門年齡由「入門時刻」決定。不填的話，由命運隨機決定。只在你的手機上計算，不會上傳。</p>
@@ -683,7 +683,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       </fieldset>
       <p class="legend" style="margin:0 0 12px">戰鬥風格和得意技，等練到黃帶時再決定。</p>
       <details class="dnote"><summary>設計者的話</summary><p>預計更新內容：</p><ol><li>招式學習與必殺技</li><li>主角會隨年紀長大</li><li>更多道場與 sensei 的故事</li></ol></details>
-</details>
+</div>
       <div class="opts">
         <button class="opt primary" type="submit" id="btnStart"><span class="l">入門・高一春天</span><span class="s">完整人生・可分次遊玩・自動存檔</span></button>
 
@@ -713,8 +713,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
         <div id="stats"></div>
       </div>
     </div>
-    <div id="careerPanel"></div>
-    <button type="button" class="review-entry" id="btnYearbook">年度回顧</button><button type="button" class="review-entry pupil-entry" id="btnPupils" hidden>弟子名冊</button>
+    <div class="game-tools" id="gameTools" role="group" aria-label="人生紀錄"><button type="button" class="review-entry" id="btnCareer" aria-haspopup="dialog">長期志向</button><button type="button" class="review-entry" id="btnYearbook" aria-haspopup="dialog">年度回顧</button><button type="button" class="review-entry pupil-entry" id="btnPupils" aria-haspopup="dialog" hidden>弟子名冊</button></div>
     <article id="card" aria-live="polite"></article>
     <button class="opt ffbtn" type="button" id="btnFFN" hidden><span class="l">⏩ 安排稽古到下一件事</span><span class="s">選擇沿用稽古、補弱項或低風險；遇到事件就停（最多兩年）</span></button>
     <button class="opt ffbtn" type="button" id="btnFF" hidden><span class="l">⏩ 人生快轉，直接看結局</span><span class="s">剩下的日子自動照「建議」過完，結語一樣會寫進去</span></button>
@@ -754,6 +753,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 </style>
 <style>.folio-modal .kgbox{overflow-x:hidden}.pupil-roster{display:grid;gap:9px;margin:10px 0 14px;min-width:0}.pupil-person{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--soft);background:var(--card);text-align:left;min-width:0}.pupil-person>div:last-child{min-width:0}.pupil-person b,.pupil-person span,.pupil-person small{display:block;overflow-wrap:anywhere}.pupil-person b{font-size:14px}.pupil-person span{font-size:11px;color:var(--ink2)}.pupil-person small{font-size:9px;color:var(--muted)}.pupil-monogram{display:grid;place-items:center;flex:none;width:34px;height:39px;background:var(--paper2);border-bottom:3px solid var(--gold);font-size:17px;font-weight:700}.pupil-entry{margin-top:-4px}.folio-modal .pupil-person{padding:9px}</style>
 <style>.notes-tabs{display:flex;gap:4px;margin:0 0 16px;min-width:0}.notes-tabs button{flex:1;min-width:0;padding:11px 3px;border:0;border-bottom:3px solid var(--soft);background:transparent;color:var(--ink2);font:inherit;font-size:12px;cursor:pointer}.notes-tabs button[aria-selected=true]{color:var(--ink);border-color:var(--red);font-weight:800}.notes-tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}.notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.notes-grid article{padding:14px;border:1px solid var(--soft);background:var(--paper2)}.notes-grid small,.notes-invite>small,.lineage-heading>small{color:var(--muted);font-size:10px;letter-spacing:.05em}.notes-grid h4,.notes-invite h4{margin:5px 0 9px;font-size:16px}.notes-grid p,.notes-steps p,.notes-invite p{margin:0;font-size:13px;line-height:1.85;overflow-wrap:anywhere}.notes-steps{padding-left:24px}.notes-steps li{margin:0 0 20px;padding-left:3px}.notes-invite .opt{display:block;margin:16px 0;text-align:center;text-decoration:none}.notes-invite label{display:block;font-size:12px;font-weight:700;margin:16px 0 8px}.notes-invite textarea{box-sizing:border-box;width:100%;resize:vertical;font:inherit;font-size:13px;padding:12px;line-height:1.8;background:var(--paper2);color:var(--ink);border:1px solid var(--soft)}.lineage-heading{margin-top:22px;border-top:1px dashed var(--soft);padding-top:16px}.lineage-heading h4{margin:4px 0 10px}.lineage-fold{margin-top:12px;padding:9px;border-top:1px dashed var(--soft)}.lineage-fold summary{cursor:pointer;font-weight:700;font-size:13px}.lineage-fold p{font-size:12px;line-height:1.8}.lineage-person{border-left:3px solid var(--gold)}.lineage-person .pupil-monogram small{font-size:8px}.head{flex-wrap:wrap}@media(max-width:360px){.notes-grid{grid-template-columns:1fr}.notes-tabs button{font-size:11px}}</style>
+<style>.game-tools{display:flex;align-items:stretch;gap:8px;min-width:0;margin:-6px 0}.game-tools[hidden]{display:none!important}.game-tools .review-entry{display:flex;align-items:center;justify-content:center;flex:1 1 0;min-width:0;min-height:42px;padding:9px 5px;margin:0;border:2px solid var(--soft);box-shadow:none;font-size:12px;font-weight:700;line-height:1.4;text-align:center;white-space:nowrap}.game-tools .review-entry:hover{border-color:var(--gold)}.career-modal .career{border:0;padding:0;background:none}.career-modal .career summary{font-size:14px;line-height:1.8}.career-modal .career p,.career-modal .career li{line-height:1.9}#advancedSetup.setup-visible{padding-top:4px}#advancedSetup.setup-visible>.field{margin-top:15px}@media(max-width:360px){.game-tools{gap:6px}.game-tools .review-entry{font-size:11px;padding-inline:3px}}</style>
 <script>
 const PREVIEW_STORAGE={getItem(k){return localStorage.getItem('kyokushin-preview-v20:'+k)},setItem(k,v){localStorage.setItem('kyokushin-preview-v20:'+k,v)},removeItem(k){localStorage.removeItem('kyokushin-preview-v20:'+k)}};
 
@@ -1391,6 +1391,7 @@ function practiceGrow(k,n){const age=ageF();grow(k,n*Math.max(.75,age)/Math.max(
 function practiceGoalName(){return {rhythm:'把練習變成習慣',kata:'把一套型練到熟悉',share:'陪剛入門的人走一段',black:'慢慢走向黑帶'}[S.practiceGoal]||'找到自己的步調';}
 function practiceGoalOK(){return S.practiceGoal==='rhythm'?(S.flags.practiceTrain||0)>=12:S.practiceGoal==='kata'?km(focusKata())>=80:S.practiceGoal==='share'?(S.flags.kidsHelp||0)>=3:S.rank>=6;}
 function practiceRemember(kind,text){S.practiceMemory=S.practiceMemory||[];S.practiceMemory.push({year:S.year,kind,text});if(S.practiceMemory.length>16)S.practiceMemory.shift();log(kind+'：'+text);say(text);}
+function openCareer(){if(!G||!S||G.trial||G.prompt?.kind==='battle'||G.prompt?.kind==='end')return;const {modal}=openEndOverlay('<small>目前的方向</small><h3>長期志向</h3>'+careerHTML(),'長期志向');modal.classList.add('career-modal');const detail=modal.querySelector('.career');if(detail)detail.open=true;}
 function careerHTML(){if(!practiceActive())return baseGrowthCareer();return '<details class="career"><summary>終身修行・'+esc(practiceGoalName())+(S.flags.practiceGoalDone?' ✓':'')+'</summary><p>已走過 '+practiceYears()+' 年。沒有指導員資格的倒數；練習、交流與休息，都能寫進這段人生。</p><p>下一次審查可以照準備程度決定。想教學或開館，仍需相應資格。</p></details>';}
 function epiFacts(){const f=baseGrowthFacts();f.yrs=practiceYears();return f;}
 function rememberLesson(p,kind){if(!growthRules()||!p)return;const labels={team:'一起打穩基本功',recruit:'在迎接新弟子的同時一起練習',self:'讓自己安排練習',focused:'獲得重點陪伴',kihon:'反覆打基本功',kumite:'練習實戰攻防',mind:'先陪心態，再談輸贏','crisis:stay':'低潮時陪著再練一次','crisis:talk':'低潮時陪伴談心','crisis:free':'低潮時尊重自己的決定'};if(!labels[kind])return;p.lessons=p.lessons||{};p.lessons[kind]=(p.lessons[kind]||0)+1;p.memories=p.memories||[];if(!p.memories.some(m=>m.year===S.year&&m.kind===kind))p.memories.push({year:S.year,kind,text:labels[kind]});if(p.memories.length>24)p.memories.shift();}
@@ -4640,10 +4641,10 @@ function render(){
   if(p.kind==='end'){renderEnd();return;}
   {const ff=$('#btnFF');if(ff)ff.hidden=!((S.age>=50||S.flags.ch3||S.flags.cpW)&&!S.flags.ff&&p.kind!=='battle'&&p.kind!=='chapter');}{const fn=$('#btnFFN');if(fn)fn.hidden=!(S.turn>=2&&!GT&&!G.trial&&!S.flags.ff&&/^稽古方針/.test(p.title||''));}
   const inBattle=p.kind==='battle';
-  {const b=$('#btnPupils');if(b){const list=discipleList();b.hidden=!!G.trial||inBattle||!list.length;b.textContent='弟子名冊 · '+list.length+' 位';}}
-  {const b=$('#btnYearbook');if(b){b.hidden=!!G.trial||inBattle;b.textContent='年度回顧 · '+S.year+' 年';}}
+  {const b=$('#btnPupils');if(b){const list=discipleList();b.hidden=!!G.trial||inBattle||!list.length;b.textContent='弟子名冊';b.setAttribute('aria-label','查看弟子名冊，共 '+list.length+' 位');}}
+  {const b=$('#btnYearbook');if(b){b.hidden=!!G.trial||inBattle;b.textContent='年度回顧';b.setAttribute('aria-label','查看 '+S.year+' 年的年度回顧');}}
   $('#panels').hidden=inBattle;$('#logBox').hidden=inBattle;$('#moreBox').hidden=inBattle;
-  {const box=$('#careerPanel'),wasOpen=box.querySelector('details')?.open;box.hidden=inBattle;box.innerHTML=inBattle?'':careerHTML();if(wasOpen&&!inBattle)box.querySelector('details').open=true;}
+  $('#gameTools').hidden=!!G.trial||inBattle;
   if(inBattle){renderBattle(p);return;}
   if(!drawHero($('#heroSpr'),S.rank,64))drawSprite($('#heroSpr'),'front',SPR_BELT[S.rank],'#3a3550');setPortrait($('#heroSpr'),heroFace(p));
   $('#heroName').textContent=S.name;
@@ -5066,6 +5067,7 @@ function initUI(){
   $('#btnFF').addEventListener('click',()=>{if(G&&G.prompt.kind!=='end')confirmBox('確定直接看結局嗎？','剩下的人生會自動照「建議」過完，<b>中間的選擇都不能再自己決定</b>。','確定快轉到結局',()=>{if(G&&G.prompt.kind!=='end')choose('cmd:ff');});});
   $('#btnFFN').addEventListener('click',paceDialog);
   $('#btnYearbook').addEventListener('click',openReview);
+  $('#btnCareer').addEventListener('click',openCareer);
   $('#btnPupils').addEventListener('click',openPupils);
   $('#btnQuit').addEventListener('click',e=>{
     confirmBox('確定要回到首頁嗎？','這段人生的存檔會<b>直接刪除</b>，不會結算，也不能再繼續。想保留的話，先用「📋 存檔碼」存起來。','確定刪除並回到首頁',()=>{G=null;clearSave();render();window.scrollTo({top:0});});
