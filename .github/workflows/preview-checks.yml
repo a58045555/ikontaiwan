@@ -1,13 +1,17 @@
-name: Preview regression checks
+name: Game regression checks
 on:
   push:
     branches: [main]
     paths:
+      - 'index.html'
+      - 'manifest.json'
       - 'preview-v2/**'
       - 'validation/**'
       - '.github/workflows/preview-checks.yml'
   pull_request:
     paths:
+      - 'index.html'
+      - 'manifest.json'
       - 'preview-v2/**'
       - 'validation/**'
       - '.github/workflows/preview-checks.yml'
@@ -31,3 +35,5 @@ jobs:
           package-manager-cache: false
       - name: Check mechanics, saves, pupils, stories and settings
         run: node validation/run-preview-checks.cjs
+      - name: Check production release and preview save compatibility
+        run: node validation/verify-release.cjs
