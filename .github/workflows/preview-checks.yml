@@ -46,3 +46,6 @@ jobs:
 
       - name: Check automatic points and legacy save replay
         run: node validation/verify-autopoints.cjs
+
+      - name: Check scheduled training, trial age and save preservation
+        run: node validation/verify-playflow.cjs

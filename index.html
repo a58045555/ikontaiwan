@@ -562,7 +562,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
   <section id="guide" class="px guide" hidden aria-label="遊戲說明">
     <div class="wt"><h3>遊戲說明</h3><button class="chipbtn" type="button" id="btnGuideClose" style="color:var(--ink);background:var(--paper2);box-shadow:0 0 0 2px var(--ink)">關閉</button></div>
     <details open><summary>這是什麼遊戲</summary>
-      <p>你是十五歲、剛上高一、剛入門的空手道少年。每一回合是三個月（一季），稽古一年選兩次，一路練到黑帶、上全台和日本的大賽，最後也許能開自己的道場。</p></details>
+      <p>你可以從 15 歲青春競技、15 歲終身修行、30 歲成年入門，或 45 歲第一次入門開始。每一回合是三個月（一季），稽古一年選兩次。競技、教學、道場與日常，各有自己的路；故事會依你的入門時刻與選擇展開。</p></details>
     <details open><summary>自動處理與「建議」</summary>
       <p>錢、營養品、修煉點和主練的型都會自動處理，你只需要決定稽古、事件、比賽和審查。缺錢時選打工牌賺錢，真的不夠家人會支援。<br>比賽報名、升級審查這兩個畫面會用金框標出<b>「建議」</b>（稽古要自己選，能力卡下方會提示審查哪一項不足），只是參考，不保證最好；其他畫面要自己判斷。</p></details>
     <details><summary>量級與得意技</summary>
@@ -1123,7 +1123,7 @@ function paceRun(policy){
   while(G.prompt&&G.prompt.kind!=='end'&&count<100&&S.turn-start<8){
     if(!/^稽古方針/.test(G.prompt.title||''))break;
     const id=pacePick(G.prompt,policy,last);if(!id)break;G.choices.push(id);const next=G.gen.next(id);
-    if(next.done)throw new Error('稽古流程提前結束');G.prompt=next.value;count++;
+    if(next.done)throw new Error('稽古流程提前結束');G.prompt=next.value;liveAutoPoints();count++;
   }return count;
 }
 function paceDialog(){
@@ -4281,7 +4281,7 @@ const TRIAL_T={id:'trial',name:'體驗對練',short:'體驗',open:false,q:0,base
 function* trial(){
   gm('體驗開始');
   const sen=S.npc.sen;
-  const c=yield P('體驗・第一堂課',`十五歲，你第一次綁上白帶，對著道場正面鞠躬，喊出「押忍」。<br>${masterTitle(S.setup.home)}：「今天先練一樣，你想練什麼？」`,[
+  const c=yield P('體驗・第一堂課',`${S.age} 歲，你第一次綁上白帶，對著道場正面鞠躬，喊出「押忍」。<br>${masterTitle(S.setup.home)}：「今天先練一樣，你想練什麼？」`,[
     {id:'kb',label:'基本稽古',sub:'正拳、受け、移動 · 技術↑ 速度↑'},
     {id:'mjis',label:'實戰對打',sub:'跟學長實際打 · 組手全面↑'},
     {id:'tbody',label:'鍛體',sub:'挨打也不退 · 鍛體↑ 抗性↑'}]);
@@ -4300,7 +4300,7 @@ function startTrial(setup){REPLAY=false;GM_SEEN=new Set();newState({...setup,tri
 function trChoose(id){const wasBattle=G.prompt.kind==='battle';TRAIN_FX=(G.prompt&&G.prompt.kind!=='battle'&&CARDS[id])?id:null;const res=G.gen.next(id);
   if(res.done){const a=res.value,setup=G.setup;if(a==='ig'){gc('點道場IG',true);try{window.open(IG_URL,'_blank','noopener');}catch(e){}G=null;S=null;render();return;}
     if(a==='again'){startTrial({...setup,seed:randSeed()});return;}
-    if(a==='full'){G=null;S=null;render();window.scrollTo({top:0});const t=document.createElement('div');t.className='bdtoast';t.innerHTML='體驗結束！<br>重新選好<b>道場、量級</b>，按「入門・高一春天」開始完整人生。';document.body.appendChild(t);setTimeout(()=>t.remove(),4500);return;}
+    if(a==='full'){G=null;S=null;render();window.scrollTo({top:0});const t=document.createElement('div');t.className='bdtoast';t.innerHTML='體驗結束！<br>重新選好<b>入門時刻、道場與量級</b>，按「入門」開始完整人生。';document.body.appendChild(t);setTimeout(()=>t.remove(),4500);return;}
     G=null;S=null;render();return;}
   G.prompt=res.value;render();sfx();if(!(wasBattle&&G.prompt.kind==='battle'))scrollCard();}
 function replayChoiceOK(prompt,ch){
