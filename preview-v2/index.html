@@ -19,10 +19,10 @@
 .career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}</style>
 </head>
 <body>
-<div role="note" style="max-width:480px;margin:auto;padding:10px 16px;background:#ffe14a;color:#26223b;font:700 13px/1.6 sans-serif;box-sizing:border-box">手機測試版 v2.0・進度與正式版分開保存。<a style="color:#26223b;text-decoration:underline" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">開啟原版</a></div>
+<div role="note" style="max-width:480px;margin:auto;padding:10px 16px;background:#ffe14a;color:#26223b;font:700 13px/1.6 sans-serif;box-sizing:border-box">手機測試版 v2.1・進度與正式版分開保存。<a style="color:#26223b;text-decoration:underline" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">開啟原版</a></div>
 <meta charset="utf-8">
 <meta name="robots" content="noai, noimageai">
-<title>極真人生 v2.0 手機測試版</title>
+<title>極真人生 v2.1 手機測試版</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Press+Start+2P&display=swap">
@@ -714,6 +714,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       </div>
     </div>
     <div id="careerPanel"></div>
+    <button type="button" class="review-entry" id="btnYearbook">年度回顧</button>
     <article id="card" aria-live="polite"></article>
     <button class="opt ffbtn" type="button" id="btnFFN" hidden><span class="l">⏩ 安排稽古到下一件事</span><span class="s">選擇沿用稽古、補弱項或低風險；遇到事件就停（最多兩年）</span></button>
     <button class="opt ffbtn" type="button" id="btnFF" hidden><span class="l">⏩ 人生快轉，直接看結局</span><span class="s">剩下的日子自動照「建議」過完，結語一樣會寫進去</span></button>
@@ -734,9 +735,14 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v2.0 測試版・2026.10.19</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v2.1 測試版・2026.10.20</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
 </div>
 
+<style>
+/* Compact ending and selectable annual review. */
+.review-entry{font:inherit;font-size:12px;min-height:40px;padding:7px 12px;border:2px solid var(--soft);background:var(--paper);color:var(--ink);cursor:pointer;text-align:left}.end-snapshot .hero{grid-template-columns:72px minmax(0,1fr);gap:12px}.end-snapshot .portrait{width:72px;height:84px}.end-snapshot .portrait canvas{width:64px;height:80px}.end-snapshot .hname b{font-size:22px}.end-snapshot .ep{font-size:14px;margin:0 0 4px}.end-snapshot .hsub{font-size:11px;overflow-wrap:anywhere}.end-quote{font-size:14px;line-height:1.7;margin:14px 0;padding-left:10px;border-left:3px solid var(--coral)}.end-keynums,.review-metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.end-keynums>div,.review-metrics>div{min-width:0;background:var(--paper2);padding:8px 10px;text-align:left}.end-keynums small,.review-metrics small{display:block;font-size:11px;color:var(--muted)}.end-keynums b,.review-metrics b{display:block;font-size:15px;overflow-wrap:anywhere}.end-highlights h3{font-size:13px;margin:14px 0 7px}.end-highlights ol{list-style:none;padding:0;margin:0 0 14px;display:grid;gap:7px}.end-highlights li{display:grid;grid-template-columns:78px minmax(0,1fr);gap:6px;align-items:baseline;font-size:12px;line-height:1.5}.end-highlights small{font-size:10px;color:var(--muted)}.end-highlights span{overflow-wrap:anywhere}.end-main-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.end-main-actions .opt{min-width:0;padding:10px 8px 10px 20px}.end-main-actions .opt .l{font-size:13px}.end-main-actions .opt::before{left:7px}.end-new{margin-top:10px}.end-fold{border-top:2px dashed var(--soft);margin-top:14px;padding-top:8px}.end-fold>summary,.end-story>summary{min-height:44px;cursor:pointer;font-size:13px;font-weight:700;display:list-item;line-height:1.7;padding:10px 2px}.end-story{border-top:1px solid var(--soft)}.end-story p{font-size:14px;line-height:1.8;text-align:left}.end-story h4{font-size:13px;text-align:left}.end .life-portrait{padding-top:6px}.end .hlist,.end .titles{overflow-wrap:anywhere}.end .endgrid{grid-template-columns:repeat(2,minmax(0,1fr))}.end .endgrid>div{min-width:0}.end .endgrid b{overflow-wrap:anywhere}.yearbook-modal{padding:14px}.yearbook-modal .kgbox{width:min(100%,500px);max-height:calc(100dvh - 28px);overflow-y:auto;overscroll-behavior:contain;text-align:left;display:block;padding:16px;background:var(--paper);color:var(--ink)}.review-heading small,.review-heading b{display:block}.review-heading small{font-size:9px;letter-spacing:.12em;color:var(--muted)}.review-heading b{font-size:21px;margin:2px 0 12px}.review-picker{display:grid;grid-template-columns:42px minmax(0,1fr) 42px;gap:8px;align-items:end}.review-picker label{min-width:0;font-size:11px;color:var(--muted)}.review-picker select{width:100%;min-height:44px;margin-top:3px;font:inherit;font-size:13px;color:var(--ink);background:var(--paper)}.review-picker button{min-height:44px;border:2px solid var(--ink);background:var(--paper2);color:var(--ink);font:inherit;font-size:20px}.review-picker button:disabled{opacity:.35}.review-year header{margin:16px 0 10px}.review-year header small{color:var(--muted);font-size:11px}.review-year header h3{font-size:22px;margin:0}.review-year header span{font-size:13px}.review-year h4{font-size:13px;margin:14px 0 6px}.review-note{font-size:11px;line-height:1.7;color:var(--muted)}.review-events{font-size:13px;line-height:1.7;margin:0;padding-left:19px}.review-events li{margin:3px 0;overflow-wrap:anywhere}.review-training{font-size:11px;line-height:1.7;margin:12px 0;overflow-wrap:anywhere}.review-decisions{border-top:1px solid var(--soft);margin:10px 0;font-size:12px;line-height:1.7}.review-decisions summary{min-height:44px;cursor:pointer;padding:10px 0}.review-decisions ol,.review-decisions ul{padding-left:20px}.review-decisions li{margin-bottom:8px;overflow-wrap:anywhere}.review-decisions li small,.review-decisions li span{display:block}.review-decisions li small{color:var(--muted);font-size:10px}.yearbook-modal .cmx{margin:14px 0 0;width:100%}
+
+</style>
 <script>
 const PREVIEW_STORAGE={getItem(k){return localStorage.getItem('kyokushin-preview-v20:'+k)},setItem(k,v){localStorage.setItem('kyokushin-preview-v20:'+k,v)},removeItem(k){localStorage.removeItem('kyokushin-preview-v20:'+k)}};
 
@@ -1113,6 +1119,51 @@ function paceDialog(){
   d.querySelector('.pace-go').onclick=()=>{const button=d.querySelector('.pace-go');if(button.disabled)return;button.disabled=true;const policy=d.querySelector('select').value;try{paceRun(policy);save();render();d.remove();window.scrollTo({top:0});}catch(e){button.disabled=false;button.textContent='稍後再試';console.error(e);}};
 }
 
+
+/* Presentation-only history. Rebuilt from replay without touching state or RNG. */
+const YEARBOOK=new WeakMap();
+function reviewSnapshot(){return {year:S.year,age:S.age,turn:S.turn,rank:S.rank,money:S.money,st:{...S.st},w:S.w,l:S.l,kw:S.kw,kl:S.kl,inj:S.flags.injN||0};}
+function reviewInit(){YEARBOOK.set(S,{closed:[],current:{year:S.year,age:S.age,begin:reviewSnapshot(),choices:[],training:{}}});}
+function reviewRollover(){const book=YEARBOOK.get(S);if(!book){reviewInit();return;}if(S.year<=book.current.year)return;const end=reviewSnapshot();end.year=book.current.year;end.age=book.current.age;book.closed.push({...book.current,end,complete:true});book.current={year:S.year,age:S.age,begin:reviewSnapshot(),choices:[],training:{}};}
+function reviewText(t,max=100){return String(t??'').replace(/<[^>]*>/g,'').replace(/&(?:amp|lt|gt|quot|#39);/g,x=>({'&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&#39;':"'"}[x])).replace(/\s+/g,' ').trim().slice(0,max);}
+function reviewRemember(p,id){const book=YEARBOOK.get(S);if(!book||!p||p.kind==='battle'||typeof id!=='string')return;const option=(p.opts||[]).find(o=>String(o.id)===id);if(!option)return;const row=book.current;
+  if(/^稽古方針/.test(p.title||'')&&(CARDS[id]||TRAIN[id])){const name=reviewText((CARDS[id]||TRAIN[id]).n,40);row.training[name]=(row.training[name]||0)+1;return;}
+  if((p.opts||[]).filter(o=>!o.disabled).length<2||/審查.*型|稱號|獲得/.test(p.title||''))return;
+  if(row.choices.length<200)row.choices.push({title:reviewText(p.title,55),choice:reviewText(option.label,70)});
+}
+function* reviewedLife(){const gen=life();let step=gen.next();while(!step.done){const id=yield step.value;reviewRemember(step.value,id);step=gen.next(id);}return step.value;}
+function reviewRows(){const book=YEARBOOK.get(S);if(!book)return [];const end=reviewSnapshot();return [...book.closed,{...book.current,end,complete:false,final:!!S.ending}];}
+function reviewDelta(row){const a=row.begin,b=row.end;const skills=Object.keys(STATN).map(k=>({name:STATN[k],value:Math.round(((b.st[k]||0)-(a.st[k]||0))*10)/10})).sort((x,y)=>Math.abs(y.value)-Math.abs(x.value));return {ability:Math.round(skills.reduce((n,k)=>n+k.value,0)*10)/10,money:Math.round((b.money-a.money)*10)/10,wins:b.w-a.w+b.kw-a.kw,losses:b.l-a.l+b.kl-a.kl,injuries:b.inj-a.inj,skills};}
+function signedReview(n,unit=''){return Math.abs(n)<.05?'持平':(n>0?'+':'−')+Math.abs(n).toFixed(1).replace(/\.0$/,'')+unit;}
+function reviewEvents(year){return (S.log||[]).filter(l=>Number.parseInt(l.w,10)===year).map(l=>{const text=reviewText(l.t,180);return {text,...reviewPriority(text,l.cls==='gold'),gold:l.cls==='gold',bad:l.cls==='bad'};});}
+function reviewYearHTML(row){const d=reviewDelta(row),events=reviewEvents(row.year);const featured=events.map((e,i)=>({...e,i})).sort((a,b)=>b.score-a.score||a.i-b.i).slice(0,3).sort((a,b)=>a.i-b.i);const training=Object.entries(row.training).sort((a,b)=>b[1]-a[1]),skills=d.skills.filter(x=>x.value!==0).slice(0,2);const status=row.complete?'完整年度':row.final?'截至結算':'今年進行中';
+  return '<article class="review-year"><header><small>'+row.age+' 歲・'+status+'</small><h3>'+row.year+' 年</h3><span>'+esc(RANKS[row.begin.rank])+(row.end.rank!==row.begin.rank?' → '+esc(RANKS[row.end.rank]):'')+'</span></header><div class="review-metrics">'+[['能力總和',signedReview(d.ability)],['存款變化',signedReview(d.money,' 萬')],['賽事戰績',d.wins+' 勝 '+d.losses+' 敗'],['受傷次數',d.injuries+' 次']].map(([a,b])=>'<div><small>'+a+'</small><b>'+b+'</b></div>').join('')+'</div>'+
+  (skills.length?'<p class="review-note">能力變化：'+skills.map(s=>s.name+' '+signedReview(s.value)).join('・')+'</p>':'')+
+  '<h4>這一年的重點</h4>'+(featured.length?'<ul class="review-events">'+featured.map(e=>'<li>'+esc(e.text)+'</li>').join('')+'</ul>':'<p class="review-note">這一年還沒有記下重要事件。</p>')+
+  (training.length?'<p class="review-training"><b>稽古安排</b> '+training.slice(0,3).map(([n,c])=>esc(n)+' ×'+c).join('・')+(training.length>3?' 等 '+training.length+' 種':'')+'</p>':'')+
+  (row.choices.length?'<details class="review-decisions"><summary>查看當年選擇（'+row.choices.length+'）</summary><ol>'+row.choices.map(c=>'<li><small>'+esc(c.title)+'</small><span>'+esc(c.choice)+'</span></li>').join('')+'</ol></details>':'')+
+  (events.length>3?'<details class="review-decisions"><summary>全部事件（'+events.length+'）</summary><ul>'+events.map(e=>'<li>'+esc(e.text)+'</li>').join('')+'</ul></details>':'')+'</article>';
+}
+function openReview(){if(!G||G.trial)return;const rows=reviewRows();if(!rows.length)return;const dialog=codeModal('<div class="review-heading"><small>YOUR YEARBOOK</small><b>年度回顧</b></div><div class="review-picker"><button type="button" class="review-prev" aria-label="上一年">←</button><label>年份<select class="inp" aria-label="回顧年份" id="reviewYear">'+rows.map(r=>'<option value="'+r.year+'">'+r.year+' 年・'+r.age+' 歲'+(!r.complete?'・'+(r.final?'截至結算':'進行中'):'')+'</option>').join('')+'</select></label><button type="button" class="review-next" aria-label="下一年">→</button></div><div class="review-body"></div>');dialog.classList.add('yearbook-modal');dialog.setAttribute('role','dialog');dialog.setAttribute('aria-modal','true');dialog.setAttribute('aria-label','年度回顧');const trigger=document.activeElement,host=document.querySelector('.app'),wasInert=host?.inert;if(host)host.inert=true;const close=()=>{if(host)host.inert=wasInert;dialog.remove();document.removeEventListener('keydown',onKey);trigger?.focus({preventScroll:true});};const onKey=e=>{if(e.key==='Escape'){e.preventDefault();close();}};dialog.querySelector('.cmx').onclick=close;dialog.onclick=e=>{if(e.target===dialog)close();};document.addEventListener('keydown',onKey);let index=rows.length-1;const select=dialog.querySelector('select'),prev=dialog.querySelector('.review-prev'),next=dialog.querySelector('.review-next');const draw=()=>{select.value=String(rows[index].year);prev.disabled=index===0;next.disabled=index===rows.length-1;dialog.querySelector('.review-body').innerHTML=reviewYearHTML(rows[index]);};select.onchange=()=>{const found=rows.findIndex(r=>String(r.year)===select.value);if(found>=0){index=found;draw();}};prev.onclick=()=>{if(index>0){index--;draw();}};next.onclick=()=>{if(index<rows.length-1){index++;draw();}};draw();select.focus({preventScroll:true});}
+function reviewPriority(t,gold=false){if(/^(?:愛徒|弟子|少年部|女子部)|黑帶弟子/.test(t))return {score:75,group:'傳承'};if(/三冠|製霸|百人組手/.test(t))return {score:115,group:'競技'};if(/優勝/.test(t))return {score:(/世界/.test(t)?100:/全日本/.test(t)?90:/全台/.test(t)?70:50)-(/準優勝/.test(t)?12:0),group:'競技'};if(/支部長/.test(t))return {score:105,group:'傳承'};if(/師範代/.test(t))return {score:95,group:'傳承'};if(/指導員資格|內弟子結業|開設.*道場|交棒|全職道場主/.test(t))return {score:85,group:'傳承'};if(/晉升|升上|初段|黑帶/.test(t)){let rank=0;RANKS.forEach((n,i)=>{if(t.includes(n))rank=Math.max(rank,i);});return {score:60+rank*2,group:'腰帶'};}if(/結婚|孩子|成家|學弟|師兄|大學畢業|從選手引退/.test(t))return {score:45,group:'人生'};return {score:gold?20:0,group:'其他'};}
+function endingHighlights(){const rows=(S.log||[]).map((l,i)=>{const text=reviewText(l.t,150);return {text,year:Number.parseInt(l.w,10),...reviewPriority(text,l.cls==='gold'),i};}).filter(x=>x.score>0).sort((a,b)=>b.score-a.score||a.i-b.i);const used=new Set(),out=[];for(const x of rows){if(used.has(x.group))continue;out.push(x);used.add(x.group);if(out.length===3)break;}if(!out.length)out.push({text:'第一次走進'+S.home.n,year:2026,group:'起點',i:0});return out.sort((a,b)=>a.year-b.year||a.i-b.i).map(x=>({...x,text:reviewText(x.text,58)}));}
+function compactEpiHTML(){return epiPlan().map(([name,sub,fn])=>{let ps=[];try{ps=fn();}catch{}if(!ps.length)return '';return '<details class="end-story"><summary>'+esc(name)+'・'+sub+'</summary>'+ps.map(p=>(p.h?'<h4>'+esc(p.h)+'</h4>':'')+'<p>'+p.t+'</p>').join('')+'</details>';}).join('');}
+function compactEndingHTML(lines,d){const wins=S.w+S.kw,losses=S.l+S.kl,years=Math.max(0,S.age-15);return '<div class="end-snapshot"><div class="eyebrow">2026—'+S.year+'・15—'+S.age+' 歲</div><div class="hero"><div class="portrait"><canvas id="endSpr"></canvas></div><div class="hinfo"><p class="ep">'+esc(epithet())+'</p><div class="hname"><b>'+esc(S.name)+'</b></div><div class="hsub">'+beltPill(S.rank)+'・'+esc(S.home.n)+'</div></div></div><p class="end-quote" id="epiEnd">'+esc(ENDTXT[S.ending]||'道着上的汗水，都留在了這段人生裡。')+'</p><div class="end-keynums">'+[['走過的修行',years+' 年'],['最終腰帶',RANKS[S.rank]],['賽事戰績',wins+' 勝 '+losses+' 敗'],['指導資歷',(S.flags.teachY||0)+' 年']].map(([n,v])=>'<div><small>'+n+'</small><b>'+v+'</b></div>').join('')+'</div><section class="end-highlights"><h3>值得記住的時刻</h3><ol>'+endingHighlights().map(h=>'<li><small>'+h.year+'・'+h.group+'</small><span>'+esc(h.text)+'</span></li>').join('')+'</ol></section><div class="end-main-actions"><button class="opt primary" id="btnEndReview" type="button"><span class="l">翻開年度回顧</span></button><button class="opt" id="btnCard" type="button"><span class="l">產生分享卡</span></button></div><div id="cardOut"></div><button class="opt end-new" id="btnNew" type="button"><span class="l">開始新的人生</span></button></div><div id="newAch"></div>'+
+  '<details class="end-fold"><summary>完整故事・'+epiPlan().length+' 篇</summary><div class="epi" id="epiBox">'+compactEpiHTML()+'</div></details>'+
+  '<details class="end-fold"><summary>四種人生足跡與完整紀錄</summary>'+lifePortraitHTML()+
+  (lines.length?'<div class="lines">'+lines.map(l=>'<div>'+l+'</div>').join('')+'</div>':'')+knowHTML()+
+  ((S.honors||[]).length?'<div class="epi"><b>全部稱號（'+S.honors.length+'）</b><div class="hlist">'+S.honors.map(h=>'<span class="hchip"><b>'+esc(h.n)+'</b><small>'+h.a+' 歲</small></span>').join('')+'</div></div>':'')+stagesHTML()+
+  '<div class="endgrid">'+[['組手',S.w+' 勝 '+S.l+' 敗'],['型',S.kw+' 勝 '+S.kl+' 敗'],['名聲',Math.round(S.fame)],['命運',String(G.setup.seed).padStart(6,'0')],['存款',Math.round(S.money)+' 萬'],['量級',(WCLS[S.wc]||{}).n||'']].map(([n,v])=>'<div><span>'+n+'</span><b>'+v+'</b></div>').join('')+(d?'<div><span>'+esc(d.name)+'</span><b>最多 '+d.peak+' 人・黑帶 '+d.blacks+' 人</b></div>':'')+'</div>'+
+  '<div class="reqs">'+[[S.flags.instDone,'指導員資格'],[S.flags.twuchiDone,'台灣內弟子'],[S.flags.uchiDone,'日本內弟子'],[!!S.dojo||!!S.flags.closedDojo,'開設道場'],[S.flags.shihandai,'師範代'],[S.flags.shibucho,'支部長'],[S.flags.hyaku,'百人組手']].map(([ok,n])=>'<span class="req'+(ok?' ok':'')+'">'+(ok?'✓':'·')+' '+n+'</span>').join('')+'</div>'+
+  (S.titles.length?'<ul class="titles">'+S.titles.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ul>':'')+
+  '<details class="legacy-grade"><summary>頭銜與資歷分數</summary>'+(()=>{const L=lifeScore();return '<div class="grade" style="--gc:'+L.col+'"><b>'+L.g+'</b><div><small>頭銜與資歷紀錄</small><span>'+L.n+'</span><i>'+L.sc+' 分</i></div></div>';})()+'</details></details>'+
+  '<details class="end-fold"><summary>其他玩法與資訊</summary><div class="opts">'+
+  (tourOk()?'<button class="opt" type="button" id="btnTour"><span class="l">sensei 道場巡禮</span></button>':'')+
+  '<a class="opt" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener"><span class="l">反應組手</span></a><button class="opt" type="button" id="btnSame"><span class="l">同樣的開局，重新來過</span></button><a class="opt" id="btnRc2" href="'+IG_URL+'" target="_blank" rel="noopener"><span class="l">到道場 Instagram 看看</span></a></div>'+a2hsHTML()+'</details>';
+}
+function compactShareCard(){const cv=document.createElement('canvas');cv.width=1080;cv.height=1440;const x=cv.getContext('2d'),F='"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif';x.fillStyle='#141933';x.fillRect(0,0,1080,1440);x.fillStyle='#f3ecdc';x.fillRect(40,40,1000,1360);x.fillStyle='#d9585a';x.fillRect(40,40,1000,14);x.fillStyle='#706a84';x.font='700 28px '+F;x.fillText('極真人生・這段修行的紀念',90,115);const sp=document.createElement('canvas');if(!drawHero(sp,S.rank))drawSprite(sp,'front',SPR_BELT[S.rank],'#3a3550');x.imageSmoothingEnabled=false;const scale=Math.min(200/sp.width,250/sp.height);x.drawImage(sp,100+(200-sp.width*scale)/2,160,sp.width*scale,sp.height*scale);x.fillStyle='#d9585a';x.font='900 38px '+F;x.fillText(epithet(),355,208,620);x.fillStyle='#26223b';x.font='900 64px '+F;x.fillText(S.name,355,295,620);x.font='700 30px '+F;x.fillText(RANKS[S.rank]+'・'+Math.max(0,S.age-15)+' 年修行',355,354);x.fillStyle='#706a84';x.font='500 27px '+F;x.fillText('2026—'+S.year+'・'+S.home.n,355,402,620);const stats=[['最終腰帶',RANKS[S.rank]],['賽事戰績',(S.w+S.kw)+' 勝 '+(S.l+S.kl)+' 敗'],['指導資歷',(S.flags.teachY||0)+' 年'],['走過的歲月',Math.max(0,S.age-15)+' 年']];stats.forEach(([n,v],i)=>{const a=90+(i%2)*465,b=460+Math.floor(i/2)*112;x.fillStyle='#e7dcc4';x.fillRect(a,b,435,94);x.fillStyle='#706a84';x.font='500 25px '+F;x.fillText(n,a+18,b+32);x.fillStyle='#26223b';x.font='900 35px '+F;x.fillText(v,a+18,b+76,398);});x.fillStyle='#26223b';x.font='900 32px '+F;x.fillText('值得記住的時刻',90,750);endingHighlights().forEach((h,i)=>{const y=810+i*92;x.fillStyle='#d9585a';x.font='700 24px '+F;x.fillText(h.year+'・'+h.group,90,y);x.fillStyle='#26223b';x.font='700 29px '+F;x.fillText(h.text,90,y+40,900);});const quote=reviewText(ENDTXT[S.ending]||'',120);x.font='500 27px '+F;x.fillStyle='#4c4762';let line='',y=1140;for(const ch of quote){if(x.measureText(line+ch).width>890){x.fillText(line,95,y);line=ch;y+=39;}else line+=ch;}if(line)x.fillText(line,95,y);x.fillStyle='#26223b';x.fillRect(40,1320,1000,80);x.fillStyle='#f2c24f';x.font='700 25px '+F;x.fillText('極真人生',90,1368);x.fillStyle='#f3ecdc';x.font='500 22px '+F;x.fillText('a58045555.github.io/ikontaiwan/preview-v2/',280,1368);return cv;}
+
+
 /* ===== engine ===== */
 function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 let S=null;
@@ -1147,6 +1198,7 @@ function newState(setup){EP_TAG="";
   S.rival=twNameO();S.rivalDojo=otherDojo();S.rivalType=pick(['power','tech','speed']);S.rivalEdge=(r()-.4)*8;S.rivalHair=pick(HAIR);
   S.kgD=0;
   if(setup.test){S.rank=6;for(const k in S.st)S.st[k]=Math.max(S.st[k],88);S.peakSt=Object.assign({},S.st);}
+  reviewInit();
 }
 function say(h){S.scene.push(h);}
 function tipAny(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key])return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>提示</b>　${t}</span>`;}
@@ -2147,6 +2199,7 @@ function fiveRecap(){
   say(`<div class="recap"><small>${o.age}→${n.age} 歲・五年回顧</small><div>${bits.join('・')}</div><p>${line}</p></div>`);
 }
 function yearTick(){
+  reviewRollover();
   S.peakSt=S.peakSt||{};for(const k of ['pow','spd','sta','tec','con','res','spi'])S.peakSt[k]=Math.max(S.peakSt[k]||0,S.st[k]);
   if(S.age>=20&&S.age%5===0)fiveRecap();
   if(S.bond){if(S.flags.senBond&&S.age<=22)bondUp('sen',5);if(S.flags.kohTrained&&S.age<=32)bondUp('koh',3);}
@@ -4001,7 +4054,7 @@ function startGame(setup,choices=[]){
   validateSave(setup,choices);
   const previous={S,G,REPLAY,GM_SEEN,BEVQ,BTL,EP_TAG,JLAST,DOJO_AUTO};
   try{
-    REPLAY=true;GM_SEEN=new Set();newState(setup);const gen=life();let res=gen.next();
+    REPLAY=true;GM_SEEN=new Set();newState(setup);const gen=reviewedLife();let res=gen.next();
     const done=[];let quit=null;
     for(const ch of choices){
       if(quit)throw new Error('結算後仍有選擇紀錄');
@@ -4357,6 +4410,7 @@ function render(){
   if(p.kind==='end'){renderEnd();return;}
   {const ff=$('#btnFF');if(ff)ff.hidden=!((S.age>=50||S.flags.ch3||S.flags.cpW)&&!S.flags.ff&&p.kind!=='battle'&&p.kind!=='chapter');}{const fn=$('#btnFFN');if(fn)fn.hidden=!(S.turn>=2&&!GT&&!G.trial&&!S.flags.ff&&/^稽古方針/.test(p.title||''));}
   const inBattle=p.kind==='battle';
+  {const b=$('#btnYearbook');if(b){b.hidden=!!G.trial||inBattle;b.textContent='年度回顧 · '+S.year+' 年';}}
   $('#panels').hidden=inBattle;$('#logBox').hidden=inBattle;$('#moreBox').hidden=inBattle;
   {const box=$('#careerPanel'),wasOpen=box.querySelector('details')?.open;box.hidden=inBattle;box.innerHTML=inBattle?'':careerHTML();if(wasOpen&&!inBattle)box.querySelector('details').open=true;}
   if(inBattle){renderBattle(p);return;}
@@ -4871,48 +4925,17 @@ function shareCard(){
 function renderEnd(){
   if(G&&!G._gcEnd){G._gcEnd=1;gc('玩到結局',true);}
   EPI_CUR=0;EPV=0;const el=$('#end');const lines=G.prompt.lines;const d=S.dojo;
-  el.innerHTML=`<div class="eyebrow">${S.year} · ${S.age} 歲${S.forced?' · 被迫從選手引退':''}</div>
-  <div class="hero"><div class="portrait"><canvas id="endSpr"></canvas></div>
-    <div class="hinfo"><p class="ep">${epithet()}</p><div class="hname"><b>${esc(S.name)}</b>${beltPill(S.rank)}</div><div class="hsub">${specLabel()}・出身 ${S.home.n}</div></div></div>
-  <details class="legacy-grade"><summary>查看頭銜與資歷分數</summary>  ${(()=>{const L=lifeScore();return `<div class="grade" style="--gc:${L.col}"><b>${L.g}</b><div><small>頭銜與資歷紀錄</small><span>${L.n}</span><i>${L.sc} 分${L.next?`・再 ${L.next-L.sc} 分升一級`:'・最高等級'}</i>${G.setup.daily?`<em class="dly">${dailyLabel(G.setup)}</em>`:''}</div></div>`;})()}</details>
-  ${lifePortraitHTML()}
-  ${a2hsHTML()}
-  ${lines.length?`<div class="lines">${lines.map(l=>`<div>${l}</div>`).join('')}</div>`:''}
-  <div class="epi" id="epiBox"><b>結語</b>${epiHTML()}</div>
-  <p class="q" id="epiEnd">${ENDTXT[S.ending]||''}</p>
-  ${knowHTML()}
-  ${(S.honors||[]).length?`<div class="epi"><b>獲得的稱號（${S.honors.length}）</b><div class="hlist">${S.honors.map(h=>`<span class="hchip"><b>${h.n}</b><small>${h.a} 歲</small></span>`).join('')}</div></div>`:''}
-  ${stagesHTML()}
-  <div class="endgrid">
-    ${S.route!=='kata'?`<div><span>組手戰績</span><b>${S.w} 勝 ${S.l} 敗</b></div>`:''}
-    ${S.route!=='kumite'?`<div><span>型戰績</span><b>${S.kw} 勝 ${S.kl} 敗</b></div>`:''}
-    <div><span>名聲</span><b>${Math.round(S.fame)}</b></div>
-    <div><span>量級・得意技</span><b>${(WCLS[S.wc]||{}).n||''}${S.fav?'・'+MOVES[S.fav].n:''}</b></div>
-    ${S.route!=='kata'?`<div><span>對宿敵 ${esc(S.rival)}</span><b>${S.rivalW} 勝 ${S.rivalL} 敗</b></div>`:''}
-    <div><span>命運</span><b style="font-family:var(--f-px);font-weight:400;font-size:10px">${String(G.setup.seed).padStart(6,'0')}</b></div>
-    ${d?`<div><span>${esc(d.name)}・${d.opened} 年創立</span><b>最多 ${d.peak} 人</b></div><div><span>黑帶弟子 / 弟子冠軍</span><b>${d.blacks} / ${d.champs}</b></div>`:''}
-  </div>
-  <div class="reqs">${[[S.flags.instDone,'指導員資格'],[S.flags.twuchiDone,'台灣內弟子'],[S.flags.uchiDone,'日本內弟子'],[!!S.dojo||!!S.flags.closedDojo,'開設道場'],[S.flags.shihandai,'台灣師範代'],[S.flags.shibucho,'台灣支部長'],[S.flags.hyaku,'百人組手']].map(([ok,n])=>`<span class="req${ok?' ok':''}">${ok?'✓':'·'} ${n}</span>`).join('')}</div>
-  ${S.titles.length?`<ul class="titles">${S.titles.map(t=>`<li>${esc(t)}</li>`).join('')}</ul>`:'<p class="hint">沒有冠軍頭銜。但每一次站上場，都算數。</p>'}
-  <div id="newAch"></div>
-  <div class="opts">
-    <a class="opt rcbtn" id="btnRc2" href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener"><span class="l">想真的來練練看？</span><span class="s">前往道場 Instagram・i.k.o.n.taiwan・存下「成績單」私訊道場，預約體驗課</span></a>
-    ${tourOk()?`<button class="opt" type="button" id="btnTour"><span class="l">sensei 道場巡禮</span><span class="s">用巔峰狀態連戰 10 位 sensei${tourBest()?`・最佳紀錄 第 ${tourBest()} 站`:""}</span></button>`:""}
-    <button class="opt primary" type="button" id="btnCard"><span class="l">產生分享卡</span><span class="s">一張圖，存起來傳給朋友</span></button>
-    <div id="cardOut"></div>
-    <a class="opt" href="https://a58045555.github.io/ikontaiwan/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block"><span class="l" style="display:block">🥊 小遊戲：反應組手</span><span class="s" style="display:block">換個方式練：sensei 喊招，15 秒內你能擋幾招？</span></a>
-    <button class="opt" type="button" id="btnSame"><span class="l">同樣的開局，重新來過</span></button>
-    <button class="opt" type="button" id="btnNew"><span class="l">開始新的人生</span></button>
-  </div>`;
+  el.innerHTML=compactEndingHTML(lines,d);
   if(!drawHero($('#endSpr'),S.rank,64))drawSprite($('#endSpr'),'front',SPR_BELT[S.rank],'#3a3550');setPortrait($('#endSpr'),heroFace({kind:'end'}));
   $('#btnRc2').onclick=()=>chip([[784,.08],[1047,.12]]);
-  {const fresh=recordRun();if(fresh.length)$('#newAch').innerHTML=`<div class="epi"><b>解鎖成就</b><p>${fresh.map(n=>'🏅 '+n).join('<br>')}</p></div>`;}
+  {const fresh=G._endingFresh||(G._endingFresh=recordRun());if(fresh.length)$('#newAch').innerHTML='<details class="end-fold"><summary>新解鎖（'+fresh.length+'）</summary><ul>'+fresh.map(n=>'<li>'+esc(n)+'</li>').join('')+'</ul></details>';}
+  $('#btnEndReview').onclick=openReview;
   bindEpi();
   bindA2hs();
   {const bt=$('#btnTour');if(bt)bt.onclick=startTour;}
   $('#btnCard').onclick=async()=>{
     try{if(document.fonts&&document.fonts.ready)await document.fonts.ready;}catch(e){}
-    const cv=shareCard();const url=cv.toDataURL('image/png');
+    const cv=compactShareCard();const url=cv.toDataURL('image/png');
     $('#cardOut').innerHTML=`<img src="${url}" alt="分享卡" style="width:100%;margin:8px 0;box-shadow:0 0 0 3px #26223b"><p class="hint">手機長按圖片可以存到相簿；電腦按右鍵另存。</p><div class="opts" style="padding:0"><button class="opt" type="button" id="cardDl"><span class="l">下載圖片</span></button>${navigator.share?'<button class="opt" type="button" id="cardShare"><span class="l">分享</span></button>':''}</div>`;
     $('#cardDl').onclick=async()=>{const fn=`kyokushin-${String(G.setup.seed).padStart(6,'0')}.png`;let dl=null;
       try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null;}catch(e){dl=null;}
@@ -4922,8 +4945,8 @@ function renderEnd(){
   };
   $('#btnSame').onclick=()=>{startGame(G.setup,[]);window.scrollTo({top:0});};
   const goNew=()=>{G=null;clearSave();render();window.scrollTo({top:0});};
-  $('#btnNew').onclick=()=>{if(!RC_SHOWN)showRecruit(goNew);else goNew();};
-  armRecruit();
+  $('#btnNew').onclick=goNew;
+
 }
 
 let startBuilt=false;
@@ -5008,6 +5031,7 @@ function initUI(){
     $('#btnGiveUp').addEventListener('click',gu);$('#btnGiveUp2').addEventListener('click',gu);}
   $('#btnFF').addEventListener('click',()=>{if(G&&G.prompt.kind!=='end')confirmBox('確定直接看結局嗎？','剩下的人生會自動照「建議」過完，<b>中間的選擇都不能再自己決定</b>。','確定快轉到結局',()=>{if(G&&G.prompt.kind!=='end')choose('cmd:ff');});});
   $('#btnFFN').addEventListener('click',paceDialog);
+  $('#btnYearbook').addEventListener('click',openReview);
   $('#btnQuit').addEventListener('click',e=>{
     confirmBox('確定要回到首頁嗎？','這段人生的存檔會<b>直接刪除</b>，不會結算，也不能再繼續。想保留的話，先用「📋 存檔碼」存起來。','確定刪除並回到首頁',()=>{G=null;clearSave();render();window.scrollTo({top:0});});
   });
