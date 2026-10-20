@@ -15,7 +15,9 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <style>
-.career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}</style>
+.career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}
+.point-help{font-size:13px;line-height:1.7;margin:8px 0 0;color:var(--muted)}.ptsbar{flex-wrap:wrap;gap:6px}.ptsbar .chipbtn{margin-left:auto;font-size:12px;min-height:36px;color:var(--ink);background:var(--paper2)}
+</style>
 </head>
 <body>
 <meta charset="utf-8">
@@ -552,6 +554,9 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <div class="fsrow"><button class="sw" type="button" data-fs="n">標準</button><button class="sw" type="button" data-fs="l">放大</button></div>
     <div class="wt" style="margin:6px 0 0"><h3>8-bit 音效</h3></div>
     <div class="sndrow fsrow"><button class="sw" type="button" data-snd="0">關</button><button class="sw" type="button" data-snd="1">開</button></div>
+    <div class="wt" style="margin:6px 0 0"><h3>修煉點分配</h3></div>
+    <div class="fsrow" role="group" aria-label="修煉點分配方式"><button class="sw" type="button" data-points="auto">自動加點</button><button class="sw" type="button" data-points="manual">手動加點</button></div>
+    <p class="point-help">1 點＝能力 +1，不隨腰帶漲價。自動補齊力量、速度、耐力、技術、鍛體、抗性中較低的能力；鬥志隨修行培養，也可手動加點。達上限的能力會跳過。</p>
   </section>
 
   <section id="guide" class="px guide" hidden aria-label="遊戲說明">
@@ -564,8 +569,8 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶到藍帶先用「基本型」打，升上黃帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
       <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：要付報名費，可報型、組手或兩者；也可以跳過，改做別的事。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
-    <details><summary>修煉點（自行加點）</summary>
-      <p>升級 +3、大賽冠軍 +2、準優勝 +1、百人組手 +5。有點數時，能力卡上方會出現「可分配修煉點」，點一下任一項能力就 +1。適合拿來補審查不足的那一項。</p></details>
+    <details><summary>修煉點（自動／手動）</summary>
+      <p>升級 +3、大賽冠軍 +2、準優勝 +1、百人組手 +5。新手模式預設自動補齊較低的六項能力，1 點＝能力 +1，不隨腰帶漲價。想補特定能力或鬥志，可在「顯示」切換手動；一年未分配的點數仍會自動補齊。達上限的能力會跳過，剩餘點數會保留。</p></details>
     <details><summary>能力與段位加成</summary>
       <p>力量、速度、耐力、技術、鍛體、抗性、鬥志七項。藍色是你練出來的，<b>金色是段位加成</b>，段位越高加越多，比賽時一起計算。<b>抗性</b>降低受傷機率和受傷的嚴重程度，也能減輕比賽中受到的傷害。體況越低越難發揮；紅色斜線是舊傷，會壓低體況上限。</p></details>
     <details><summary>錢與生活</summary>
@@ -1430,6 +1435,34 @@ function say(h){S.scene.push(h);}
 function tipAny(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key])return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>提示</b>　${t}</span>`;}
 function tipOnce(key,t){S.flags.tips=S.flags.tips||{};if(S.flags.tips[key]||S.age>18)return '';S.flags.tips[key]=1;return `<span class="tipbox"><b>新手提示</b>　${t}</span>`;}
 const PT_GAIN=1;
+
+const POINT_KEYS=['pow','spd','sta','tec','con','res'];
+let POINT_MODE=null;
+function pointMode(){
+  if(POINT_MODE)return POINT_MODE;
+  try{const saved=localStorage.getItem('kl-alloc');if(saved==='auto'||saved==='manual')return saved;}catch(e){}
+  return S&&!EZ()?'manual':'auto';
+}
+function liveAutoPoints(){
+  if(REPLAY||!S||!G||G.trial||(typeof GT!=='undefined'&&GT)||!G.prompt||G.prompt.kind==='end'||pointMode()!=='auto')return 0;
+  let used=0;
+  while(S.pts>0){
+    const candidates=POINT_KEYS.filter(k=>S.st[k]<capOf(k));if(!candidates.length)break;
+    const k=candidates.reduce((a,b)=>S.st[b]<S.st[a]?b:a);
+    if(!applyAlloc(k))break;
+    G.choices.push('alloc:'+k);used++;
+  }
+  return used;
+}
+function setPointMode(mode){
+  if(mode!=='auto'&&mode!=='manual')return;
+  POINT_MODE=mode;try{localStorage.setItem('kl-alloc',mode);}catch(e){}
+  liveAutoPoints();if(G)save();applyDisp();if(G)render();
+}
+function pointCopy(text){
+  return text.replace('點角色卡上的能力就能 +1（一年內沒分配會自動分配）',pointMode()==='auto'?'自動補齊較低的能力（1 點＝能力 +1）':'點角色卡上的能力就能 +1；一年未分配會自動補齊');
+}
+
 const MODES={easy:{n:'新手模式',d:'錢、生活、加點、主練型自動處理，只做重要決定'},full:{n:'完整模式',d:'打工、營養品、修煉點、主練型都自己決定'}};
 const EZ=()=>!!(S&&S.easy);
 const TRAITS={
@@ -4306,9 +4339,9 @@ function startGame(setup,choices=[]){
 
 function ffPick(p){const en=(p.opts||[]).filter(o=>!o.disabled);if(!en.length)return null;if(p.kind==='battle')return en.some(o=>o.id==='auto')?'auto':en[0].id;const rc=en.find(o=>o.rec);return (rc||en[0]).id;}
 function ffBig(p){if(!p)return true;const t=p.title||'';return ['end','chapter','battle'].includes(p.kind)||/審查$|選手生涯|過磅|稱號|就任|岔路|中場|宿敵/.test(t)||(typeof TOURN!=='undefined'&&TOURN.some(T=>T.name===t))||p.opts.some(o=>o.big);}
-function ffNextRun(){const t0=S.turn;let n=0;while(G.prompt&&G.prompt.kind!=='end'&&n<600){if(n>0&&ffBig(G.prompt))break;if(S.turn-t0>=8)break;const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;n++;}save();render();window.scrollTo({top:0});}
-function ffTo35(){let n=0;while(G.prompt&&G.prompt.kind!=='end'&&S.age<35&&n<20000){const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;n++;}save();render();window.scrollTo({top:0});const t=document.createElement('div');t.className='bdtoast';t.innerHTML=`測試帳號：已快轉到 <b>${S.age} 歲</b>`;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
-function ffRun(){let n=0;while(S.flags.ff&&G.prompt&&G.prompt.kind!=='end'&&n<8000){const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;n++;}}
+function ffNextRun(){const t0=S.turn;let n=0;while(G.prompt&&G.prompt.kind!=='end'&&n<600){if(n>0&&ffBig(G.prompt))break;if(S.turn-t0>=8)break;const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;liveAutoPoints();n++;}save();render();window.scrollTo({top:0});}
+function ffTo35(){let n=0;while(G.prompt&&G.prompt.kind!=='end'&&S.age<35&&n<20000){const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;liveAutoPoints();n++;}save();render();window.scrollTo({top:0});const t=document.createElement('div');t.className='bdtoast';t.innerHTML=`測試帳號：已快轉到 <b>${S.age} 歲</b>`;document.body.appendChild(t);setTimeout(()=>t.remove(),3500);}
+function ffRun(){let n=0;while(S.flags.ff&&G.prompt&&G.prompt.kind!=='end'&&n<8000){const id=ffPick(G.prompt);if(id==null)break;G.choices.push(id);const res=G.gen.next(id);if(res.done)break;G.prompt=res.value;liveAutoPoints();n++;}}
 let AC=null;
 function sndOn(){try{return localStorage.getItem('kl-snd')==='1';}catch(e){return false;}}
 function beep(seq){if(!sndOn())return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();let t=AC.currentTime+.01;for(const [f,d] of seq){const o=AC.createOscillator(),g=AC.createGain();o.type='square';o.frequency.value=f;g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.0008,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02);t+=d;}}catch(e){}}
@@ -4479,7 +4512,7 @@ function choose(id){
   if(id==='cmd:ff'){if(!S.flags.ff&&G.prompt.kind!=='end'){S.flags.ff=1;log('人生快轉','');G.choices.push(id);ffRun();save();render();window.scrollTo({top:0});}return;}
   const wasBattle=G.prompt.kind==='battle';
   TRAIN_FX=(G.prompt&&G.prompt.kind!=='battle'&&(CARDS[id]||(id==='rest'&&/稽古方針/.test(G.prompt.title||''))))?id:null;
-  const mb=momentSnap();G.choices.push(id);const res=G.gen.next(id);G.prompt=res.value;if(S.flags.ff&&G.prompt&&G.prompt.kind!=='end'){ffRun();save();render();window.scrollTo({top:0});return;}save();render();sfx();momentCheck(mb);
+  const mb=momentSnap();G.choices.push(id);const res=G.gen.next(id);G.prompt=res.value;liveAutoPoints();if(S.flags.ff&&G.prompt&&G.prompt.kind!=='end'){ffRun();save();render();window.scrollTo({top:0});return;}save();render();sfx();momentCheck(mb);
   if(!(wasBattle&&G.prompt.kind==='battle'))scrollCard();
 }
 const PILL_BG=['#f6f4ee','#ef8a4a','#3f6fd8','#f2c24f','#45a85c','#7a4a2a','#26223b','#26223b','#26223b','#26223b','#26223b'];
@@ -4610,6 +4643,7 @@ function renderTab(){
 }
 const PALS={night:{n:'夜空（預設）',c:['#141933','#f3ecdc']},dusk:{n:'暗色低對比',c:['#16181d','#2a2f38']},sepia:{n:'護眼米黃',c:['#d6c9ad','#f0e4cb']},green:{n:'護眼綠',c:['#22332a','#e2ebdb']}};
 function applyDisp(){
+  document.querySelectorAll('[data-points]').forEach(b=>{const on=b.dataset.points===pointMode();b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));b.onclick=()=>setPointMode(b.dataset.points);});
   let pal='night',fs='n';try{pal=localStorage.getItem('kl-pal')||'night';fs=localStorage.getItem('kl-fs')||'n';}catch(e){}
   if(!PALS[pal])pal='night';
   document.documentElement.dataset.pal=pal;document.documentElement.dataset.fs=fs;
@@ -4631,6 +4665,7 @@ function renderLog(){
 }
 function render(){
   const p=G&&G.prompt;
+  document.querySelectorAll('[data-points]').forEach(b=>{const on=b.dataset.points===pointMode();b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on));});
   $('#start').hidden=!!G;if(G)$('#achBox').hidden=true;$('#game').hidden=!G||p.kind==='end';$('#end').hidden=!G||p.kind!=='end';
   $('#seedChip').hidden=true||!G;
   if(!G){renderStart();return;}
@@ -4657,14 +4692,15 @@ function render(){
   const hm=hpMax();const hpv=Math.round(S.hp);const rb=rankB();
   const es=examStatus();
   const pts=S.pts||0;
-  const fullH=(pts>0?`<div class="ptsbar"><b>可分配修煉點 ${pts}</b><span>點一下能力就 +${PT_GAIN}</span></div>`:'')+`<div class="st7${pts>0?' alloc':''}">`+Object.keys(STATN).map(k=>{const b=S.st[k],bonus=k==='spi'?0:Math.min(rb,100-b);const tag=pts>0?'button':'div';return `<${tag} class="t"${pts>0?` type="button" data-alloc="${k}"`:''}><span>${STATN[k]}<small class="sh">${STATH[k]}</small>${pts>0?' <em>+</em>':''}</span><b>${Math.round(est(k))}${capB(k)?`<sup class="capb">+${capB(k)}</sup>`:''}</b><div class="bar"><i style="width:${Math.min(100,b).toFixed(1)}%"></i>${bonus>0?`<u style="left:${b.toFixed(1)}%;width:${bonus.toFixed(1)}%"></u>`:''}</div></${tag}>`;}).join('')+
+  const fullH=(pts>0?`<div class="ptsbar"><b>可分配修煉點 ${pts}</b><span>${pointMode()==='auto'?'自動補齊較低能力':'點能力加點'}・1 點＝+1</span><button type="button" class="chipbtn" id="btnAutoPoints">自動分配</button></div>`:'')+`<div class="st7${pts>0?' alloc':''}">`+Object.keys(STATN).map(k=>{const b=S.st[k],bonus=k==='spi'?0:Math.min(rb,100-b);const tag=pts>0?'button':'div';return `<${tag} class="t"${pts>0?` type="button" data-alloc="${k}"`:''}><span>${STATN[k]}<small class="sh">${STATH[k]}</small>${pts>0?' <em>+</em>':''}</span><b>${Math.round(est(k))}${capB(k)?`<sup class="capb">+${capB(k)}</sup>`:''}</b><div class="bar"><i style="width:${Math.min(100,b).toFixed(1)}%"></i>${bonus>0?`<u style="left:${b.toFixed(1)}%;width:${bonus.toFixed(1)}%"></u>`:''}</div></${tag}>`;}).join('')+
     `<div class="t"><span>體況</span><b>${hpv}</b><div class="bar ${hpv<35?'r':hpv<60?'y':'g'}"><i style="width:${S.hp.toFixed(1)}%"></i>${S.wear>0?`<s style="width:${100-hm}%"></s>`:''}</div></div></div>`+
     bondHTML()+calHTML()+kgHTML()+(tourOk()&&!GT&&S.flags.ch1?`<button type="button" class="tourc" id="btnTourC"><b>sensei 道場巡禮</b><span>隨時可挑戰・不影響人生進度${tourBest()?`・最佳 第 ${tourBest()} 站`:''}</span></button>`:'')+`<div class="exline"><span>${es?examSummary(es):'<b>已達五段</b>'}${!practiceActive()&&!S.flags.instDone&&S.age>=26?'・<b class="bad">32 歲前需指導員資格</b>':''}</span><button type="button" id="btnMore">明細</button></div>`;
   const openC=pts>0||cardOpen();
   const miniH=`<div class="st7mini">${Object.keys(STATN).map(k=>`<span><small>${STATN[k]}</small><b>${Math.round(est(k))}</b></span>`).join('')}<span><small>體況</small><b class="${hpv<35?'bad':''}">${hpv}</b></span></div>`+(S.goal&&!S.flags.ch3?`<div class="goalline mini"><b>今年目標</b>${S.goal.ok?'<span class="ok">✓</span>':''}<span>${S.goal.t}</span></div>`:'')+`<div class="exline"><span>${es?examSummary(es):'<b>已達五段</b>'}</span><button type="button" id="btnMore">明細</button></div>`;
   $('#stats').innerHTML=(openC?fullH:miniH)+(pts>0?'':`<button type="button" class="cardtg" id="btnCardTg">${openC?'收起角色卡 ▴':'展開角色卡（能力條・行事曆・體重・道場巡禮）▾'}</button>`);
   {const tg=$('#btnCardTg');if(tg)tg.onclick=()=>{try{localStorage.setItem('kl-cardx',cardOpen()?'0':'1');}catch(e){}render();};}
-  document.querySelectorAll('[data-alloc]').forEach(b=>b.onclick=()=>choose('alloc:'+b.dataset.alloc));{const bt=$('#btnTourC');if(bt)bt.onclick=startTour;}
+  document.querySelectorAll('[data-alloc]').forEach(b=>b.onclick=()=>choose('alloc:'+b.dataset.alloc));
+  const pointButton=$('#btnAutoPoints');if(pointButton)pointButton.onclick=()=>setPointMode('auto');{const bt=$('#btnTourC');if(bt)bt.onclick=startTour;}
   $('#btnMore').onclick=()=>{curTab='exam';renderTab();$('#moreBox').scrollIntoView({behavior:'smooth',block:'start'});};
   const hn=homeNow();
   const T={};
@@ -4687,7 +4723,7 @@ function render(){
   const tiles=p.opts.filter(o=>o.tile),chips=p.opts.filter(o=>o.chip&&!o.big),bigs=p.opts.filter(o=>o.big);
   const optArea=tiles.length?`<div class="tgrid">${tiles.map(o=>{const X=TX(o.id);const ic=TICON[X.fam]||['?','var(--muted)'];const v=o.pv;const lv=X.card?cardLv(o.id)+1:0;const cc=X.card?cardCnt(o.id):0;const pips=X.card?(lv>=5?'<span class="mx">MAX</span>':`<span class="pg">${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}</span>`):'';return `<button type="button" class="opt ttile${o.rec?' rec':''}${X.card?' card r'+X.rar:''}" data-id="${o.id}"><span class="tn"><i style="background:${ic[1]}">${ic[0]}</i><span>${o.label}${S&&S.flags.adv&&S.turn-S.flags.adv.t<=4&&(X.fam===S.flags.adv.f||(S.flags.adv.f==='rest'&&o.id==='rest'))?'<em class="advtag">賽後建議</em>':''}</span></span>${X.card?`<span class="cmeta"><b class="rar">${['普通','稀有','超稀有','傳說'][X.rar]||RARN[X.rar]}</b><small class="lv">Lv${lv}${lv>=5?pips:`・熟練 ${cc-LV_AT[lv-1]}/${LV_AT[lv]-LV_AT[lv-1]}`}</small></span><span class="cs">${esc(X.s)}</span>`:''}<span class="tg2">${v.g.map(x=>`<u>${x}</u>`).join('')}${v.extra?`<u class="k">${v.extra}</u>`:''}</span><span class="tr"><span class="${v.hp<0?'bad':'good'}">體況 ${v.hp>0?'+':''}${v.hp}</span>${v.risk?`<span class="${v.risk>=8?'bad':''}">受傷 ${v.risk}%</span>`:'<span>無風險</span>'}${X.cost?`<span>花 ${X.cost} 萬</span>`:''}${X.pay?`<span class="good">存款 +${X.pay} 萬／季</span>`:''}</span></button>`;}).join('')}</div>${bigs.length?`<div class="bigrow">${bigs.map(o=>`<button type="button" class="opt bigopt" data-id="${o.id}"${o.disabled?' disabled':''}><i>${o.icon||'★'}</i><span><span class="l">${o.label}</span><span class="s">${o.sub||''}</span></span></button>`).join('')}</div>`:''}${chips.length?`<div class="xrow">${chips.map(o=>`<button type="button" class="opt xbtn${o.danger?' danger':''}" data-id="${o.id}"><span class="l">${o.label}</span></button>`).join('')}</div>`:''}`:`<div class="opts">${optsHTML(p.opts)}</div>`;
   const tfx=TRAIN_FX&&TK[TRAIN_FX]?`<div class="trainfx"><canvas id="trainCv" width="240" height="120" data-id="${TRAIN_FX}"></canvas><span>${TRAIN_FX==='rest'?'休養':'稽古中'}・${TRAIN_FX==='rest'?'好好休息':esc(cardName(TRAIN_FX))}</span></div>`:'';TRAIN_FX=null;
-  card.innerHTML=`${tfx}${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.slice(0,3).map(l=>`<div>${l}</div>`).join('')}${p.lines.length>3?`<details class="prevmore"><summary>還有 ${p.lines.length-3} 則</summary>${p.lines.slice(3).map(l=>`<div>${l}</div>`).join('')}</details>`:''}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div>${p.tag?`<div class="evtag t-${{'指導員事件':'teach','見習指導員事件':'teach','助教事件':'teach','道場經營事件':'dojo','稽古插曲':'train','生活插曲':'life','審判員事件':'judge','人生岔路':'dojo'}[p.tag]||'x'}">${p.tag}</div>`:''}<h2>${p.title}</h2>${p.body?(()=>{const sp=speakerOf(p);if(sp){const m=/^<span class="tipbox">[\s\S]*?<\/span>/.exec(p.body);const tip=m?m[0]:'',bd=m?p.body.slice(tip.length):p.body;return `${tip?`<p class="q">${tip}</p>`:''}<div class="dlg"><img class="pxh${sp[0]==="mochi"?" dog":""}" src="${MHEAD[sp[0]]||PXHEAD[sp[0]]}" alt=""><div class="tb"><b>${esc(sp[1])}</b><p class="q">${bd}</p></div></div>`;}return sp?'':`<p class="q">${p.body}</p>`;})():''}${optArea}`;
+  card.innerHTML=`${tfx}${p.lines.length?`<div class="lines prev"><span class="prevtag">剛剛發生的事</span>${p.lines.slice(0,3).map(l=>`<div>${pointCopy(l)}</div>`).join('')}${p.lines.length>3?`<details class="prevmore"><summary>還有 ${p.lines.length-3} 則</summary>${p.lines.slice(3).map(l=>`<div>${pointCopy(l)}</div>`).join('')}</details>`:''}</div><div class="prevsep"></div>`:''}<div class="eyebrow">${p.eyebrow}</div>${p.tag?`<div class="evtag t-${{'指導員事件':'teach','見習指導員事件':'teach','助教事件':'teach','道場經營事件':'dojo','稽古插曲':'train','生活插曲':'life','審判員事件':'judge','人生岔路':'dojo'}[p.tag]||'x'}">${p.tag}</div>`:''}<h2>${p.title}</h2>${p.body?(()=>{const sp=speakerOf(p);if(sp){const m=/^<span class="tipbox">[\s\S]*?<\/span>/.exec(p.body);const tip=m?m[0]:'',bd=m?p.body.slice(tip.length):p.body;return `${tip?`<p class="q">${tip}</p>`:''}<div class="dlg"><img class="pxh${sp[0]==="mochi"?" dog":""}" src="${MHEAD[sp[0]]||PXHEAD[sp[0]]}" alt=""><div class="tb"><b>${esc(sp[1])}</b><p class="q">${bd}</p></div></div>`;}return sp?'':`<p class="q">${p.body}</p>`;})():''}${optArea}`;
   if(tfx)startTrainFx();
   const isKata=/・型 /.test(p.title||'')&&!/判定$/.test(p.title||'');
   card.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.id;const k=isKata&&KATA_LIST.find(x=>x.n===id);if(k)kataGame(k);else if(id==='ff'&&p.kind==='chapter')confirmBox('確定把後面交給命運嗎？','剩下的人生會自動照「建議」過完，直接看結語，<b>中間不能再自己選</b>。','確定，直接看結局',()=>choose(id));else choose(id);}));

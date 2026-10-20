@@ -43,3 +43,6 @@ jobs:
         run: node validation/verify-hanno.cjs
       - name: Check compact records and visible character setup
         run: node validation/verify-compact.cjs
+
+      - name: Check automatic points and legacy save replay
+        run: node validation/verify-autopoints.cjs
