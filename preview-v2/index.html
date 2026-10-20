@@ -19,10 +19,10 @@
 .career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}</style>
 </head>
 <body>
-<div role="note" style="max-width:480px;margin:auto;padding:10px 16px;background:#ffe14a;color:#26223b;font:700 13px/1.6 sans-serif;box-sizing:border-box">手機測試版 v2.5・進度與正式版分開保存。<a style="color:#26223b;text-decoration:underline" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">開啟原版</a></div>
+<div role="note" style="max-width:480px;margin:auto;padding:10px 16px;background:#ffe14a;color:#26223b;font:700 13px/1.6 sans-serif;box-sizing:border-box">手機測試版 v2.6・進度與正式版分開保存。<a style="color:#26223b;text-decoration:underline" href="https://a58045555.github.io/ikontaiwan/" target="_blank" rel="noopener">開啟原版</a></div>
 <meta charset="utf-8">
 <meta name="robots" content="noai, noimageai">
-<title>極真人生 v2.5 手機測試版</title>
+<title>極真人生 v2.6 手機測試版</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Press+Start+2P&display=swap">
@@ -735,7 +735,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 
   <section id="end" class="px card end" hidden></section>
 
-  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v2.5 測試版・2026.10.20</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
+  <footer>以極真空手道中村道場台灣支部為藍本的非官方作品<br>道場數值、人物與事件皆為虛構<br><span class="ver">v2.6 測試版・2026.10.20</span><br><span class="copy">© 2026 極真人生　製作：永山下智久他摳　版權所有，未經同意請勿轉載、複製或用於 AI 訓練。</span></footer>
 </div>
 
 <style>
@@ -1217,7 +1217,7 @@ function* discipleSeason(auto){
 /* Story variation uses a separate hash and never advances the game RNG. */
 function storyVariant(key,lines){let h=2166136261;const tag=[S.setup.seed,S.ending,S.turn,S.rank,S.w,S.l,S.kw,S.kl,S.log.length,key].join('|');for(const ch of tag){h^=ch.charCodeAt(0);h=Math.imul(h,16777619)>>>0;}return lines[h%lines.length];}
 function dramaticEndingsVersion(){return '2.5';}
-function storyCoda(key='coda'){
+function basePolishCoda(key='coda'){
  const endings={
  quit:['你把腰帶摺了又摺，還是沒能摺回十五歲的模樣。這次真的要走了。最捨不得的，是那個曾以為自己絕不會離開的人。','門關上以前，你回頭看了一眼。有些夢沒有碎得驚天動地，只是在某個平常日子，再也沒被拿出來。可你知道，自己曾經那麼愛過。','如果十五歲的你追出來，問為什麼不練了，你大概說不出一句漂亮的答案。只能蹲下來抱住他：「對不起。也謝謝你陪我走到這裡。」','你以為離開只要一句話，直到把道着收進櫃底，才發現最難告別的不是道場，是當年那個什麼都敢相信的自己。'],
  dojo:['招牌上是你的名字，往後的故事卻要讓別人來寫。如果有天弟子走得比你更遠，你想笑著送他；至於眼淚，就等關門以後再說。','你終於懂了，當老師最狠的一課，是親手把捨不得的人教到能夠離開。「去吧。」這兩個字，你還想練得更像一句祝福。','有一天，也許再沒有人記得你贏過幾場。可只要有個弟子遇到難關，還想得起你的名字，你就不算被歲月徹底帶走。','站在招牌下面，你想起當年那個只想變強的少年。若能再見他一面，你想告訴他：後來最放不下的，竟然是別人的人生。'],
@@ -1272,16 +1272,68 @@ function discipleVoices(){
  }).join('<br>');
 }
 
-function epiSpeech(){
+function basePolishSpeech(){
  const f=epiFacts(),p=f.pupil,d=S.dojo;let middle;
  if(discipleList().length>1)middle=discipleVoices();
  else if(p){const outcome=p.jp?'拿下全日本冠軍':p.tw?'拿下全台冠軍':p.b?'繫上黑帶':'還在一步步練習';middle=`我是${esc(p.n)}。${outcome}${p.jp||p.tw||p.b?'的時候':''}，我想到的不只自己。`+(p.left?'後來我離開了。最放不下的，是不知道還能不能像從前那樣，坦然叫您一聲老師。':storyVariant('single-pupil:'+p.n,['「老師」兩個字，我叫得太習慣，習慣到忘了說：有個人願意相信我，曾經對我有多重要。','如果有天我也站到前面，才算真正懂您吧。那些曾嫌太長的叮嚀，如今想多聽一句，都捨不得催。','我一直想把那句謝謝說得漂亮，結果越長大越說不出口。要是寫到這裡紅了眼眶，請別笑我。']));}
  else if(d)middle=`${esc(d.name)}最多有 ${d.peak} 位學員，${d.blacks} 位弟子取得黑帶。數字後面，每一個都是你不敢輕易放棄的人。你把「再試一次」說給他們，也像說給當年那個差一點不相信自己的少年。`;
  else middle=`紀錄裡，你累積了 ${S.flags.teachY||0} 年指導資歷。教過的人未必都走到最後，可你還是會想：那些叫過你老師的人，現在過得好不好？有些牽掛，沒辦法隨著一堂課結束。`;
- return [{h:'那句一直沒說的謝謝',t:`${f.name}${f.T}，若真站到您面前，我大概又只說得出一聲押忍。只好把話寫在這裡：有些年，是因為不想讓您失望，我才沒有先對自己死心。`},{h:discipleList().length>1?'那些喊過你老師的人':'我們帶走的',t:middle},{h:'離開以後才懂',t:S.flags.closedDojo?'道場後來關了。對不起，這時候還是很想再聽您喊一次口令。地方不在了，那聲老師卻沒有跟著散掉。':'如果有天我們走散，您別擔心。您教過的動作，我會繼續練；沒說完的謝謝，也會帶著，一直到能好好說出口。'}];
+ return [{h:'那句一直沒說的謝謝',t:`${f.name}${f.T}，若真站到您面前，我大概又只說得出一聲押忍。只好把話寫在這裡：有些年，是因為不想讓您失望，我才沒有先對自己死心。`},{h:discipleList().length>1?'那些喊過你老師的人':'我們帶走的',t:middle},{h:'離開以後才懂',t:S.flags.closedDojo&&!S.dojo?'道場後來關了。對不起，這時候還是很想再聽您喊一次口令。地方不在了，那聲老師卻沒有跟著散掉。':'如果有天我們走散，您別擔心。您教過的動作，我會繼續練；沒說完的謝謝，也會帶著，一直到能好好說出口。'}];
 }
 
 function endDetailsHTML(){const html=baseEndDetailsHTML(),list=discipleList();return list.length?html.replace('<div class="folio-record-tools">','<details><summary>弟子名冊（'+list.length+'）</summary>'+pupilRosterHTML(true)+'</details><div class="folio-record-tools">'):html;}
+
+/* UI, ending and history fixes. The deterministic gameplay engine stays on rules 21. */
+function polishVersion(){return '2.6';}
+function dojoSenseiText(value){
+ let text=String(value??'');const keep=[];
+ text=text.replace(/老師範|瑜伽老師|請老師多包涵|老師回覆|國中生：「老師，你手上的繭好可怕。」/g,s=>{keep.push(s);return '\uE000'+(keep.length-1)+'\uE001';});
+ text=text.replace(/「老師」兩個字/g,'「sensei」這個稱呼').replace(/老師/g,'sensei');
+ return text.replace(/\uE000(\d+)\uE001/g,(_,i)=>keep[Number(i)]);
+}
+function normalizeSensei(root){
+ if(!root)return;const fix=node=>{if(node.nodeType!==3||!node.nodeValue?.includes('老師')||node.parentElement?.closest('script,style,textarea,input,[contenteditable="true"]'))return;const next=dojoSenseiText(node.nodeValue);if(next!==node.nodeValue)node.nodeValue=next;};
+ if(root.nodeType===3){fix(root);return;}if(root.nodeType!==1&&root.nodeType!==9)return;
+ const walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode()))fix(node);
+ const elements=[];if(root.nodeType===1)elements.push(root);elements.push(...root.querySelectorAll('[title],[aria-label]'));for(const el of elements)for(const key of ['title','aria-label']){const before=el.getAttribute(key);if(before?.includes('老師')){const after=dojoSenseiText(before);if(before!==after)el.setAttribute(key,after);}}
+}
+function installSenseiText(){
+ if(installSenseiText.observer)return;normalizeSensei(document.body);
+ const observer=new MutationObserver(records=>{const roots=new Set();for(const record of records){if(record.type==='characterData')roots.add(record.target);else for(const node of record.addedNodes)roots.add(node);}for(const root of roots)normalizeSensei(root);});
+ observer.observe(document.body,{childList:true,subtree:true,characterData:true});installSenseiText.observer=observer;
+}
+function historyRunID(){
+ const setup=Object.keys(G.setup).sort().map(key=>[key,G.setup[key]]),text=JSON.stringify([setup,G.choices]);let a=2166136261,b=3339675911;
+ for(let i=0;i<text.length;i++){const ch=text.charCodeAt(i);a=Math.imul(a^ch,16777619)>>>0;b=Math.imul(b^ch,2246822519)>>>0;}
+ return 'run2-'+a.toString(16).padStart(8,'0')+b.toString(16).padStart(8,'0');
+}
+function storyDetail(kind,index){
+ const lines={
+ memoir:[
+ ['若能把當時的心跳也收進紀念冊，你想留一頁空白，讓那個還不懂輸贏的自己，多站一會兒。','那時什麼都還沒有答案。你只是把一聲押忍喊得很大，彷彿大一點，往後就不會輕易走散。','你想伸手叫住那個背影，又怕一開口，就把他滿心的期待，說成自己捨不得的過去。'],
+ ['回頭看，原來最放不下的，不只是哪個結果，是為了一個答案，曾那麼認真相信過的自己。','有些心情，旁人只看見一個數字。你卻得把手按在心口，才能把當時沒忍住的話，再慢慢收好。','寫到這裡，你停了一下。那些曾經想證明的事，原來直到今天，都還有一點不甘心。'],
+ ['如果能和當時的自己對坐，你不想先講道理。先讓他把沒說完的話說完，再一起想明天。','你以為記住一件事，只要記住它發生過。如今才懂，有些重量，是離開當下以後才慢慢長出來的。','那段日子很難只用對錯收好。你把它留在這裡，連同當時還不知道該怎麼辦的自己。'],
+ ['這一頁先別急著翻。你想再看清楚，那個一路走來、仍努力把心裡的喜歡護住的人。','如果有人問起這段人生，你想慢慢說。那些在結語裡才敢承認的捨不得，都值得被聽完。','你朝年少時的方向低下頭。這次不用再假裝沒事，故事到這裡，終於可以把真心留在紙上。']
+ ],
+ people:[
+ ['如果真能再坐下來聊聊，你想把「改天」收回來。就今天，把那些說得太輕的話，再認真說一次。','你把名字念慢一點，像怕念完這一頁，那些曾在心裡占了位置的人，就真的成了過去。','有些話面對面反而說不好。只好先寫下來，希望若有一天被看見，對方能懂那句話的分量。'],
+ ['如果能把時間重新分一次，你想少說一點「我知道」，多留一點真的聽見彼此的空白。','這一次，你不想替所有遺憾找個漂亮的理由。放在心裡的人，值得你把真話說得笨拙一點。','有些牽掛一開始很輕，輕到以為隨時能放下。等到想寫清楚，才發現一整頁也不太夠。'],
+ ['原來一個稱呼喊久了，會比名字還重。你把那聲音留在心裡，捨不得讓它只剩下回音。','如果真能好好說一聲謝謝，你想先放下那副「沒什麼」的樣子。不是沒什麼，是一直不知道怎麼說。','往後若偶然再見，你希望自己先笑出來。眼眶的事，等那聲招呼好好說完再算。'],
+ ['有些人嘴上不肯認，心裡卻一直替對方留著位置。你也一樣，只是直到寫結語才敢承認。','你不敢答應一定會再見，只想把這句話留下：謝謝那段日子裡，你曾認真地把我放在眼裡。','若往後真有再見的那一天，希望那聲押忍裡，還認得出當年彼此不肯輕易認輸的模樣。']
+ ],
+ letter:[
+ ['先別把信收起來。讓我多說一點，就當是替那個總把心事吞回去的人，補上一次好好的開口。','讀到哪裡難過，就停在哪裡吧。我們之間，不必連一封信，都急著表現得很堅強。','若你覺得現在的我說話變慢了，就多等我一下。有些事，真的走過以後，才知道怎麼說。'],
+ ['我知道你還有好多問題。我也想答得更好，可有些答案，真的是親手走過以後，才帶著捨不得明白的。','若能重來，我仍不敢保證每一步都選得更好。只是這一次，我想更早學會，好好陪著當時的自己。','你可以失望，也可以不服氣。我只想請你記得：那些沒有如願的地方，不曾讓當初的你變得廉價。'],
+ ['這句話，我想說得比從前慢一點。讓你知道，自己藏起來的難過，不需要再靠逞強才有人聽。','如果這頁能替我們多留一點時間，就用來把重要的話說完。別總以為，真心還有下一次才說的機會。','你總怕自己做得不夠。可有時候先放下那個怕，才能看見，真正想守住的究竟是什麼。'],
+ ['信封先不用封口。若還有什麼捨不得，就再寫一行。這一次，沒有人催你把告別寫得乾淨俐落。','等你把信收好，仍然要照自己的心意走。我寫這些，是因為想你，不是要你提前替我過完人生。','最後，替我向門裡那個滿心期待的自己行一次禮。那些說不盡的喜歡，就讓這一聲押忍替我們收好。']
+ ]};
+ const options=lines[kind]?.[index];return options?storyVariant('detail:'+kind+':'+index,options):'';
+}
+function storyPages(){
+ return basePolishStoryPages().map(page=>({...page,paras:page.paras.map((p,i)=>{const t=dojoSenseiText(p.t),extra=i%2===0?storyDetail(page.kind,i):'';const sep=t.includes('<br>')?'<br><br>':'';return {...p,h:dojoSenseiText(p.h),t:t.length+sep.length+extra.length<245?t+(extra?sep+extra:''):t};})}));
+}
+function storyCoda(key='coda'){return dojoSenseiText(basePolishCoda(key));}
+function epiSpeech(){return basePolishSpeech().map(p=>({...p,h:dojoSenseiText(p.h),t:dojoSenseiText(p.t)}));}
 
 function newState(setup){EP_TAG="";
   const rnd=mulberry(setup.seed);
@@ -4595,7 +4647,7 @@ function epiDaily(){
  return [{h:'如果沒成為傳說',t:S.ending==='member'?storyVariant('daily-member',['故事把你留在一般會員的位置。沒有盛大的謝幕，也沒有人替這些年喊最後一次。你忽然很想問年少的自己：若知道後來只是這樣，你還願不願意，和我再開始一次？','故事把你留在一般會員的位置。當年的你也許想過更耀眼的未來，可翻回十五歲那一頁，最捨不得的仍是那份喜歡。沒成為傳說，並不代表沒把青春交出去。','故事把你留在一般會員的位置。最怕別人用「只是」兩個字，就把你這些年輕輕帶過。那些汗、那些不甘心，還有仍願意繫緊腰帶的自己，你一樣也捨不得刪。']):storyVariant('daily-life',['故事走向生活的一側。如果十五歲的你追問，為什麼後來沒一直往前，你想先把他抱緊。有些選擇說起來太普通，親手做下去，卻也割捨過心裡很重的一塊。','故事走向生活的一側。工作、休息、與人相處，沒有哪一件會替你頒獎。可你知道，為了把日子過好，自己也曾放下過很想握住的東西。','故事走向生活的一側。你偶爾仍會想起另一種可能，卻不想把眼前的日子寫成退而求其次。那些沒有選的路很遠，正在過的人生，也同樣捨不得。'])},{h:'沒有觀眾的日子',t:'有時最想哭的，不是輸掉一場比賽，是明明已經很努力，生活仍沒有給你一句像樣的回應。可今天還在往前，你也還在。這件事，我想替你認真記一筆。'},{h:'留給自己的掌聲',t:'如果這一生沒有一場盛大的落幕，就由自己慢慢行一次禮吧。謝謝那個沒把所有夢走完，卻仍努力把日子過下去的人。你值得被好好道一聲辛苦了。'}];
 }
 
-function storyPages(){
+function basePolishStoryPages(){
  const f=epiFacts(),journey=epiParas().map(p=>({...p}));let focus=null;
  if(S.dojo||S.flags.closedDojo)focus=epiDojo()[0];else if(S.flags.uchiDone||S.flags.twuchiDone)focus=epiAbroad()[0];else if(f.inj>=2)focus=epiRest()[1];else if(['life','member'].includes(S.ending))focus=epiDaily()[0];
  if(focus){if(journey.length===4){journey[1]=journey[2];journey[2]=focus;}else journey.splice(journey.length-1,0,focus);}
@@ -4621,7 +4673,7 @@ function epiBaseParas(){
 }
 function vs(k,a){let h=((S.setup&&S.setup.seed)|0)^0x9e37+(EPV|0)*7;for(const ch of k)h=(Math.imul(h,31)+ch.charCodeAt(0))>>>0;return a[(h+(EPV|0))%a.length];}
 let EPV=0;
-function epiFacts(){const m=S.mil||{},c=S.champ||{},L=S.log||[],big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');return {m,big,T:S.flags.shibucho?'支部長':S.flags.shihandai?'師範代':S.dojo||S.flags.closedDojo?'館長':S.flags.instDone?'老師':'學長',name:esc(S.name),home:esc(S.home.n),yrs:Math.max(0,S.age-15),twn:(S.twc.kumite||0)+(S.twc.kata||0),fails:L.filter(l=>/審查不合格/.test(l.t)).length,inj:S.flags.injN||0,L3:(S.flags.epL||[]).filter(x=>x[0]!=='teach').map(x=>x[1].replace(/[「」]/g,'')),tL:(S.flags.tEvL||[]).map(x=>x.replace(/[「」]/g,'')),pupil:S.pupil&&(S.pupil.tw||S.pupil.b||S.pupil.jp)?S.pupil:null,koh:esc(S.npc.koh),sen:esc(S.npc.sen)};}
+function epiFacts(){const m=S.mil||{},c=S.champ||{},L=S.log||[],big=[];if(c.world_kumite)big.push('世界大賽組手冠軍');if(c.world_kata)big.push('世界大賽型冠軍');if(c.jp_kumite)big.push('全日本組手冠軍');if(c.jp_kata)big.push('全日本型冠軍');if(c.jpw_kumite)big.push('全日本體重別冠軍');return {m,big,T:S.flags.shibucho?'支部長':S.flags.shihandai?'師範代':S.dojo||S.flags.closedDojo?'館長':S.flags.instDone?'sensei':'學長',name:esc(S.name),home:esc(S.home.n),yrs:Math.max(0,S.age-15),twn:(S.twc.kumite||0)+(S.twc.kata||0),fails:L.filter(l=>/審查不合格/.test(l.t)).length,inj:S.flags.injN||0,L3:(S.flags.epL||[]).filter(x=>x[0]!=='teach').map(x=>x[1].replace(/[「」]/g,'')),tL:(S.flags.tEvL||[]).map(x=>x.replace(/[「」]/g,'')),pupil:S.pupil||discipleList()[0]||null,koh:esc(S.npc.koh),sen:esc(S.npc.sen)};}
 function epiBaseSpeech(){const f=epiFacts(),d=S.dojo,p=f.pupil;let middle=p?`我是${esc(p.n)}。${p.jp?'拿下全日本冠軍':p.tw?'拿下全台冠軍':'繫上黑帶'}的時候，我想到的不只是自己。有人願意把時間交給我的成長，這件事一直在我心裡。`:d?`${esc(d.name)}最多有 ${d.peak} 位學員，${d.blacks} 位弟子取得黑帶。數字很整齊，教人的日子卻不會那麼整齊：有人進步很快，也有人需要再等一等。`:`紀錄裡，你累積了 ${S.flags.teachY||0} 年指導資歷。對學員來說，那是一段段有人願意陪自己學會的時間。`;return [{h:'寫給'+f.T,t:`${f.name}${f.T}，如果把謝謝寫成一張卡片，我想先留一點空白。有些影響，學會的當下沒有察覺，要走遠一些才看得清楚。`},{h:'我們帶走的',t:middle},{h:'往後',t:S.flags.closedDojo?'道場後來關了。這份失落，我們不必急著說成好事。但曾經學會的東西，會跟著每個人走出去。':'你教過的動作，會由不同的手腳繼續練習。將來輪到我們站在前面時，也願意替還沒學會的人，多留一點耐心。'}];}
 function epiNews(){const f=epiFacts(),wins=S.w+S.kw,losses=S.l+S.kl;let lead=f.big.length?`${f.name}的履歷上，寫著${f.big.join('、')}。`:f.twn?`${f.name}曾拿下 ${f.twn} 次全台冠軍。`:S.flags.hyaku?`${f.name}完成過百人組手。`:S.flags.shibucho?`${f.name}接下台灣支部長的責任。`:S.flags.shihandai?`${f.name}取得師範代資格。`:`${f.name}的修行，逐漸從個人的練習走向道場與傳承。`;return [{h:'把目光放近一點',t:lead+'如果只留下頭銜，這個人便像頒獎台上的一張剪影。把視線移回生活，輪廓才慢慢完整。'},{h:'成績之外',t:(wins+losses?`賽事紀錄合計 ${wins} 勝 ${losses} 敗。`:'這段紀錄沒有正式賽事勝敗。')+(S.flags.hyaku?'完成百人組手，是其中一個重要里程碑。':'')+(f.inj?`另有 ${f.inj} 次受傷紀錄；履歷上簡短的一行，在當時可能需要很長的時間消化。`:'每一個結果之間，還隔著許多沒有被名次收錄的日子。')},{h:'人物側寫',t:`到 ${S.age} 歲時，${f.name}的最終段級是${esc(RANKS[S.rank])}。這篇側寫暫時停在這裡：成就可以列完，一個人如何與選擇相處，往往還有下一頁。`}];}
 function epiBaseLetter(){const f=epiFacts();let answer=S.ending==='quit'?'你後來離開了道場。寫下這句話時，不用先向誰道歉。短一些的路，也可能把人帶到需要去的地方。':f.big.length?`有一天，你真的拿下${f.big[0]}。但我現在最想告訴你的，是別把那一天當成唯一值得期待的日子。`:(f.m.black||S.rank>=6)?`${f.m.black?"你在 "+f.m.black+" 歲繫上了黑帶":"你後來繫上了黑帶"}。原來答案不是一個突然變厲害的早晨，而是走了一段路後，發現自己已經不同。`:'你沒有拿到所有想要的東西。寫到這裡，我仍然願意承認，當初那份期待很珍貴。';return [{h:'給十五歲的自己',t:'你好。我從故事的這一端寫信回去。先不急著告訴你最後是什麼顏色的腰帶；我比較想問，你今天是不是既期待，又有一點怕？'},{h:'你會慢慢知道',t:answer},{h:'想多說一句',t:f.inj?'這一路有受傷的時候。痛不必拿來證明決心，休養也不會把努力抹掉。願你學會求助，比我當年更早一點。':S.flags.separated?'後來有一段關係走散了。我無法替往事補寫一個圓滿，只想提醒你：重要的人，也需要你把時間留給他們。':'往後的日子裡，會有讓你急著出門的清晨，也會有只想安靜待著的晚上。別光顧著追前面的人；偶爾回頭，也看看自己已經走了多遠。'},{h:'落款',t:`寫信的人，是 ${S.age} 歲的你。願你往前走的時候，仍然認得最初那份喜歡。押忍。`}];}
@@ -4763,7 +4815,7 @@ const ENDG=[
 function endgLoad(){let o={};try{o=JSON.parse(PREVIEW_STORAGE.getItem('kl-endg')||'{}');}catch(e){}for(const x of histLoad())if(x.ep&&!o[x.ep])o[x.ep]=x.date||'1';return o;}
 function endgHTML(){const o=endgLoad();const n=ENDG.filter(e=>o[e[0]]).length;return `<div class="wt" style="margin-top:14px"><h3>結局圖鑑 ${n} / ${ENDG.length}</h3></div><p class="hint" style="margin:0 0 6px">每段人生最後得到的稱號。還沒拿到的會寫出條件，當作下一段人生的目標。</p><div class="achgrid">${ENDG.map(([k,h])=>`<div class="ach${o[k]?' on':''}"><b>${o[k]?k:'？？？'}</b><span>${h.replace('__HQ__',HQ_NEED)}</span></div>`).join('')}</div>`;}
 function recordRun(){const endOld=endgLoad();
-  const id=`${G.setup.seed}-${G.choices.length}-${S.age}`;const h=histLoad();
+  const id=historyRunID();const h=histLoad();
   const got=achLoad();const fresh=[];
   if(!h.some(x=>x.id===id)){
     h.unshift({id,rules:G.setup.v||19,daily:G.setup.daily||'',grade:lifeScore().g,name:S.name,ep:epithet(),rank:RANKS[S.rank],age:S.age,seed:String(G.setup.seed).padStart(6,'0'),home:S.home.n,titles:S.titles.length,date:new Date().toISOString().slice(0,10)});
@@ -4878,7 +4930,7 @@ function renderStart(){
         for(const n of names)document.querySelector('input[name='+n+'][value="'+cfg[n]+'"]').checked=true;
       }else if(dailyDraft){$('#inSeed').value=dailyDraft.seed;$('#inBday').value=dailyDraft.bday;$('#inAim').value=dailyDraft.aim;
         for(const n of names)document.querySelector('input[name='+n+'][value="'+dailyDraft[n]+'"]').checked=true;}
-      dailyMode=on?todayStr():false;$('#inBday').disabled=on;$('#inAim').disabled=on;
+      dailyMode=on?todayStr():false;$('#inSeed').disabled=on;$('#inBday').disabled=on;$('#inAim').disabled=on;
       document.querySelectorAll('input[name=home],input[name=wc],input[name=sex]').forEach(el=>el.disabled=on);
       $('#btnDaily').classList.toggle('on',on);$('#btnDaily').textContent=on?'📅 今日挑戰 ✓（再按取消）':'📅 今日挑戰';
       $('#dailyNotice').hidden=!on;$('#dailyNotice').textContent=on?'共同開局：'+HOMES[document.querySelector('input[name=home]:checked').value].n+'・'+WCLS[document.querySelector('input[name=wc]:checked').value].n+'。取消挑戰可恢復自由設定。':'';
@@ -4912,6 +4964,7 @@ function renderStart(){
   if(sv&&sv.setup)$('#resumeSub').textContent=`${sv.setup.name}・已做了 ${sv.choices.length} 個選擇`;
 }
 function initUI(){
+  installSenseiText();
   document.querySelectorAll("[data-hq-need]").forEach(el=>el.textContent=HQ_NEED);
   applyDisp();
   document.querySelectorAll('.fsrow .sw[data-fs]').forEach(b=>b.onclick=()=>{try{PREVIEW_STORAGE.setItem('kl-fs',b.dataset.fs);}catch(e){}applyDisp();});

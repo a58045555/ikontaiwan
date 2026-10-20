@@ -1,0 +1,33 @@
+name: Preview regression checks
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'preview-v2/**'
+      - 'validation/**'
+      - '.github/workflows/preview-checks.yml'
+  pull_request:
+    paths:
+      - 'preview-v2/**'
+      - 'validation/**'
+      - '.github/workflows/preview-checks.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: preview-checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - name: Check mechanics, saves, pupils, stories and settings
+        run: node validation/run-preview-checks.cjs
