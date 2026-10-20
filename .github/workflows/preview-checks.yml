@@ -5,6 +5,7 @@ on:
     paths:
       - 'index.html'
       - 'manifest.json'
+      - 'hanno/**'
       - 'preview-v2/**'
       - 'validation/**'
       - '.github/workflows/preview-checks.yml'
@@ -12,6 +13,7 @@ on:
     paths:
       - 'index.html'
       - 'manifest.json'
+      - 'hanno/**'
       - 'preview-v2/**'
       - 'validation/**'
       - '.github/workflows/preview-checks.yml'
@@ -37,3 +39,5 @@ jobs:
         run: node validation/run-preview-checks.cjs
       - name: Check production release and preview save compatibility
         run: node validation/verify-release.cjs
+      - name: Check reaction kumite and next-level progression
+        run: node validation/verify-hanno.cjs
