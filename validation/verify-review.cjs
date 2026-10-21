@@ -57,6 +57,13 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const third=seen.filter(x=>x.t==='三段審查').length;assert.ok(third<=6,'third-dan card shown '+third+' times (15 before the fix)');
  });
 
+ // 320px phones with the large font: card names, card levels and long player names must wrap or shorten.
+ test(file+' narrow-screen text wraps inside cards and the battle HUD',()=>{
+  const last=sel=>{const all=[...html.matchAll(new RegExp(sel.replace(/[.*+?^${}()|[\]\\>]/g,'\\$&')+'\\{([^}]*)\\}','g'))];return all.length?all[all.length-1][1]:'';};
+  assert.match(last('.ttile .tn>span'),/white-space:normal/);assert.match(last('.ttile .lv'),/white-space:normal/);
+  assert.match(last('.ttile .cmeta'),/flex-wrap:wrap/);assert.match(last('.hud>*'),/min-width:0/);
+ });
+
  const life=(cfg,body)=>{const st=new Map(),c=vm.createContext({console,window:{addEventListener(){},scrollTo(){}},localStorage:{getItem:k=>st.get(k)??null,setItem:(k,v)=>st.set(k,String(v)),removeItem:k=>st.delete(k)},setTimeout(){},clearTimeout(){},TextEncoder,TextDecoder,URLSearchParams,performance});
   const run=x=>vm.runInContext(x,c,{timeout:60000});run(src);run('render=()=>{};applyDisp=()=>{};scrollCard=()=>{};sfx=()=>{};momentCheck=()=>{}');c.cfg=cfg;return run(body);};
  // Recorded from the rule 22 game before rule 23 existed: aging and owner-mode healing must not touch these lives.
