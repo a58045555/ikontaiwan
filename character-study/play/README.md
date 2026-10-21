@@ -1,6 +1,8 @@
 # 人物遊玩測試（2026-10-21）
 
-試玩網址：https://a58045555.github.io/ikontaiwan/character-study/play/?scene=card
+目前為 collab/character-art-pilot 審查分支，尚未合併上線。合併後預定試玩網址：https://a58045555.github.io/ikontaiwan/character-study/play/?scene=card
+
+Claude 協作交接：[COLLABORATION.md](COLLABORATION.md)
 
 ## 這輪完成什麼
 
