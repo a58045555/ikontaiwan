@@ -1,4 +1,4 @@
-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict');let checks=0;
+const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{auditTrial}=require('./audit-trial.cjs');let checks=0;
 const test=(n,f)=>{f();checks++;console.log('PASS '+n)};
 const root=fs.existsSync('preview-v2/index.html')?'.':'deploy-game';
 const hexRgb=h=>{h=h.replace('#','');if(h.length===3)h=[...h].map(c=>c+c).join('');return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16)/255)};
@@ -32,5 +32,16 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
  };
  test(file+' first-battle tutorial shows while the bout is still running',()=>{const r=tutorial(true);assert.equal(r.shown,1);});
  test(file+' first-battle tutorial waits for the next bout when the first one already ended',()=>{const r=tutorial(false);assert.equal(r.shown,0);assert.equal(r.seen,false);});
+
+ // Fixed seeds and scripted policies: guards the tuning, says nothing about how real players feel.
+ test(file+' first-lesson bout rewards the taught tactics without being a giveaway',()=>{
+  const {rows}=auditTrial(file,120,['youth','mature'],['打對手弱點＋每次黃區','固定順序輪流按']);
+  for(const entry of ['youth','mature']){
+   const [taught,mash]=['打對手弱點＋每次黃區','固定順序輪流按'].map(p=>rows.find(r=>r.entry===entry&&r.policy===p));
+   assert.ok(taught.winPct>=40&&taught.winPct<=80,entry+' taught win '+taught.winPct);
+   assert.ok(taught.winPct-mash.winPct>=15,entry+' taught '+taught.winPct+' vs mash '+mash.winPct);
+   assert.ok(!taught.playerChoices[0]&&!mash.playerChoices[0],entry+' player knocked out before acting');
+  }
+ });
 }
 console.log(checks+' review checks passed');

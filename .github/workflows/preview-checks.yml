@@ -53,5 +53,5 @@ jobs:
       - name: Check optional training plans and decision clarity
         run: node validation/verify-pacing.cjs
 
-      - name: Check first-battle tutorial timing and button contrast
+      - name: Check first-lesson bout, tutorial timing and button contrast
         run: node validation/verify-review.cjs

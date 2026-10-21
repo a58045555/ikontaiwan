@@ -4308,10 +4308,10 @@ function* trial(){
     {id:'tbody',label:'鍛體',sub:'挨打也不退 · 鍛體↑ 抗性↑'}]);
   const T=TX(c);const s0=snap();for(const k in (T.g||{}))grow(k,T.g[k]*3);say(`<span class="lbl">${T.n}</span>汗水滴在木地板上。${diff(s0)}`);
   yield P('體驗・第一次對練',`${masterTitle(S.setup.home)}指著師兄<b>${esc(sen)}</b>：「跟他打一場，讓我看看你的眼神。」<br><br>赤是你、白是對手：誰的行動條先跑滿誰先出手，按招式時游標停在<b>黃色區</b>威力最大。`,[{id:'go',label:'押忍！上場',wide:1}]);
-  const opp={name:sen,sub:'師兄',type:pick(['power','tech','speed']),hair:'#2c2840',belt:3,str:38,wc:S.wc};
+  const opp={name:sen,sub:'師兄',type:pick(['power','tech','speed']),hair:'#2c2840',belt:3,str:28,wc:S.wc};
   const res=yield* battle(TRIAL_T,opp,'體驗',false);
   gm(res.win?'體驗贏':'體驗輸');
-  const a=yield P('體驗結束',`${res.win?`<b class="gold">你贏了！</b>${esc(sen)}揉著肚子笑：「你這個新人很可以喔。」`:`你被${esc(sen)}打倒了。他伸手把你拉起來：「第一天就敢打，很好。」`}<br><br>這只是第一天。完整的人生裡，你會從白帶練到黑帶、站上全日本和世界大賽的舞台，最後把極真傳給下一代。<br><br><b>真正的道場也在等你。</b>`,[
+  const a=yield P('體驗結束',`${res.win?`<b class="gold">你贏了！</b>${esc(sen)}揉著肚子笑：「你這個新人很可以喔。」`:`你被${esc(sen)}打倒了。他伸手把你拉起來：「第一天就敢打，很好。下次挑我怕的招，在<b>黃色區</b>按下去試試。」`}<br><br>這只是第一天。完整的人生裡，你會從白帶練到黑帶、站上全日本和世界大賽的舞台，最後把極真傳給下一代。<br><br><b>真正的道場也在等你。</b>`,[
     {id:'full',label:'開始完整人生',sub:'從所選的入門時刻走下去 · 可分次遊玩 · 自動存檔',wide:1},
     {id:'ig',label:'到道場 IG 看看',sub:'@i.k.o.n.taiwan · 真的來練一堂',wide:1},
     {id:'again',label:'再打一次',sub:'換一個個性重新體驗'}]);
