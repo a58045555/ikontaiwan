@@ -8,6 +8,8 @@ on:
       - 'hanno/**'
       - 'preview-v2/**'
       - 'validation/**'
+      - 'character-study/play/**'
+      - 'character-study/assets/*-belts-*.webp'
       - '.github/workflows/preview-checks.yml'
   pull_request:
     paths:
@@ -16,6 +18,8 @@ on:
       - 'hanno/**'
       - 'preview-v2/**'
       - 'validation/**'
+      - 'character-study/play/**'
+      - 'character-study/assets/*-belts-*.webp'
       - '.github/workflows/preview-checks.yml'
   workflow_dispatch:
 permissions:
@@ -52,3 +56,6 @@ jobs:
 
       - name: Check optional training plans and decision clarity
         run: node validation/verify-pacing.cjs
+
+      - name: Check playable character art and isolated progress
+        run: node validation/verify-character-play.cjs
