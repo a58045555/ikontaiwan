@@ -21,3 +21,14 @@ assets/hero.webp、assets/rival.webp 為這次新圖，透明背景 WebP。原�
 ## 驗證
 
 已在 390×844 及 320×760 檢查角色卡、新舊素材切換、對手選取、組手位移、防守回饋、劇情說話者切換及鍵盤分頁操作。未見橫向溢出，圖片載入成功，瀏覽器沒有警告或錯誤。主遊戲與反應組手檔案未改動。這是美術呈現試作，沒有聲稱完成招式逐格動畫或真人玩家測試。
+
+
+## 對手第二版：拉開人物辨識度
+
+使用內建 image_gen，原對手為修改目標，主角僅作同畫風及避免相同長相的參考。保留 18 歲、藍帶、白道服與像素風；改為短平頭、較方臉型、較小眼睛、較深膚色、寬肩厚前臂與低重心前手姿勢。主角圖片、展示數值與對話不變。
+
+最新遊戲用圖：assets/rival-v2.webp（工作區 deploy-game/character-study/assets/rival-v2.webp）。原始 PNG：character-study/rival-v2-source.png。第一版圖片保留，沒有覆寫。
+
+### 第二版完整提示詞
+
+Use case: precise-object-edit. Asset type: replacement full-body transparent pixel-art rival sprite for the game 極真人生. Image 1 is the EDIT TARGET: redesign this rival's identity and stance. Image 2 is the protagonist and is a NEGATIVE IDENTITY REFERENCE: keep the pixel art universe, but make the rival clearly unrelated and instantly distinguishable even at thumbnail size. Primary request: retain an 18-year-old male karate student, off-white karate gi, correctly tied BLUE belt, bare hands, bare feet, true transparent alpha, clean chunky pixel outlines, restrained cream/warm-gray/indigo JRPG shading, full head and feet with similar 10% margins. Replace the current spiky-haired pretty-boy look completely. New rival has very short close-cropped dark hair / flat crew cut, absolutely no long bangs or spikes; warm medium-brown tan skin; a broad SQUARE face and jaw, thick short straight eyebrows, small narrow dark eyes, visibly smaller eyes than protagonist, broad nose, serious closed mouth, no smile. Stocky athletic build, distinctly wider shoulders, thick forearms and neck, power-oriented low stable karate stance. Both knees flexed, torso more side-on, rear fist at lower ribs, front fist extended forward at chest level, a clearly different silhouette from the protagonist's symmetric high guard. Face and whole body three-quarter facing viewer-RIGHT; the game renderer will mirror for opponent placement. Still youthful 18, no beard, no scars, no villain symbolism, no oversized muscles, no accessories, no gloves, no text or logos. Maintain the same quality of intentional square pixels as the input, no smooth anime or 3D. One figure only, no additional poses, no floor or shadow, no backdrop. It must look like a different person, NOT the hero with a different hair or belt color.
