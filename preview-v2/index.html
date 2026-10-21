@@ -1131,7 +1131,7 @@ function pacePick(p,policy,last){
     else if(practice)return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
   }
   if(policy==='exam'){
-    const rec=examRec(),matching=rec&&cards.filter(o=>TX(o.id).fam===rec.id);
+    const rec=examRec(),matching=rec&&!rec.capped&&cards.filter(o=>TX(o.id).fam===rec.id);
     if(matching&&matching.length)cards=matching;
     else if(practice)return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
   }else if(practice&&!(policy==='repeat'&&last&&TX(last)))return opts.find(o=>o.id==='practice-basics')?.id||rest?.id||null;
@@ -2152,13 +2152,18 @@ function examHTML(es,full){
     `<div class="reqs">${conds.join('')}</div>${full?'<p class="exnote">剛好達標約五成機率通過，高出 8 分以上才算穩過。</p>':''}</div>`;
 }
 const REC={0:{id:'kihon',n:'基本・型'},1:{id:'kihon',n:'基本・型'},2:{id:'taiso',n:'體能・鍛體'},3:{id:'kumite',n:'組手'}};
-function examRec(){const es=examStatus();if(!es)return null;const w=es.parts.reduce((a,p,i)=>p.pr<a.p.pr?{p,i}:a,{p:es.parts[0],i:0});if(w.p.pr>=.8)return null;const r0=w.i===3&&w.p.kn?{id:'taiso',n:'體能・鍛體'}:REC[w.i];return {...r0,part:w.p.n,why:w.i===1?`主練「${es.I.kata}」`:''};}
+// Main abilities behind each exam part; when all of them sit at their hidden potential, more training barely helps.
+// Rule 22 only, so earlier-rule lives (and their fast-forward picks) stay byte-identical.
+const EXAM_CAP={0:['tec','spd'],2:['sta','pow'],3:['pow','spd','sta','tec'],kumi:['sta','con']};
+function examCapped(i,kn){if(!growthRules())return null;const ks=kn?EXAM_CAP.kumi:EXAM_CAP[i];return ks&&ks.every(k=>S.st[k]>=Math.min(S.pot[k],capOf(k))-1)?ks:null;}
+function examRec(){const es=examStatus();if(!es)return null;const w=es.parts.reduce((a,p,i)=>p.pr<a.p.pr?{p,i}:a,{p:es.parts[0],i:0});if(w.p.pr>=.8)return null;const r0=w.i===3&&w.p.kn?{id:'taiso',n:'體能・鍛體'}:REC[w.i];const cap=examCapped(w.i,w.p.kn);return {...r0,part:w.p.n,why:w.i===1?`主練「${es.I.kata}」`:'',capped:!!cap,capN:cap?cap.map(k=>STATN[k]).join('、'):''};}
+function examRecText(rc){return rc.capped?`「${rc.part}」靠的${rc.capN}已練到自己的上限，再練進步有限；可把修煉點加在這裡，或照合格率直接挑戰`:`「${rc.part}」不足 → 多練「${rc.n}」`;}
 function examSummary(es){
   if(!es)return '';
   const weak=es.parts.reduce((a,p)=>p.pr<a.pr?p:a,es.parts[0]);
   const rc=examRec();
   if(!S.flags.examSeen&&S.rank===0)return `<b>${RANKS[es.n]}審查</b>${es.left?`・還要 ${es.left} 季`:'・這一季'}<br><span class="hintline" style="color:var(--ink2)">第一次審查：${rc?`先多練「${rc.n}」，${rc.part}最需要加強`:'照現在這樣練就好'}</span>`;
-  return `<b>${RANKS[es.n]}審查</b>・合格率 <b class="${(es.displayAll??es.all)>.6?'good':(es.displayAll??es.all)>.3?'':'bad'}">${Math.round((es.displayAll??es.all)*100)}%</b>${es.left?`・還要 ${es.left} 季`:''}${rc?`<br><span class="hintline">「${rc.part}」不足 → 多練「${rc.n}」${rc.why?'，'+rc.why:''}</span>`:'<br><span class="hintline good">各項都準備好了</span>'}`;
+  return `<b>${RANKS[es.n]}審查</b>・合格率 <b class="${(es.displayAll??es.all)>.6?'good':(es.displayAll??es.all)>.3?'':'bad'}">${Math.round((es.displayAll??es.all)*100)}%</b>${es.left?`・還要 ${es.left} 季`:''}${rc?`<br><span class="hintline">${examRecText(rc)}${rc.why&&!rc.capped?'，'+rc.why:''}</span>`:'<br><span class="hintline good">各項都準備好了</span>'}`;
 }
 function kumiteN(n){
   let pool=S.st.sta*1+S.st.spi*.5+S.st.con*.4+S.hp*.25;const e=(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4;let wins=0;
@@ -2173,10 +2178,11 @@ function* examPhase(){
   if(S.turn-S.lastPromo<examGap(I)||S.age<I.age)return;
   if(!I.extra){if(S.flags.extraNote!==n){S.flags.extraNote=n;say(`晉升${RANKS[n]}的條件：${I.extraTxt}。`);}return;}
   const parts=examParts(I);const es=examStatus();gm('第一次審查');
-  if(es.all<.2&&S.flags.examSeen){const rc=examRec();if(S.flags.examSkipN!==S.turn){S.flags.examSkipN=S.turn;say(`<span class="hintline">${RANKS[n]}審查合格率只有 ${Math.round((es.displayAll??es.all)*100)}%，這次先不報考。${rc?`「${rc.part}」不足 → 多練「${rc.n}」。`:''}</span>`);}return;}
+  if(es.all<.2&&S.flags.examSeen){const rc=examRec();if(S.flags.examSkipN!==S.turn){S.flags.examSkipN=S.turn;say(`<span class="hintline">${RANKS[n]}審查合格率只有 ${Math.round((es.displayAll??es.all)*100)}%，這次先不報考。${rc?examRecText(rc)+'。':''}</span>`);}return;}
   S.flags.examSeen=1;
+  const capRec=(examRec()||{}).capped,goRec=es.all>=.5||!!capRec;
   const c=yield P(`${RANKS[n]}審查`,`${tipOnce('exam','四項都要合格才升級，看下方每一項的通過機率。不夠的話先不考，回去練弱的那一項。')}${I.abroad?'<b>三段以上要到日本本部審查</b>，由本部的師範審核，每年下半年一次。':''}指定型「${I.kata}」，四項都要合格。合格率約 <b>${Math.round((es.displayAll??es.all)*100)}%</b>。${examHTML(es,false)}`,
-    [{id:'go',rec:es.all>=.5,label:I.abroad?'赴日本本部報考':'報考',sub:`審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''} · 不合格不退費 · 合格機率約 ${Math.round((es.displayAll??es.all)*100)}%`},{id:'no',rec:es.all<.5,label:'這次不考，再練一陣子',sub:(()=>{const rc=examRec();return rc?`「${rc.part}」不足，建議多練「${rc.n}」`:'各項都準備好了';})()}]);
+    [{id:'go',rec:goRec,label:I.abroad?'赴日本本部報考':'報考',sub:`審查費 ${I.fee} 萬${I.travel?` ＋ 旅費 ${I.travel} 萬`:''} · 不合格不退費 · 合格機率約 ${Math.round((es.displayAll??es.all)*100)}%`},{id:'no',rec:!goRec,label:'這次不考，再練一陣子',sub:(()=>{const rc=examRec();return rc?(rc.capped?examRecText(rc):`「${rc.part}」不足，建議多練「${rc.n}」`):'各項都準備好了';})()}]);
   if(c!=='go'){say(`這次沒有報考${RANKS[n]}審查。`);return;}
   if(es.all<.35)lesson('examLow','合格率不到四成就去考，落榜還會打擊信心。審查前先把最弱的那一項補起來。');
   S.money-=I.fee+I.travel;

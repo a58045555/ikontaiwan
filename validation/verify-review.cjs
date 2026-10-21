@@ -43,5 +43,18 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
    assert.ok(!taught.playerChoices[0]&&!mash.playerChoices[0],entry+' player knocked out before acting');
   }
  });
+
+ // Seed 5000, lifelong practice: endurance and strength reach their hidden potential around 33 while the
+ // third-dan fitness test still needs more. The card used to repeat "practise more" for over a decade.
+ test(file+' exam hint admits when the weak part is already at its potential',()=>{
+  const st=new Map(),c=vm.createContext({console,window:{addEventListener(){},scrollTo(){}},localStorage:{getItem:k=>st.get(k)??null,setItem:(k,v)=>st.set(k,String(v)),removeItem:k=>st.delete(k)},setTimeout(){},clearTimeout(){},TextEncoder,TextDecoder,URLSearchParams,performance});
+  const run=x=>vm.runInContext(x,c,{timeout:60000});run(src);run('render=()=>{};applyDisp=()=>{};scrollCard=()=>{};sfx=()=>{};momentCheck=()=>{}');
+  c.cfg={seed:5000,name:'審查',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:22,entry:'practice'};
+  const seen=JSON.parse(run(`startGame(cfg,[]);const seen=[];for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const p=G.prompt;if(/審查$/.test(p.title||'')&&p.opts.length===2){const no=p.opts.find(o=>o.id==='no'),go=p.opts.find(o=>o.id==='go');seen.push({t:p.title,age:S.age,sub:no.sub,goRec:!!go.rec,capped:!!(examRec()||{}).capped});}choose(String(ffPick(p)))};JSON.stringify(seen)`));
+  const early=seen.find(x=>!x.capped&&/不足，建議多練/.test(x.sub));assert.ok(early,'ordinary weak-part advice still shown');
+  const capped=seen.filter(x=>x.capped);assert.ok(capped.length>0,'capped exam reached');
+  for(const x of capped){assert.match(x.sub,/已練到自己的上限/);assert.doesNotMatch(x.sub,/建議多練/);assert.equal(x.goRec,true);}
+  const third=seen.filter(x=>x.t==='三段審查').length;assert.ok(third<=6,'third-dan card shown '+third+' times (15 before the fix)');
+ });
 }
 console.log(checks+' review checks passed');
