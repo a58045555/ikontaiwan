@@ -1,4 +1,4 @@
-const fs=require('node:fs'),vm=require('node:vm'),assert=require('node:assert/strict'),{auditTrial}=require('./audit-trial.cjs');let checks=0;
+const fs=require('node:fs'),vm=require('node:vm'),crypto=require('node:crypto'),assert=require('node:assert/strict'),{auditTrial}=require('./audit-trial.cjs');let checks=0;
 const test=(n,f)=>{f();checks++;console.log('PASS '+n)};
 const root=fs.existsSync('preview-v2/index.html')?'.':'deploy-game';
 const hexRgb=h=>{h=h.replace('#','');if(h.length===3)h=[...h].map(c=>c+c).join('');return [0,2,4].map(i=>parseInt(h.slice(i,i+2),16)/255)};
@@ -55,6 +55,30 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const capped=seen.filter(x=>x.capped);assert.ok(capped.length>0,'capped exam reached');
   for(const x of capped){assert.match(x.sub,/已練到自己的上限/);assert.doesNotMatch(x.sub,/建議多練/);assert.equal(x.goRec,true);}
   const third=seen.filter(x=>x.t==='三段審查').length;assert.ok(third<=6,'third-dan card shown '+third+' times (15 before the fix)');
+ });
+
+ const life=(cfg,body)=>{const st=new Map(),c=vm.createContext({console,window:{addEventListener(){},scrollTo(){}},localStorage:{getItem:k=>st.get(k)??null,setItem:(k,v)=>st.set(k,String(v)),removeItem:k=>st.delete(k)},setTimeout(){},clearTimeout(){},TextEncoder,TextDecoder,URLSearchParams,performance});
+  const run=x=>vm.runInContext(x,c,{timeout:60000});run(src);run('render=()=>{};applyDisp=()=>{};scrollCard=()=>{};sfx=()=>{};momentCheck=()=>{}');c.cfg=cfg;return run(body);};
+ // Recorded from the rule 22 game before rule 23 existed: aging and owner-mode healing must not touch these lives.
+ const V22={"youth": "689502b10595d27b3b56d8824d10bc18603a4795ded4c62f757765cc9635c091", "practice": "54f5f067b181ee310e77178e56663e7d0f77f55eedbdb227e63cdb25b8795446", "adult": "a8bd5a2317384c4550f104b2d4de1f9e3a93503c0be9a0883af3aaf5c65fb547", "mature": "c011de171b68dfd3c0b48f40c5e02a5b75961f921d1d6f21639bb7200c4fc016"};
+ for(const entry of Object.keys(V22))test(file+' rule 22 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則22相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:22,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V22[entry]);
+ });
+ test(file+' rule 23 ages every entry gently and keeps owner injuries healing',()=>{
+  const at55={};
+  for(const entry of ['youth','practice','adult','mature'])for(let k=0;k<8;k++){
+   const r=JSON.parse(life({seed:3000+k*7907,name:'規則23',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim:'balanced',mode:'easy',route:'dual',v:23,entry},
+    `startGame(cfg,[]);let worst=0,aged=0,injFrom=0,injKey=null,injMax=0,b55=null;const y0=()=>({spd:S.st.spd,sta:S.st.sta,pow:S.st.pow,con:S.st.con});
+     const tick=agingTick;agingTick=function(){const b=y0();tick();for(const k in b){const d=b[k]-S.st[k];if(d>0)aged++;worst=Math.max(worst,d);}};
+     for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const key=S.injury?S.injury.n+S.injury.sev:null;if(key!==injKey){injKey=key;injFrom=S.age;}if(key)injMax=Math.max(injMax,S.age-injFrom);if(S.age===55&&!b55)b55=(S.st.pow+S.st.spd+S.st.sta)/3;choose(String(ffPick(G.prompt)))}
+     JSON.stringify({worst,aged,injMax,b55})`));
+   assert.ok(r.worst<=1.6*1.2+1e-9,entry+' yearly loss '+r.worst);assert.ok(r.aged>0,entry+' never aged');assert.ok(r.injMax<3,entry+' injury lasted '+r.injMax+' years');
+   if(r.b55!=null)(at55[entry]=at55[entry]||[]).push(r.b55);
+  }
+  const avg=a=>a.reduce((x,y)=>x+y,0)/a.length;
+  assert.ok(avg(at55.youth)>=45,'youth body at 55 '+avg(at55.youth).toFixed(1)+' (25 under rule 22)');
+  assert.ok(Math.abs(avg(at55.youth)-avg(at55.adult))<20,'youth vs adult at 55 differ too much');
  });
 }
 console.log(checks+' review checks passed');
