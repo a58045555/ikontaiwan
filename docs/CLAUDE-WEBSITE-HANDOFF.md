@@ -14,9 +14,11 @@
 - 網站標題：極真人生｜一聲押忍，一段人生。
 - 平台：Sites，與 GitHub Pages 主遊戲分開託管。
 - 2026-10-22 查到的狀態：active、版本 2、custom 存取模式，僅一個獲准帳號。不能假設 Claude 或未登入的訪客可以開啟；維持現有存取權限。
-- 官網來源在本機 `sites/kyokushin-life/`，不是遊戲 repository 的 `index.html`。取得遊戲 GitHub 專案不等於已取得官網來源。
+- 官網來源已另交付到遊戲 repository 的 **`collab/website-source` 分支**，路徑 `sites/kyokushin-life/`，不是根目錄的遊戲 `index.html`。來源是既有 Sites checkout 提交 `9626593b08a9cb4a44fe4316a3aa4c7eea2133bc` 的靜態前端副本，未改頁面內容。
 
-**手機可直接分享本文件網址，不必下載文件。這份文件是交接說明，不含完整官網原始碼。** 本機另有來源壓縮檔，但先前提供的 Windows 本機連結無法供手機遠端下載，尚未完成原始檔的手機交付。不要假設使用者已上傳 zip，或 Claude 已能讀取來源。若目前只有本文件，請先列出可做的檢查與缺少的素材，不要假稱完成程式審查或修改。
+**不需要下載或上傳 zip。** 請直接使用 [官網原始碼目錄](https://github.com/a58045555/ikontaiwan/tree/collab/website-source/sites/kyokushin-life)，先讀該目錄的 README，再讀 HTML、CSS、JavaScript、六張素材、檢查與預覽工具。`SOURCE-MANIFEST.json` 記錄逐檔雜湊；帳號與部署設定不在交接來源裡。
+
+線上官網仍可能回覆 403；這不妨礙從 GitHub 來源啟動靜態預覽。若 Claude 已有 repository，先 fetch `collab/website-source`，另開官網審查分支，避免覆蓋尚未儲存的主遊戲工作。完成來源交付不代表 Claude 已審查，請回報實際執行的檢查。
 
 ## 已有內容與互動
 
@@ -42,11 +44,14 @@
 
 | 檔案 | 用途 |
 | --- | --- |
+| `README.md` | 取得、檢查與啟動預覽的步驟 |
+| `SOURCE-MANIFEST.json` | 原始檔與素材長度、Git blob SHA 及 SHA-256 |
 | `dist/index.html` | 首頁內容、連結、區塊與頁籤標記 |
 | `dist/style.css` | 視覺、排版與手機樣式 |
 | `dist/app.js` | 四種人生、三篇故事、鍵盤操作與手機選單 |
 | `dist/assets/` | 現有圖片與圖示 |
 | `check-site.cjs` | 語法、靜態連結、素材、ID／ARIA、頁籤數量與導覽圖／用詞檢查 |
+| `preview.cjs` | `127.0.0.1:18771` 的本機靜態預覽 |
 | `guide-artwork.md` | 女生導覽圖製作說明 |
 
 這是 buildless HTML／CSS／JavaScript，無需 npm 安裝或 build。取得來源後，在根目錄執行 `node check-site.cjs`，以靜態伺服器提供 `dist/` 做瀏覽器檢查。
@@ -77,4 +82,4 @@
 
 ## 手機可貼給 Claude 的文字
 
-> 前面的遊戲已交接，這份請獨立處理《極真人生》官網。請先讀此文件，審視官網文案、視覺、手機排版、導覽與遊戲入口連結。官網不要用 sensei，保留女生道場導覽圖。不包含主遊戲程式、反應組手邏輯或人物換畫風。請先回報可重現問題、改善順序及目前無法檢查的部分；若未取得官網來源或無法開啟頁面，請如實說明，不要當作已收到 zip 或完成修改。
+> 官網原始碼與素材已在 a58045555/ikontaiwan 的 collab/website-source 分支、sites/kyokushin-life/ 目錄。請先讀該目錄 README，再獨立解析官網文案、視覺、手機排版、導覽與遊戲入口連結。官網不要用 sensei，保留女生道場導覽圖。不重做前面已交接的主遊戲、反應組手邏輯或人物換畫風。線上頁面即使 403，仍可用分支原始碼啟動預覽，不需要等我上傳 zip。請回報實際發現與驗證，無 Sites 工具時交回修正檔，不要宣稱已部署。
