@@ -117,3 +117,29 @@ First-person view from a karate student's OWN eyes, no body, no face. He checks 
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
+
+## 第四列：出腳（腳朝玩家來）
+
+### 上段出腳
+存檔名：`kai/high-strike.png`
+
+```
+Use the attached photo as the character reference (and the attached finished sprite as the style reference). Pixel art sprite of this same man, drawn as a cute chibi 16-bit retro fighting game character: big round head about one third of body height, buzz cut, black rectangular glasses, grin, goatee, white karate gi with black belt, bare feet. Crisp pixel outlines, flat limited palette, no gradients, no realism. Camera is the opponent at eye level, and the man FACES the camera.
+
+Pose: his high roundhouse kick arrives AT the camera's head. His right leg is fully extended straight toward the camera from his hip, strongly foreshortened, so the top of his foot and shin are large in the upper left foreground, the toes pointing to the left, the sole hidden. Hips turned over, belt knot swung to the left edge of his waist, supporting left foot pivoted with the heel toward the camera. Right arm swung down and back behind his hip; left hand reaching forward toward the camera at chest height. Head turned to look at the camera.
+
+Full body visible head to toe, centered. Plain solid white background, no shadow, no text.
+```
+
+### 下段出腳
+存檔名：`kai/low-strike.png`
+
+```
+Use the attached photo as the character reference (and the attached finished sprite as the style reference). Pixel art sprite of this same man, drawn as a cute chibi 16-bit retro fighting game character: big round head about one third of body height, buzz cut, black rectangular glasses, grin, goatee, white karate gi with black belt, bare feet. Crisp pixel outlines, flat limited palette, no gradients, no realism. Camera is the opponent at eye level, and the man FACES the camera.
+
+Pose: his low roundhouse kick arrives AT the camera's front thigh. His right leg is extended toward the camera low and across, strongly foreshortened, so his shin and the top of his foot are large in the lower left foreground at knee height, toes pointing to the left, sole hidden, knee slightly bent. Hips turned over, belt knot swung to the left edge of his waist, supporting left foot pivoted with the heel toward the camera. Right arm swung down and back behind his hip; left hand reaching forward toward the camera at chest height. Head turned to look at the camera.
+
+Full body visible head to toe, centered. Plain solid white background, no shadow, no text.
+```
+
+中段出腳不需要新圖，組圖時沿用中段出招（正拳本來就朝鏡頭）。
