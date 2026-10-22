@@ -113,7 +113,7 @@ Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a
 存檔名：`first-person/lowblock.png`
 
 ```
-First-person view looking DOWN from a karate student's OWN eyes, no body, no face. He lifts his right knee straight up to check a low kick. His right thigh in a white karate gi trouser leg fills the lower right of the picture, rising diagonally from the bottom right corner toward the centre, where the rounded knee cap is seen from above. Below the knee the lower leg hangs straight down, and the bare foot is visible below and to the left of the knee, toes pointing slightly outward to the left. The dojo floor is visible around the leg. His left fist stays small at the lower left in guard, seen from the back of the hand.
+First-person view looking DOWN from a karate student's OWN eyes, no body, no face. He lifts his right leg to check a low kick: the right thigh in a white karate gi trouser leg rises from the bottom right corner diagonally toward the centre of the picture, where the rounded knee cap is seen from above. The knee is bent at an exact RIGHT ANGLE (90 degrees), so the lower leg hangs straight down from the knee. The bare foot is visible below the knee, turned 45 degrees to the RIGHT, toes pointing out to the right. The dojo floor is visible around the leg. His left fist stays small at the lower left in guard, seen from the back of the hand.
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
