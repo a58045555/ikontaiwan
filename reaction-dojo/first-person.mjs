@@ -32,7 +32,7 @@ export class FirstPerson{
   const moving=game.action==='walk'?Math.sin(t*12)*H*.008:0;
   const draw=(index,alpha=1,offset=0)=>{const f=this.bounds[index],factor=index===4?.98:index===3?.86:index===2?({high:1.18,mid:.98,low:.72}[game.guardLevel]||.98):1.05,size=Math.min(W*.96,H*factor*.84);ctx.save();ctx.globalAlpha=alpha;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';if((index===1||index===3)&&game.attackSide==='left'){ctx.translate(W,0);ctx.scale(-1,1);}ctx.drawImage(this.image,f.x,f.y,f.w,f.h,W*.5-size*.5-(index===3?size*.12:0),H-size+size*.065+moving+offset,size,size);ctx.restore();};
   const lowAttack=game.coachPreview==='low'||game.cue?.level==='low'||(game.enemyAttack?.until>game.now&&game.enemyAttack.level==='low');
-  if(action==='block'){if(game.guardLevel==='low'&&this.bounds[4])draw(4,1,0);else draw(2,1,({high:-.10,mid:0,low:.18}[game.guardLevel]||0)*H);}else if(pulse>.1){draw(action==='kick'?3:1,1,-pulse*H*.035);}else draw(0,1,action==='hit'?Math.sin(phase*Math.PI)*H*.045:lowAttack?H*.12:0);
+  if(action==='block'){if(game.guardLevel==='low'&&this.bounds[4])draw(4,1,0);else draw(2,1,({high:-.10,mid:0,low:.18}[game.guardLevel]||0)*H);}else if(action==='kick'&&phase<.28&&this.bounds[4]){draw(4,1,0);}else if(pulse>.1){draw(action==='kick'?3:1,1,-pulse*H*.035);}else draw(0,1,action==='hit'?Math.sin(phase*Math.PI)*H*.045:lowAttack?H*.12:0);
  }
 }
 
