@@ -87,5 +87,14 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   assert.ok(avg(at55.youth)>=45,'youth body at 55 '+avg(at55.youth).toFixed(1)+' (25 under rule 22)');
   assert.ok(Math.abs(avg(at55.youth)-avg(at55.adult))<20,'youth vs adult at 55 differ too much');
  });
+
+ test(file+' guide marks type matchups as a game simplification and the shihandai review carries a recommendation',()=>{
+  assert.ok(html.includes('類型相剋、有效與一本的判定都是遊戲規則的簡化'));
+  const st=new Map(),c=vm.createContext({console,window:{addEventListener(){},scrollTo(){}},localStorage:{getItem:k=>st.get(k)??null,setItem:(k,v)=>st.set(k,String(v)),removeItem:k=>st.delete(k)},setTimeout(){},clearTimeout(){},TextEncoder,TextDecoder,URLSearchParams,performance});
+  const run=x=>vm.runInContext(x,c,{timeout:60000});run(src);run('render=()=>{};applyDisp=()=>{};scrollCard=()=>{};sfx=()=>{};momentCheck=()=>{}');
+  c.cfg={seed:3000,name:'審查',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:23,entry:'youth'};
+  const seen=JSON.parse(run(`startGame(cfg,[]);const o=[];for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const p=G.prompt;if(p.title==='師範代審查'){const g=p.opts.find(x=>x.id==='go'),n=p.opts.find(x=>x.id==='no');o.push({all:shdReview().all,goRec:!!g.rec,noRec:!!n.rec});}choose(String(ffPick(p)))};JSON.stringify(o)`));
+  assert.ok(seen.length>0,'no shihandai review reached');for(const x of seen){assert.equal(x.goRec,x.all>=.5);assert.equal(x.noRec,x.all<.5);}
+ });
 }
 console.log(checks+' review checks passed');

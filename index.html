@@ -595,7 +595,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <details><summary>受傷</summary>
       <ul><li><b>輕傷</b>：稽古效果 ×0.8，大約三到六個月痊癒。</li><li><b>中度傷</b>：稽古效果 ×0.55，比賽開場體力較低。</li><li><b>重傷</b>：只能休養或復健，不能比賽、不能審查。</li><li>受傷時能力會直接下降（輕傷少、重傷多），中度以上的傷沒好之前每季還會再掉一點。</li><li>28 歲起速度開始衰退，30 歲耐力、33 歲力量、35 歲鍛體也會跟著下降；技術和鬥志不會。新開始的人生：每年下降有上限，持續稽古的那一年減半，所有入門時刻都一樣。</li><li>一般組組手最多打到 35 歲（型沒有年齡限制）；28 歲起會不時問你要不要引退，最近兩年拿過冠軍時引退是「巔峰引退」（名聲 +8、成就「完美落幕」）。</li><li><b>體重</b>：重量訓練、鍛體會增重，跑山、晨跑、山籠會減重。量級內偏重：攻擊、體力↑ 速度↓；偏輕相反。超過量級上限時，比賽前要過磅：減重或升一級。</li><li>選「休養」恢復最快，「復健」可以邊恢復邊練一點抗性。受傷沒好又受傷，傷勢會加重。</li></ul></details>
     <details><summary>組手對戰</summary>
-      <ul><li>每回合從四招選一招。招式分突、下段、中段、上段，對手分力量型、技術型、速度型，打中弱點會「效果拔群」：力量型怕下段、技術型怕正拳、速度型怕中段。</li><li>大招要用「氣」，每回合回 1 點；息吹可以回氣。受け・反擊能擋下攻擊再反打。</li><li>一次打掉三成體力算<b>有效</b>，兩個有效就是一本。本戰 5 回合，平手打延長 3 回合，再平手比試割片數。</li><li>不想一招一招打，可以按「交給本能」自動打完。</li></ul></details>
+      <ul><li>每回合從四招選一招。招式分突、下段、中段、上段，對手分力量型、技術型、速度型，打中弱點會「效果拔群」：力量型怕下段、技術型怕正拳、速度型怕中段。<b>類型相剋、有效與一本的判定都是遊戲規則的簡化，不是實際組手的原則。</b></li><li>大招要用「氣」，每回合回 1 點；息吹可以回氣。受け・反擊能擋下攻擊再反打。</li><li>一次打掉三成體力算<b>有效</b>，兩個有效就是一本。本戰 5 回合，平手打延長 3 回合，再平手比試割片數。</li><li>不想一招一招打，可以按「交給本能」自動打完。</li></ul></details>
     <details><summary>型比賽</summary>
       <p>每一輪選一個型演武。難度越高分數越高，但技術不夠時容易失誤。五位審判舉旗，拿到三支旗就晉級。</p></details>
     <details><summary>講習會</summary>
@@ -2526,7 +2526,7 @@ function* appointChecks(){
   if(!S.flags.shihandai&&shdReqs().every(x=>x.ok)&&S.flags.shdTry!==S.year){
     S.flags.shdTry=S.year;const es=shdReview();
     const a=yield P('師範代審查',`支部長把你叫進辦公室：「支部需要一位<b>師範代</b>，在我不在的時候代理指導、主持稽古和審查。你願意接受審查嗎？」<br>三個項目都要過；沒過的話，明年還可以再來。${examHTMLRows(es)}`,[
-      {id:'go',label:'押忍，接受審查',sub:`通過機率約 ${Math.round((es.displayAll??es.all)*100)}% · 通過後名聲↑、每季有師範代津貼`},{id:'no',label:'我還不夠格，明年再說',sub:'支部長明年會再問你'}]);
+      {id:'go',rec:agingRules()&&es.all>=.5,label:'押忍，接受審查',sub:`通過機率約 ${Math.round((es.displayAll??es.all)*100)}% · 通過後名聲↑、每季有師範代津貼`},{id:'no',rec:agingRules()&&es.all<.5,label:'我還不夠格，明年再說',sub:'支部長明年會再問你'}]);
     if(a==='go'){let ok=true;say('<span class="tname">師範代審查</span>');
       for(const p of es.parts){const pass=r()<p.pr;if(!pass)ok=false;say(`<div class="exrow ${pass?'w':'l'}"><span class="rd">${p.n}</span><span class="op">${Math.round(p.sc)} / ${p.need}</span><span class="res">${pass?'通過':'不足'}</span></div>`);}
       if(ok){S.flags.shihandai=1;S.mil=S.mil||{};S.mil.shd=S.age;S.fame+=5;if(S.flags.uchiDone)S.hq+=5;S.titles.push(`${S.year} 就任台灣支部師範代`);log('就任台灣支部師範代','gold');
