@@ -336,6 +336,13 @@ details.more>div{margin-top:14px;padding-top:12px;border-top:2px dashed var(--so
 .pickr .mbars{display:grid;grid-template-columns:repeat(4,1fr);gap:3px;margin-top:5px}
 .pickr .mbars i{height:5px;background:var(--track);position:relative;overflow:hidden}
 .pickr .mbars i::after{content:"";position:absolute;inset:0 auto 0 0;width:var(--v);background:var(--teal)}
+/* Dojo picker as one line per dojo: name, fee, signature card. Shorter than the two-column cards and the fees line up. */
+.seg.list{grid-template-columns:1fr;gap:5px}
+.seg.list .pickr{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:1px 8px;padding:7px 10px}
+.seg.list .pickr b{font-size:14px;white-space:nowrap}
+.seg.list .pickr .fee{font-size:12px;white-space:nowrap}
+/* The card name stays on the same line when it fits; on narrow screens it drops to a full-width second line. */
+.seg.list .pickr .dtag{margin:0;font-size:11.5px;flex:1 1 auto;min-width:0}
 .pickr:has(input:checked){background:var(--sel);box-shadow:0 0 0 3px var(--coral),4px 4px 0 3px var(--ink)}
 .seedrow{display:flex;gap:10px}
 .seedrow .inp{font-family:var(--f-px);font-size:11px;letter-spacing:.1em}
@@ -687,7 +694,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       <fieldset class="field">
         <legend>入門道場</legend>
         <p class="legend">每間道場的稽古內容都不一樣，會抽到只有那間道場才有的特色牌。</p>
-        <div class="seg two" id="homeSeg"></div>
+        <div class="seg list" id="homeSeg"></div>
       </fieldset>
       <fieldset class="field">
         <legend>量級</legend>
@@ -5068,7 +5075,7 @@ function renderStart(){
   if(!startBuilt){
     startBuilt=true;
     if(!drawHero($('#startSpr'),0,64))drawSprite($('#startSpr'),'front',SPR_BELT[0],'#3a3550');setPortrait($('#startSpr'),'hero_normal');
-    $('#homeSeg').innerHTML=Object.entries(HOMES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="home" id="home-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span class="fee">學費 ${v.fee} 萬／季</span><span class="dtag">特色牌「${(Object.values(CARDS).find(c=>c.uniq===k)||{}).n||''}」</span></label>`).join('');
+    $('#homeSeg').innerHTML=Object.entries(HOMES).map(([k,v],i)=>`<label class="pickr"><input type="radio" name="home" id="home-${k}" value="${k}"${i===0?' checked':''}><b>${v.n}</b><span class="fee">${v.fee} 萬／季</span><span class="dtag">牌「${(Object.values(CARDS).find(c=>c.uniq===k)||{}).n||''}」</span></label>`).join('');
     $('#homeSeg').addEventListener('change',drawDojoBan);drawDojoBan();
     $('#wcSeg').innerHTML=Object.entries(WCLS).map(([k,v])=>`<label class="pickr"><input type="radio" name="wc" id="wc-${k}" value="${k}"${k==='middle'?' checked':''}><b>${v.n} <small data-kg="${k}">${v.kg}</small></b><span>${v.d}</span></label>`).join('');
     let dailyMode=false,dailyDraft=null;
