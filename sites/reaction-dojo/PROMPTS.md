@@ -77,7 +77,7 @@ Full body visible head to toe, centered. Plain solid white background, no shadow
 存檔名：`first-person/guard.png`
 
 ```
-First-person view from a karate student's own eyes, no body, no face. Two clenched fists at the lower left and lower right of the picture, about one third of the way up, knuckles toward the camera, palms facing each other, loose white karate gi sleeves entering from the two bottom corners.
+First-person view from a karate student's OWN eyes, no body, no face. His own two fists held up in guard at the lower left and lower right of the picture, about one third of the way up. The KNUCKLES face AWAY from the camera toward the opponent; the camera sees only the BACK of each hand, the wrist and the forearm in a loose white karate gi sleeve entering from the bottom corner. Folded fingers are not visible.
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
@@ -86,7 +86,7 @@ Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a
 存檔名：`first-person/punch.png`
 
 ```
-First-person view from a karate student's own eyes, no body, no face. The right fist shoots from the lower right straight toward the upper centre of the picture, large and foreshortened, palm down, white gi sleeve stretching from the bottom right corner; the left fist stays small at the lower left, pulled back.
+First-person view from a karate student's OWN eyes, no body, no face. His own right arm punches straight away from the camera toward the upper centre of the picture, foreshortened: the camera sees the BACK of the right hand, the wrist and the top of the forearm in a white gi sleeve stretching from the bottom right corner; the knuckles face away toward the opponent and the folded fingers are not visible. The left fist stays small at the lower left in guard, also seen from the back of the hand with knuckles facing away.
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
@@ -95,7 +95,7 @@ Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a
 存檔名：`first-person/block.png`
 
 ```
-First-person view from a karate student's own eyes, no body, no face. Both forearms in white karate gi sleeves rise from the two bottom corners and cross in an X in the middle of the picture, fists clenched, knuckles toward the camera.
+First-person view from a karate student's OWN eyes, no body, no face. His own two forearms in white karate gi sleeves rise from the two bottom corners and cross in an X in the middle of the picture. The camera sees the BACK of each fist and the inside of the forearms; knuckles face away toward the opponent, folded fingers are not visible.
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
