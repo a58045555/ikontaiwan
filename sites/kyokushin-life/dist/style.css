@@ -16,3 +16,8 @@
 @media(max-width:760px){.text-link,.hero-foot a,.route-caption a,.yearbook-note>a,.footer-top>div a{min-height:44px;display:inline-flex;align-items:center}.route-caption a{display:inline-flex}}
 /* Captions inside the paper book and story sections: 11px is the floor on every screen. */
 .book-chapter,.story-sign{font-size:11px}.book-chapter{color:#8c7a60}.story-sign{color:#8a7756}
+/* Route tabs switch the preview below; a chevron says that better than the external-link arrow. */
+.route-tabs b{font-size:26px;line-height:1}
+/* "The way of practice" on phones: same copy, tighter rhythm so it takes about one screen less. */
+@media(max-width:760px){.play{padding-top:44px;padding-bottom:44px}.play-heading>p{margin-top:14px}.practice-grid{margin-top:22px;gap:14px}.practice-grid article{padding-top:14px;grid-template-columns:96px 1fr;column-gap:16px}.feature-no{grid-column:1;grid-row:1}.practice-grid h3{grid-row:1;margin:0 0 6px;align-self:center}.practice-grid p{grid-row:2;line-height:1.8}.mini-cards,.bracket,.lineage{grid-row:2;height:92px;margin:0}.mini-cards span{height:56px;width:36px;font-size:12px}}
+@media(max-width:760px){.lineage{flex-wrap:nowrap;gap:1px}.lineage img{height:52px}.lineage span{font-size:11px}}
