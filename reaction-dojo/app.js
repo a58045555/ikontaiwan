@@ -1,7 +1,7 @@
-import {Dojo,ACTIONS} from './training-engine.mjs';
-import {FirstPerson} from './first-person.mjs';
-import {KaiRenderer,coachPose} from './kai-reference-renderer.mjs';
-import {KAI,LEVELS,STRIKES} from './kai.mjs';
+import {Dojo,ACTIONS} from './training-engine.mjs?v=23';
+import {FirstPerson} from './first-person.mjs?v=23';
+import {KaiRenderer,coachPose} from './kai-reference-renderer.mjs?v=23';
+import {KAI,LEVELS,STRIKES} from './kai.mjs?v=23';
 const $=s=>document.querySelector(s),canvas=$('#arena'),ctx=canvas.getContext('2d'),game=new Dojo();
 const particles=[],povImage=new Image(),pov=new FirstPerson(povImage),coach=new KaiRenderer();game.lockFacing=true;
 let W=960,H=540,last=0,loaded=false,sound=false,audio,shake=0,dummyKick=0,dummyWobble=0,lastHud=-1,activePointers=new Map();
@@ -10,7 +10,7 @@ function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math
 function resize(){const box=$('#stage').getBoundingClientRect(),dpr=Math.min(3,window.devicePixelRatio||1);W=Math.max(480,Math.round(box.width*dpr));H=Math.round(W*box.height/box.width);canvas.width=W;canvas.height=H;ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';}
 new ResizeObserver(resize).observe($('#stage'));
 function tone(hz=220,d=.08,kind='sine',gain=.07){if(!sound)return;try{audio??=new (window.AudioContext||window.webkitAudioContext)();audio.resume();const osc=audio.createOscillator(),g=audio.createGain();osc.type=kind;osc.frequency.setValueAtTime(hz,audio.currentTime);osc.frequency.exponentialRampToValueAtTime(Math.max(30,hz*.35),audio.currentTime+d);g.gain.setValueAtTime(gain,audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,audio.currentTime+d);osc.connect(g);g.connect(audio.destination);osc.start();osc.stop(audio.currentTime+d);}catch{}}
-Promise.all([new Promise((resolve,reject)=>{povImage.onload=()=>{try{pov.prepare();resolve();}catch(e){reject(e);}};povImage.onerror=()=>reject(Error('第一人稱素材載入失敗'));povImage.src='assets/first-person-atlas.png';}),coach.load()]).then(()=>{loaded=true;$('#start').disabled=false;$('#start').textContent='開始跟練 →';$('#loadStatus').textContent='看招 → 點一下格擋 → 左右拳腳反擊';}).catch(e=>{$('#loadStatus').textContent=e.message+'，請重新整理再試。';$('#start').textContent='角色素材尚未載入';});
+Promise.all([new Promise((resolve,reject)=>{povImage.onload=()=>{try{pov.prepare();resolve();}catch(e){reject(e);}};povImage.onerror=()=>reject(Error('第一人稱素材載入失敗'));povImage.src='assets/first-person-atlas.png?v=23';}),coach.load()]).then(()=>{loaded=true;$('#start').disabled=false;$('#start').textContent='開始跟練 →';$('#loadStatus').textContent='看招 → 點一下格擋 → 左右拳腳反擊';}).catch(e=>{$('#loadStatus').textContent=e.message+'，請重新整理再試。';$('#start').textContent='角色素材尚未載入';});
 function drawCoach(t,x,y,scale){coach.draw(ctx,game,t,x,y,scale*200);}
 function burst(x,y,type){const c=type==='guard'?'#bfe8d3':'#ffd48b';for(let i=0;i<14;i++){const a=i/14*Math.PI*2;particles.push({x,y,vx:Math.cos(a)*(70+Math.random()*170),vy:Math.sin(a)*(70+Math.random()*170),life:.24+Math.random()*.2,color:c});}}
 function render(dt,t){ctx.save();if(shake>0){ctx.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake=Math.max(0,shake-dt*55);}pov.scene(ctx,W,H,game,t,drawCoach);pov.hands(ctx,W,H,game,t);for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;rect(p.x,p.y,4,4,p.color);if(p.life<=0)particles.splice(i,1);}ctx.restore();dummyWobble=Math.max(0,dummyWobble-dt*4);dummyKick=Math.max(0,dummyKick-dt*7);
