@@ -6,7 +6,7 @@ src,out=sys.argv[1],sys.argv[2]; cell=int(sys.argv[3]) if len(sys.argv)>3 else 6
 atlas=Image.new('RGBA',(cell*2,cell*2),(0,0,0,0))
 for i,name in enumerate(['guard','punch','block','kick']):
     im=Image.open(os.path.join(src,name+'.png')).convert('RGBA')
-    s=cell/max(im.size); im=im.resize((round(im.width*s),round(im.height*s)),Image.LANCZOS)
+    s=cell*0.8/max(im.size); im=im.resize((round(im.width*s),round(im.height*s)),Image.LANCZOS)
     x=i%2*cell+(cell-im.width)//2; y=i//2*cell+(cell-im.height)   # bottom-aligned: sleeves enter from the frame bottom
     atlas.alpha_composite(im,(x,y)); print(name,im.size,'->',(x,y))
 atlas.save(out); print('atlas',atlas.size,'->',out)
