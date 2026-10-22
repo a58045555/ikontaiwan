@@ -44,7 +44,7 @@ Full body visible head to toe, centered. Plain solid white background, no shadow
 ```
 Use the attached photo as the character reference (and the attached finished sprite as the style reference). Pixel art sprite of this same man, drawn as a cute chibi 16-bit retro fighting game character: big round head about one third of body height, buzz cut, black rectangular glasses, grin, goatee, white karate gi with black belt, bare feet. Crisp pixel outlines, flat limited palette, no gradients, no realism. Camera is the opponent at eye level, and the man FACES the camera the whole time, never turns his back.
 
-Pose: wind-up of a karate straight punch to the body. Right fist pulled back to the right hip, palm up, right elbow pointing back. Left fist forward at shoulder height, elbow down, guarding the centre line. Right shoulder drawn back, hips wound to the right, weight loaded on the back right leg, left knee bent ready to drive forward. Chin tucked, head level, eyes on the camera.
+Pose: the chambered position BEFORE a karate straight punch. No punch is extended yet. The right fist is held tight against the right side of his waist beside the belt, palm facing up, right elbow pointing straight back. The left fist is held in front of the chest at shoulder height, elbow down, as a guard. Right shoulder pulled back, hips wound to the right, weight loaded on the back right leg, left foot forward with the knee bent, ready to drive. Chin tucked, eyes on the camera.
 
 Full body visible head to toe, centered. Plain solid white background, no shadow, no text.
 ```
@@ -104,7 +104,7 @@ Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a
 存檔名：`first-person/kick.png`
 
 ```
-First-person view from a karate student's own eyes, no body, no face. The right bare foot and white gi trouser leg extend from the bottom right corner toward the upper centre, foot foreshortened with the sole and toes toward the camera; the left fist stays small at the lower left.
+First-person view from a karate student's OWN eyes, no body, no face. His own right leg does a front kick: the white gi trouser leg enters from the bottom right corner and extends away from the camera toward the upper centre, foreshortened. We see the TOP of the foot (instep) and the shin from above and behind; the toes are pulled back pointing up, the sole faces away from the camera and is NOT visible. The left fist stays small at the lower left.
 
 Pixel art, cute 16-bit retro fighting game style with crisp pixel outlines and a flat limited palette, no gradients, no realism, matching the attached sprite. Square picture. Plain solid white background, no shadow, no text.
 ```
