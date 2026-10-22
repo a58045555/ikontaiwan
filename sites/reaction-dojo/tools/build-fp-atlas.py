@@ -8,7 +8,7 @@ atlas=Image.new('RGBA',(cell*COLS,cell*2),(0,0,0,0))
 for i,name in enumerate(['guard','punch','block','kick','lowblock']):
     if not os.path.exists(os.path.join(src,name+'.png')): print('missing',name); continue
     im=Image.open(os.path.join(src,name+'.png')).convert('RGBA')
-    s=cell*0.8/max(im.size); im=im.resize((round(im.width*s),round(im.height*s)),Image.LANCZOS)
+    s=cell*(0.72 if name=='lowblock' else 0.8)/max(im.size); im=im.resize((round(im.width*s),round(im.height*s)),Image.LANCZOS)
     x=i%COLS*cell+(cell-im.width)//2; y=i//COLS*cell+(cell-im.height)   # bottom-aligned: sleeves enter from the frame bottom
     atlas.alpha_composite(im,(x,y)); print(name,im.size,'->',(x,y))
 atlas.save(out); print('atlas',atlas.size,'->',out)
