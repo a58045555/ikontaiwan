@@ -64,6 +64,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 .belt i{display:block;width:70%;height:6px;border-radius:2px;border:1px solid rgba(0,0,0,.5)}
 .belt small{font-size:10px;color:var(--muted);font-weight:500;min-height:1.2em}
 .belt.done small{color:#8fc4b0}
+.belt.locked{opacity:.4;cursor:not-allowed}
+.belt.locked i{filter:grayscale(1)}
 .belt:focus-visible{outline:2px solid var(--accent)}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px;text-align:center;background:rgba(15,10,7,.82)}
 .overlay h2{margin:0;font-family:var(--f-display);font-size:clamp(22px,7vw,32px);letter-spacing:.08em}
@@ -145,7 +147,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
       <h2>押忍！</h2>
       <p>跟師範有來有往：擋下他的招就有空檔打回去，被擋就換你接。第一次玩先上教學。</p>
       <div class="diffs"><button class="cta" id="tutBtn">防守教學</button><button class="cta" id="tutAtkBtn">攻擊教學</button></div>
-      <p class="sub">選擇對練等級：</p>
+      <p class="sub">選擇對練等級（打贏才解鎖下一級）：</p>
       <div class="belts" id="belts" role="group" aria-label="選擇等級"></div>
     </div>
     <div class="overlay" id="tutDone" hidden>
@@ -671,7 +673,7 @@ document.addEventListener('keydown',e=>{
   const m={a:['atk','high'],s:['atk','mid'],d:['atk','low'],ArrowUp:['def','high'],ArrowLeft:['def','mid'],ArrowRight:['def','mid'],ArrowDown:['def','low']}[k];
   if(m&&!e.repeat){e.preventDefault();act(m[0],m[1]);flashPad(m[0],m[1],'on')}
 });
-function renderBelts(){const box=$('belts');box.innerHTML='';LEVELS.forEach((L,i)=>{const b=document.createElement('button');b.className='belt'+(i<cleared?' done':'');b.innerHTML='<i></i><span></span><small></small>';b.querySelector('i').style.background=L.color;b.querySelector('span').textContent=L.name;b.querySelector('small').textContent=i<cleared?'已過關':i===cleared?'挑戰中':'';b.addEventListener('click',()=>startGame(i));box.append(b)})}
+function renderBelts(){const box=$('belts');box.innerHTML='';LEVELS.forEach((L,i)=>{const b=document.createElement('button');b.className='belt'+(i<cleared?' done':'');b.innerHTML='<i></i><span></span><small></small>';b.querySelector('i').style.background=L.color;b.querySelector('span').textContent=L.name;const locked=i>cleared;if(locked){b.disabled=true;b.classList.add('locked')}b.querySelector('small').textContent=i<cleared?'已過關':i===cleared?'挑戰中':'未解鎖';b.addEventListener('click',()=>{if(!locked)startGame(i)});box.append(b)})}
 renderBelts();
 document.querySelectorAll('.diff').forEach(b=>b.addEventListener('click',()=>{$('tutDone').hidden=true;startGame(b.dataset.d)}));
 $('tutToMenu').addEventListener('click',()=>{$('tutDone').hidden=true;renderBelts();$('menu').hidden=false});
