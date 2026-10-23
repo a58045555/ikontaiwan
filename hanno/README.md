@@ -1,6 +1,6 @@
 # 反應組手 v2.1
 
-入口：https://a58045555.github.io/ikontaiwan/hanno/
+入口：https://ikontaiwan.vercel.app/hanno/
 
 - 正式挑戰維持 15 秒、三顆心與成功 10 次解鎖下一位 sensei 的規則。
 - 新增 30 秒自由練習：所有 sensei 可練，不扣血，不寫入正式紀錄。

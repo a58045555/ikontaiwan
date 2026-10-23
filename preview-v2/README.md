@@ -1,6 +1,6 @@
 # 極真人生 v2.7 手機測試版
 
-[開始新人生](https://a58045555.github.io/ikontaiwan/preview-v2/?v=27) · [30 歲成年入門體驗](https://a58045555.github.io/ikontaiwan/preview-v2/adult-preview.html?v=27) · [弟子的下一步](https://a58045555.github.io/ikontaiwan/preview-v2/mentors-preview.html?v=27) · [三代傳承結語](https://a58045555.github.io/ikontaiwan/preview-v2/ending-preview.html?v=27)
+[開始新人生](https://ikontaiwan.vercel.app/preview-v2/?v=27) · [30 歲成年入門體驗](https://ikontaiwan.vercel.app/preview-v2/adult-preview.html?v=27) · [弟子的下一步](https://ikontaiwan.vercel.app/preview-v2/mentors-preview.html?v=27) · [三代傳承結語](https://ikontaiwan.vercel.app/preview-v2/ending-preview.html?v=27)
 
 三個示範各自使用獨立進度空間；重新整理回到固定示範起點。主測試版繼續使用原有進度空間。
 
