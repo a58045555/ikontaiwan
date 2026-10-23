@@ -583,7 +583,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <details><summary>量級與得意技</summary>
       <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶到藍帶先用「基本型」打，升上黃帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
-      <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：每年先選一個比賽目標（全台選手權、支部交流賽，或取得資格後的日本巡迴），再付報名費報型、組手或兩者；也可以整年不比賽。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
+      <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：每年先選一個比賽目標：全台選手權（前兩名可以接著打同年全日本）、支部交流賽，或取得資格後的日本巡迴（含全台選手權，保住隔年資格）。再付報名費報型、組手或兩者；也可以整年不比賽。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自動／手動）</summary>
       <p>升級 +3、大賽冠軍 +2、準優勝 +1、百人組手 +5。新手模式預設自動補齊較低的六項能力，1 點＝能力 +1，不隨腰帶漲價。想補特定能力或鬥志，可在「顯示」切換手動；一年未分配的點數仍會自動補齊。達上限的能力會跳過，剩餘點數會保留。</p></details>
     <details><summary>能力與段位加成</summary>
@@ -1054,7 +1054,7 @@ function moveset(){
 }
 
 
-const GAME_VERSION=24;
+const GAME_VERSION=25;
 const modernRules=()=>!!(S&&Number(S.setup.v)>=20);
 const AIM_NAMES={balanced:'探索自己的極真人生',champion:'挑戰競技冠軍',teacher:'成為能帶人的老師',dojo:'經營自己的道場',uchi:'走上內弟子之路',life:'讓修行陪伴日常'};
 function exactPartP(sc,need){return clamp((sc+8.5-need)/16,0,1);}
@@ -1373,17 +1373,20 @@ function growthRules(){return !!S&&Number(S.setup.v)>=22;}
    practice halves it, and nothing falls below 45% of the ability's own potential. */
 function agingRules(){return !!S&&Number(S.setup.v)>=23;}
 function oneMeetRules(){return !!S&&Number(S.setup.v)>=24;}
+function twPathRules(){return !!S&&Number(S.setup.v)>=25;}
 const JP_TOUR=['intl','jpw','jpk','jp','world'];
 function* meetAllowed(T){if(!oneMeetRules())return true;
  if(S.flags.meetY!==S.year){const left=TOURN.filter(x=>x.q>=S.q&&tDivs(x).length);if(!left.length)return false;
   const jp=left.filter(x=>JP_TOUR.includes(x.id)),tw=left.filter(x=>!JP_TOUR.includes(x.id)),half=x=>x.q<2?'上半年':'下半年',opts=[];
-  if(jp.length)opts.push({id:'jp',label:'今年跑日本巡迴',sub:[...new Set(jp.map(x=>x.short))].join(' → ')+' · 同一年拿下三冠，才有機會挑戰完全製霸',big:true});
-  for(const x of tw)opts.push({id:x.id,label:'今年只打'+x.short,sub:half(x)+' · 報名費 '+x.fee+' 萬起',big:true});
+  const legs=twPathRules()?left.filter(x=>JP_TOUR.includes(x.id)||x.id==='tw'):jp;
+  if(jp.length)opts.push({id:'jp',label:'今年跑日本巡迴',sub:[...new Set(legs.map(x=>x.short))].join(' → ')+' · 同一年拿下三冠，才有機會挑戰完全製霸',big:true});
+  for(const x of tw)opts.push({id:x.id,label:twPathRules()&&x.id==='tw'?'今年打全台選手權':'今年只打'+x.short,sub:twPathRules()&&x.id==='tw'?half(x)+' · 拿下前兩名，可以接著打同年全日本':half(x)+' · 報名費 '+x.fee+' 萬起',big:true});
   opts.push({id:'none',label:'今年不比賽，專心稽古',sub:'把這一年留給練習和道場',big:true});
   const ri=jp.length?'jp':(tw.find(x=>x.id==='tw')||tw[0]).id;opts.forEach(o=>o.rec=o.id===ri);
-  const c=yield P('今年的比賽',tipOnce('meet1','每年只選一個比賽目標。取得全日本資格後，日本巡迴（國際大會、全日本體重別或型、全日本或世界大賽）算一個目標，可以連著打。')+'今年想把力氣放在哪一個舞台？',opts);
+  const c=yield P('今年的比賽',tipOnce('meet1',twPathRules()?'每年只選一個比賽目標。全台選手權前兩名可以接著打同年全日本；取得全日本資格後，日本巡迴（國際大會、全日本體重別或型、全台選手權、全日本或世界大賽）算一個目標，可以連著打。':'每年只選一個比賽目標。取得全日本資格後，日本巡迴（國際大會、全日本體重別或型、全日本或世界大賽）算一個目標，可以連著打。')+'今年想把力氣放在哪一個舞台？',opts);
   S.flags.meetY=S.year;S.flags.meet=c;if(c==='none')say('今年不出賽。你把報名費省下來，全部換成道場裡的汗水。');}
- const m=S.flags.meet;return m==='jp'?JP_TOUR.includes(T.id):m===T.id;}
+ const m=S.flags.meet;if(twPathRules()){if(m==='jp')return JP_TOUR.includes(T.id)||T.id==='tw';if(m==='tw')return T.id==='tw'||T.id==='jp'||T.id==='world';}
+ return m==='jp'?JP_TOUR.includes(T.id):m===T.id;}
 const AGE_ON={spd:28,sta:30,pow:33,con:35};
 function agingTick(){
   const done=(S.flags.trainN||0)+(S.flags.practiceTrain||0),trained=done-(S.flags.ageTrain0||0)>=2||!!S.flags.selfT;S.flags.ageTrain0=done;
@@ -4307,7 +4310,7 @@ function baseGrowthValidate(setup,choices){
     !Array.isArray(choices)||choices.length>SAVE_MAX_CHOICES||choices.some(c=>typeof c!=='string'||!c.length||c.length>256))
     throw new Error('存檔內容不完整或不支援');
   if(Number(setup.v)>=20){
-    if(![20,21,22,23,24].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
+    if(![20,21,22,23,24,25].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
     if(setup.aim&&!Object.hasOwn(AIM_NAMES,setup.aim))throw new Error('志向設定不正確');
     if(setup.daily){const fixed=challengeSetup(setup.daily,setup.name,setup.v);for(const k of Object.keys(fixed))if(setup[k]!==fixed[k])throw new Error('每日挑戰設定已變更');
       if(Object.keys(setup).some(k=>!Object.hasOwn(fixed,k)))throw new Error('每日挑戰包含額外設定');}

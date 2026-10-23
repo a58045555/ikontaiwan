@@ -78,6 +78,27 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則23相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:23,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V23[entry]);
  });
+ // Recorded from the rule 24 game before rule 25 existed: putting 全台 on the Japan path must not touch these lives.
+ const V24={"youth": "1bcf51f0336bb1abaa4ca37577acdcbfa198322159db7317226e353e7ed93abc", "practice": "b48d391aae8b19ebe8ee7827eabd37f52ebc711f1f3e1e419cca5a57d8d0135b", "adult": "11d5db0f565a3055a05fdfd1b5819f12427575eed8cf1598d928bf4027084469", "mature": "b219af6804737f77c0c0ccd4aaff19fbe60949c51b9a124dd30a67452f974575"};
+ for(const entry of Object.keys(V24))test(file+' rule 24 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則24相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:24,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V24[entry]);
+ });
+ test(file+' rule 25 keeps 全台 on the road to Japan',()=>{
+  let twInJapanYears=0,japanAfterTw=0;
+  for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
+   const r=JSON.parse(life({seed:5000+k*7919,name:'規則25',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim,mode:'easy',route,v:25,entry:'youth'},
+    `startGame(cfg,[]);const JP=['intl','jpw','jpk','jp','world'],per={},bad=[];
+     const ok=(plan,id)=>plan==='jp'?(JP.includes(id)||id==='tw'):plan==='tw'?(id==='tw'||id==='jp'||id==='world'):plan===id;
+     for(let i=0;i<12000&&G.prompt.kind!=='end';i++){const t=G.prompt.title||'';const T=TOURN.find(x=>x.name===t);const isT=T&&G.prompt.opts&&G.prompt.opts.some(o=>o.id==='skip');
+      if(isT){const plan=S.flags.meetY===S.year?S.flags.meet:null;if(!ok(plan,T.id))bad.push(S.year+':'+T.id+':'+plan);const y=per[S.year]=per[S.year]||{plan,ids:[]};y.ids.push(T.id);}
+      const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+     JSON.stringify({end:G.prompt.kind==='end',bad,years:Object.values(per)})`));
+   assert.ok(r.end,'life reaches its ending');assert.deepEqual(r.bad,[],'every tournament matches that year\'s target');
+   for(const y of r.years){const tw=y.ids.filter(x=>x==='tw').length,local=y.ids.filter(x=>x==='local').length;assert.ok(tw+local<=1,'at most one Taiwan-side tournament a year');
+    if(y.plan==='jp'&&tw)twInJapanYears++;if(y.plan==='tw'&&y.ids.some(x=>x==='jp'||x==='world'))japanAfterTw++;}}
+  assert.ok(twInJapanYears>0,'the Japan tour includes 全台選手權');assert.ok(japanAfterTw>0,'a top-two 全台 finish leads on to that year\'s 全日本');
+ });
  test(file+' rule 24 offers one tournament target a year and keeps the Japan tour together',()=>{
   let japanYears=0,asked=0;
   for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
