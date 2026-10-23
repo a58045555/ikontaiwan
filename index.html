@@ -142,7 +142,9 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 #card.battle .bsum.top{margin:4px auto 0;padding:1px 10px;font-size:12px}
 #card.battle .tellc{margin:4px 0 0;padding:4px 8px;font-size:12px}
 #card.battle .tellc em{font-size:11px}
-#card.battle .tbar{margin:4px 0;height:18px}
+#card.battle .tbar{margin:4px 0 0;height:14px}
+#card.battle .tbcap{font-size:11.5px}
+#card.battle.atbwait .tbar::after{top:0;font-size:9.5px;line-height:12px}
 #card.battle .moves{gap:6px}
 #card.battle .moves .opt{padding:5px 8px 5px 20px;min-height:0}
 #card.battle .moves .opt::before{left:6px;top:7px}
@@ -155,6 +157,7 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 #card.battle .nowbar b{font-size:13px}
 }
 .atbx.one{overflow:hidden}.atbx.one .ord{flex-shrink:0}.atbx.one .ord i{padding:0 3px;font-size:10px}.atbx.one .trk{min-width:40px}
+.tbcap{margin:2px 4px 0;font-size:12.5px;font-weight:700;color:#f3ecdc;line-height:1.45}.tbcap b{color:#ffe14a}.tbcap small{display:block;font-size:10.5px;font-weight:500;opacity:.8}
 .tres{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:8px 12px;border:3px solid #26223b;margin:2px 0 4px}.tres b{font-size:22px;font-weight:900;letter-spacing:.1em}.tres span{font-size:13px;font-weight:700;color:#26223b}.tres.win{background:#ffe9a8}.tres.win b{color:#c8352b}.tres.silver{background:#eef0f4}.tres.silver b{color:#4a5070}.tres.lose{background:#e3e0ec}.tres.lose b{color:#3f4a7a}.rstamp{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-8deg);font-size:44px;font-weight:900;line-height:1.2;padding:2px 18px;border:5px solid;background:rgba(255,255,255,.88);letter-spacing:.12em;white-space:nowrap;z-index:5;animation:rstampIn .35s ease-out;pointer-events:none}.rstamp.win{color:#c8352b;border-color:#c8352b}.rstamp.lose{color:#3f4a7a;border-color:#3f4a7a}@keyframes rstampIn{from{transform:translate(-50%,-50%) rotate(-8deg) scale(1.8);opacity:0}}
 .lines.prev{margin:0 0 4px;border:2px solid #26223b;border-left:6px solid var(--gold,#e3aa45);background:#fff8e4;color:var(--ink)}.prevtag{display:block;font-size:15px;font-weight:900;letter-spacing:.06em;color:#26223b;padding-bottom:4px;border-bottom:2px dashed rgba(38,34,59,.2)}.prevtag small{display:block;font-size:11px;font-weight:500;letter-spacing:0;color:#6a6280;margin-top:1px}.prevsep{border-top:2px dashed rgba(0,0,0,.18);margin:10px 0 12px}
 .q{margin:0;font-size:15px}
@@ -4706,7 +4709,7 @@ let BLAST=null;
 function bSpd(){if(typeof S!=='undefined'&&S&&S.flags&&S.flags.firstEasy)return 1;try{return localStorage.getItem('kl-bspd')==='1'?1:2;}catch(e){return 2;}}
 let TBW=.2,TBS=1;
 function tellHTML(i){const t=i&&i.tell;if(!t)return '';return `<div class="tellc"><b>${esc(t.who)}</b>「${t.t}」${t.atk?`<em>→ 按「受け」看穿：反擊 ×1.5、氣 +1${t.fk?'<br>⚠ 這個對手會假動作，不一定是真的':''}</em>`:''}</div>`;}
-function timingBar(){const l=(50-TBW*50).toFixed(1),r=(50+TBW*50).toFixed(1);return `<div class="tbar" style="background:linear-gradient(90deg,#eee ${l}%,#ffe14a ${l}%,#ffe14a ${r}%,#eee ${r}%)"><i style="animation-duration:${(1.1*TBS).toFixed(2)}s"></i><span>黃區按招＝時機完美・寬 ${Math.round(TBW*100)}%（升段變寬）</span></div>`;}
+function timingBar(){const l=(50-TBW*50).toFixed(1),r=(50+TBW*50).toFixed(1);return `<div class="tbar" style="background:linear-gradient(90deg,#eee ${l}%,#ffe14a ${l}%,#ffe14a ${r}%,#eee ${r}%)"><i style="animation-duration:${(1.1*TBS).toFixed(2)}s"></i></div><div class="tbcap">⏱ 紅線跑到<b>黃色區</b>時按下招式＝<b>時機完美</b>（威力 +12%）<small>黃區寬 ${Math.round(TBW*100)}%，升段會變寬</small></div>`;}
 function tbHit(){const bar=document.querySelector('.tbar'),c=bar&&bar.querySelector('i');if(!c)return false;const B=bar.getBoundingClientRect(),C=c.getBoundingClientRect();const x=(C.left+C.width/2-B.left)/B.width;return Math.abs(x-.5)<=TBW/2;}
 
 function poseKey(f,type){const bk=HERO_KEYS[Math.min(6,f.belt|0)];
