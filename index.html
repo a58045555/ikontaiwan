@@ -121,6 +121,7 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 .evtag{display:block;width:fit-content;max-width:100%;box-sizing:border-box;margin:6px 0 -2px;padding:3px 10px;font-size:12px;font-weight:900;letter-spacing:.1em;color:#fff;background:#4a5a9a;border:2px solid var(--ink)}.evtag.t-teach{background:#2f7d6b}.evtag.t-dojo{background:#c06a2b}.evtag.t-train{background:#4a5a9a}.evtag.t-life{background:#8a5aa8}.evtag.t-judge{background:#b8434a}
 .mikiri{margin:8px 0;padding:10px 12px;background:#26223b;color:#fff;border:3px solid #f2c24f;display:flex;flex-direction:column;gap:2px;animation:rstampIn .3s ease-out}.mikiri b{font-size:20px;color:#f2c24f;letter-spacing:.1em}.mikiri span{font-size:13px}.mkpop .kgbox b.mkt{font-size:24px;color:#d9484f;letter-spacing:.12em}
 .tg.mvlv{background:#26223b;color:#f2c24f}
+.bdg.psv{background:#26223b;color:#f2c24f;border-color:#26223b}.psvlist>div{margin-top:4px;font-size:13px}.psvlist .not{color:var(--muted);opacity:.75}.psvok{font-style:normal;font-weight:800;color:#2f8a4a;margin-right:6px}.psvlist small{font-size:10px;margin-left:4px;padding:0 4px;border:1px solid currentColor}
 .tres{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:8px 12px;border:3px solid #26223b;margin:2px 0 4px}.tres b{font-size:22px;font-weight:900;letter-spacing:.1em}.tres span{font-size:13px;font-weight:700;color:#26223b}.tres.win{background:#ffe9a8}.tres.win b{color:#c8352b}.tres.silver{background:#eef0f4}.tres.silver b{color:#4a5070}.tres.lose{background:#e3e0ec}.tres.lose b{color:#3f4a7a}.rstamp{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-8deg);font-size:44px;font-weight:900;line-height:1.2;padding:2px 18px;border:5px solid;background:rgba(255,255,255,.88);letter-spacing:.12em;white-space:nowrap;z-index:5;animation:rstampIn .35s ease-out;pointer-events:none}.rstamp.win{color:#c8352b;border-color:#c8352b}.rstamp.lose{color:#3f4a7a;border-color:#3f4a7a}@keyframes rstampIn{from{transform:translate(-50%,-50%) rotate(-8deg) scale(1.8);opacity:0}}
 .lines.prev{margin:0 0 4px;border:2px solid #26223b;border-left:6px solid var(--gold,#e3aa45);background:#fff8e4;color:var(--ink)}.prevtag{display:block;font-size:15px;font-weight:900;letter-spacing:.06em;color:#26223b;padding-bottom:4px;border-bottom:2px dashed rgba(38,34,59,.2)}.prevtag small{display:block;font-size:11px;font-weight:500;letter-spacing:0;color:#6a6280;margin-top:1px}.prevsep{border-top:2px dashed rgba(0,0,0,.18);margin:10px 0 12px}
 .q{margin:0;font-size:15px}
@@ -1062,7 +1063,7 @@ function moveset(){
 }
 
 
-const GAME_VERSION=28;
+const GAME_VERSION=29;
 const modernRules=()=>!!(S&&Number(S.setup.v)>=20);
 const AIM_NAMES={balanced:'探索自己的極真人生',champion:'挑戰競技冠軍',teacher:'成為能帶人的老師',dojo:'經營自己的道場',uchi:'走上內弟子之路',life:'讓修行陪伴日常'};
 function exactPartP(sc,need){return clamp((sc+8.5-need)/16,0,1);}
@@ -1385,6 +1386,20 @@ function twPathRules(){return !!S&&Number(S.setup.v)>=25;}
 function onlyTwRules(){return !!S&&Number(S.setup.v)>=26;}
 function mikiriRules(){return !!S&&Number(S.setup.v)>=27;}
 function mvRules(){return !!S&&Number(S.setup.v)>=28;}
+function psvRules(){return !!S&&Number(S.setup.v)>=29;}
+// Rule 29: passive skills learned through training or a mentor event.
+const PSV={
+  iron:{n:'銅牆鐵壁',ic:'🛡',kind:'組手',d:'防禦 +8%・不容易被打出有效',cards:['tbody','u_xg','shyk','rehab'],need:12,how:'鍛體類稽古練 12 次後，每次再練有機會領悟'},
+  swift:{n:'疾風步',ic:'💨',kind:'組手',d:'行動條 +5%・看破迴避成功率 +10%',cards:['trun','kido','u_zhu','mdeg','u_tn'],need:12,how:'跑山、移動類稽古練 12 次後，每次再練有機會領悟'},
+  fist:{n:'鐵拳',ic:'👊',kind:'組手',d:'拳（突）傷害 +10%',cards:['kb','twt','u_cz','mjis'],need:12,how:'基本、重量、實戰稽古練 12 次後，每次再練有機會領悟'},
+  eye:{n:'看破之眼',ic:'👁',kind:'組手',d:'看破機率 +10%',how:'比賽中看破 8 次'},
+  fudo:{n:'不動心',ic:'🔥',kind:'組手',d:'落後時攻擊 +8%',how:'被打出有效還逆轉獲勝 2 次'},
+  kata:{n:'型之心',ic:'🌀',kind:'型',d:'型比賽 +2・審查「型」+3',cards:['kkata','kdet','u_feng','kshi','kboss'],need:15,how:'型類稽古練 15 次後，每次再練有機會領悟'},
+  breath:{n:'呼吸法',ic:'🌬',kind:'型',d:'每場開場氣 +1・休養回復體況 +10%',cards:['rest','rehab','syama','yama'],need:10,how:'休養或入山修行 10 次後，每次再休有機會領悟'}
+};
+const hasP=k=>psvRules()&&(S.psv||[]).includes(k);
+function psvTrain(c){if(!psvRules())return;S.pc=S.pc||{};for(const k in PSV){const P=PSV[k];if(!P.cards||!P.cards.includes(c)||hasP(k))continue;S.pc[k]=(S.pc[k]||0)+1;if(S.pc[k]>=P.need&&r()<.25)learnP(k);}}
+function learnP(k){if(hasP(k))return;S.psv=S.psv||[];S.psv.push(k);const P=PSV[k];say(`<span class="tg crit">領悟被動技能</span>${P.ic} <b>${P.n}</b>（${P.kind}）：${P.d}`);log(`領悟被動技能「${P.n}」`,'gold');}
 const JP_TOUR=['intl','jpw','jpk','jp','world'];
 function* meetAllowed(T){if(!oneMeetRules())return true;
  if(S.flags.meetY!==S.year){const left=TOURN.filter(x=>x.q>=S.q&&tDivs(x).length);if(!left.length)return false;
@@ -1432,13 +1447,13 @@ function* practiceJourney(first=false){
   const c=yield P('生活裡的稽古（半年）',`<b>${S.age} 歲・${S.year} 年${S.q===1?'上半年':'下半年'}</b><br>小願望：${practiceGoalName()}${S.flags.practiceGoalDone?' ✓':''}<br>這半年，想把時間留給哪件事？`,opts);
   if(c==='practice-open'){if(yield* openDojo()){S.flags.practiceJourney=0;const result=yield* ownerMode();return result==='closed'?'closed':'dojo';}}
   else if(c==='practice-staff'){S.flags.practiceJourney=0;return yield* postCareer('staff');}
-  else if(c==='practice-basics'){for(const k of ['pow','spd','sta','tec','con','res'])practiceGrow(k,2.8);grow('spi',1);kmGain(focusKata(),8);for(const k of unlockedKata())if(k.n!==focusKata())kmGain(k.n,1.5);bump('hp',-4);S.flags.trainN=(S.flags.trainN||0)+1;S.flags.practiceTrain=(S.flags.practiceTrain||0)+1;say('sensei 把今天的內容拆成幾個小步驟。基本、型與體能各練一點，你開始看清楚，下一次能先補哪裡。');}
-  else if(c==='practice-rest'){S.flags.restN=(S.flags.restN||0)+1;bump('hp',24);if(S.injury)S.injury.left-=2;practiceRemember('休養','你沒有用逞強換進度，替下一次練習留了餘地。');}
+  else if(c==='practice-basics'){for(const k of ['pow','spd','sta','tec','con','res'])practiceGrow(k,2.8);grow('spi',1);kmGain(focusKata(),8);for(const k of unlockedKata())if(k.n!==focusKata())kmGain(k.n,1.5);bump('hp',-4);S.flags.trainN=(S.flags.trainN||0)+1;S.flags.practiceTrain=(S.flags.practiceTrain||0)+1;psvTrain('kb');psvTrain('kkata');say('sensei 把今天的內容拆成幾個小步驟。基本、型與體能各練一點，你開始看清楚，下一次能先補哪裡。');}
+  else if(c==='practice-rest'){S.flags.restN=(S.flags.restN||0)+1;psvTrain('rest');bump('hp',24);if(S.injury)S.injury.left-=2;practiceRemember('休養','你沒有用逞強換進度，替下一次練習留了餘地。');}
   else if(c==='practice-help'){S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;S.fame+=.5;grow('tec',1);grow('spi',1.5);practiceRemember('陪伴','你帶新同門認識道場，把當初想有人說明的小事，一件件說清楚。');}
   else if(c==='practice-meet'){for(const t of tours)yield* tourney(t);practiceRemember('交流','你依當季資格參加賽事，把練習帶到場上。');}
   else if(TX(c)){
    const t=TX(c),before=snap(),am=attrMul(t.attr)*(pk()[t.fam]||1)*lvMul(c)*1.35;
-   if(t.card){S.clv=S.clv||{};S.clv[c]=(S.clv[c]||0)+1;}for(const k in t.g)practiceGrow(k,t.g[k]*1.12*am);bump('hp',t.hp*(t.hp>0?.8:.6));if(t.cost)S.money-=t.cost;
+   if(t.card){S.clv=S.clv||{};S.clv[c]=(S.clv[c]||0)+1;}psvTrain(c);for(const k in t.g)practiceGrow(k,t.g[k]*1.12*am);bump('hp',t.hp*(t.hp>0?.8:.6));if(t.cost)S.money-=t.cost;
    if(t.prep){kmGain(focusKata(),kataGainAmt(t));for(const k of unlockedKata())if(k.n!==focusKata())kmGain(k.n,1.2);}
    if(t.heal&&S.injury)S.injury.left-=t.heal;if(CARDS[c]?.kids)S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;
    if(r()<(t.inj||0)*.35*injMul()*(S.hp<40?1.8:1))say('這次練習受傷：'+injure(1));
@@ -1771,7 +1786,7 @@ function makeOpp(T,i){
 }
 
 /* ===== battle engine ===== */
-function mkMe(){const _m=mkMe0();const dl=Math.max(-1,Math.min(1,S.kgD||0));if(dl){_m.atk*=1+.05*dl;_m.maxHp=Math.round(_m.maxHp*(1+.04*dl));_m.hp=Math.round(_m.hp*(1+.04*dl));_m.spd-=5*dl;}if(S.flags&&S.flags.cut){_m.atk*=.97;}return _m;}
+function mkMe(){const _m=mkMe0();const dl=Math.max(-1,Math.min(1,S.kgD||0));if(dl){_m.atk*=1+.05*dl;_m.maxHp=Math.round(_m.maxHp*(1+.04*dl));_m.hp=Math.round(_m.hp*(1+.04*dl));_m.spd-=5*dl;}if(S.flags&&S.flags.cut){_m.atk*=.97;}if(psvRules()){if(hasP('iron')){_m.def*=1.08;_m.ironW=.05;}if(hasP('swift'))_m.atbB=1.05;if(hasP('fist'))_m.punchMul=(_m.punchMul||1)*1.1;if(hasP('breath')){_m.kiMax+=1;_m.ki+=1;}}return _m;}
 function mkMe0(){
   const maxHp=Math.round(45+est('sta')*.5+est('con')*.3+est('res')*.1+((WCLS[S.wc]||{}).hp||0));const kiMax=3+Math.floor(est('sta')/25);
   return {me:true,name:S.name,sub:homeNow().n,type:STYLE_TYPE[S.style],maxHp,hp:Math.round(maxHp*(.7+.3*Math.min(1,S.hp/80))*(S.injury?[1,.95,.85,.7][S.injury.sev]:1)),
@@ -1801,7 +1816,7 @@ function dmgCalc(att,def,m,crit,em){
 }
 const LN=(cls,h)=>`<div class="ln ${cls}">${h}</div>`;
 function checkWaza(victim,attacker,d,L){
-  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000:(victim.wazaTh||.3))){attacker.waza++;L.push(LN('sys',`<span class="tg waza">有效！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個有效`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
+  if(victim.hp>0&&d>=victim.maxHp*(victim.me?.3+est('res')/1000+(victim.ironW||0):(victim.wazaTh||.3))){attacker.waza++;L.push(LN('sys',`<span class="tg waza">有效！</span>${esc(attacker.name)}拿下第 ${attacker.waza} 個有效`));if(attacker.waza>=2){victim.hp=0;victim.awase=1;L.push(LN('sys','<span class="tg waza">合技一本！</span>'));}}
 }
 let BEVQ=[],BTL=[];var REPLAY=false,GM_SEEN=new Set();function gm(n){if(REPLAY||GM_SEEN.has(n))return;GM_SEEN.add(n);try{if(typeof gc==='function')gc(n,true);}catch(e){}}
 function act(att,def,key,L,scout,force){
@@ -1861,7 +1876,7 @@ function wcApply(me,foe){
   Lt.spd+=6*n;
 }
 const FOE_ADJ=2.2;
-const ATB_RATE=f=>Math.max(4,10*(1+(f.spd*(1-.08*f.leg)*(1-.04*(f.press||0))-60)/130));
+const ATB_RATE=f=>Math.max(4,10*(1+(f.spd*(1-.08*f.leg)*(1-.04*(f.press||0))-60)/130)*(f.atbB||1));
 function* battle(T,opp,rn,quick){
   const me=mkMe(),foe=mkFoe(opp);foe.wc=opp.wc||S.wc;me.wc=S.wc;wcApply(me,foe);const grudge=!!(S.lossMem||{})[opp.name]&&T.id!=='tour';if(grudge)me.atk*=1.03;const kuy=!!S.flags.kuyashii&&T.id!=='tour'&&T.id!=='trial';if(kuy){me.atk*=1.03;S.flags.kuyashii=0;}if(opp.mk)foe.mk=opp.mk;const start=me.hp,hp0=S.hp;
   me.side='aka';foe.side='shiro';BEVQ=[];BTL=[];if(!quick&&T.id!=='trial')gm('第一次親自對戰');let firstPage=1;
@@ -1880,7 +1895,7 @@ function* battle(T,opp,rn,quick){
     if(!x.me&&x.feint){x.feint=0;L.push(LN('sys','<span class="tg dn">假動作</span>他只是作勢，根本沒出招！'));}
     if(x.guard&&!force){x.read=0;if(x.me)L.push(LN('sys','對手沒有正面攻來，你的架式落空了。'));else L.push(LN('sys',`${esc(x.name)}的架式落空了。`));x.guard=false;}
     x.ki=Math.min(x.kiMax,x.ki+1);if(MOVES[k].ki>x.ki)k=aiPick(x,y);
-    const atkM=x.me&&spiOn?1+S.st.spi/900:1;const combo=last===x&&!MOVES[k].rest&&!MOVES[k].guard;
+    const atkM=(x.me&&spiOn?1+S.st.spi/900:1)*(x.me&&hasP('fudo')&&x.hp/x.maxHp<y.hp/y.maxHp?1.08:1);const combo=last===x&&!MOVES[k].rest&&!MOVES[k].guard;
     const mul=atkM*(combo?1.08:1);x.atk*=mul;
     const yh=y.hp;act(x,y,k,L,x.me&&scout,force);x.atk/=mul;last=x;
     if(combo&&y.hp<yh)L.push(LN('sys','<span class="tg crit">連續攻擊</span>'+(x.me?'你':esc(x.name))+'搶到節奏，接著再打'));
@@ -1914,8 +1929,8 @@ function* battle(T,opp,rn,quick){
       }else if(mr)fdo(me,foe,mk);
       else{const fk=fNext;let dodged=false;
         // Rule 27 看破: sometimes the player reads the attack and picks 擋下 (safe) or 迴避 (a gamble on speed).
-        if(mikiriRules()&&!auto&&!quick&&T.id!=='trial'&&!MOVES[fk].rest&&!MOVES[fk].guard&&!me.guard&&me.hp>0&&foe.hp>0&&r()<clamp(.3+(me.tec-foe.spd)*.004+(me.spd-foe.spd)*.003,.15,.5)){
-          const pd=clamp(.55+(me.spd-foe.spd)*.01,.25,.85),mv=MOVES[fk];
+        if(mikiriRules()&&!auto&&!quick&&T.id!=='trial'&&!MOVES[fk].rest&&!MOVES[fk].guard&&!me.guard&&me.hp>0&&foe.hp>0&&r()<clamp(.3+(me.tec-foe.spd)*.004+(me.spd-foe.spd)*.003+(hasP('eye')?.1:0),.15,hasP('eye')?.6:.5)){if(psvRules())S.flags.mkN=(S.flags.mkN||0)+1;
+          const pd=clamp(.55+(me.spd-foe.spd)*.01+(hasP('swift')?.1:0),.25,hasP('swift')?.95:.85),mv=MOVES[fk];
           L.push(LN('sys','<span class="tg crit">看破</span>你看穿了他的「'+mv.n+'」！'));
           let c=yield BP(me,foe,L,[{id:'block',label:'🛡 擋下',sub:'一定成功・傷害只剩 30%，並反擊一下'},{id:'dodge',label:'💨 迴避',sub:`成功率約 ${Math.round(pd*100)}%・成功完全不受傷、搶到下一拍；失敗吃全傷`}],ttl(),Object.assign(info(),{mikiri:{n:mv.n,cat:mv.cat,pd}}));L=[];
           c=String(c).replace(/!$/,'');
@@ -1961,6 +1976,7 @@ function* battle(T,opp,rn,quick){
   if(!quick)yield BP(me,foe,L,[{id:'ok',label:result.win?'押忍！':'押忍……',wide:1}],`${T.short} 組手 ${rn} · ${result.win?'勝利':'落敗'}`,{phase:'結束',t:0,end:0});
   if(result.win)S.w++;else S.l++;
   if(MV_NOTE.length){MV_NOTE.forEach(t=>say(t));MV_NOTE=[];}
+  if(psvRules()&&T.id!=='trial'){if(result.win&&foe.waza>=1)S.flags.cbN=(S.flags.cbN||0)+1;if((S.flags.mkN||0)>=8)learnP('eye');if((S.flags.cbN||0)>=2)learnP('fudo');}
   const taken=Math.max(0,start-me.hp)/me.maxHp;
   S.hp=Math.max(5,S.hp-taken*14);
   let inj=null;if(r()<(taken*.14+(result.win?0:.03)+(S.hp<35?.05:0))*injMul())inj=injure(1);
@@ -2022,7 +2038,7 @@ function kataChoices(){return unlockedKata().slice(-5);}
 const kataBeats=k=>3+Math.ceil(k.d/2);
 const kataZone=k=>clamp(.10+km(k.n)/100*.14-(k.d-1)*.008,.06,.22);
 function kataParse(c){const m=/^(.*?)!(?:(\d+)\/(\d+)\/(\d+))?$/.exec(c||'');if(!m)return {n:c,rh:null,kt:0};return {n:m[1],kt:1,rh:m[2]!=null?{h:+m[2],n:+m[3],st:+m[4]}:null};}
-function kataScore(k){return (km(k.n)*.5+est('tec')*.25+S.st.spi*.1+k.d*2.5+kataSpec()+(hasT('calm')?2:0)+(hasT('flex')?1.5:0)+moodNow().b*.6+clutchB(S.curT)+S.flags.kataB+(pk().kata||0))*(.85+.15*Math.min(1,S.hp/80));}
+function kataScore(k){return (km(k.n)*.5+est('tec')*.25+S.st.spi*.1+k.d*2.5+kataSpec()+(hasT('calm')?2:0)+(hasP('kata')?2:0)+(hasT('flex')?1.5:0)+moodNow().b*.6+clutchB(S.curT)+S.flags.kataB+(pk().kata||0))*(.85+.15*Math.min(1,S.hp/80));}
 function kataPow(){const ch=kataChoices();return Math.max(...ch.map(kataScore));}
 function mistakeP(k){return clamp((.03+(k.d*11-km(k.n))/150)*(hasT('clumsy')?1.4:1),.02,.6);}
 const toPts=x=>clamp(5+x/22,5,9.95);
@@ -2182,7 +2198,7 @@ function examInfo(n){
 function examParts(I){
   return [
     {n:'基本・移動',sc:S.st.tec*.7+S.st.spd*.3+(pk().exam||0)+(hasT('calm')?2:0)-(hasT('proud')?2:0)+(hasT('humble')?1:0)+moodNow().b*.5},
-    {n:'型',sc:S.st.tec*.35+S.st.spi*.2+km(I.kata)*.45+(S.flags.kataPrep?4:0)+(S.route==='kata'?3:0)+(pk().exam||0)},
+    {n:'型',sc:S.st.tec*.35+S.st.spi*.2+km(I.kata)*.45+(S.flags.kataPrep?4:0)+(hasP('kata')?3:0)+(S.route==='kata'?3:0)+(pk().exam||0)},
     {n:'體力測試',sc:S.st.sta*.6+S.st.pow*.25+S.st.con*.15},
     {n:I.kumi?`${I.kumi}人組手`:'組手',sc:(S.st.pow+S.st.spd+S.st.sta+S.st.tec)/4*(.72+.28*Math.min(1,S.hp/80))+S.st.spi*.12-4-(S.route==='kata'?3:0)}
   ];
@@ -2741,6 +2757,9 @@ function* ev(title,body,opts){
 }
 const H=k=>v=>{S.home[k]=clamp(S.home[k]+v,0,100);};
 const EVENTS=[
+  {id:'p_elder',cond:()=>psvRules()&&S.age>=16&&Object.keys(PSV).some(k=>k!=='eye'&&!hasP(k)),run:()=>ev('老前輩的指點','道場來了一位練了四十年的老前輩。下課後他留下來，看了你幾眼：「想學點東西嗎？」',
+    [{l:'請教組手的心得',s:'可能領悟組手的被動技能',do(){const ks=['iron','swift','fist','fudo'].filter(k=>!hasP(k));if(!ks.length){fx({tec:1,spi:1});return '他笑了：「你已經懂了。」';}learnP(ks[Math.floor(r()*ks.length)]);return '他抓著你的手臂調整了幾次角度。你突然懂了。';}},
+     {l:'請教型的心得',s:'可能領悟型的被動技能',do(){const ks=['kata','breath'].filter(k=>!hasP(k));if(!ks.length){fx({tec:1,spi:1});return '他看完你的型，只點了點頭。';}learnP(ks[Math.floor(r()*ks.length)]);return '他打了一遍太極，你看著看著，呼吸也跟著慢了下來。';}}])},
   {id:'m_kai3',cond:()=>S.rank>=6,run:()=>ev('凱師範的黑帶','你第一次繫上黑帶那天，凱師範幫你把結重新打了一次：「黑帶不是終點。從今天起，你要開始被學弟看了。」',
     [{l:'「押忍！我會做好榜樣。」',s:'名聲↑ 鬥志↑',fx:{fame:1,spi:2},t:'凱師範笑著拍了一下你的腰帶結。'},{l:'低頭看著黑帶說不出話',s:'鬥志↑↑',fx:{spi:3},t:'凱師範什麼都沒說，只是站在旁邊陪你。'}])},
   {id:'m_914c',cond:()=>atHome('pingtung','zuoying')&&S.rank>=3,run:()=>ev('914 sensei 的型','審查前，914 sensei 把你留下來，一個動作一個動作地看你的型：「這裡，慢半拍。這裡，眼睛沒有看對手。」',
@@ -3351,7 +3370,7 @@ function* selfTrain(){
   for(const k in T.g)grow(k,T.g[k]*1.12*am);
   bump('hp',T.hp*(T.hp>0?.8:.6));if(T.cost)S.money-=T.cost;if(T.heal&&S.injury)S.injury.left-=T.heal;
   if(T.prep)kmGain(focusKata(),kataGainAmt(T)*.6);
-  S.flags.selfT=(S.flags.selfT||0)+1;
+  S.flags.selfT=(S.flags.selfT||0)+1;psvTrain(c);
   say(`<span class="lbl">${T.n}${T.card?` Lv${cardLv(c)+1}`:''}</span>${diff(s0)}`);
   {const tk=trainTalk(c);if(tk)say(`<span class="talk">${tk}</span>`);}
   {const fam=(TX(c)||{}).fam||c;const tip=REAL_TIP[fam];S.flags.rtip=S.flags.rtip||{};if(tip&&!S.flags.rtip[fam]&&S.path!=='uchi'){S.flags.rtip[fam]=1;say(`<span class="realtip">🥋 真實的極真：${tip}<a href="${IG_URL}" target="_blank" rel="noopener">看道場的稽古 →</a></span>`);}}
@@ -3828,12 +3847,13 @@ function* baseGrowthLife(){
         if(CARDS[c]&&CARDS[c].kids){S.flags.kidsHelp=(S.flags.kidsHelp||0)+1;S.fame+=.5;}
         if(T.fam==='kumite'&&hasT('wimp'))am*=.9;if(T.fam==='kihon'&&hasT('sleepy'))am*=.88;if(['kshi','kboss','u_feng'].includes(c)&&hasT('stubborn'))am*=.9;if(hasT('hard')&&T.hp<0)bump('hp',-2);
         for(const k in T.g)grow(k,T.g[k]*1.12*am*(k==='spi'?(.8+homeNow().mood/250):1));
-        bump('hp',T.hp*(T.hp>0?.8:.6));if(T.wear)bump('wear',T.wear);if(T.cost)S.money-=T.cost;
+        bump('hp',T.hp*(T.hp>0?.8:.6)*(T.hp>0&&hasP('breath')?1.1:1));if(T.wear)bump('wear',T.wear);if(T.cost)S.money-=T.cost;
         if(T.prep){S.flags.kataPrep=1;const fk=focusKata();kmGain(fk,kataGainAmt(T));unlockedKata().forEach(x=>{if(x.n!==fk)kmGain(x.n,1.2);});}
         if(S.path==='uchi')bump('hp',-5);
         if(T.heal)S.flags.healed=T.heal;
         if(T.card||TRAIN[c])S.flags.trainN=(S.flags.trainN||0)+1;kgDrift(T.g||{});if(c==='rest'||c==='rehab')S.flags.restN=(S.flags.restN||0)+1;if(c==='syama'||c==='yama')S.flags.yamaN=(S.flags.yamaN||0)+1;
         if(r()<T.inj*.6*injMul()*(S.hp<40?1.8:1)){const n=injure(1);say(`<span class="bad">稽古中受傷：${n}</span>`);}
+        psvTrain(c);
       }
       S.flags.teachHalf=0;
       const J=jobNow();if(J.pay){bump('hp',J.hp);if(J.stat)for(const k in J.stat)grow(k,J.stat[k]);}
@@ -4341,7 +4361,7 @@ function baseGrowthValidate(setup,choices){
     !Array.isArray(choices)||choices.length>SAVE_MAX_CHOICES||choices.some(c=>typeof c!=='string'||!c.length||c.length>256))
     throw new Error('存檔內容不完整或不支援');
   if(Number(setup.v)>=20){
-    if(![20,21,22,23,24,25,26,27,28].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
+    if(![20,21,22,23,24,25,26,27,28,29].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
     if(setup.aim&&!Object.hasOwn(AIM_NAMES,setup.aim))throw new Error('志向設定不正確');
     if(setup.daily){const fixed=challengeSetup(setup.daily,setup.name,setup.v);for(const k of Object.keys(fixed))if(setup[k]!==fixed[k])throw new Error('每日挑戰設定已變更');
       if(Object.keys(setup).some(k=>!Object.hasOwn(fixed,k)))throw new Error('每日挑戰包含額外設定');}
@@ -4781,7 +4801,7 @@ function render(){
   if(!drawHero($('#heroSpr'),S.rank,64))drawSprite($('#heroSpr'),'front',SPR_BELT[S.rank],'#3a3550');setPortrait($('#heroSpr'),heroFace(p));
   $('#heroName').textContent=S.name;
   const sp=specInfo(),md=moodNow();
-  $('#injSlot').innerHTML=`<div class="badges"><span class="bdg sp-${sp.key}">${sp.n}</span>${(S.traits||[]).map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}">${TRAITS[k].n}${(S.tAcq||[]).includes(k)?'<small>後天</small>':''}</span>`).join('')}<span class="bdg md-${S.mood||'normal'}">狀態：${md.n}</span></div>`+(S.auto&&S.auto.left>0?`<span class="autopill">連續稽古：${TRAIN[S.auto.id].n}（剩 ${S.auto.left} 季）<button type="button" id="btnStopAuto">停止</button></span>`:'')+(S.injury?`<span class="injpill">${INJSEV[S.injury.sev]}・${S.injury.n}（約 ${S.injury.left*3} 個月）</span>`:'');
+  $('#injSlot').innerHTML=`<div class="badges"><span class="bdg sp-${sp.key}">${sp.n}</span>${(S.traits||[]).map(k=>`<span class="bdg ${TRAITS[k].pos?'tp':'tn'}">${TRAITS[k].n}${(S.tAcq||[]).includes(k)?'<small>後天</small>':''}</span>`).join('')}<span class="bdg md-${S.mood||'normal'}">狀態：${md.n}</span>${(S.psv||[]).filter(k=>PSV[k]).map(k=>`<span class="bdg psv" title="${PSV[k].d}">${PSV[k].ic}${PSV[k].n}</span>`).join('')}</div>`+(S.auto&&S.auto.left>0?`<span class="autopill">連續稽古：${TRAIN[S.auto.id].n}（剩 ${S.auto.left} 季）<button type="button" id="btnStopAuto">停止</button></span>`:'')+(S.injury?`<span class="injpill">${INJSEV[S.injury.sev]}・${S.injury.n}（約 ${S.injury.left*3} 個月）</span>`:'');
   {const b=$('#btnStopAuto');if(b)b.onclick=()=>choose('cmd:stopauto');}
   $('#beltPill').innerHTML=beltPill(S.rank);
   $('#profile').textContent=`${chapterNow().join(' ')}｜${homeNow().n}・${specLabel()}・${S.flags.shibucho?'支部長':S.flags.shihandai?'師範代':S.dojo?'道場主':S.path==='uchi'&&S.flags.hoko?'本部研修':PATHN[S.path]}${S.serviceLeft>0?'（服役中）':''}`;
@@ -4810,6 +4830,7 @@ function render(){
     (S.route!=='kata'?`<div class="moveline">組手招式：<b>${moveset().map(k=>{const lv=mvLv(k),m=MOVES[k];if(!lv||m.rest||m.guard)return m.n;const u=(S.mvU||{})[k]||0,nx=MV_UP[lv-1];return `${m.n} Lv${lv}${nx?`<small>（${u}/${nx}）</small>`:'<small>（MAX）</small>'}`;}).join('、')}</b>${mvRules()?'<br><small>比賽裡每用一次招式就累積熟練，Lv2 威力 +6%・命中 +3，Lv3 威力 +12%・命中 +6。</small>':''}</div>`:'')+
     `<div class="moveline">稽古傾向：<b>${specInfo().n}</b>（${specInfo().d}）・依你練「基本・型」和「組手」牌的比例決定，練越久加成越大</div>`+
     `<div class="moveline">個性：${(S.traits||[]).map(k=>`<b>${TRAITS[k].n}</b>（${TRAITS[k].d}）`).join('、')}・狀態：<b>${moodNow().n}</b></div>`+
+    (psvRules()?`<div class="moveline psvlist"><b>被動技能</b>${Object.keys(PSV).map(k=>{const P=PSV[k],got=hasP(k);const prog=got?'':P.cards?`（${Math.min(P.need,(S.pc||{})[k]||0)}/${P.need}）`:k==='eye'?`（${Math.min(8,S.flags.mkN||0)}/8）`:`（${Math.min(2,S.flags.cbN||0)}/2）`;return `<div class="${got?'got':'not'}">${P.ic} <b>${P.n}</b><small>${P.kind}</small>　${got?`<em class="psvok">✓ 已領悟</em>${P.d}`:`${P.how}${prog}`}</div>`;}).join('')}</div>`:'')+
     `<div class="moveline">型的修煉度：<b>${unlockedKata().map(k=>`${k.n} ${Math.round(km(k.n))}%`).join('、')}</b>（主練「${focusKata()}」）</div></div>`;
   T.dojo=((S.branches&&S.branches.length)?`<div><div class="wt"><h3>支部分館</h3><span class="tag">版圖 ${['北','中','南','東'].map(x=>regionsHeld().has(x)?x+'✓':x+'·').join(' ')}</span></div><div class="moveline" style="margin-top:0">${S.branches.map(b=>`${esc(b.name)}（${esc(b.lead)}・學員 ${b.st} 人）`).join('<br>')}</div></div>`:'')+(S.flags.uchiDone?`<div><div class="wt"><h3>支部貢獻點</h3><span class="tag">${S.flags.shibucho?'<b>台灣支部長</b>':shibuchoGoal()}</span></div><div class="srow full"><span class="lab">評價</span><div class="bar g"><i style="width:${clamp(S.hq,0,100)}%"></i></div><span class="val">${Math.round(S.hq)}</span></div></div>`:'')+
     `<div><div class="wt"><h3>所屬道場</h3><span class="tag"><b>${hn.n}</b>・學費 ${S.path==='school'?'家裡支付':S.path==='uchi'||S.path==='inst'?'免':hn.fee+' 萬／季'}</span></div><p class="exnote" style="margin:0">特色稽古：${(()=>{const u=Object.entries(CARDS).find(([,c])=>c.uniq===S.setup.home);return S.path==='uchi'?'本部的所有稽古':u?'「'+u[1].n+'」':'—';})()}${rerollMax()>1?'・每年可換牌 2 次':''}</p></div>`+
