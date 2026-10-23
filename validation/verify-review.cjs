@@ -105,6 +105,21 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
  });
+ // Recorded from the rule 31 game before rule 32 existed: rule 31 lives keep their one-tournament calendar.
+ const V31={"youth": "6cb1d23973a395d5cb8608b49a3a6e00de09fbedc75ac60a07bb9642002fb16e", "practice": "54aa486a7c006060d4cadbac66d936df8acd0f55e38c676f2e46cb75b1d55fe3", "adult": "54b7c8036cf1d907ef83bd04bb063b592b540dc95c3201c63e07115c45fa31a5", "mature": "c5374e08f9767c50de412636f269a5f7462c57cae49e02a3528d6c8c6ce57a83"};
+ for(const entry of Object.keys(V31))test(file+' rule 31 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則31相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:31,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V31[entry]);
+ });
+ test(file+' rule 32 plans the year once and enters meets without asking again',()=>{
+  let plans=0,japan=0;
+  for(let k=0;k<6;k++){const r=JSON.parse(life({seed:9300+k*487,name:'規則32',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim:'champion',mode:'easy',route:['kumite','dual','kata'][k%3],v:32,entry:'youth'},
+   `startGame(cfg,[]);let asked=0,plan=0,jp=0;for(let i=0;i<40000&&G.prompt.kind!=='end';i++){const p=G.prompt;const T=TOURN.find(t=>t.name===p.title);if(T&&p.opts.some(o=>o.id==='skip'))asked++;if(p.title==='今年出賽的項目')plan++;
+     const id=String(ffPick(p));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+    JSON.stringify({end:G.prompt.kind==='end',asked,plan,jp:!!(S.champ.jp_kumite||S.champ.jp_kata||(S.titles||[]).some(t=>/全日本/.test(t)))})`));
+   assert.ok(r.end,'life reaches its ending');assert.equal(r.asked,0,'no per-tournament entry prompt');plans+=r.plan;japan+=r.jp;}
+  assert.ok(plans>=10,'the yearly division step is asked');assert.ok(japan>=3,'competitive lives still reach 全日本');
+ });
  // Recorded from the rule 30 game before rule 31 existed: one tournament a year must not touch these lives.
  const V30={"youth": "c2c8bf6e0f6f239dc549fb2beebc3625e986f7585b6369fbc04f074e61ec29b6", "practice": "df1672e42b259a0c1d56d902074789bfd556d3585003a9a5624abebafa6a2ba7", "adult": "964afa79e422c41a882173a708af69cd933d9f95b6ecb56f9d79d0139a41b0a3", "mature": "ac7f1d05d0401f30ac3d327ddfb2962f3cb118b61227426751a89519bc43bcdb"};
  for(const entry of Object.keys(V30))test(file+' rule 30 '+entry+' life stays byte-for-byte identical',()=>{
