@@ -583,7 +583,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
     <details><summary>量級與得意技</summary>
       <ul><li><b>努力的天才</b>：天生的努力家在 24 歲以前稽古累積 24 次以上、幾乎沒休息過（休養最多 1 次），就會變成「努力的天才」：所有成長 ×1.1，而且可以把戰鬥風格轉成全能型。</li><li><b>生日（選填）</b>：填了生日，會用生命靈數（把生日每個數字加總到剩一位數）決定你的主要個性：1 領袖氣質、2 冷靜、3 熱血、4 努力家、5 天生腳快、6 人望、7 研究型、8 怪力、9 不屈。另一個個性由命運決定。</li><li>量級比照全日本體重別的五個級別：輕輕量級 −60kg、輕量級 −70kg、中量級 −80kg、輕重量級 −90kg、重量級 +90kg。越輕速度越快、越常先出手；越重力量、鍛體和體力條越好。</li><li>全台、全日本、世界大賽的組手是<b>無差別</b>（不分體重），輕的選手會吃虧、重的選手占便宜。全日本體重別只和同量級比，沒有這個差別。</li><li><b>戰鬥風格和得意技</b>不用在開始時決定：白帶到藍帶先用「基本型」打，升上黃帶時再依你的能力選擇風格和得意技。</li><li><b>得意技</b>是你習慣的招式，比賽時一定會帶在身上，威力 ×1.2、命中 +8，招式上會標「得意」。後迴旋、踵落、胴迴旋踢這類大招在橙帶以前還不穩，命中反而略低。</li></ul></details>
     <details><summary>每一季會發生什麼</summary>
-      <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：每年先選一個比賽目標：全台選手權（前兩名可以接著打同年全日本）、支部交流賽，或取得資格後的日本巡迴（含全台選手權，保住隔年資格）。再付報名費報型、組手或兩者；也可以整年不比賽。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
+      <ul><li><b>稽古</b>：選這一季練什麼。</li><li><b>事件</b>：隨機發生，二選一。</li><li><b>比賽</b>：台灣每年只有一場全台選手權（16 歲、黃帶以上），前兩名可以接著打同年全日本。取得資格後，可以改選日本巡迴（含全台選手權，保住隔年資格）。每年先選一個比賽目標，再付報名費報型、組手或兩者；也可以整年不比賽。</li><li><b>講習會</b>：全台、全日本、世界等大賽後舉辦（支部交流賽沒有），付費參加，能力會成長。</li><li><b>升級審查</b>：時間到了才能報考。</li></ul></details>
     <details><summary>修煉點（自動／手動）</summary>
       <p>升級 +3、大賽冠軍 +2、準優勝 +1、百人組手 +5。新手模式預設自動補齊較低的六項能力，1 點＝能力 +1，不隨腰帶漲價。想補特定能力或鬥志，可在「顯示」切換手動；一年未分配的點數仍會自動補齊。達上限的能力會跳過，剩餘點數會保留。</p></details>
     <details><summary>能力與段位加成</summary>
@@ -1054,7 +1054,7 @@ function moveset(){
 }
 
 
-const GAME_VERSION=25;
+const GAME_VERSION=26;
 const modernRules=()=>!!(S&&Number(S.setup.v)>=20);
 const AIM_NAMES={balanced:'探索自己的極真人生',champion:'挑戰競技冠軍',teacher:'成為能帶人的老師',dojo:'經營自己的道場',uchi:'走上內弟子之路',life:'讓修行陪伴日常'};
 function exactPartP(sc,need){return clamp((sc+8.5-need)/16,0,1);}
@@ -1374,6 +1374,7 @@ function growthRules(){return !!S&&Number(S.setup.v)>=22;}
 function agingRules(){return !!S&&Number(S.setup.v)>=23;}
 function oneMeetRules(){return !!S&&Number(S.setup.v)>=24;}
 function twPathRules(){return !!S&&Number(S.setup.v)>=25;}
+function onlyTwRules(){return !!S&&Number(S.setup.v)>=26;}
 const JP_TOUR=['intl','jpw','jpk','jp','world'];
 function* meetAllowed(T){if(!oneMeetRules())return true;
  if(S.flags.meetY!==S.year){const left=TOURN.filter(x=>x.q>=S.q&&tDivs(x).length);if(!left.length)return false;
@@ -1726,7 +1727,7 @@ const jpOk=div=>jpReqs(div).every(x=>x.ok);
 const worldOk=div=>S.rank>=5&&(S.qW[div]>=S.year-1||S.qWTW[div]>=S.year-1);
 const TOURN=[
   {id:'local',name:'台灣支部交流賽',short:'支部交流賽',q:0,base:28,rounds:3,kbase:18,kr:2,fame:2,prize:0,fee:.3,sem:.7,semFee:.5,open:true,kata:true,desc:'八個道場的年輕選手交流賽。',
-    can:d=>S.rank>=1&&S.age<=21&&S.path!=='uchi'},
+    can:d=>S.rank>=1&&S.age<=21&&S.path!=='uchi'&&!onlyTwRules()},
   {id:'intl',name:'極真國際大會（東京）',short:'國際大會',q:0,base:60,inc:2,rounds:6,kbase:79,kr:4,fame:9,prize:9,fee:2.5,sem:1.2,semFee:2,open:true,kata:true,desc:'每年年初在東京舉行的國際公開賽，各國代表齊聚。<b>日本三冠</b>的第一站。報名費含機票住宿。',
     can:d=>jpOk(d)},
   {id:'jpw',name:'全日本體重別選手權',short:'全日本體重別',q:1,base:55,rounds:5,kbase:0,kr:0,fame:12,prize:10,fee:4,sem:1.5,semFee:3,open:false,kata:false,desc:'日本各地的強者，在同一量級裡分出高下。前三名可取得世界大賽資格。報名費含機票住宿。',
@@ -4310,7 +4311,7 @@ function baseGrowthValidate(setup,choices){
     !Array.isArray(choices)||choices.length>SAVE_MAX_CHOICES||choices.some(c=>typeof c!=='string'||!c.length||c.length>256))
     throw new Error('存檔內容不完整或不支援');
   if(Number(setup.v)>=20){
-    if(![20,21,22,23,24,25].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
+    if(![20,21,22,23,24,25,26].includes(setup.v)||setup.test||setup.t35)throw new Error('新版存檔含有不支援的測試設定');
     if(setup.aim&&!Object.hasOwn(AIM_NAMES,setup.aim))throw new Error('志向設定不正確');
     if(setup.daily){const fixed=challengeSetup(setup.daily,setup.name,setup.v);for(const k of Object.keys(fixed))if(setup[k]!==fixed[k])throw new Error('每日挑戰設定已變更');
       if(Object.keys(setup).some(k=>!Object.hasOwn(fixed,k)))throw new Error('每日挑戰包含額外設定');}
