@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script src="../migrate.js"></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#111b2b">
+  <title>反應組手｜弟子道場</title>
+  <meta name="description" content="極真弟子 像素空手道訓練。看招、三段格擋與左右拳腳反擊，手機也能玩。">
+  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Barlow+Condensed:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+  <script type="module" src="app.js?v=23"></script>
+</head>
+<body>
+<main class="shell">
+  <header class="masthead"><div class="brand"><span class="seal" aria-hidden="true">組<br>手</span><div><span class="eyebrow">REACTION DOJO / KYOKUSHIN / DISCIPLE TRAINING</span><h1>反應組手<span>弟子道場</span></h1></div></div><button id="sound" class="quiet" aria-pressed="false">音效 關</button></header>
+  <section class="cabinet" aria-label="空手道練習場">
+    <div class="hud"><div class="fighter-info"><div class="fighter-label"><b>極真弟子｜白帶修行</b><span id="healthText">100 / 100</span></div><div class="health"><div id="healthBar"></div></div></div><div class="clock"><span id="modeLabel">FREE PRACTICE</span><b id="timer">∞</b></div><div class="target-info"><img src="assets/kai-user-reference.jpg" alt="凱師範原版人物"><div><b>凱師範</b><span>台灣支部 · 全能型</span></div></div><button id="pause" class="pause" aria-label="暫停遊戲" disabled>Ⅱ</button></div>
+    <div class="stage" id="stage"><canvas id="arena" width="960" height="540" aria-label="第一人稱凱師範對練；請使用下方按鈕或鍵盤操作"></canvas><div class="cue" id="cue" aria-live="polite">觀察起手 → 格擋 → 反擊</div><div class="action-label" id="actionLabel">待機 / IDLE</div><div class="stage-tag">FIRST PERSON · KAI SENSEI</div>
+      <div class="overlay" id="intro"><div class="intro-card"><span class="eyebrow">跟著凱師範 · 循序練習</span><h2>先擋住。<br><em>再漂亮地反擊。</em></h2><p>先從慢速、不扣血的跟練開始。<br>點一下上／中／下段擋，成功後選一招反擊。</p><button id="start" class="primary" disabled>角色素材載入中…</button><small id="loadStatus">正在準備極真弟子</small></div></div>
+      <div class="overlay" id="pauseOverlay" hidden><div class="intro-card compact"><span class="eyebrow">TAKE A BREATH</span><h2>暫停練習</h2><p>切換視窗時會自動暫停。</p><button id="resume" class="primary">繼續練習</button></div></div>
+      <div class="overlay" id="resultOverlay" hidden><div class="intro-card compact"><span class="eyebrow">TRAINING COMPLETE</span><h2 id="resultTitle">本回合完成</h2><p id="resultSummary"></p><button id="again" class="primary">再挑戰一次</button><button id="back" class="quiet">回到慢速跟練</button></div></div>
+    </div>
+    <div class="feedback"><span><i></i><b id="feedback">先看起手，擋成功再反擊</b></span><span id="reaction">反應 —</span></div>
+    <div class="training-flow" aria-label="攻防節奏"><span data-step="ready" class="current">① 看起手</span><span data-step="defend">② 擋高度</span><span data-step="counter">③ 反擊一招</span></div><div class="controls" aria-label="三段格擋及左右拳腳反擊"><div class="guard-controls"><button data-hold="blockHigh" class="defend"><b>上段擋</b><small>I · 頭部</small></button><button data-hold="blockMid" class="defend"><b>中段擋</b><small>K · 胸腹</small></button><button data-hold="blockLow" class="defend"><b>下段擋</b><small>M · 腿部</small></button></div><div class="attack-controls"><button data-act="punchLeft" class="attack"><b>左拳</b><small>F</small></button><button data-act="punchRight" class="attack"><b>右拳</b><small>J</small></button><button data-act="kickLeft" class="attack"><b>左踢</b><small>V</small></button><button data-act="kickRight" class="attack"><b>右踢</b><small>N</small></button></div></div></section>
+  <section class="dashboard"><div class="mode-panel"><span class="eyebrow">TRAINING MODE</span><div class="mode-tabs" role="group" aria-label="練習模式"><button id="freeMode" aria-pressed="true">慢速跟練</button><button id="challengeMode" aria-pressed="false">45 秒挑戰</button></div><p id="modeHelp">慢速跟練不扣血。點一下格擋，成功後在亮燈時反擊。</p></div><div class="stats" aria-label="本次練習數據"><div><span>反擊命中</span><b id="hits">0</b></div><div><span>成功防守</span><b id="guards">0</b></div><div><span>最佳反應</span><b id="best">—<small>秒</small></b></div></div></section>
+  <details class="coach-panel"><summary>查看凱師範招式與操作示範</summary><section><span class="eyebrow">KAI SENSEI / THREE ATTACKS</span><h2>凱師範的三段攻擊</h2><p>點擊觀看「預備 → 出招 → 收招」。示範期間不計分。</p><div class="coach-actions" role="group" aria-label="凱師範攻擊預覽"><button data-coach="high"><b>上段高踢</b><small>頭部高度</small></button><button data-coach="mid"><b>中段直拳</b><small>胸腹高度</small></button><button data-coach="low"><b>下段迴旋踢</b><small>大腿高度</small></button></div></section>
+  <section class="motion-panel"><div class="motion-heading"><div><span class="eyebrow">ANIMATION LAB</span><h2>左右拳腳與三段格擋</h2></div><span class="motion-note">預覽動作時不計分</span></div><div class="motion-grid" role="group" aria-label="角色動作預覽"><button data-preview="idle"><span>01</span><b>待機</b></button><button data-preview="punchLeft"><span>03</span><b>左拳</b></button><button data-preview="punchRight"><span>04</span><b>右拳</b></button><button data-preview="kickLeft"><span>05</span><b>左踢</b></button><button data-preview="kickRight"><span>06</span><b>右踢</b></button><button data-preview="blockHigh"><span>07</span><b>上段擋</b></button><button data-preview="blockMid"><span>08</span><b>中段擋</b></button><button data-preview="blockLow"><span>09</span><b>下段擋</b></button><button data-preview="hit"><span>10</span><b>受擊</b></button></div></section>
+  </details><footer><p>極真人生弟子原型 · 像素角色動作 · 單人訓練</p><p>固定交手距離。手機：點一下格擋，成功後選一招反擊。電腦：F / J 左右拳，V / N 左右踢；I / K / M 上中下格擋，Esc 暫停。</p>e6bc78">手機交給 Claude 協作 →</a></p>#e6bc78">手機交給 Claude 協作 →</a></p></footer>
+</main>
+</body></html>
+
