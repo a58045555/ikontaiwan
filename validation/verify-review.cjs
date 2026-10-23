@@ -105,6 +105,19 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
  });
+ // Recorded from the rule 29 game before rule 30 existed: the junior division must not touch these lives.
+ const V29={"youth": "db91148bd35d758103280dcdfc81dfebdbb059db99022518c9e79213b2065214", "practice": "9f90af3f7d04ea4e2bfae2d06227f6523bcfb9c5de9438e4469f3a906e719b37", "adult": "80278ff8281400bdd34dbf58cebe27c38e612d9e87b036cbafce3c0730749e90", "mature": "eed3291253c40bb8137173042e29e5e44cbbdad2167f56806959c741c12ffe70"};
+ for(const entry of Object.keys(V29))test(file+' rule 29 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則29相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:29,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V29[entry]);
+ });
+ test(file+' rule 30 youth lives can compete in the junior division from 15',()=>{
+  for(let k=0;k<4;k++){const r=JSON.parse(life({seed:7700+k*331,name:'規則30',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim:'champion',mode:'easy',route:['kumite','dual','kata','dual'][k],v:30,entry:'youth'},
+   `startGame(cfg,[]);let first=null,jr=[];for(let i=0;i<20000&&G.prompt.kind!=='end';i++){const p=G.prompt;const T=TOURN.find(t=>t.name===p.title);if(T&&p.opts.some(o=>o.id==='skip')){if(first===null)first=S.age;if(T.id==='twj')jr.push(S.age);}
+     const id=String(ffPick(p));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+    JSON.stringify({end:G.prompt.kind==='end',first,jr})`));
+   assert.ok(r.end,'life reaches its ending');assert.ok(r.first!==null&&r.first<=16,'first tournament by 16');assert.ok(r.jr.length&&r.jr.every(a=>a>=15&&a<=17),'junior division only at 15 to 17');}
+ });
  // Recorded from the rule 28 game before rule 29 existed: passive skills must not touch these lives.
  const V28={"youth": "cc84a2d6a6d4c4078fbb21bf9df3adac4b36894b53cbdc5ade45efc5bd122c21", "practice": "b2e2b69e81cc067067b97502e8c66c43b46e42c3672abb215ed3428eb98017f9", "adult": "dbaeffb6b2ba7954272ca6bfa545bf33ee4073ed5d0b81d9f5261887f283ee03", "mature": "623ee7f4e25c18f2017134d6be558e8cf8f2cb29eba80c4c891b1b4b781fb63b"};
  for(const entry of Object.keys(V28))test(file+' rule 28 '+entry+' life stays byte-for-byte identical',()=>{
