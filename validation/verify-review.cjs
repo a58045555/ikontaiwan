@@ -105,6 +105,20 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
  });
+ // Recorded from the rule 28 game before rule 29 existed: passive skills must not touch these lives.
+ const V28={"youth": "cc84a2d6a6d4c4078fbb21bf9df3adac4b36894b53cbdc5ade45efc5bd122c21", "practice": "b2e2b69e81cc067067b97502e8c66c43b46e42c3672abb215ed3428eb98017f9", "adult": "dbaeffb6b2ba7954272ca6bfa545bf33ee4073ed5d0b81d9f5261887f283ee03", "mature": "623ee7f4e25c18f2017134d6be558e8cf8f2cb29eba80c4c891b1b4b781fb63b"};
+ for(const entry of Object.keys(V28))test(file+' rule 28 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則28相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:28,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V28[entry]);
+ });
+ test(file+' rule 29 lives learn passive skills and replay exactly',()=>{
+  const got=new Set();let same=true;
+  for(let k=0;k<4;k++){const r=JSON.parse(life({seed:6100+k*977,name:'規則29',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim:['champion','balanced','teacher','life'][k],mode:'easy',route:['kumite','dual','kata','dual'][k],v:29,entry:'youth'},
+   `startGame(cfg,[]);for(let i=0;i<20000&&G.prompt.kind!=='end';i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+    const a=JSON.stringify(S),psv=(S.psv||[]).slice();startGame(cfg,G.choices.slice());JSON.stringify({end:G.prompt.kind==='end',psv,same:JSON.stringify(S)===a})`));
+   assert.ok(r.end,'life reaches its ending');r.psv.forEach(x=>got.add(x));same=same&&r.same;}
+  assert.ok(same,'lives replay identically');assert.ok(got.size>=3,'several passive skills are learned across lives: '+[...got].join(','));
+ });
  // Recorded from the rule 27 game before rule 28 existed: move levels must not touch these lives.
  const V27={"youth": "64326b986dc4e0b74caa1719e9a4df9331a154cbcceee18eb5d1377b5ec17d06", "practice": "42cdfdf8c2d64fc629f24367765306127522edf4b377216851523aa4dae02a75", "adult": "026568903969e0e79c0577e770cb2204ecde8cbff6367b535cdc3354598eb807", "mature": "010f60dd4fc05256ed309b51487fc6bead71ada6a31e2bf740e7a56c3f904a9e"};
  for(const entry of Object.keys(V27))test(file+' rule 27 '+entry+' life stays byte-for-byte identical',()=>{
