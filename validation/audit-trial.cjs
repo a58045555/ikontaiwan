@@ -14,7 +14,7 @@ const rows=[];
 for(const entry of entries)for(const [name,expr] of Object.entries(policies)){if(only&&!only.includes(name))continue;
  let win=0;const turns={};
  for(let s=1;s<=N;s++){const e=engine();e.c.cfg={seed:777+s*104729,name:'測',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:22,entry};
-  const [w,n]=e.run(`startTrial(cfg);choose('mjis');choose('go');let n=0;for(let i=0;i<500&&G.prompt.title!=="體驗結束";i++){const p=G.prompt;const live=p.kind==='battle'&&p.opts.length>1;if(live)n++;choose(String(live?${expr}:ffPick(p)))};[G.prompt.body.includes('你贏了'),n]`);
+  const [w,n]=e.run(`startTrial(cfg);choose('mjis');choose('go');let n=0;for(let i=0;i<500&&G.prompt.title!=="新手教學結束";i++){const p=G.prompt;const live=p.kind==='battle'&&p.opts.length>1;if(live)n++;choose(String(live?${expr}:ffPick(p)))};[G.prompt.body.includes('你贏了'),n]`);
   if(w)win++;turns[n]=(turns[n]||0)+1;}
  rows.push({entry,policy:name,winPct:+(win/N*100).toFixed(1),playerChoices:turns});
 }

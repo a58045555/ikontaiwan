@@ -20,7 +20,7 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
  for(const [entry,age] of [['youth',15],['practice',15],['adult',30],['mature',45]])test(file+' '+entry+' trial uses actual age and preserves the previous save',()=>{
   const e=engine(src);e.c.cfg=basic;e.run('startGame(cfg,[]);choose(String(ffPick(G.prompt)))');const before=new Map(e.storage);e.c.trialCfg={...basic,entry};e.run('startTrial(trialCfg)');
   assert.equal(e.run('S.age'),age);assert.ok(e.run('G.prompt.body').includes(age+' 歲'));if(age>15)assert.doesNotMatch(e.run('G.prompt.body'),/十五歲|高一/);
-  e.run('for(let i=0;i<1500&&G.prompt.title!=="體驗結束";i++){choose(String(ffPick(G.prompt)));save()}');assert.equal(e.run('G.prompt.title'),'體驗結束');
+  e.run('for(let i=0;i<1500&&G.prompt.title!=="新手教學結束";i++){choose(String(ffPick(G.prompt)));save()}');assert.equal(e.run('G.prompt.title'),'新手教學結束');
   const toast={innerHTML:'',remove(){}};e.c.document={createElement:()=>toast,body:{appendChild(){}}};e.run('choose("full")');assert.equal(e.run('G'),null);assert.doesNotMatch(toast.innerHTML,/高一春天/);assert.match(toast.innerHTML,/入門時刻/);assert.deepEqual(e.storage,before);
  });
 }
