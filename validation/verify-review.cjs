@@ -105,6 +105,21 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
  });
+ // Recorded from the rule 27 game before rule 28 existed: move levels must not touch these lives.
+ const V27={"youth": "64326b986dc4e0b74caa1719e9a4df9331a154cbcceee18eb5d1377b5ec17d06", "practice": "42cdfdf8c2d64fc629f24367765306127522edf4b377216851523aa4dae02a75", "adult": "026568903969e0e79c0577e770cb2204ecde8cbff6367b535cdc3354598eb807", "mature": "010f60dd4fc05256ed309b51487fc6bead71ada6a31e2bf740e7a56c3f904a9e"};
+ for(const entry of Object.keys(V27))test(file+' rule 27 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則27相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:27,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V27[entry]);
+ });
+ test(file+' rule 28 moves level up with use and replay exactly',()=>{
+  const r=JSON.parse(life({seed:4242,name:'規則28',home:'pingtung',wc:'middle',sex:'m',aim:'champion',mode:'easy',route:'kumite',v:28,entry:'youth'},
+   `startGame(cfg,[]);let ups=0,lv3=0;
+    for(let i=0;i<20000&&G.prompt.kind!=='end';i++){const p=G.prompt;if(p.lines)for(const l of p.lines)if(l.includes('招式升級'))ups++;if(p.kind==='battle'&&p.opts.some(o=>/Lv3/.test(o.label)))lv3=1;
+     const id=String(ffPick(p));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+    const a=JSON.stringify(S),mv=S.mvU||{};startGame(cfg,G.choices.slice());
+    JSON.stringify({end:G.prompt.kind==='end',ups,lv3,top:Math.max(0,...Object.values(mv)),same:JSON.stringify(S)===a,old:(()=>{S.setup.v=27;return mvLv('tsuki')})()})`));
+  assert.ok(r.end,'life reaches its ending');assert.ok(r.top>=25,'a move reaches Lv3 over a life');assert.ok(r.same,'the life replays identically');assert.equal(r.old,0,'older rules have no move levels');
+ });
  // Recorded from the rule 26 game before rule 27 existed: 看破 must not touch these lives.
  const V26={"youth": "f8aac6961ddd3fe5851656086c0abbe08a27686392434172f783e782a80ecdc0", "practice": "01e2bb625700899fe2eabc20da1b824973dc51f57b0a5a86c6c8d8e6d4e9d019", "adult": "42682bbe6313fb20ee9bc0fa1c2b2d8d035879f1bd0598e431d57c7ba6f8b9d7", "mature": "f026c5d5797c40edf29566304902b39cd7c389ab3a8ba9c4bd602b6618de2597"};
  for(const entry of Object.keys(V26))test(file+' rule 26 '+entry+' life stays byte-for-byte identical',()=>{
