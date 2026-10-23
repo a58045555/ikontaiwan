@@ -72,6 +72,28 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則22相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:22,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V22[entry]);
  });
+ // Recorded from the rule 23 game before rule 24 existed: the yearly tournament choice must not touch these lives.
+ const V23={"youth": "8e53b19ae3f1642beeff829f9611c23cf92c75fdc266b31349e79484db82ace4", "practice": "7430e0d09e5497f4c787b64024ed52426cfd6fd5b616d4a1b26e1d9a27ad7d47", "adult": "a90db48a5652e68367ffd6845a2465d2aaa69dd99789c2a2b20a4f213730d826", "mature": "549cad126f4a24c0346b029a8af884db1df00ffa5d1a6fc6eb572ebf4c2a52dc"};
+ for(const entry of Object.keys(V23))test(file+' rule 23 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則23相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:23,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V23[entry]);
+ });
+ test(file+' rule 24 offers one tournament target a year and keeps the Japan tour together',()=>{
+  let japanYears=0,asked=0;
+  for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
+   const r=JSON.parse(life({seed:5000+k*7919,name:'規則24',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim,mode:'easy',route,v:24,entry:'youth'},
+    `startGame(cfg,[]);const JP=['intl','jpw','jpk','jp','world'],per={},bad=[];let asked=0;
+     for(let i=0;i<12000&&G.prompt.kind!=='end';i++){const t=G.prompt.title||'';if(t==='今年的比賽')asked++;const T=TOURN.find(x=>x.name===t);const isT=T&&G.prompt.opts&&G.prompt.opts.some(o=>o.id==='skip');
+      if(isT){const plan=S.flags.meetY===S.year?S.flags.meet:null;if(plan!==(JP.includes(T.id)?'jp':T.id))bad.push(S.year+':'+T.id+':'+plan);const y=per[S.year]=per[S.year]||{jp:0,other:0};if(JP.includes(T.id))y.jp++;else y.other++;}
+      const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+     JSON.stringify({end:G.prompt.kind==='end',bad,asked,years:Object.values(per)})`));
+   assert.ok(r.end,'life reaches its ending');assert.deepEqual(r.bad,[],'every tournament matches that year\'s chosen target');
+   for(const y of r.years){assert.ok(y.other<=1,'at most one Taiwan-side tournament a year');assert.ok(!(y.other&&y.jp),'a year is either the Japan tour or one other tournament');if(y.jp)japanYears++;}
+   asked+=r.asked;}
+  assert.ok(asked>=100,'the yearly question is asked');assert.ok(japanYears>0,'the Japan tour is reachable');
+  const perfect=life({seed:100028,name:'規則24',home:'pingtung',wc:'middle',sex:'m',aim:'champion',mode:'easy',route:'dual',v:24,entry:'youth'},'startGame(cfg,[]);for(let i=0;i<12000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}(S.crowns||[]).some(c=>c.perfect)');
+  assert.equal(perfect,true,'a perfect sweep is still possible under rule 24');
+ });
  test(file+' rule 23 ages every entry gently and keeps owner injuries healing',()=>{
   const at55={};
   for(const entry of ['youth','practice','adult','mature'])for(let k=0;k<8;k++){
