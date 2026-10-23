@@ -51,10 +51,20 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 #stamp.plain small{display:inline;font-size:1em;margin-left:6px;text-shadow:none}
 #stamp.pop{font-family:var(--f-display);font-size:clamp(36px,12vw,66px);color:#fff;-webkit-text-stroke:2px var(--hit);text-shadow:0 4px 0 #7a1d14;animation:pop .8s forwards}
 #stamp.pop.hurt{color:var(--hit);-webkit-text-stroke:2px #fff;text-shadow:0 4px 0 #000;font-size:clamp(28px,9vw,50px)}
+@media (max-width:420px){.overlay{gap:8px;padding:10px}.overlay h2{font-size:22px}.overlay p{font-size:12px;line-height:1.5}.cta{padding:8px 18px;font-size:14px}}
 @keyframes pop{0%{opacity:0;transform:translateX(-50%) scale(2.3) rotate(-9deg)}12%{opacity:1;transform:translateX(-50%) scale(.9) rotate(-4deg)}22%{transform:translateX(-50%) scale(1.06) rotate(-4deg)}32%{transform:translateX(-50%) scale(1) rotate(-4deg)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-12%) rotate(-4deg)}}
 #cue{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;font-size:clamp(12px,3.4vw,14px);font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.8));color:var(--fg);text-align:center;pointer-events:none;min-height:1.4em}
 #cue.open{color:#ffe08a}
 #cue.danger{color:#ffb4a8}
+.overlay{overflow-y:auto;justify-content:safe center;}
+.stage:has(> .overlay:not([hidden])){aspect-ratio:auto;min-height:min(380px,92vw)}
+.stage:has(> .overlay:not([hidden])) canvas{position:absolute;inset:0}
+.belts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;width:100%;max-width:400px}
+.belt{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:6px;border:1px solid var(--line);background:rgba(35,27,21,.9);color:var(--fg);font:700 13px var(--f-body);cursor:pointer}
+.belt i{display:block;width:70%;height:6px;border-radius:2px;border:1px solid rgba(0,0,0,.5)}
+.belt small{font-size:10px;color:var(--muted);font-weight:500;min-height:1.2em}
+.belt.done small{color:#8fc4b0}
+.belt:focus-visible{outline:2px solid var(--accent)}
 .overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:14px;text-align:center;background:rgba(15,10,7,.82)}
 .overlay h2{margin:0;font-family:var(--f-display);font-size:clamp(22px,7vw,32px);letter-spacing:.08em}
 .overlay p{margin:0;max-width:31em;font-size:clamp(12px,3.4vw,14px);line-height:1.6;color:#d8cbbb;text-wrap:balance}
@@ -133,15 +143,15 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
     <div id="cue"></div>
     <div class="overlay" id="menu">
       <h2>押忍！</h2>
-      <p>你可以隨時出手，師範也會擋，擋下就換他反擊，你要接住。你擋下他的招，就有一瞬間的「空檔」可以打回去。把對方體力打到 0 就贏。踢頭傷害最大，連段和抓空檔打進去會加成。<br>出手後馬上再按另一招就能連段（最多三連）。出手會消耗「氣」，亂打會被師範迎擊；師範起手時也能搶先出手打斷他，中段拳起手最快、上段踢最慢。師範會用假動作和連段，也會記住你的習慣。</p>
+      <p>跟師範有來有往：擋下他的招就有空檔打回去，被擋就換你接。第一次玩先上教學。</p>
       <div class="diffs"><button class="cta" id="tutBtn">防守教學</button><button class="cta" id="tutAtkBtn">攻擊教學</button></div>
-      <p class="sub">或直接開打：</p>
-      <div class="diffs" role="group" aria-label="選擇難度"><button class="cta ghost diff" data-d="easy">入門</button><button class="cta ghost diff" data-d="normal">黑帶</button><button class="cta ghost diff" data-d="hard">師範本氣</button></div>
+      <p class="sub">選擇對練等級：</p>
+      <div class="belts" id="belts" role="group" aria-label="選擇等級"></div>
     </div>
     <div class="overlay" id="tutDone" hidden>
       <h2 id="tdTitle">教學完成</h2>
       <p id="tdText"></p>
-      <div class="diffs"><button class="cta diff" data-d="easy">入門實戰</button><button class="cta ghost diff" data-d="normal">黑帶</button><button class="cta ghost" id="tutAgain">再練一次</button></div>
+      <div class="diffs"><button class="cta diff" data-d="0">白帶實戰</button><button class="cta ghost" id="tutToMenu">選等級</button><button class="cta ghost" id="tutAgain">再練一次</button></div>
     </div>
     <div class="overlay" id="result" hidden>
       <h2 id="rTitle">結束</h2>
@@ -151,7 +161,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
         <div><b id="rAvg">–</b>平均反應</div>
       </div>
       <p>把右上角的特效關掉再打一場，比較看看差別。</p>
-      <div class="diffs"><button class="cta" id="again">再打一場</button><button class="cta ghost" id="toMenu">換難度</button></div>
+      <div class="diffs"><button class="cta" id="nextLv" hidden>挑戰下一級</button><button class="cta ghost" id="again">再打一場</button><button class="cta ghost" id="toMenu">選等級</button></div>
     </div>
   </div>
 
@@ -235,7 +245,11 @@ const STARTUP={mid:110,low:170,high:250};
 
 /* ---------- clock ---------- */
 let gt=0,freeze=0,last=performance.now();let SPEED=1.3;
-const DIFF={easy:{speed:1.1,block:-.14,chain:.18,feint:.1,combo:.5,open:1.3,name:'入門'},normal:{speed:1.3,block:0,chain:.36,feint:.24,combo:1,open:1,name:'黑帶'},hard:{speed:1.45,block:.1,chain:.48,feint:.36,combo:1.5,open:.78,name:'師範本氣'}};let D=DIFF.normal,diffKey='normal';const pairs={};
+const BELTS=[['白帶','#f1efe8'],['橙帶','#e58a3a'],['藍帶','#3f6fc4'],['黃帶','#e3c440'],['綠帶','#4f9a55'],['茶帶','#7a4a2a'],['黑帶','#111'],['師範本氣','#b22f26']];
+const lerp=(a,b,t)=>a+(b-a)*t;
+const LEVELS=BELTS.map(([name,color],i)=>{const t=i/(BELTS.length-1);return{name,color,speed:lerp(1.0,1.52,t),block:lerp(-.22,.13,t),chain:lerp(.1,.52,t),feint:lerp(.03,.4,t),combo:lerp(.3,1.6,t),open:lerp(1.45,.74,t)}});
+const DIFF={easy:LEVELS[1],normal:LEVELS[6],hard:LEVELS[7]};
+let cleared=0;try{cleared=+localStorage.getItem('fk_cleared')||0}catch(e){}let D=LEVELS[0],diffKey=0;const pairs={};
 const ease=t=>1-Math.pow(1-t,3);
 function lerpPose(a,b,t){const r={};for(const k in b){r[k]=k==='ox'?a.ox+(b.ox-a.ox)*t:[a[k][0]+(b[k][0]-a[k][0])*t,a[k][1]+(b[k][1]-a[k][1])*t]}return r}
 function fighter(bx,dir,o){return Object.assign({bx,dir,from:S,to:S,t0:0,dur:0,name:'stance'},o)}
@@ -344,8 +358,8 @@ let oLevel='mid',choice=null,t0=0,strikeAt=0,impactAt=0,pressureAt=0,openUntil=0
 const at=(ms,fn)=>timers.push({t:gt+ms,fn});
 
 function startGame(k){
-  if(typeof k==='string'){diffKey=k;D=DIFF[k];SPEED=D.speed}for(const x in pairs)delete pairs[x];
-  ensureAudio();
+  if(k!=null&&typeof k!=='object'){diffKey=+k;D=LEVELS[diffKey];SPEED=D.speed}for(const x in pairs)delete pairs[x];
+  ensureAudio();tut=null;timers=[];clearHint();$('lesson').hidden=true;pads.classList.remove('tutorial');$('tutDone').hidden=true;
   pHP=100;oHP=100;stam=100;lastAtkEnd=-9999;rally=0;bestRally=0;times=[];recent=[];oHist=[];timers=[];
   $('menu').hidden=true;$('result').hidden=true;hud();
   neutral(1200);
@@ -395,7 +409,7 @@ function showHint(l,a){clearHint();const b=padEls.find(p=>p.dataset.a===(a||'def
 function showLesson(){const st=TUT[tut.i];pads.classList.toggle('tutorial',!st.atk);$('lesson').style.borderLeftColor=TUT===TUT_ATK?'var(--atk)':'';if(st.bout){$('lDots').textContent='';$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;SPEED=st.speed;return}$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;$('lDots').textContent='●'.repeat(tut.count)+'○'.repeat(st.need-tut.count);SPEED=st.speed}
 function startTutorial(kind){
   if(kind==='atk'||kind==='def')TUT=kind==='atk'?TUT_ATK:TUT_DEF;
-  ensureAudio();D=DIFF.easy;diffKey='easy';
+  ensureAudio();D=LEVELS[1];diffKey=1;
   pHP=100;oHP=100;stam=100;rally=0;bestRally=0;times=[];recent=[];oHist=[];timers=[];openUntil=0;
   tut={i:0,count:0,hintNext:false,fail:false,hit:{}};
   $('menu').hidden=true;$('result').hidden=true;$('tutDone').hidden=true;$('lesson').hidden=false;
@@ -602,6 +616,8 @@ function end(){
   const won=oHP<=0;
   if(won)setPose(me,'win',300);else setPose(kai,'win',300);
   $('rTitle').textContent=(won?'你贏了！':'師範勝')+'｜'+D.name;
+  if(won&&diffKey+1>cleared){cleared=diffKey+1;try{localStorage.setItem('fk_cleared',cleared)}catch(e){}}
+  const nb=$('nextLv');nb.hidden=!(won&&diffKey<LEVELS.length-1);if(!nb.hidden)nb.textContent='挑戰'+LEVELS[diffKey+1].name;
   $('rScore').textContent=Math.round(pHP);$('rBest').textContent=bestRally;
   $('rAvg').textContent=times.length?(times.reduce((a,b)=>a+b,0)/times.length/1000/SPEED).toFixed(2)+'s':'–';
   setTimeout(()=>{$('result').hidden=false},700);
@@ -655,9 +671,13 @@ document.addEventListener('keydown',e=>{
   const m={a:['atk','high'],s:['atk','mid'],d:['atk','low'],ArrowUp:['def','high'],ArrowLeft:['def','mid'],ArrowRight:['def','mid'],ArrowDown:['def','low']}[k];
   if(m&&!e.repeat){e.preventDefault();act(m[0],m[1]);flashPad(m[0],m[1],'on')}
 });
+function renderBelts(){const box=$('belts');box.innerHTML='';LEVELS.forEach((L,i)=>{const b=document.createElement('button');b.className='belt'+(i<cleared?' done':'');b.innerHTML='<i></i><span></span><small></small>';b.querySelector('i').style.background=L.color;b.querySelector('span').textContent=L.name;b.querySelector('small').textContent=i<cleared?'已過關':i===cleared?'挑戰中':'';b.addEventListener('click',()=>startGame(i));box.append(b)})}
+renderBelts();
 document.querySelectorAll('.diff').forEach(b=>b.addEventListener('click',()=>{$('tutDone').hidden=true;startGame(b.dataset.d)}));
+$('tutToMenu').addEventListener('click',()=>{$('tutDone').hidden=true;renderBelts();$('menu').hidden=false});
+$('nextLv').addEventListener('click',()=>startGame(Math.min(LEVELS.length-1,diffKey+1)));
 $('tutBtn').addEventListener('click',()=>startTutorial('def'));$('tutAtkBtn').addEventListener('click',()=>startTutorial('atk'));$('tutAgain').addEventListener('click',()=>startTutorial());$('lQuit').addEventListener('click',quitTutorial);
-$('toMenu').addEventListener('click',()=>{$('result').hidden=true;$('menu').hidden=false});
+$('toMenu').addEventListener('click',()=>{$('result').hidden=true;renderBelts();$('menu').hidden=false});
 $('again').addEventListener('click',()=>startGame(diffKey));
 hud();
 })();
