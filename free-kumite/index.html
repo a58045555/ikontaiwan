@@ -21,7 +21,7 @@
 [hidden]{display:none!important}
 html,body{background:var(--bg);color:var(--fg)}
 body{font-family:var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:14px 24px}
-.app{max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
+.app{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation;max-width:540px;margin:0 auto;display:flex;flex-direction:column;gap:12px}
 header{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
 .eyebrow{margin:0;font-size:12px;letter-spacing:.12em;color:var(--muted)}
 h1{margin:2px 0 0;font-family:var(--f-display);font-weight:900;font-size:30px;letter-spacing:.06em;line-height:1.1}
@@ -53,6 +53,35 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 #stamp.pop.hurt{color:var(--hit);-webkit-text-stroke:2px #fff;text-shadow:0 4px 0 #000;font-size:clamp(28px,9vw,50px)}
 @media (max-width:420px){.overlay{gap:8px;padding:10px}.overlay h2{font-size:22px}.overlay p{font-size:12px;line-height:1.5}.trial{display:inline-block;vertical-align:middle;margin-left:10px;padding:2px 8px;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font:700 13px var(--f-body);letter-spacing:.08em}
 .overlay .trialnote{font-size:12px;color:var(--accent)}
+.range{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);flex-wrap:wrap}
+.range i{font-style:normal;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:#6d6055;transition:all .12s}
+.range i.on{color:#1d150e;background:var(--accent);border-color:var(--accent);font-weight:700}
+.range em{font-style:normal;color:var(--hit);font-weight:700}
+.ctl.v2{grid-template-columns:minmax(96px,28%) 18px 1fr 1fr;gap:0 6px}
+.dpad{display:flex;flex-direction:column;gap:8px;min-width:0}
+.dp{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.stick{flex:1;position:relative;display:flex;align-items:center;justify-content:center;border-radius:14px;background:#1d1611;border:1px solid var(--line);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;min-height:150px}
+.stick .ring{width:74px;height:74px;border-radius:50%;background:radial-gradient(circle,#2e241b 55%,#251c15);border:2px solid #4a3d33;position:relative}
+.stick .knob{position:absolute;left:50%;top:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#f0c878,#c48a32);box-shadow:0 3px 0 #6a4a1a;transition:transform .06s}
+.stick .lab{position:absolute;font:700 11px var(--f-body);color:var(--muted);pointer-events:none}
+.stick .lab.u{top:7px;left:0;right:0;text-align:center;color:#8fc4b0}
+.stick .lab.l{left:6px;bottom:8px}.stick .lab.r{right:6px;bottom:8px}
+.stick.off{opacity:.35;pointer-events:none}
+.stick.hintBack .lab.l{color:var(--accent);animation:hintp2 .5s ease-in-out infinite alternate}
+@keyframes hintp2{from{opacity:.4}to{opacity:1}}
+.dp{grid-template-rows:1fr 54px}
+.stepb{grid-column:1/-1;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:10px;border:1px solid #6f9c8c;border-bottom:4px solid #120d0a;background:#22302b;color:var(--fg);touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}
+.stepb b{font:900 20px var(--f-display)}.stepb small{font:700 11px var(--f-body);color:var(--muted)}
+.stepb:active{transform:translateY(2px);border-bottom-width:2px}
+.dp .mv{min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font:900 26px var(--f-body);padding:0}
+.dp .mv small{font:700 12px var(--f-body);color:var(--muted)}
+.ctl.v2 .mid span{font-size:13px}
+.ctl.v2 .pad b{font-size:16px}
+@media (max-width:380px){.ctl.v2{grid-template-columns:86px 14px 1fr 1fr;gap:0 5px}.ctl.v2 .pad b{font-size:14px}}
+.moverow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mv{min-height:56px;border-radius:10px;border:1px solid var(--line);border-bottom:4px solid #120d0a;background:#2a2219;color:var(--fg);font:900 17px var(--f-body);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
+.mv.on{transform:translateY(2px);border-bottom-width:2px;background:#3a2c21}
+.tutrow{align-items:center;gap:6px}.tutrow .cta{padding:7px 14px;font-size:14px;letter-spacing:.06em}
 .cta{padding:8px 18px;font-size:14px}}
 @keyframes pop{0%{opacity:0;transform:translateX(-50%) scale(2.3) rotate(-9deg)}12%{opacity:1;transform:translateX(-50%) scale(.9) rotate(-4deg)}22%{transform:translateX(-50%) scale(1.06) rotate(-4deg)}32%{transform:translateX(-50%) scale(1) rotate(-4deg)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-12%) rotate(-4deg)}}
 #cue{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;font-size:clamp(12px,3.4vw,14px);font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.8));color:var(--fg);text-align:center;pointer-events:none;min-height:1.4em}
@@ -125,7 +154,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 .score .side{min-width:0}.side .bar,.side .nm{align-self:stretch}
 @media (max-width:380px){.pad b{font-size:15px}.pad{min-height:62px}}
 .note.ig a{color:var(--accent)}
-.note{margin:0;font-size:13px;line-height:1.6;color:var(--muted)}
+.note{-webkit-user-select:text;user-select:text;margin:0;font-size:13px;line-height:1.6;color:var(--muted)}
 @media (max-width:380px){.pad{gap:5px}.pad b{font-size:14px}}
 </style>
 
@@ -156,7 +185,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
       <h2>押忍！</h2>
       <p class="trialnote">試玩版：角色和關卡陸續加入中，內容可能會變動。</p>
       <p>左營道場對練：擋下對手的招就有空檔打回去，被擋就換你接。第一次玩先上教學。</p>
-      <div class="diffs"><button class="cta" id="tutBtn">防守教學</button><button class="cta" id="tutAtkBtn">攻擊教學</button></div>
+      <div class="diffs tutrow"><span class="sub">教學：</span><button class="cta" id="tutBtn">防守</button><button class="cta" id="tutAtkBtn">攻擊</button><button class="cta" id="tutMoveBtn">移動</button></div>
       <div class="heroes" id="heroes" role="group" aria-label="選擇角色"><span class="sub">你的角色</span><button class="hero" data-h="m"><img id="hM" alt=""><b>男主角</b></button><button class="hero" data-h="f"><img id="hF" alt=""><b>女主角</b></button></div>
       <p class="sub">挑戰各道場 sensei（打贏才解鎖下一位）：</p>
       <div class="belts" id="belts" role="group" aria-label="選擇等級"></div>
@@ -179,22 +208,30 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
   </div>
 
   
-    <div class="ctl" id="pads" data-mode="attack">
-      <div class="col def-col">
-        <span class="colh">防守</span>
-        <button class="pad def" data-a="def" data-l="high"><b>上防守</b><small>雙手護頭</small></button>
-        <button class="pad def" data-a="def" data-l="mid"><b>中防守</b><small>手肘護腹</small></button>
-        <button class="pad def" data-a="def" data-l="low"><b>下防守</b><small>抬膝擋</small></button>
+    <div class="range" id="range"><span>打得到：</span><i id="rg_mid">中段拳</i><i id="rg_low">下段踢</i><i id="rg_high">上段踢</i><em id="rgWall" hidden>背靠牆！</em></div>
+  <div class="ctl v2" id="pads" data-mode="attack">
+      <div class="dpad">
+        <span class="colh">移動</span>
+        <div class="stick" id="stick" aria-label="移動搖桿：左右移動，往上推繞步">
+          <span class="lab u">繞步 ▲</span><span class="lab l" id="labL">◀ 後退</span><span class="lab r" id="labR">前進 ▶</span>
+          <div class="ring"><i class="knob" id="knob"></i></div>
+        </div>
       </div>
       <div class="mid"><span></span><span>頭</span><span>腹</span><span>腿</span></div>
+      <div class="col def-col">
+        <span class="colh">防守</span>
+        <button class="pad def" data-a="def" data-l="high"><b>上防守</b></button>
+        <button class="pad def" data-a="def" data-l="mid"><b>中防守</b></button>
+        <button class="pad def" data-a="def" data-l="low"><b>下防守</b><small>抬膝</small></button>
+      </div>
       <div class="col atk-col">
         <span class="colh">出手</span>
-        <button class="pad atk" data-a="atk" data-l="high"><b>上段踢</b><small>傷害大</small></button>
-        <button class="pad atk" data-a="atk" data-l="mid"><b>中段拳</b><small>最快</small></button>
-        <button class="pad atk" data-a="atk" data-l="low"><b>下段踢</b><small>穩定</small></button>
+        <button class="pad atk" data-a="atk" data-l="high"><b>上段踢</b></button>
+        <button class="pad atk" data-a="atk" data-l="mid"><b>中段拳</b></button>
+        <button class="pad atk" data-a="atk" data-l="low"><b>下段踢</b></button>
       </div>
   </div>
-  <p class="note">試玩版，人物先用程式畫的像素人代替，之後會換成正式的圖。左手防守、右手出手，同一列就是同一個高度；電腦可用鍵盤 A／S／D 出手，↑／←／↓ 防守。</p>
+  <p class="note">試玩版，角色和關卡陸續加入中。左手拇指拖曳搖桿：左右移動、往上推繞步；右手拇指負責防守和出手，同一列是同一個高度。地上的刻度是三招打得到的距離，亮起來的就打得到。第一次玩建議三個教學都走一遍。電腦：←／→ 移動，F 繞步，A／S／D 出手，↑／空白鍵／↓ 防守。</p>
   <p class="note ig">想體驗真正的組手？歡迎來道場：<a href="https://www.instagram.com/i.k.o.n.taiwan/" target="_blank" rel="noopener">IG @i.k.o.n.taiwan</a></p>
 </div>
 
@@ -203,7 +240,9 @@ const ONLY_NEW=true;
 (()=>{
 const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 ctx.imageSmoothingEnabled=false;
-const GROUND=106,BY=76,OFFY=20,CAMX=25,CAMY=14;
+const GROUND=106,BY=76,OFFY=20,CAMY=14;let CAMX=25;
+const REACH={mid:44,low:52,high:57},MIN_D=28,WALL_L=34,WALL_R=166,PREF={power:41,speed:53,tech:48,all:46};
+let baited=false,moveHold=0,pWhiff=false,lastRg='',SIDE=1,oSide=1;
 const OUT='#1b1410',GI='#ecebe6',GI_S='#b9b3a8';
 
 /* ---------- settings ---------- */
@@ -319,12 +358,12 @@ const ROSTER=[
  {k:'shihan',n:'凱師範',d:'台灣支部',t:'all',look:{style:'bald',hair:'#3a2a20',skin:'#d39a6a',skinS:'#b98252',glasses:true,beard:true,build:1}}];
 const HEROES={m:{name:'男主角',spr:'m1',look:{style:'short',hair:'#141110',skin:'#e2ab7c',build:0,glasses:false,beard:false}},f:{name:'女主角',spr:'f1',look:{style:'pony',hair:'#2e1f17',skin:'#ecbb8e',build:-1,glasses:false,beard:false,lash:true}}};
 let hero='m';try{if(localStorage.getItem('fk_hero')==='f')hero='f'}catch(e){}
-const TYPE={power:{lab:'力量型',dmg:1.3,feint:-.08,combo:-.25,speed:0,block:0},speed:{lab:'速度型',dmg:.9,feint:0,combo:.45,speed:.08,block:-.03},tech:{lab:'技術型',dmg:1,feint:.15,combo:0,speed:0,block:.08},all:{lab:'全能型',dmg:1.1,feint:.06,combo:.15,speed:.03,block:.04}};
+const TYPE={power:{lab:'力量型',bait:.04,press:1.4,dmg:1.3,feint:-.08,combo:-.25,speed:0,block:0},speed:{lab:'速度型',bait:.28,press:.8,dmg:.9,feint:0,combo:.45,speed:.08,block:-.03},tech:{lab:'技術型',bait:.22,press:1,dmg:1,feint:.15,combo:0,speed:0,block:.08},all:{lab:'全能型',bait:.14,press:1.2,dmg:1.1,feint:.06,combo:.15,speed:.03,block:.04}};
 const BELTS=[['白帶','#f1efe8'],['橙帶','#e58a3a'],['藍帶','#3f6fc4'],['黃帶','#e3c440'],['綠帶','#4f9a55'],['茶帶','#7a4a2a'],['黑帶','#111'],['師範本氣','#b22f26']];
 const lerp=(a,b,t)=>a+(b-a)*t;
 const SHIHAN=ROSTER.find(r=>r.k==='shihan');
 if(typeof ONLY_NEW!=='undefined'&&ONLY_NEW){const keep=ROSTER.filter(r=>SHEETS[r.k]);ROSTER.splice(0,ROSTER.length,...keep)}
-const LEVELS=ROSTER.map((r,i)=>{const t=i/(ROSTER.length-1),T=TYPE[r.t];return{...r,name:r.n,type:T.lab,dmg:T.dmg,speed:lerp(1.0,1.5,t)+T.speed,block:lerp(-.22,.13,t)+T.block,chain:lerp(.1,.52,t),feint:Math.max(0,lerp(.03,.4,t)+T.feint),combo:Math.max(.1,lerp(.3,1.6,t)+T.combo),open:lerp(1.45,.74,t)}});
+const LEVELS=ROSTER.map((r,i)=>{const t=i/(ROSTER.length-1),T=TYPE[r.t];return{...r,name:r.n,type:T.lab,dmg:T.dmg,bait:T.bait||0,press:T.press||1,speed:lerp(1.0,1.5,t)+T.speed,block:lerp(-.22,.13,t)+T.block,chain:lerp(.1,.52,t),feint:Math.max(0,lerp(.03,.4,t)+T.feint),combo:Math.max(.1,lerp(.3,1.6,t)+T.combo),open:lerp(1.45,.74,t)}});
 const beltOf=i=>BELTS[Math.min(6,Math.floor(i*7/ROSTER.length))];const BKEY=['white','orange','blue','yellow','green','brown','black'];
 let cleared=0;try{cleared=+localStorage.getItem('fk_cleared')||0}catch(e){}let D=LEVELS[0],diffKey=0;const pairs={};
 const ease=t=>1-Math.pow(1-t,3);
@@ -400,7 +439,7 @@ function drawFighter(f){
   if(sheet){const fx=FRAME_FIX[f.key]&&FRAME_FIX[f.key][f.name];const fr=sheet[fx??POSE_FRAME[f.name]??0];if(fr&&fr.img.complete&&fr.img.naturalWidth){
     const k=63/sheet[0].h,hx=f.bx+f.dir*(p.hip[0]+p.ox),w=fr.w*k,h=fr.h*k;
     ctx.fillStyle='rgba(0,0,0,.28)';ctx.fillRect(Hq(hx-12),GROUND-.8,24,1.6);
-    ctx.save();ctx.translate(Hq(hx),GROUND+.6+(f.name==='stance'?Hq(bob*.6):0));ctx.scale(f.dir,1);ctx.imageSmoothingEnabled=false;
+    ctx.save();ctx.translate(Hq(hx),GROUND+.6+(f.name==='stance'?Hq(bob*.6):0)+(f.yo||0));ctx.scale(f.dir,1);ctx.imageSmoothingEnabled=false;
     ctx.drawImage(frameImg(f.key,fr,f.belt),-fr.ax*k,-h,w,h);ctx.restore();return W}}
   const hip=W('hip'),neck=W('neck'),head=W('head'),sh=[neck[0]-f.dir*.4,neck[1]+2.2];
   const bu=f.build||0,skS=f.skinS||shadeOf(f.skin);
@@ -505,7 +544,7 @@ const at=(ms,fn)=>timers.push({t:gt+ms,fn});
 function startGame(k){
   if(k!=null&&typeof k!=='object'){diffKey=+k;D=LEVELS[diffKey];SPEED=D.speed}for(const x in pairs)delete pairs[x];
   ensureAudio();tut=null;timers=[];clearHint();$('lesson').hidden=true;pads.classList.remove('tutorial');$('tutDone').hidden=true;
-  applyOpponent();
+  resetPos();applyOpponent();
   pHP=100;oHP=100;stam=100;lastAtkEnd=-9999;rally=0;bestRally=0;times=[];recent=[];oHist=[];timers=[];
   $('menu').hidden=true;$('result').hidden=true;hud();
   phase='intro';setMode('busy');setCue('');
@@ -521,11 +560,15 @@ function neutral(delay){
   pressureAt=gt+(delay||900+Math.random()*800);chainCount=0;
   const lt=LT();
   if(lt){
+    if(lt.pos){resetPos();me.bx=lt.pos[0];kai.bx=lt.pos[1]}
     if(lt.goal!=='open')openUntil=0;
     if(lt.kai==='idle')pressureAt=Infinity;
     setMode(gt<openUntil?'open':'attack');
     if(lt.goal==='each'){const nx=LV.find(x=>!tut.hit[x]);if(nx)showHint(nx,'atk');setCue('打中閃的那一招')}
     else if(lt.goal==='chain'){showHint(LV[tut.count%3],'atk');setCue('先出這招，馬上再按另一個高度')}
+    else if(lt.goal==='reach')setCue('推搖桿走近，「中段拳」亮起再打')
+    else if(lt.goal==='step')setCue('貼近師範，再把搖桿往上推')
+    else if(lt.goal==='dodge')setCue('準備，看師範起腳')
     else if(gt<openUntil){}
     else setCue(lt.atk?'等'+OPN()+'出招':'準備，看師範的動作');
     return}
@@ -553,19 +596,27 @@ const TUT_ATK=[
 ];
 let TUT=TUT_DEF;
 const LT=()=>tut&&TUT[tut.i]&&!TUT[tut.i].bout?TUT[tut.i]:null;
+const LTnm=()=>{const l=LT();return l&&!l.move?l:null};
+const TUT_MOVE=[
+ {title:'前進',text:'師範站在遠處。把搖桿推向師範走近，等下面的「中段拳」亮起再出拳打中他。',goal:'reach',need:2,kai:'idle',atk:true,move:true,pos:[56,126],speed:.9},
+ {title:'後退閃招',text:'師範會慢慢起腳踢頭。看到他起腳，就把搖桿往後拉退開，讓他踢空。',goal:'dodge',need:2,kai:'slow',lv:'high',move:true,pos:[92,134],speed:.8},
+ {title:'繞步逃牆角',text:'你被逼到牆邊了。貼近師範時把搖桿往上推，從他旁邊繞過去換邊。',goal:'step',need:2,kai:'idle',move:true,pos:[34,72],speed:.9},
+ {title:'小試身手',text:'實戰規則：移動、閃招、繞步都用上，把師範剩下的體力打完！',bout:true,atk:true,move:true,speed:1.1}];
+function doneInfo(){return TUT===TUT_MOVE?['移動教學完成','前進、後退閃招、繞步都學會了。實戰裡注意距離，太遠會打空，背靠牆就繞出去。']:TUT===TUT_ATK?['攻擊教學完成','出手、抓空檔、連段、搶攻都學會了。上實戰試試，記得別亂打。']:['防守教學完成','上中下防守、看穿假動作、擋住連段都學會了。實戰中擋下師範的招後會出現空檔，記得打回去。']}
 const POSECUE={high:'膝蓋抬到胸口 → 踢頭，按「上防守」',mid:'拳頭拉到腰邊 → 打肚子，按「中防守」',low:'膝蓋抬到腰、往腿踢 → 按「下防守」'};
-function clearHint(){padEls.forEach(b=>b.classList.remove('hint'))}
+function clearHint(){$('stick').classList.remove('hintBack');padEls.forEach(b=>b.classList.remove('hint'))}
 function showHint(l,a){clearHint();const b=padEls.find(p=>p.dataset.a===(a||'def')&&p.dataset.l===l);if(b)b.classList.add('hint')}
-function showLesson(){const st=TUT[tut.i];pads.classList.toggle('tutorial',!st.atk);$('lesson').style.borderLeftColor=TUT===TUT_ATK?'var(--atk)':'';if(st.bout){$('lDots').textContent='';$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;SPEED=st.speed;return}$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;$('lDots').textContent='●'.repeat(tut.count)+'○'.repeat(st.need-tut.count);SPEED=st.speed}
+function showLesson(){const st=TUT[tut.i];pads.classList.toggle('tutorial',!st.atk);$('lesson').style.borderLeftColor=TUT===TUT_ATK?'var(--atk)':TUT===TUT_MOVE?'#d8b648':'';$('stick').classList.toggle('off',!st.move&&!st.bout);if(st.bout){$('lDots').textContent='';$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;SPEED=st.speed;return}$('lTitle').textContent='第 '+(tut.i+1)+'／'+TUT.length+' 課　'+st.title;$('lText').textContent=st.text;$('lDots').textContent='●'.repeat(tut.count)+'○'.repeat(st.need-tut.count);SPEED=st.speed}
 function startTutorial(kind){
-  if(kind==='atk'||kind==='def')TUT=kind==='atk'?TUT_ATK:TUT_DEF;
+  resetPos();
+  if(kind==='atk'||kind==='def'||kind==='move')TUT=kind==='atk'?TUT_ATK:kind==='move'?TUT_MOVE:TUT_DEF;
   ensureAudio();D=LEVELS[1];diffKey=1;setLook(kai,SHIHAN.look,'shihan');setLook(me,HEROES[hero].look,HEROES[hero].spr);me.belt=BELTS[0][1];$('oName').textContent='凱師範';
   pHP=100;oHP=100;stam=100;rally=0;bestRally=0;times=[];recent=[];oHist=[];timers=[];openUntil=0;
   tut={i:0,count:0,hintNext:false,fail:false,hit:{}};
   $('menu').hidden=true;$('result').hidden=true;$('tutDone').hidden=true;$('lesson').hidden=false;
   hud();showLesson();neutral(1600);
 }
-function quitTutorial(){tut=null;timers=[];clearHint();$('lesson').hidden=true;pads.classList.remove('tutorial');phase='menu';setCue('');setPose(me,'stance',150);setPose(kai,'stance',150);$('tutDone').hidden=true;$('menu').hidden=false}
+function quitTutorial(){$('stick').classList.remove('off');tut=null;timers=[];clearHint();$('lesson').hidden=true;pads.classList.remove('tutorial');phase='menu';setCue('');setPose(me,'stance',150);setPose(kai,'stance',150);$('tutDone').hidden=true;$('menu').hidden=false}
 function tutPass(){
   const st=TUT[tut.i];
   if(!tut.fail)tut.count++;tut.fail=false;showLesson();
@@ -573,7 +624,7 @@ function tutPass(){
     tut.i++;tut.count=0;
     tut.hit={};
     if(TUT[tut.i]&&TUT[tut.i].bout){showStamp('過關',TUT[tut.i-1].title,50,'good');at(1000,()=>{showLesson();pHP=100;oHP=40;stam=100;hud();neutral(1300)});return}
-    if(tut.i>=TUT.length){showStamp('過關','教學完成',50,'good');at(900,()=>{phase='end';$('lesson').hidden=true;pads.classList.remove('tutorial');setCue('');$('tdTitle').textContent=TUT===TUT_ATK?'攻擊教學完成':'防守教學完成';$('tdText').textContent=TUT===TUT_ATK?'出手、抓空檔、連段、搶攻都學會了。上實戰試試，記得別亂打。':'上中下防守、看穿假動作、擋住連段都學會了。實戰中擋下師範的招後會出現空檔，記得打回去。';$('tutDone').hidden=false;tut=null});return}
+    if(tut.i>=TUT.length){showStamp('過關','教學完成',50,'good');at(900,()=>{phase='end';$('lesson').hidden=true;pads.classList.remove('tutorial');setCue('');const di=doneInfo();$('tdTitle').textContent=di[0];$('tdText').textContent=di[1];$('tutDone').hidden=false;tut=null});return}
     showStamp('過關',TUT[tut.i-1].title,50,'good');
     at(1000,()=>{showLesson();neutral(1300)});
   }else at(500,()=>neutral(1100));
@@ -585,12 +636,12 @@ function tryInterrupt(l){
   const remain=strikeAt-gt,su=STARTUP[l];
   snatch=l;setPose(me,'ch'+CAP[l],Math.round(su*.7));
   const ltI=LT();if(ltI)stam=100;
-  if(remain>su+40&&(ltI?true:Math.random()>.3+D.block)){
+  if(remain>su+40&&(LTnm()||dist()<=REACH[l]+1)&&(ltI?true:Math.random()>.3+D.block)){
     phase='pAtk';front=me;setMode('busy');
     at(su,()=>{setPose(me,'st'+CAP[l],60);sfx.whoosh();trail=[];trailOn={f:me,k:l==='mid'?'bH':'fF'}});
     at(su+70,()=>{
-      trailOn=null;const tp=TARGET[l],ix=kai.bx-tp[0],iy=BY+tp[1];
-      setPose(kai,'hit'+CAP[l],FX?40:70);sfx.thump();boom(ix,iy,true,1);
+      trailOn=null;const tp=TARGET[l],ix=kai.bx-tp[0]*SIDE,iy=BY+tp[1];
+      setPose(kai,'hit'+CAP[l],FX?40:70);sfx.thump();kai.kb=6*SIDE;boom(ix,iy,true,1);
       const d=Math.round(DMG[l]*1.3);oHP=Math.max(0,oHP-d);rally=0;snatch=null;hud();
       showStamp('有效','−'+d+' · 搶先打中',70,'good');setCue('');
       if(ltI){oHP=100;hud();if(ltI.goal==='snatch'){setCue('搶攻成功！','open');at(700,()=>{setPose(kai,'stance',200);tutPass()})}else at(750,()=>neutral());return}
@@ -599,6 +650,7 @@ function tryInterrupt(l){
   }
 }
 function playerAttack(l){
+  if(me.step)return;
   const lt=LT();
   if(lt&&!lt.atk)return;
   if(lt)clearHint();
@@ -612,7 +664,7 @@ function playerAttack(l){
   if(stam<cost){flashPad('atk',l,'bad');setCue('氣力不足！先防守、喘口氣','danger');if(chaining){phase='neutral'}return}
   stam-=cost;hudSt();
   const spam=!chaining&&!open0&&gt-lastAtkEnd<950;
-  if(!lt&&spam&&Math.random()<Math.min(.8,.5+D.block+(stam<30?.2:0))){intercept(l);return}
+  if(!lt&&spam&&dist()<=REACH.mid+4&&Math.random()<Math.min(.8,.5+D.block+(stam<30?.2:0))){intercept(l);return}
   phase='pAtk';front=me;setMode('busy');
   const open=open0;openUntil=0;
   const same=recent.slice(-3).filter(x=>x===l).length;
@@ -624,6 +676,8 @@ function playerAttack(l){
   if(stam<30)chance=Math.min(.95,chance+.25);
   oBlock=Math.random()<chance;
   if(lt)oBlock=lt.firstBlock?!chaining:false;
+  pWhiff=!(lt&&!lt.move)&&dist()>REACH[l]+1;if(pWhiff)oBlock=false;
+  baited=false;if(!lt&&!chaining&&!pWhiff&&Math.random()<(D.bait||0)){kai.kb=9*SIDE;oBlock=false;baited=true}
   const c=chaining;prevL=l;
   const su=Math.round(STARTUP[l]*(c?.6:1));
   setPose(me,'ch'+CAP[l],Math.round(su*.7));
@@ -634,9 +688,9 @@ function playerAttack(l){
 function intercept(l){
   phase='recover';front=kai;setMode('busy');buffered=null;
   setPose(me,'ch'+CAP[l],80);
-  setPose(kai,'stMid',60);sfx.whoosh();
+  setPose(kai,'stMid',60);sfx.whoosh();me.kb=-6*SIDE;
   at(70,()=>{
-    const ix=me.bx+TARGET.mid[0],iy=BY+TARGET.mid[1];
+    const ix=me.bx+TARGET.mid[0]*SIDE,iy=BY+TARGET.mid[1];
     setPose(me,'hitMid',FX?40:70);sfx.thump();boom(ix,iy,true,-1);
     const d=Math.round(DMG.mid*1.4);pHP=Math.max(0,pHP-d);rally=0;hud();
     showStamp('被迎擊','−'+d+' · 亂打被看穿',30,'hurt');setCue('');
@@ -646,7 +700,10 @@ function intercept(l){
 }
 function pResolve(l,open,same,chained){
   trailOn=null;lastAtkEnd=gt;
-  const tp=TARGET[l],ix=kai.bx-tp[0],iy=BY+tp[1];
+  if(!pWhiff&&!(LT()&&!LT().move)&&dist()>REACH[l]+1)pWhiff=true;
+  if(pWhiff&&LT()){pWhiff=false;buffered=null;showStamp('打空','太遠了',70,'hurt');setCue('太遠打不到，再走近一點','danger');at(150,()=>setPose(me,'stance',160));at(450,()=>{phase='neutral';setMode('attack')});return}
+  if(pWhiff){pWhiff=false;buffered=null;showStamp('打空',baited?'被引誘打空':'距離太遠',70,'hurt');setCue(baited?'他退一步讓你打空了！':'打空了！太遠打不到','danger');at(150,()=>setPose(me,'stance',160));at(220,()=>oppAttack(true));return}
+  const tp=TARGET[l],ix=kai.bx-tp[0]*SIDE,iy=BY+tp[1];
   if(oBlock){
     rally++;bestRally=Math.max(bestRally,rally);hud();
     sfx.clack();sfx.ding(rally);boom(ix-2,iy,false,1);
@@ -662,7 +719,7 @@ function pResolve(l,open,same,chained){
       at(180,()=>oppAttack(true));
     }
   }else{
-    setPose(kai,'hit'+CAP[l],FX?40:70);sfx.thump();
+    setPose(kai,'hit'+CAP[l],FX?40:70);sfx.thump();kai.kb=6*SIDE;
     boom(ix,iy,true,1);
     const mult=(chained?1+.25*chainCount:1)*(open?1.3:1)*(rally>=4?1.15:1);
     const d=Math.round(DMG[l]*mult);oHP=Math.max(0,oHP-d);const r=rally;rally=0;hud();
@@ -673,6 +730,7 @@ function pResolve(l,open,same,chained){
       else if(lt.goal==='open'){ok=open;msg='要在擋下師範的招後、按鈕發亮時出手'}
       else if(lt.goal==='chain'){ok=chained;msg='要先被擋一招，再馬上接另一個高度'}
       else if(lt.goal==='snatch'){msg='這課要在師範起腳時搶先出中段拳'}
+      else if(lt.goal==='reach'){ok=l==='mid';msg='這課用「中段拳」打中他'}
       showStamp('有效',ok?(lt.goal==='chain'?'連段成功':lt.goal==='open'?'抓到空檔':NAME[l]):'',70,'good');
       setCue(ok?'很好！':msg,ok?'open':'danger');
       at(500,()=>setPose(kai,'stance',220));
@@ -686,13 +744,14 @@ function pResolve(l,open,same,chained){
 /* --- opponent attacks: feints and combos --- */
 function pickLevel(not){let l;do{l=LV[Math.random()*3|0]}while(l===not||(oHist.length>=2&&oHist[oHist.length-1]===l&&oHist[oHist.length-2]===l));oHist.push(l);return l}
 function oppAttack(isCounter,comboLeft,quick){
-  snatch=null;if(FX)sparks.push({x:kai.bx-4,y:BY-28,t0:gt,life:110,big:false});
+  snatch=null;if(FX)sparks.push({x:kai.bx-4*SIDE,y:BY-28,t0:gt,life:110,big:false});
   phase='oWind';choice=null;t0=gt;front=kai;setMode('defend');chainCount=0;
   const stage=Math.min(5,Math.floor((200-pHP-oHP)/35));
   if(comboLeft==null){const r=Math.random();oCombo=r<(.12+stage*.03)*D.combo?2:r<(.38+stage*.04)*D.combo?1:0}else oCombo=comboLeft;
   oLevel=pickLevel(quick?oLevel:null);
   const lt=LT();
   if(lt){if(comboLeft==null)oCombo=lt.combo||0;if(lt.lv)oLevel=lt.lv}
+  if(!lt&&!quick&&dist()>REACH.high+4&&oLevel!=='high'&&Math.random()<.5)oLevel='high';
   const win=lt?(lt.kai==='slow'?1400:quick?600:lt.hint?1050:850):quick?Math.max(380,520-rally*12):isCounter?Math.max(420,640-rally*20):Math.max(480,760-stage*40);
   feint=null;
   if(!quick&&(lt?!!lt.feint:Math.random()<D.feint+stage*.05)){
@@ -705,7 +764,9 @@ function oppAttack(isCounter,comboLeft,quick){
     setPose(kai,'ch'+CAP[oLevel],quick?60:isCounter?80:110);
     realAt=gt;strikeAt=gt+win;
   }
+  oStrikeStep();
   setCue(quick?'連段！還有下一招':isCounter?'他反擊了！看動作擋住':OPN()+'出招了！','danger');
+  if(lt&&lt.goal==='dodge'){setCue('他要踢了！把搖桿往後拉退開','danger');$('stick').classList.add('hintBack');return}
   if(lt&&lt.goal==='snatch'){setCue('現在！搶先出「中段拳」','danger');showHint('mid','atk');return}
   if(lt){const st=lt,show=st.hint||tut.hintNext;
     if(feint)setCue('注意，可能是假動作！','danger');
@@ -713,16 +774,25 @@ function oppAttack(isCounter,comboLeft,quick){
     else if(quick)setCue('連段！還有下一招','danger');}
 }
 function playerBlock(l){
-  if(phase!=='oWind'||snatch)return;
+  if(phase!=='oWind'||snatch||me.step)return;
   if(choice===l)return;
   choice=l;pressAt=gt;
   setPose(me,'bl'+CAP[l],FX?50:65);
   flashPad('def',l,'on');
 }
+function oStrikeStep(){oSide=SIDE;kai.stepTo=me.bx+SIDE*(REACH[oLevel]-5)}
 function oStrike(){phase='oStrike';setPose(kai,'st'+CAP[oLevel],70);sfx.whoosh();trail=[];trailOn={f:kai,k:oLevel==='mid'?'bH':'fF'};impactAt=gt+70}
 function oResolve(){
-  trailOn=null;
-  const tp=TARGET[oLevel],ix=me.bx+tp[0],iy=BY+tp[1];
+  trailOn=null;kai.stepTo=null;
+  let caughtStep=false;if(me.step&&!LTnm()){me.step=null;me.yo=0;caughtStep=true}
+  if(!caughtStep&&!LTnm()&&(SIDE!==oSide||dist()>REACH[oLevel]+1)){
+    if(LT()&&LT().goal==='dodge'){clearHint();phase='recover';showStamp('閃過！','',30,'good');setCue('漂亮，讓他踢空了！','open');at(150,()=>setPose(kai,'stance',260));tutPass();return}
+    phase='recover';rally++;bestRally=Math.max(bestRally,rally);hud();
+    showStamp('閃過！','對手打空',30,'good');
+    openUntil=gt+800*D.open;
+    at(150,()=>{setPose(kai,'stance',260);neutral(openUntil-gt+500);setMode('open');setCue('閃過了！他打空，快進去打！','open')});
+    return}
+  const tp=TARGET[oLevel],ix=me.bx+tp[0]*SIDE,iy=BY+tp[1];
   if(choice===oLevel){
     times.push(Math.max(0,pressAt-realAt));stam=Math.min(100,stam+12);
     flashPad('def',oLevel,'good');
@@ -735,6 +805,7 @@ function oResolve(){
     }
     const lt=LT();
     if(lt&&lt.goal==='open'){clearHint();tut.hintNext=false;openUntil=gt+900;phase='recover';at(100,()=>{setPose(kai,'stance',260);neutral(2600);setMode('open');setCue('空檔！馬上打回去','open')});return}
+    if(lt&&lt.goal==='dodge'){clearHint();phase='recover';setCue('擋住了，但這課要往後退讓他踢空','danger');at(200,()=>setPose(kai,'stance',240));at(1000,()=>neutral());return}
     if(lt&&lt.goal==='snatch'){clearHint();phase='recover';setCue('擋住了，但這課要搶先出手','danger');at(200,()=>setPose(kai,'stance',240));at(900,()=>neutral());return}
     if(lt){clearHint();phase='recover';tut.hintNext=false;setCue(feint?'沒被騙到！':'擋住了！','open');at(200,()=>setPose(kai,'stance',240));tutPass();return}
     openUntil=gt+(100+Math.max(330,540-rally*18))*D.open;
@@ -742,15 +813,15 @@ function oResolve(){
     at(100,()=>{setPose(kai,'stance',260);neutral(openUntil-gt+500+Math.random()*500);setMode('open');setCue(feint?'沒被騙到！空檔，快打回去！':'擋住了！空檔，快打回去！','open')});
   }else{
     if(choice)flashPad('def',choice,'bad');
-    setPose(me,'hit'+CAP[oLevel],FX?40:70);sfx.thump();
+    setPose(me,'hit'+CAP[oLevel],FX?40:70);sfx.thump();me.kb=-6*SIDE;
     boom(ix,iy,true,-1);
     if(LT()){clearHint();tut.hintNext=true;tut.fail=false;phase='recover';setMode('busy');
       const ans={high:'上防守',mid:'中防守',low:'下防守'}[oLevel];
       showStamp('被擊中',feint&&choice===feint?'被假動作騙了':choice?'防錯位置':'太慢了',30,'hurt');
-      setCue('這招要按「'+ans+'」，再來一次','danger');
+      setCue(LT().goal==='dodge'?'太慢了，看到起腳就往後退':LT().goal==='step'?'繞太晚被打到了':'這招要按「'+ans+'」，再來一次','danger');
       at(420,()=>setPose(kai,'stance',220));at(1300,()=>neutral(900));return}
-    const d=Math.round(DMG[oLevel]*(D.dmg||1)*(snatch?1.3:1)*(rally>=4?1.15:1));pHP=Math.max(0,pHP-d);rally=0;hud();
-    const why=snatch?'搶攻太慢':feint&&choice===feint?'被假動作騙了':choice?'防錯位置':'太慢了';snatch=null;
+    const d=Math.round(DMG[oLevel]*(D.dmg||1)*(snatch||caughtStep?1.3:1)*(rally>=4?1.15:1));pHP=Math.max(0,pHP-d);rally=0;hud();
+    const why=caughtStep?'繞步被抓到':snatch?'搶攻太慢':feint&&choice===feint?'被假動作騙了':choice?'防錯位置':'太慢了';snatch=null;
     showStamp('被擊中','−'+d+' · '+why,30,'hurt');
     setCue('');phase='recover';setMode('busy');
     at(420,()=>setPose(kai,'stance',220));
@@ -760,7 +831,7 @@ function oResolve(){
 function end(){
   if(pHP>0&&oHP>0)return false;
   if(tut&&TUT[tut.i]&&TUT[tut.i].bout){
-    if(oHP<=0){tut.i++;tut.count=0;phase='recover';setPose(me,'win',300);showStamp('過關','教學完成',50,'good');at(1000,()=>{phase='end';$('lesson').hidden=true;pads.classList.remove('tutorial');setCue('');$('tdTitle').textContent='攻擊教學完成';$('tdText').textContent='出手、抓空檔、連段、搶攻都學會了。上實戰試試，記得別亂打。';$('tutDone').hidden=false;tut=null});return true}
+    if(oHP<=0){tut.i++;tut.count=0;phase='recover';setPose(me,'win',300);showStamp('過關','教學完成',50,'good');at(1000,()=>{phase='end';$('lesson').hidden=true;pads.classList.remove('tutorial');setCue('');const di=doneInfo();$('tdTitle').textContent=di[0];$('tdText').textContent=di[1];$('tutDone').hidden=false;tut=null});return true}
     pHP=100;oHP=40;hud();setCue('沒關係，體力補滿再來一次','danger');return false}
   phase='end';setCue('');setMode('busy');
   const won=oHP<=0;
@@ -773,14 +844,51 @@ function end(){
   setTimeout(()=>{$('result').hidden=false},700);
   return true;
 }
+function dist(){return (kai.bx-me.bx)*SIDE}
+function atWall(){return SIDE>0?me.bx<=WALL_L+.5:me.bx>=WALL_R-.5}
+function relabel(){const L=$('labL'),R=$('labR');if(!L)return;L.textContent=SIDE>0?'◀ 後退':'◀ 前進';R.textContent=SIDE>0?'前進 ▶':'後退 ▶'}
+function resetPos(){SIDE=1;me.dir=1;kai.dir=-1;me.step=null;me.yo=0;relabel();me.bx=76;kai.bx=122;me.kb=0;kai.kb=0;kai.stepTo=null;CAMX=25;moveHold=0}
+function updRange(){const d=dist(),s=['mid','low','high'].map(l=>d<=REACH[l]+1?1:0).join('')+(atWall()?'w':'');if(s===lastRg)return;lastRg=s;['mid','low','high'].forEach((l,i)=>$('rg_'+l).classList.toggle('on',s[i]==='1'));$('rgWall').hidden=!s.endsWith('w')}
+function moveStep(dt){
+  if(phase==='menu'||phase==='end'||phase==='intro'){updRange();return}
+  const lesson=LT(),lnm=LTnm();
+  if(me.step){const st=me.step,k=Math.min(1,(gt-st.t0)/st.dur);me.bx=st.from+(st.to-st.from)*(k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2);me.yo=-2.2*Math.sin(Math.PI*k);
+    if(!st.flipped&&(me.bx-kai.bx)*SIDE>0){st.flipped=true;SIDE=-SIDE;me.dir=SIDE;kai.dir=-SIDE;relabel()}
+    if(k>=1){me.step=null;me.yo=0;stepDone()}
+    updRange();return}
+  const canMove=!lnm&&(phase==='neutral'||(phase==='oWind'&&!choice&&!snatch));
+  if(canMove&&moveHold)me.bx+=moveHold*(moveHold===SIDE?.045:.036)*dt;
+  for(const f of [me,kai]){if(f.kb){const st=Math.sign(f.kb)*Math.min(Math.abs(f.kb),.08*dt);f.bx+=st;f.kb-=st;if(Math.abs(f.kb)<.01)f.kb=0}}
+  if(phase==='neutral'&&!lesson){const pref=PREF[D.t]||46,d=dist();if(d>pref+3)kai.bx-=.028*(D.press||1)*dt*SIDE;else if(d<pref-6)kai.bx+=.022*dt*SIDE}
+  if(phase==='oWind'&&kai.stepTo!=null&&(kai.bx-kai.stepTo)*SIDE>0){kai.bx-=.07*dt*SIDE;if((kai.bx-kai.stepTo)*SIDE<0)kai.bx=kai.stepTo}
+  for(const f of [me,kai])f.bx=Math.max(WALL_L,Math.min(WALL_R,f.bx));
+  if(dist()<MIN_D){const over=MIN_D-dist(),kt=kai.bx+over*SIDE;if(kt>=WALL_L&&kt<=WALL_R)kai.bx=kt;else me.bx-=over*SIDE}
+  updRange();
+}
+function sideStep(){
+  if(LT())stam=100;
+  if(me.step||LTnm()||!(phase==='neutral'||(phase==='oWind'&&!choice&&!snatch)))return;
+  if(dist()>REACH.low+2){setCue('太遠了，貼近一點才能繞','danger');return}
+  if(stam<25){setCue('氣力不足，繞不過去','danger');return}
+  const to=kai.bx+SIDE*36;
+  if(to<WALL_L||to>WALL_R){setCue('那邊沒有空間繞','danger');return}
+  stam-=25;hudSt();sfx.whoosh();
+  me.step={t0:gt,dur:280,from:me.bx,to,flipped:false};setPose(me,'stance',80);
+}
+let lastStepEnd=-1e9;
+function stepDone(){const lt=LT();if(lt&&lt.goal==='step'&&phase==='neutral'){phase='recover';showStamp('繞過去了','',50,'good');setCue('漂亮！逃出牆角','open');tutPass();return}
+  const spam=!lt&&gt-lastStepEnd<3200;lastStepEnd=gt;if(phase!=='neutral')return;
+  if(spam){setCue('一直繞被看穿了！','danger');pressureAt=gt+60;return}
+  openUntil=gt+380*D.open;setMode('open');setCue('繞到側面了！快打','open');pressureAt=Math.max(pressureAt,openUntil+250)}
 function update(){
+  {const dtg=gt-(update.m||gt);update.m=gt;moveStep(dtg)}
   timers.sort((a,b)=>a.t-b.t);
   while(timers.length&&timers[0].t<=gt)timers.shift().fn();
   if(phase!=='pAtk'&&phase!=='pChain'&&phase!=='menu'&&phase!=='end'){const nd=gt-(update.l||gt);stam=Math.min(100,stam+nd*.02);hudSt()}
   update.l=gt;
   if(phase==='neutral'){
     if(pads.dataset.mode==='open'&&gt>openUntil){setMode('attack');setCue('空檔過了，再找機會')}
-    if(gt>=pressureAt)oppAttack(false);
+    if(gt>=pressureAt&&!me.step)oppAttack(false);
   }
   else if(phase==='oWind'&&gt>=strikeAt)oStrike();
   else if(phase==='oStrike'&&gt>=impactAt)oResolve();
@@ -793,15 +901,17 @@ function frame(now){
   shake*=Math.exp(-dt/75);flash*=Math.exp(-dt/60);
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#000';ctx.fillRect(0,0,450,336);
   const sx=shake>.3?Math.round((Math.random()*2-1)*shake):0,sy=shake>.3?Math.round((Math.random()*2-1)*shake):0;
+  {const mid=(me.bx+kai.bx)/2,tg=Math.max(0,Math.min(54,mid-75));CAMX+=(tg-CAMX)*Math.min(1,dt/120)}
   ctx.setTransform(SC,0,0,SC,(sx-CAMX)*SC,(sy-CAMY)*SC);
   ctx.fillStyle='#151a24';ctx.fillRect(-4,-OFFY-4,208,OFFY+8);
   ctx.drawImage(bg,-4,-4,208,136);ctx.fillStyle='#7d7d80';ctx.fillRect(-4,130,208,40);
   if(phase==='neutral'&&gt<openUntil&&FX&&Math.floor(gt/90)%2===0){
     ctx.fillStyle='rgba(255,224,138,.25)';ctx.fillRect(kai.bx-14,BY-34,28,64);
   }
-  const back=front===me?kai:me;
-  const Wb=drawFighter(back),Wf=drawFighter(front);
-  if(trailOn&&FX&&freeze<=0){const W=trailOn.f===front?Wf:Wb;trail.push(W(trailOn.k));if(trail.length>6)trail.shift()}
+  if(phase!=='menu'&&phase!=='intro'&&!me.step){const y=GROUND+1.6,x0=me.bx,dd=dist();ctx.fillStyle='rgba(255,224,138,.16)';ctx.fillRect(Math.min(x0,x0+SIDE*REACH.high),y,REACH.high,.8);for(const l of ['mid','low','high']){const x=x0+SIDE*REACH[l];ctx.fillStyle=dd<=REACH[l]+1?'rgba(255,224,138,.9)':'rgba(255,255,255,.28)';ctx.fillRect(x-.4,y-1.4,.8,3.6)}}
+  const fr0=me.step?kai:front,back=fr0===me?kai:me;
+  ctx.globalAlpha=(me.step&&back===me)?.72:1;const Wb=drawFighter(back);ctx.globalAlpha=1;const Wf=drawFighter(fr0);
+  if(trailOn&&FX&&freeze<=0){const W=trailOn.f===fr0?Wf:Wb;trail.push(W(trailOn.k));if(trail.length>6)trail.shift()}
   if(!trailOn&&trail.length&&freeze<=0)trail.shift();
   drawFx();
   if(flash>.02){ctx.globalAlpha=flash;ctx.fillStyle='#fff';ctx.fillRect(-4,-OFFY-4,208,160);ctx.globalAlpha=1}
@@ -810,6 +920,18 @@ function frame(now){
 requestAnimationFrame(frame);
 
 /* ---------- input ---------- */
+document.addEventListener('keyup',e=>{if((e.key==='ArrowLeft'&&moveHold<0)||(e.key==='ArrowRight'&&moveHold>0))moveHold=0});
+document.querySelectorAll('.mv').forEach(b=>{const on=e=>{e.preventDefault();ensureAudio();moveHold=+b.dataset.m;b.classList.add('on');try{b.setPointerCapture(e.pointerId)}catch(_){}};const off=()=>{if(moveHold===+b.dataset.m)moveHold=0;b.classList.remove('on')};b.addEventListener('pointerdown',on);['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,off))});
+(function(){const st=$('stick'),kn=$('knob');let pid=null,cx=0,cy=0,upArmed=true;
+  const setK=(dx,dy)=>{kn.style.transform='translate('+dx+'px,'+dy+'px)'};
+  const mv=e=>{if(e.pointerId!==pid)return;let dx=e.clientX-cx,dy=e.clientY-cy;const r=Math.hypot(dx,dy),M=30;if(r>M){dx*=M/r;dy*=M/r}setK(dx,dy);
+    moveHold=dx>12?1:dx<-12?-1:0;if(dy<-22&&Math.abs(dy)>Math.abs(dx)*.8){if(upArmed){upArmed=false;moveHold=0;sideStep()}}else if(dy>-10)upArmed=true};
+  st.addEventListener('pointerdown',e=>{e.preventDefault();ensureAudio();pid=e.pointerId;const r=st.querySelector('.ring').getBoundingClientRect();cx=r.left+r.width/2;cy=r.top+r.height/2;try{st.setPointerCapture(pid)}catch(_){}mv(e)});
+  st.addEventListener('pointermove',mv);
+  const up=e=>{if(e.pointerId!==pid)return;pid=null;moveHold=0;upArmed=true;setK(0,0)};
+  ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>st.addEventListener(ev,up));})();
+['selectstart','contextmenu','dblclick'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.target.closest('.note'))e.preventDefault()}));
+document.querySelectorAll('.ctl,.stage,.range,.score').forEach(el=>el.addEventListener('touchstart',e=>{if(!e.target.closest('.overlay'))e.preventDefault()},{passive:false}));
 function act(a,l){if(a==='atk')playerAttack(l);else playerBlock(l)}
 padEls.forEach(b=>{
   b.addEventListener('pointerdown',e=>{e.preventDefault();ensureAudio();b.classList.add('on');act(b.dataset.a,b.dataset.l)});
@@ -818,7 +940,9 @@ padEls.forEach(b=>{
 });
 document.addEventListener('keydown',e=>{
   const k=e.key.length===1?e.key.toLowerCase():e.key;
-  const m={a:['atk','high'],s:['atk','mid'],d:['atk','low'],ArrowUp:['def','high'],ArrowLeft:['def','mid'],ArrowRight:['def','mid'],ArrowDown:['def','low']}[k];
+  if(k==='f'&&!e.repeat){e.preventDefault();sideStep();return}
+  if(k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();moveHold=k==='ArrowLeft'?-1:1;return}
+  const m={a:['atk','high'],s:['atk','mid'],d:['atk','low'],ArrowUp:['def','high'],' ':['def','mid'],ArrowDown:['def','low']}[k];
   if(m&&!e.repeat){e.preventDefault();act(m[0],m[1]);flashPad(m[0],m[1],'on')}
 });
 function renderBelts(){const box=$('belts');box.innerHTML='';LEVELS.forEach((L,i)=>{const b=document.createElement('button');const locked=i>cleared;b.className='belt'+(i<cleared?' done':'')+(locked?' locked':'')+(L.k==='shihan'?' boss':'');b.disabled=locked;
@@ -832,7 +956,7 @@ document.querySelectorAll('.hero').forEach(b=>b.addEventListener('click',()=>{he
 document.querySelectorAll('.diff').forEach(b=>b.addEventListener('click',()=>{$('tutDone').hidden=true;startGame(b.dataset.d)}));
 $('tutToMenu').addEventListener('click',()=>{$('tutDone').hidden=true;renderBelts();$('menu').hidden=false});
 $('nextLv').addEventListener('click',()=>startGame(Math.min(LEVELS.length-1,diffKey+1)));
-$('tutBtn').addEventListener('click',()=>startTutorial('def'));$('tutAtkBtn').addEventListener('click',()=>startTutorial('atk'));$('tutAgain').addEventListener('click',()=>startTutorial());$('lQuit').addEventListener('click',quitTutorial);
+$('tutBtn').addEventListener('click',()=>startTutorial('def'));$('tutAtkBtn').addEventListener('click',()=>startTutorial('atk'));$('tutMoveBtn').addEventListener('click',()=>startTutorial('move'));$('tutAgain').addEventListener('click',()=>startTutorial());$('lQuit').addEventListener('click',quitTutorial);
 $('toMenu').addEventListener('click',()=>{$('result').hidden=true;renderBelts();$('menu').hidden=false});
 $('again').addEventListener('click',()=>startGame(diffKey));
 hud();
