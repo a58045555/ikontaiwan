@@ -105,6 +105,24 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
   const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
   assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
  });
+ // Recorded from the rule 26 game before rule 27 existed: 看破 must not touch these lives.
+ const V26={"youth": "f8aac6961ddd3fe5851656086c0abbe08a27686392434172f783e782a80ecdc0", "practice": "01e2bb625700899fe2eabc20da1b824973dc51f57b0a5a86c6c8d8e6d4e9d019", "adult": "42682bbe6313fb20ee9bc0fa1c2b2d8d035879f1bd0598e431d57c7ba6f8b9d7", "mature": "f026c5d5797c40edf29566304902b39cd7c389ab3a8ba9c4bd602b6618de2597"};
+ for(const entry of Object.keys(V26))test(file+' rule 26 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則26相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:26,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V26[entry]);
+ });
+ test(file+' rule 27 看破 offers 擋下/迴避 in hand-played bouts and replays exactly',()=>{
+  const r=JSON.parse(life({seed:7331,name:'規則27',home:'pingtung',wc:'middle',sex:'m',aim:'champion',mode:'easy',route:'kumite',v:27,entry:'youth'},
+   `startGame(cfg,[]);let seen=0,dodge=0,block=0,k=0;
+    for(let i=0;i<20000&&G.prompt.kind!=='end';i++){const p=G.prompt;let id;
+     if(p.kind==='battle'&&p.info&&p.info.mikiri){seen++;id=(k++%2)?'dodge':'block';if(id==='dodge')dodge++;else block++;}
+     else if(p.kind==='battle'&&p.opts.length>1)id=p.opts.find(o=>o.id!=='auto'&&!/必殺/.test(o.label)&&!o.disabled)?.id||ffPick(p);
+     else id=String(ffPick(p));
+     G.choices.push(String(id));G.prompt=G.gen.next(String(id)).value;}
+    const a=JSON.stringify(S);const ch=G.choices.slice();startGame(cfg,ch);
+    JSON.stringify({end:G.prompt.kind==='end',seen,dodge,block,same:JSON.stringify(S)===a})`));
+  assert.ok(r.end,'life reaches its ending');assert.ok(r.seen>=3,'看破 shows up in hand-played bouts');assert.ok(r.dodge&&r.block,'both answers are exercised');assert.ok(r.same,'the life replays identically');
+ });
  test(file+' rule 26 keeps only 全台選手權 in Taiwan, once a year',()=>{
   for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
    const r=JSON.parse(life({seed:5000+k*7919,name:'規則26',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim,mode:'easy',route,v:26,entry:'youth'},
