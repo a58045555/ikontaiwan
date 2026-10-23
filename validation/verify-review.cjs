@@ -99,6 +99,24 @@ for(const file of [root+'/index.html',root+'/preview-v2/index.html']){
     if(y.plan==='jp'&&tw)twInJapanYears++;if(y.plan==='tw'&&y.ids.some(x=>x==='jp'||x==='world'))japanAfterTw++;}}
   assert.ok(twInJapanYears>0,'the Japan tour includes 全台選手權');assert.ok(japanAfterTw>0,'a top-two 全台 finish leads on to that year\'s 全日本');
  });
+ // Recorded from the rule 25 game before rule 26 existed: dropping the branch meet must not touch these lives.
+ const V25={"youth": "46c92f926a0d5bd1ef735ad3fee0dc010008e791f427a4ae0e86e8651d858c9d", "practice": "e8d64dffa83ec4512c115bcb20580cf71855e1a6eec2cb1e228bda093c7f9d46", "adult": "13958c2cfc478459141ca6c59c62e6184c3d8cb7c01579e3187ee380d727a33a", "mature": "52f64977c81e4146f83be5a38dc9b469b856ec60d3030253a20efb65e87f79ae"};
+ for(const entry of Object.keys(V25))test(file+' rule 25 '+entry+' life stays byte-for-byte identical',()=>{
+  const json=life({seed:246810,name:'規則25相容',home:'pingtung',wc:'middle',sex:'m',aim:'balanced',mode:'easy',route:'dual',v:25,entry},'startGame(cfg,[]);for(let i=0;i<9000&&G.prompt.kind!=="end";i++){const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}JSON.stringify({S,p:G.prompt,choices:G.choices})');
+  assert.equal(crypto.createHash('sha256').update(json).digest('hex'),V25[entry]);
+ });
+ test(file+' rule 26 keeps only 全台選手權 in Taiwan, once a year',()=>{
+  for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
+   const r=JSON.parse(life({seed:5000+k*7919,name:'規則26',home:'pingtung',wc:'middle',sex:k%2?'f':'m',aim,mode:'easy',route,v:26,entry:'youth'},
+    `startGame(cfg,[]);const ids=[],per={};let firstAge=null;
+     for(let i=0;i<12000&&G.prompt.kind!=='end';i++){const t=G.prompt.title||'';const T=TOURN.find(x=>x.name===t);const isT=T&&G.prompt.opts&&G.prompt.opts.some(o=>o.id==='skip');
+      if(isT){ids.push(T.id);if(firstAge===null)firstAge=S.age;if(T.id==='tw')per[S.year]=(per[S.year]||0)+1;}
+      if(G.prompt.title==='今年的比賽'&&G.prompt.opts.some(o=>o.id==='local'))ids.push('local-option');
+      const id=String(ffPick(G.prompt));G.choices.push(id);G.prompt=G.gen.next(id).value;}
+     JSON.stringify({end:G.prompt.kind==='end',ids,maxTw:Math.max(0,...Object.values(per)),firstAge})`));
+   assert.ok(r.end,'life reaches its ending');assert.ok(!r.ids.includes('local')&&!r.ids.includes('local-option'),'the branch meet is gone');
+   assert.ok(r.maxTw<=1,'全台選手權 at most once a year');assert.ok(r.firstAge===null||r.firstAge>=16,'the first tournament comes at 16 or later');}
+ });
  test(file+' rule 24 offers one tournament target a year and keeps the Japan tour together',()=>{
   let japanYears=0,asked=0;
   for(let k=0;k<8;k++){const aim=['champion','teacher','life','balanced'][k%4],route=['dual','kumite','kata','dual'][k%4];
