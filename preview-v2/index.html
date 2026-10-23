@@ -696,7 +696,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
         <p class="legend">每間道場的稽古內容都不一樣，會抽到只有那間道場才有的特色牌。</p>
         <div class="seg list" id="homeSeg"></div>
       </fieldset>
-      <div class="field trial-box"><span class="trial-tag">新手教學</span><button class="opt primary trial-first" type="button" id="btnTrial"><span class="l">新手教學：先上一堂課</span><span class="s">用上面選的道場上第一堂課＋打一場對練，不會存檔</span></button><p class="hint">第一次玩建議先跑一次新手教學。想直接開始完整人生，選好量級後按最下面的「入門」按鈕。</p></div>
+      <div class="field trial-box"><span class="trial-tag">新手教學</span><button class="opt primary trial-first" type="button" id="btnTrial"><span class="l">新手教學：先上一堂課</span><span class="s">用上面選的道場上第一堂課＋打一場對練，不會存檔，隨時可跳過</span></button><p class="hint">第一次玩建議先跑一次新手教學。想直接開始完整人生，選好量級後按最下面的「入門」按鈕。</p></div>
       <fieldset class="field">
         <legend>量級</legend>
         <div class="seg two" id="wcSeg"></div>
@@ -4367,6 +4367,7 @@ function* trial(){
     {id:'again',label:'再教學一次',sub:'換一個個性重新練習'}]);
   return a;
 }
+function skipTrial(){G=null;S=null;render();window.scrollTo({top:0});const t=document.createElement('div');t.className='bdtoast';t.innerHTML='已跳過新手教學。<br>選好<b>入門時刻、道場與量級</b>，按「入門」開始完整人生。';document.body.appendChild(t);setTimeout(()=>t.remove(),4500);}
 function startTrial(setup){REPLAY=false;GM_SEEN=new Set();newState({...setup,trial:1});G={setup,choices:[],gen:trial(),trial:1};G.prompt=G.gen.next().value;render();window.scrollTo({top:0});}
 function trChoose(id){const wasBattle=G.prompt.kind==='battle';TRAIN_FX=(G.prompt&&G.prompt.kind!=='battle'&&CARDS[id])?id:null;const res=G.gen.next(id);
   if(res.done){const a=res.value,setup=G.setup;if(a==='ig'){gc('點道場IG',true);try{window.open(IG_URL,'_blank','noopener');}catch(e){}G=null;S=null;render();return;}
@@ -4747,7 +4748,7 @@ function render(){
   {const b=$('#btnPupils');if(b){const list=discipleList();b.hidden=!!G.trial||inBattle||!list.length;b.textContent='弟子名冊';b.setAttribute('aria-label','查看弟子名冊，共 '+list.length+' 位');}}
   {const b=$('#btnYearbook');if(b){b.hidden=!!G.trial||inBattle;b.textContent='年度回顧';b.setAttribute('aria-label','查看 '+S.year+' 年的年度回顧');}}
   $('#panels').hidden=inBattle;$('#logBox').hidden=inBattle;$('#moreBox').hidden=inBattle;
-  $('#gameTools').hidden=!!G.trial||inBattle;
+  $('#gameTools').hidden=!!G.trial||inBattle;{const g=$('#btnGiveUp2');if(g)g.textContent=G.trial?'⏭ 跳過新手教學':'放棄・直接結算這段人生';const c=$('#btnCode');if(c)c.hidden=!!G.trial;}
   if(inBattle){renderBattle(p);return;}
   if(!drawHero($('#heroSpr'),S.rank,64))drawSprite($('#heroSpr'),'front',SPR_BELT[S.rank],'#3a3550');setPortrait($('#heroSpr'),heroFace(p));
   $('#heroName').textContent=S.name;
@@ -5164,7 +5165,7 @@ function initUI(){
 
   $('#btnGuideClose').addEventListener('click',()=>toggleGuide(false));
   let armed=false;
-  {let armed2=false;const gu=e=>{const b=e.currentTarget;const lab=b.querySelector('.l')||b;const orig=b.id==='btnGiveUp2'?'放棄・直接結算這段人生':'放棄・直接結算這段人生';if(!G||G.prompt.kind==='end')return;
+  {let armed2=false;const gu=e=>{const b=e.currentTarget;const lab=b.querySelector('.l')||b;const orig=b.id==='btnGiveUp2'?'放棄・直接結算這段人生':'放棄・直接結算這段人生';if(!G||G.prompt.kind==='end')return;if(G.trial){skipTrial();return;}
     if(!G||G.prompt.kind==='end')return;
     confirmBox('確定要放棄這段人生嗎？',`${esc(S.name)}現在 ${S.age} 歲。放棄後會直接結算、看結語和年表，<b>這段人生不能再繼續</b>。`,'確定放棄並結算',()=>{if(!G||G.prompt.kind==='end')return;G.choices.push('cmd:quit');G.prompt=quitLife();save();render();window.scrollTo({top:0});});};
     $('#btnGiveUp').addEventListener('click',gu);$('#btnGiveUp2').addEventListener('click',gu);}
