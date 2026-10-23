@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <style>
-.career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}.trial-box{border:2px dashed var(--ink);padding:10px 12px 4px;position:relative}.trial-tag{display:inline-block;background:var(--ink);color:#fff;font-size:12px;font-weight:800;padding:2px 8px;margin-bottom:2px;letter-spacing:.1em}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}
+.career{background:var(--paper);border:2px solid var(--ink);padding:10px 12px;font-size:13px;line-height:1.7}.career summary{font-weight:800;cursor:pointer}.career ul{padding-left:18px}.life-axes{display:grid;grid-template-columns:1fr 1fr;gap:10px}.life-axes article{background:var(--paper);border:2px solid var(--ink);padding:10px;min-width:0}.life-axes small,.life-axes b{display:block}.life-axes p{font-size:12px;line-height:1.6}.life-portrait h2{font-size:18px}.trial-first{margin-top:8px}.trial-box.pulse{animation:trialPulse 1s ease-in-out 4}@keyframes trialPulse{50%{box-shadow:0 0 0 4px #d9484f}}.trial-box{border:2px dashed var(--ink);padding:10px 12px 4px;position:relative}.trial-tag{display:inline-block;background:var(--ink);color:#fff;font-size:12px;font-weight:800;padding:2px 8px;margin-bottom:2px;letter-spacing:.1em}#advancedSetup{padding:10px 0}#advancedSetup>summary{font-weight:800;margin-bottom:12px;cursor:pointer}.legacy-grade{margin-block:10px}.legacy-grade summary{cursor:pointer;font-size:13px}#pacePolicy,#inAim{width:100%;font:inherit;min-height:44px}@media(max-width:340px){.life-axes{grid-template-columns:1fr}}html,body{margin:0;background:#141933}
 .point-help{font-size:13px;line-height:1.7;margin:8px 0 0;color:var(--muted)}.ptsbar{flex-wrap:wrap;gap:6px}.ptsbar .chipbtn{margin-left:auto;font-size:12px;min-height:36px;color:var(--ink);background:var(--paper2)}
 
 .train-estimate,.pace-result{font-size:13px;line-height:1.7;color:var(--ink2);margin:8px 0 12px}.pace-result{padding:8px 10px;background:var(--paper2);border-left:3px solid var(--teal)}
@@ -4080,7 +4080,13 @@ function introShow(id){['iTap','iScene'].forEach(k=>{$('#'+k).hidden=k!==id;});}
 let iDone=null;
 function introHide(){const el=$('#intro');el.classList.add('out');setTimeout(()=>{el.hidden=true;el.classList.remove('out');document.body.classList.remove('introOn');window.scrollTo({top:0});},500);}
 function introFinish(){iTok++;iSpeed=1;$('.iscreen').classList.remove('vid');fanfare();
-  const f=iDone;iDone=null;introHide();if(f)setTimeout(f,350);}
+  const f=iDone;iDone=null;introHide();if(f)setTimeout(f,350);setTimeout(firstVisitPop,700);}
+// First visit only: offer the tutorial once, then never ask again.
+function firstVisitPop(){if(G||document.querySelector('.firstpop'))return;try{if(localStorage.getItem('kl-firstpop'))return;localStorage.setItem('kl-firstpop','1');}catch(e){return;}
+  const d=document.createElement('div');d.className='kgame codem firstpop';d.innerHTML=`<div class="kgbox"><span class="trial-tag">新手教學</span><b>第一次玩嗎？</b><p style="margin:0;font-size:14px;line-height:1.6;text-align:left">建議先跑一次新手教學（約 2 分鐘）：上一堂課、打一場對練，看看這個遊戲怎麼玩。教學不會存檔，隨時可以跳過。</p><button type="button" class="opt wide fpgo" style="background:#d9484f;color:#fff"><span class="l">先跑新手教學</span><span class="s" style="color:#fff">先選入門道場，再按「新手教學」</span></button><button type="button" class="opt wide fpno"><span class="l">直接開始</span></button></div>`;
+  d.querySelector('.fpno').onclick=()=>d.remove();d.onclick=e=>{if(e.target===d)d.remove();};
+  d.querySelector('.fpgo').onclick=()=>{d.remove();const seg=$('#homeSeg'),box=document.querySelector('.trial-box');if(seg)(seg.closest('fieldset')||seg).scrollIntoView({behavior:'smooth',block:'start'});if(box){box.classList.add('pulse');setTimeout(()=>box.classList.remove('pulse'),4000);}};
+  document.body.appendChild(d);}
 function playOpening(done){const el=$('#intro');iDone=done;ivfLoad();el.hidden=false;document.body.classList.add('introOn');introPlay();}
 /* ===== 開場「影片中的影片」：Q 版可愛像素，內容照道場的介紹影片 ===== */
 const RW=120,RH=160;
