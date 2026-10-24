@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<script src="../migrate.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111b2b">
+<title>3D 道場試作｜弟子道場</title>
+<meta name="robots" content="noindex">
+<style>
+:root{--ink:#26223b;--paper:#f3ecdc;--gold:#f2c24f;--aka:#d9484f;--bg:#111b2b}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--paper);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
+.shell{max-width:560px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;gap:8px;padding:10px 12px calc(12px + env(safe-area-inset-bottom))}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.top b{font-size:17px;letter-spacing:.06em}.top small{font-size:11px;opacity:.75}
+.stage{position:relative;overflow:hidden;width:100%;aspect-ratio:3/4;max-height:62vh;background:#000;border:3px solid var(--ink);box-shadow:0 0 0 2px #f3ecdc33}
+#gl{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block}
+.fp{position:absolute;left:50%;bottom:-2%;width:92%;aspect-ratio:1;transform:translateX(-50%);background:url(assets/first-person-atlas.webp?v=24) 0 0/300% 200% no-repeat;image-rendering:pixelated;pointer-events:none;transition:transform .08s}
+.fp.hit{transform:translateX(-50%) translateY(6%) rotate(-2deg)}
+.call{position:absolute;left:0;right:0;top:12%;text-align:center;font-size:34px;font-weight:900;color:#fff;text-shadow:0 3px 0 var(--ink),0 0 10px #000;opacity:0;transition:opacity .08s;pointer-events:none}
+.call.on{opacity:1}
+.fx{position:absolute;left:0;right:0;top:40%;text-align:center;font-size:30px;font-weight:900;pointer-events:none;opacity:0}
+.fx.go{animation:fx .7s ease-out}.fx.ok{color:var(--gold);text-shadow:0 3px 0 var(--ink)}.fx.ng{color:#ff8a8a;text-shadow:0 3px 0 var(--ink)}
+@keyframes fx{0%{opacity:1;transform:translateY(0) scale(1.2)}100%{opacity:0;transform:translateY(-36px)}}
+.flash{position:absolute;inset:0;background:#d9484f;opacity:0;pointer-events:none}
+.flash.go{animation:fl .35s ease-out}@keyframes fl{0%{opacity:.45}100%{opacity:0}}
+.hud{display:flex;justify-content:space-between;font-size:13px;font-weight:700}
+.hud span b{color:var(--gold);font-size:16px}
+.btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.btns button{font:inherit;font-weight:900;font-size:16px;padding:12px 4px;background:var(--paper);color:var(--ink);border:3px solid var(--ink);box-shadow:0 4px 0 #0008;cursor:pointer;touch-action:manipulation}
+.btns button small{display:block;font-size:10px;font-weight:600;opacity:.7}
+.btns button:active{transform:translateY(2px);box-shadow:0 2px 0 #0008}
+.note{font-size:12px;line-height:1.6;opacity:.8}
+.note a{color:var(--gold)}
+.start{position:absolute;inset:0;display:grid;place-items:center;background:#111b2bcc}
+.start div{max-width:80%;text-align:center;background:var(--paper);color:var(--ink);border:3px solid var(--ink);padding:16px}
+.start button{margin-top:10px;font:inherit;font-weight:900;font-size:16px;padding:10px 18px;background:var(--aka);color:#fff;border:3px solid var(--ink);cursor:pointer}
+.fallback{padding:20px;text-align:center}
+</style>
+</head>
+<body>
+<main class="shell">
+  <div class="top"><b>3D 道場試作</b><small>Three.js・像素風・試作版</small></div>
+  <div class="stage" id="stage">
+    <canvas id="gl" aria-label="3D 道場，凱師範在前方出招"></canvas>
+    <div class="fp" id="fp" aria-hidden="true"></div>
+    <div class="call" id="call"></div>
+    <div class="fx" id="fx"></div>
+    <div class="flash" id="flash"></div>
+    <div class="start" id="start"><div><b>3D 道場試作</b><p style="margin:8px 0 0;font-size:14px;line-height:1.6">凱師範喊招、抬手之後，<br>按對應的「上段／中段／下段」擋下來。</p><button type="button" id="go">押忍，開始</button></div></div>
+  </div>
+  <div class="hud"><span>成功 <b id="ok">0</b></span><span>失誤 <b id="ng">0</b></span><span id="fps"></span></div>
+  <div class="btns">
+    <button type="button" data-z="high">上段擋<small>I</small></button>
+    <button type="button" data-z="mid">中段擋<small>K</small></button>
+    <button type="button" data-z="low">下段擋<small>M</small></button>
+  </div>
+  <p class="note">這是 Three.js 的小試作：3D 木造道場＋原本的像素凱師範與第一人稱手腳。用來看手機跑得順不順、畫風合不合。<a href="./">回到弟子道場</a></p>
+</main>
+<script type="module">
+import * as THREE from './vendor/three.module.min.js';
+const $=s=>document.querySelector(s);
+const PIX=3; // render at 1/3 resolution and scale up with nearest-neighbour for the pixel look
+let renderer;
+try{renderer=new THREE.WebGLRenderer({canvas:$('#gl'),antialias:false,powerPreference:'low-power'});}
+catch(e){$('#stage').innerHTML='<div class="fallback">這支手機不支援 3D（WebGL），請用 <a href="./">2D 弟子道場</a>。</div>';throw e;}
+renderer.setPixelRatio(1);
+const scene=new THREE.Scene();scene.background=new THREE.Color('#2a1d14');scene.fog=new THREE.Fog('#2a1d14',9,18);
+const camera=new THREE.PerspectiveCamera(52,3/4,.1,40);const CAM={x:0,y:1.45,z:2.6};camera.position.set(CAM.x,CAM.y,CAM.z);
+
+// ---- procedural pixel textures ----
+function canvasTex(w,h,draw,rep){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.magFilter=THREE.NearestFilter;t.minFilter=THREE.NearestFilter;t.colorSpace=THREE.SRGBColorSpace;if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(rep[0],rep[1]);}return t;}
+const floorTex=canvasTex(64,64,(x,w,h)=>{const cols=['#a8703f','#9c6838','#b07a46','#94602f'];for(let i=0;i<4;i++){x.fillStyle=cols[i];x.fillRect(i*16,0,16,h);x.fillStyle='#6e4a2e';x.fillRect(i*16,0,1,h);x.fillRect(i*16,(i*23)%64,16,1);}for(let k=0;k<70;k++){x.fillStyle='rgba(60,32,14,.18)';x.fillRect((k*37)%64,(k*53)%64,3,1);}},[3,5]);
+const wallTex=canvasTex(64,64,(x,w,h)=>{x.fillStyle='#f6ead2';x.fillRect(0,0,w,h);x.fillStyle='#ead9b8';for(let i=0;i<64;i+=16)x.fillRect(i,0,2,h);x.fillRect(0,40,w,2);x.fillStyle='#7f5230';x.fillRect(0,56,w,8);},[4,1]);
+const shojiTex=canvasTex(48,48,(x,w,h)=>{x.fillStyle='#fff7e6';x.fillRect(0,0,w,h);x.fillStyle='#6e4a2e';for(let i=0;i<=48;i+=12){x.fillRect(i,0,2,h);x.fillRect(0,i,w,2);}x.fillRect(0,0,w,3);x.fillRect(0,h-3,w,3);});
+const bannerTex=canvasTex(32,96,(x,w,h)=>{x.fillStyle='#d9484f';x.fillRect(0,0,w,h);x.fillStyle='#26223b';x.fillRect(0,0,w,3);x.fillRect(0,h-3,w,3);x.fillStyle='#fff';x.font='bold 22px sans-serif';x.textAlign='center';x.fillText('押',16,40);x.fillText('忍',16,72);});
+
+const mat=(t,opts={})=>new THREE.MeshLambertMaterial({map:t,...opts});
+const floor=new THREE.Mesh(new THREE.PlaneGeometry(8,14),mat(floorTex));floor.rotation.x=-Math.PI/2;floor.position.z=-3;scene.add(floor);
+const back=new THREE.Mesh(new THREE.PlaneGeometry(8,4),mat(wallTex));back.position.set(0,2,-8);scene.add(back);
+for(const s of [-1,1]){const w=new THREE.Mesh(new THREE.PlaneGeometry(14,4),mat(wallTex));w.rotation.y=-s*Math.PI/2;w.position.set(s*4,2,-3);scene.add(w);
+  for(let i=0;i<3;i++){const sh=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.6),new THREE.MeshBasicMaterial({map:shojiTex}));sh.rotation.y=-s*Math.PI/2;sh.position.set(s*3.98,1.9,-1-i*2.4);scene.add(sh);}}
+const banner=new THREE.Mesh(new THREE.PlaneGeometry(.6,1.8),mat(bannerTex));banner.position.set(2.4,2.2,-7.95);scene.add(banner);
+const kamiza=new THREE.Mesh(new THREE.BoxGeometry(2.4,.5,.4),mat(null,{color:'#5a3a22'}));kamiza.position.set(0,2.9,-7.8);scene.add(kamiza);
+scene.add(new THREE.HemisphereLight('#ffe7c2','#4a2e1a',1.1));
+const sun=new THREE.DirectionalLight('#ffd9a0',1.2);sun.position.set(-3,5,2);scene.add(sun);
+const lamp=new THREE.PointLight('#ffb35c',1.4,9);lamp.position.set(0,3,-3.5);scene.add(lamp);
+
+// ---- Kai sensei: billboard planes cut from the existing pixel atlas ----
+const ATLAS='assets/kai-reference-actions-v8.webp?v=24';const ROWS=[0,417,847,1286,1716];const COL={high:0,mid:1,low:2};
+const kai=new THREE.Mesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({transparent:true,alphaTest:.5}));scene.add(kai);
+const shadow=new THREE.Mesh(new THREE.CircleGeometry(.5,16),new THREE.MeshBasicMaterial({color:'#000',transparent:true,opacity:.28}));shadow.rotation.x=-Math.PI/2;shadow.scale.set(1.3,.45,1);scene.add(shadow);
+let FR=[],TEX=null;const KZ=-1.9;
+function loadKai(){return new Promise((res,rej)=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const q=c.getContext('2d');q.drawImage(img,0,0);const d=q.getImageData(0,0,c.width,c.height).data;
+  for(let r=0;r<4;r++)for(let col=0;col<3;col++){const x0=Math.round(col*c.width/3),x1=Math.round((col+1)*c.width/3);let l=x1,rt=x0,t=ROWS[r+1],b=ROWS[r];for(let y=ROWS[r];y<ROWS[r+1];y+=2)for(let x=x0;x<x1;x+=2)if(d[(y*c.width+x)*4+3]>160){l=Math.min(l,x);rt=Math.max(rt,x);t=Math.min(t,y);b=Math.max(b,y);}FR.push({x:l,y:t,w:rt-l+2,h:b-t+2});}
+  TEX=new THREE.Texture(img);TEX.magFilter=THREE.NearestFilter;TEX.minFilter=THREE.NearestFilter;TEX.colorSpace=THREE.SRGBColorSpace;TEX.needsUpdate=true;kai.material.map=TEX;kai.material.needsUpdate=true;res();};img.onerror=()=>rej(Error('凱師範素材載入失敗'));img.src=ATLAS;});}
+function setKai(row,level,push){const f=FR[row*3+COL[level]];if(!f)return;const W=TEX.image.width,H=TEX.image.height;TEX.repeat.set(f.w/W,f.h/H);TEX.offset.set(f.x/W,1-(f.y+f.h)/H);
+  const hgt=1.95*(f.h/429)*(row===3?1.12:1);kai.scale.set(hgt*f.w/f.h,hgt,1);kai.position.set(0,hgt/2,KZ+push);shadow.position.set(0,.01,KZ+push);}
+
+// ---- first-person hands: 0 guard, 2 arm block, 4 shin block ----
+const FPC=[[0,0],[1,0],[2,0],[0,1],[1,1]];function fp(i){const [c,r]=FPC[i];$('#fp').style.backgroundPosition=`${c*50}% ${r*100}%`;}
+
+// ---- little reaction loop ----
+const S={phase:'idle',level:'mid',t0:0,next:0,ok:0,ng:0,shake:0,push:0,fpUntil:0};
+const NAME={high:'上段！',mid:'中段！',low:'下段！'};
+function now(){return performance.now()/1000;}
+function schedule(){S.phase='idle';S.next=now()+.9+Math.random()*.7;}
+function fx(t,cls){const e=$('#fx');e.className='fx';void e.offsetWidth;e.textContent=t;e.className='fx go '+cls;}
+function press(z){if(S.phase!=='wind'&&S.phase!=='strike'){return;}if(z===S.level){S.ok++;S.phase='blocked';S.t0=now();fp(z==='low'?4:2);S.fpUntil=now()+.45;fx('押忍！','ok');S.push=.25;}else{miss(`是${NAME[S.level].replace('！','')}！`);}
+  $('#ok').textContent=S.ok;}
+function miss(why){S.ng++;S.phase='hit';S.t0=now();S.shake=.35;const f=$('#flash');f.className='flash';void f.offsetWidth;f.className='flash go';$('#fp').classList.add('hit');setTimeout(()=>$('#fp').classList.remove('hit'),250);fx(why,'ng');$('#ng').textContent=S.ng;}
+document.querySelectorAll('.btns button').forEach(b=>b.addEventListener('pointerdown',e=>{e.preventDefault();press(b.dataset.z);}));
+addEventListener('keydown',e=>{const z={i:'high',k:'mid',m:'low'}[e.key.toLowerCase()];if(z&&!e.repeat)press(z);});
+
+function resize(){const r=$('#stage').getBoundingClientRect();renderer.setSize(Math.max(80,Math.round(r.width/PIX)),Math.max(100,Math.round(r.height/PIX)),false);camera.aspect=r.width/r.height;camera.updateProjectionMatrix();}
+addEventListener('resize',resize);
+
+let frames=0,fpsT=now();
+function loop(){const t=now();
+  if(S.phase==='idle'&&S.running&&t>=S.next){S.level=['high','mid','low'][Math.floor(Math.random()*3)];S.phase='wind';S.t0=t;$('#call').textContent=NAME[S.level];$('#call').className='call on';}
+  if(S.phase==='wind'&&t-S.t0>.55){S.phase='strike';S.t0=t;}
+  if(S.phase==='strike'&&t-S.t0>.6){miss('來不及！');}
+  if((S.phase==='blocked'&&t-S.t0>.5)||(S.phase==='hit'&&t-S.t0>.6)){$('#call').className='call';schedule();}
+  if(S.fpUntil&&t>S.fpUntil){fp(0);S.fpUntil=0;}
+  const row=S.phase==='wind'?1:S.phase==='strike'?2:S.phase==='hit'?3:S.phase==='blocked'?2:0;
+  const lunge=S.phase==='strike'?Math.min(1,(t-S.t0)/.25)*.9:S.phase==='hit'?1.1:S.phase==='blocked'?.7-S.push:0;
+  if(FR.length)setKai(row,S.level,lunge);
+  S.push*=.9;S.shake=Math.max(0,S.shake-.016);
+  const sway=Math.sin(t*1.6)*.03,sh=S.shake*(Math.random()-.5)*.35;
+  camera.position.set(CAM.x+sway+sh,CAM.y+Math.sin(t*2.4)*.015+sh*.6,CAM.z-(S.phase==='strike'?.12:0));camera.lookAt(0,1.15,KZ);
+  kai.quaternion.copy(camera.quaternion);
+  renderer.render(scene,camera);
+  frames++;if(t-fpsT>1){$('#fps').textContent=`${frames} fps`;frames=0;fpsT=t;}
+  requestAnimationFrame(loop);}
+resize();fp(0);
+loadKai().then(()=>{setKai(0,'mid',0);loop();}).catch(e=>{$('#start div').innerHTML=e.message;});
+$('#go').onclick=()=>{$('#start').remove();S.running=true;schedule();};
+</script>
+</body>
+</html>
