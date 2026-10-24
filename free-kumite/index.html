@@ -51,7 +51,8 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 #stamp.plain small{display:inline;font-size:1em;margin-left:6px;text-shadow:none}
 #stamp.pop{font-family:var(--f-display);font-size:clamp(36px,12vw,66px);color:#fff;-webkit-text-stroke:2px var(--hit);text-shadow:0 4px 0 #7a1d14;animation:pop .8s forwards}
 #stamp.pop.hurt{color:var(--hit);-webkit-text-stroke:2px #fff;text-shadow:0 4px 0 #000;font-size:clamp(28px,9vw,50px)}
-@media (max-width:420px){.overlay{gap:8px;padding:10px}.overlay h2{font-size:22px}.overlay p{font-size:12px;line-height:1.5}.trial{display:inline-block;vertical-align:middle;margin-left:10px;padding:2px 8px;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font:700 13px var(--f-body);letter-spacing:.08em}
+@media (max-width:420px){.overlay{gap:8px;padding:10px}.overlay h2{font-size:22px}.overlay p{font-size:12px;line-height:1.5}}
+.trial{display:inline-block;vertical-align:middle;margin-left:10px;padding:2px 8px;border:1px solid var(--accent);border-radius:4px;color:var(--accent);font:700 13px var(--f-body);letter-spacing:.08em}
 .overlay .trialnote{font-size:12px;color:var(--accent)}
 .range{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);flex-wrap:wrap}
 .range i{font-style:normal;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:#6d6055;transition:all .12s}
@@ -82,7 +83,7 @@ canvas{display:block;width:100%;height:100%;image-rendering:pixelated;image-rend
 .mv{min-height:56px;border-radius:10px;border:1px solid var(--line);border-bottom:4px solid #120d0a;background:#2a2219;color:var(--fg);font:900 17px var(--f-body);touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:pointer}
 .mv.on{transform:translateY(2px);border-bottom-width:2px;background:#3a2c21}
 .tutrow{align-items:center;gap:6px}.tutrow .cta{padding:7px 14px;font-size:14px;letter-spacing:.06em}
-.cta{padding:8px 18px;font-size:14px}}
+@media (max-width:420px){.cta{padding:8px 18px;font-size:14px}}
 @keyframes pop{0%{opacity:0;transform:translateX(-50%) scale(2.3) rotate(-9deg)}12%{opacity:1;transform:translateX(-50%) scale(.9) rotate(-4deg)}22%{transform:translateX(-50%) scale(1.06) rotate(-4deg)}32%{transform:translateX(-50%) scale(1) rotate(-4deg)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-12%) rotate(-4deg)}}
 #cue{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;font-size:clamp(12px,3.4vw,14px);font-weight:700;background:linear-gradient(transparent,rgba(0,0,0,.8));color:var(--fg);text-align:center;pointer-events:none;min-height:1.4em}
 #cue.open{color:#ffe08a}
