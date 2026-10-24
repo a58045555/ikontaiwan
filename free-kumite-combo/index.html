@@ -110,7 +110,17 @@ header>div:first-child{margin-right:auto}
 .gpic .chip{padding:6px 10px;border-radius:8px;border:1px solid var(--line);font-size:13px;font-weight:700;background:#2a2119}
 .gpic .chip.def{border-left:4px solid #6f9c8c}.gpic .chip.atk{border-right:4px solid var(--atk)}.gpic .chip.gold{border-color:var(--accent);color:var(--accent)}
 .gdots{display:flex;gap:6px;justify-content:center}.gdots i{width:7px;height:7px;border-radius:50%;background:#4a3d33}.gdots i.on{background:var(--accent)}
-.gnav{display:flex;gap:10px;justify-content:space-between}.gnav .cta{flex:1}
+.gnav{display:flex;gap:10px;justify-content:space-between}.gnav .fbopen{align-self:center;padding:7px 16px;font-size:14px}
+.fq{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.seg button,.stars button{background:#2a2119;border:1px solid var(--line);color:var(--fg);border-radius:8px;padding:9px 0;font:700 14px var(--f-body);cursor:pointer}
+.seg button.on{background:var(--accent);color:#2a1d10;border-color:var(--accent)}
+.stars{display:flex;gap:6px}.stars button{flex:1;font-size:20px;color:#5a4a3c;padding:4px 0}.stars button.on{color:var(--accent)}
+.fq textarea,.fq input{width:100%;background:#1b1410;color:var(--fg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font:15px var(--f-body);resize:vertical;-webkit-user-select:text;user-select:text}
+.fbst{margin:0;font-size:13px;min-height:1.2em;color:var(--accent)}
+header{flex-wrap:wrap;row-gap:8px;align-items:center}header h1,header .eyebrow{white-space:nowrap}header .trial{font-size:12px}
+.hbtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.hbtns .helpbtn{padding:6px 10px}
+.cta{flex:1}
 .cta{padding:7px 14px;font-size:14px;letter-spacing:.06em}
 @media (max-width:420px){.cta{padding:8px 18px;font-size:14px}}
 @keyframes pop{0%{opacity:0;transform:translateX(-50%) scale(2.3) rotate(-9deg)}12%{opacity:1;transform:translateX(-50%) scale(.9) rotate(-4deg)}22%{transform:translateX(-50%) scale(1.06) rotate(-4deg)}32%{transform:translateX(-50%) scale(1) rotate(-4deg)}80%{opacity:1}100%{opacity:0;transform:translateX(-50%) translateY(-12%) rotate(-4deg)}}
@@ -190,6 +200,18 @@ header>div:first-child{margin-right:auto}
 
 </head>
 <body>
+<div class="guide" id="fb" hidden role="dialog" aria-modal="true" aria-labelledby="fbTitle">
+  <div class="gcard">
+    <div class="gtop"><span>試玩回饋</span><button class="gskip" id="fbClose">關閉</button></div>
+    <h2 id="fbTitle">玩起來怎麼樣？</h2>
+    <div class="fq"><span>難度</span><div class="seg" id="fbDiff"><button data-v="easy">太簡單</button><button data-v="ok">剛好</button><button data-v="hard">太難</button></div></div>
+    <div class="fq"><span>好玩程度</span><div class="stars" id="fbFun"><button data-v="1" aria-label="1 顆星">★</button><button data-v="2" aria-label="2 顆星">★</button><button data-v="3" aria-label="3 顆星">★</button><button data-v="4" aria-label="4 顆星">★</button><button data-v="5" aria-label="5 顆星">★</button></div></div>
+    <div class="fq"><label for="fbMsg">想說的話（哪裡卡住、哪裡好玩、想要什麼）</label><textarea id="fbMsg" maxlength="400" rows="4" placeholder="例如：上段踢太好用、空檔太短、想要更多 sensei…"></textarea></div>
+    <div class="fq"><label for="fbName">暱稱（可不填）</label><input id="fbName" maxlength="30" placeholder="例如：左營 小明"></div>
+    <p class="fbst" id="fbSt"></p>
+    <div class="gnav"><button class="cta" id="fbSend">送出</button></div>
+  </div>
+</div>
 <div class="guide" id="guide" hidden role="dialog" aria-modal="true" aria-labelledby="gTitle">
   <div class="gcard">
     <div class="gtop"><span id="gStep">1／5</span><button class="gskip" id="gSkip">跳過</button></div>
@@ -206,8 +228,8 @@ header>div:first-child{margin-right:auto}
       <p class="eyebrow">極真人生 · 小遊戲</p>
       <h1>自由組手<span class="trial">連段測試</span></h1>
     </div>
-    <button class="helpbtn" id="helpBtn" aria-label="玩法說明">？玩法</button>
-    <button class="switch" id="fx" role="switch" aria-checked="true" aria-label="特效開關">特效 <span id="fxTxt">開</span><span class="knob"></span></button>
+    <div class="hbtns"><button class="helpbtn" id="helpBtn" aria-label="玩法說明">？玩法</button><button class="helpbtn" id="fbBtn">回饋</button>
+    <button class="switch" id="fx" role="switch" aria-checked="true" aria-label="特效開關">特效 <span id="fxTxt">開</span><span class="knob"></span></button></div>
   </header>
 
   <div class="score">
@@ -245,6 +267,7 @@ header>div:first-child{margin-right:auto}
         <div><b id="rAvg">–</b>平均反應</div>
       </div>
       <p>把右上角的特效關掉再打一場，比較看看差別。</p>
+      <button class="cta ghost fbopen" id="fbFromResult">給回饋（30 秒）</button>
       <div class="diffs"><button class="cta" id="nextLv" hidden>挑戰下一級</button><button class="cta ghost" id="again">再打一場</button><button class="cta ghost" id="toMenu">選等級</button></div>
     </div>
   </div>
@@ -927,7 +950,7 @@ function end(){
   phase='end';setCue('');setMode('busy');
   const won=oHP<=0;
   if(won)setPose(me,'win',300);else setPose(kai,'win',300);(won?kai:me).lose=true;
-  $('rTitle').textContent=(won?'你贏了！':D.n+' 勝')+'｜'+D.name;
+  $('rTitle').textContent=(won?'你贏了！':D.n+' 勝')+'｜'+D.name;lastFight={opp:D.n,won};
   if(won&&diffKey+1>cleared){cleared=diffKey+1;try{localStorage.setItem('fk_cleared',cleared)}catch(e){}}
   const nb=$('nextLv');nb.hidden=!(won&&diffKey<LEVELS.length-1);if(!nb.hidden)nb.textContent='挑戰 '+LEVELS[diffKey+1].name;
   $('rScore').textContent=Math.round(pHP);$('rBest').textContent=bestRally;
@@ -1022,7 +1045,7 @@ document.querySelectorAll('.mv').forEach(b=>{const on=e=>{e.preventDefault();ens
   st.addEventListener('pointermove',mv);
   const up=e=>{if(e.pointerId!==pid)return;pid=null;moveHold=0;upArmed=true;setK(0,0)};
   ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>st.addEventListener(ev,up));})();
-['selectstart','contextmenu','dblclick'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.target.closest('.note'))e.preventDefault()}));
+['selectstart','contextmenu','dblclick'].forEach(ev=>document.addEventListener(ev,e=>{if(!e.target.closest('.note,input,textarea'))e.preventDefault()}));
 document.querySelectorAll('.ctl,.stage,.range,.score').forEach(el=>el.addEventListener('touchstart',e=>{if(!e.target.closest('.overlay'))e.preventDefault()},{passive:false}));
 function act(a,l){if(a==='atk')playerAttack(l);else playerBlock(l)}
 padEls.forEach(b=>{
@@ -1031,6 +1054,7 @@ padEls.forEach(b=>{
   b.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act(b.dataset.a,b.dataset.l)}});
 });
 document.addEventListener('keydown',e=>{
+  if(e.target.closest&&e.target.closest('input,textarea'))return;
   const k=e.key.length===1?e.key.toLowerCase():e.key;
   if(k==='f'&&!e.repeat){e.preventDefault();sideStep();return}
   if(k==='ArrowLeft'||k==='ArrowRight'){e.preventDefault();moveHold=k==='ArrowLeft'?-1:1;return}
@@ -1055,6 +1079,18 @@ function closeGuide(){$('guide').hidden=true;try{localStorage.setItem('fk_guide'
 $('gNext').addEventListener('click',()=>{if(gi>=GUIDE.length-1)closeGuide();else showGuide(gi+1)});
 $('gPrev').addEventListener('click',()=>showGuide(gi-1));$('gSkip').addEventListener('click',closeGuide);
 $('helpBtn').addEventListener('click',()=>showGuide(0));
+const fbState={diff:'',fun:0};let lastFight={opp:'',won:false};
+function openFb(){$('fbSt').textContent='';$('fb').hidden=false}
+document.querySelectorAll('#fbDiff button').forEach(b=>b.addEventListener('click',()=>{fbState.diff=b.dataset.v;document.querySelectorAll('#fbDiff button').forEach(x=>x.classList.toggle('on',x===b))}));
+document.querySelectorAll('#fbFun button').forEach(b=>b.addEventListener('click',()=>{fbState.fun=+b.dataset.v;document.querySelectorAll('#fbFun button').forEach(x=>x.classList.toggle('on',+x.dataset.v<=fbState.fun))}));
+$('fbBtn').addEventListener('click',openFb);$('fbFromResult').addEventListener('click',openFb);$('fbClose').addEventListener('click',()=>{$('fb').hidden=true});
+$('fbSend').addEventListener('click',async()=>{const msg=$('fbMsg').value.trim();
+  if(!fbState.diff&&!fbState.fun&&!msg){$('fbSt').textContent='至少選一個難度、星星或寫一句話';return}
+  $('fbSend').disabled=true;$('fbSt').textContent='送出中…';
+  try{const r=await fetch('/api/feedback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({diff:fbState.diff,fun:fbState.fun,msg,name:$('fbName').value.trim(),opp:lastFight.opp,won:lastFight.won,hero,ver:'combo-1'})});
+    if(!r.ok)throw 0;$('fbSt').textContent='已送出，謝謝你！押忍！';$('fbMsg').value='';setTimeout(()=>{$('fb').hidden=true},1200)}
+  catch(e){$('fbSt').textContent='送出失敗：要在試玩網站上才能送出，或稍後再試'}
+  $('fbSend').disabled=false});
 {let seen=false;try{seen=localStorage.getItem('fk_guide')==='1'}catch(e){}if(!seen)showGuide(0)}
 function renderHeroes(){const bi=Math.min(6,Math.floor(cleared*7/ROSTER.length));$('hM').src=SPR['m1_'+BKEY[bi]];$('hF').src=SPR['f1_'+BKEY[bi]];document.querySelectorAll('.hero').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.h===hero)))}
 renderHeroes();setLook(me,HEROES[hero].look,HEROES[hero].spr);setLook(kai,SHIHAN.look,'shihan');
