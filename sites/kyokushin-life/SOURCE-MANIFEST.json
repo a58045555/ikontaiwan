@@ -1,0 +1,90 @@
+{
+  "sourceRevision": "9626593b08a9cb4a44fe4316a3aa4c7eea2133bc",
+  "source": "Existing Sites static front-end, copied without runtime changes",
+  "files": [
+    {
+      "file": ".gitignore",
+      "bytes": 30,
+      "gitSha": "127d13f54ed9ba60bf9c6128e73fdd6aa836186a",
+      "sha256": "9aae9f23d3f00ea933f6a1a7655dffda9fa0438129c2085aa5304c567387beca"
+    },
+    {
+      "file": "check-site.cjs",
+      "bytes": 1453,
+      "gitSha": "0962b3728ed78b42ab3b8994517ed9a2bee495d0",
+      "sha256": "a015b61082b686cd17e8a28e716bdf1e4a3cb74ee9254c1bd01989c76873e9f9"
+    },
+    {
+      "file": "preview.cjs",
+      "bytes": 883,
+      "gitSha": "a120486520a32ba7cc9c029eb26d7d70d5569b95",
+      "sha256": "731237091215d52f58fa02a8cf2784a95622319be8af8a0b99cb11684359fae7"
+    },
+    {
+      "file": "guide-artwork.md",
+      "bytes": 424,
+      "gitSha": "e17b12f35e5200d44e1a8b6d8d9ac9eabbf38beb",
+      "sha256": "bd7d44030ad3b93d25f68809787f0afe43740e64d748359e8f3039305146856c"
+    },
+    {
+      "file": "dist/index.html",
+      "bytes": 14694,
+      "gitSha": "4fc04dec6f2c8da8dcb0109157c553206c2dd008",
+      "sha256": "1c1b93cc4b6d23d67eccade8cb4b59b9c1fb0ec9e9a329064e186bffa9266a31"
+    },
+    {
+      "file": "dist/style.css",
+      "bytes": 25968,
+      "gitSha": "875dcf2442ff5c3570f988f0f3df2b437cd5db26",
+      "sha256": "44dcc7c6f389e5cb785b62f1192a141607f7276812259e27a9248c7163362900"
+    },
+    {
+      "file": "dist/app.js",
+      "bytes": 5634,
+      "gitSha": "fbbe0c9903b24276245d1e5f5084a708b7f67dd4",
+      "sha256": "99bc59050d8bb8bd2d5d4c7abe456975b151ed3337c9ce3dda75ef14546a7afc"
+    },
+    {
+      "file": "dist/assets/dojo-guide.webp",
+      "bytes": 196546,
+      "gitSha": "8fd760f83949f1f4308b2694828552f8d22c552b",
+      "sha256": "39fe92e65e68ed4e8775ea4f1e6b4d7603b760baadeea2ba4f7d0b20353f38e8"
+    },
+    {
+      "file": "dist/assets/hero-black.webp",
+      "bytes": 1556,
+      "gitSha": "9d09aacae2c0a6e11d580a087cab2abfd8719edb",
+      "sha256": "ac8705611d02ffe36f6cd2813ed929cfff173c73bbf2b07e95476398dac0c963"
+    },
+    {
+      "file": "dist/assets/hero-female.webp",
+      "bytes": 1600,
+      "gitSha": "78eb301e58f610bef02f8c5adc6883f57de6212c",
+      "sha256": "31e4047277ea37ad2c6846b230d58b0d5bdc1e03b8ab0de1e41247e8440afc64"
+    },
+    {
+      "file": "dist/assets/hero-white.webp",
+      "bytes": 1546,
+      "gitSha": "0cfc697827c880796bc7dceb1b55cea9aae70c84",
+      "sha256": "92b8b9e466a471740b04eeea28beae2b384c678bb7034ebd66382bbb9717eebe"
+    },
+    {
+      "file": "dist/assets/icon.png",
+      "bytes": 2691,
+      "gitSha": "23ace74d04b6f49a4ffab59eb49c0a856cd950b1",
+      "sha256": "40d4aea4cb23d35ce2e5a7127080519bf1cd1a91236b7fa21a9539e2956c4411"
+    },
+    {
+      "file": "dist/assets/sensei.webp",
+      "bytes": 1454,
+      "gitSha": "2e77e4ea43b075c093f5d4e49a38459dbf27431b",
+      "sha256": "d4b677127c76e94859c95c818a578e29504715e2fca7f1aadc185b5a223d9c11"
+    }
+  ],
+  "excluded": [
+    ".git/",
+    ".openai/",
+    "account configuration",
+    "deployment credentials"
+  ]
+}
