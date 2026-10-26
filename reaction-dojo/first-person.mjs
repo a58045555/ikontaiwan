@@ -1,4 +1,4 @@
-import {coachSize} from './kai-reference-renderer.mjs?v=23';
+import {coachSize} from './kai-reference-renderer.mjs?v=25';
 // First-person pixel projection: original Canvas scene + transparent POV art.
 export function depthFor(x,targetX=.73){return Math.max(0,Math.min(1,1-(targetX-x)/.61));}
 export class FirstPerson{
