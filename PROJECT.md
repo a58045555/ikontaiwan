@@ -13,7 +13,7 @@
 | 官網 | https://ikontaiwan.vercel.app/site/ |
 | 正式遊戲 | https://ikontaiwan.vercel.app/ |
 | 反應組手（15 秒小遊戲） | https://ikontaiwan.vercel.app/hanno/ |
-| 反應組手・弟子道場（製作中） | https://ikontaiwan.vercel.app/reaction-dojo/ |
+| 反應組手・弟子道場 | https://ikontaiwan.vercel.app/reaction-dojo/ |
 | 預覽版（存檔與正式版分開） | https://ikontaiwan.vercel.app/preview-v2/ |
 | 比賽測試連結（預覽版） | `preview-v2/?demo=twj`（少年組）、`?demo=tw`（全台）、`?demo=jp`（日本巡迴） |
 | 舊網址（會自動轉到新網址） | https://a58045555.github.io/ikontaiwan/ |
@@ -31,8 +31,8 @@
 | `preview-v2/` | **預覽版遊戲**（實際開發的地方）＋示範頁（成年入門、師徒、結語）。 |
 | `site/` | 官網（`index.html`、`style.css`、`app.js`、素材）。 |
 | `hanno/` | 反應組手（15 秒挑戰、10 位 sensei）。 |
-| `reaction-dojo/` | 反應組手・弟子道場（第一人稱、凱師範像素動作）。製作中，官網還沒有入口。 |
-| `reaction-dojo-test/`、`sites/reaction-dojo/` | 弟子道場的測試版與原始素材、切圖工具、提示詞。 |
+| `reaction-dojo/` | 反應組手・弟子道場（第一人稱、凱師範像素動作、打擊特效可開關）。官網「反應組手」區與頁尾有入口。`practice.html` 與 `index.html` 內容相同。 |
+| `reaction-dojo-test/`、`sites/reaction-dojo/` | 弟子道場的測試版（新功能先放這裡試）與原始素材、切圖工具、提示詞。 |
 | `free-kumite/`、`free-kumite-combo/` | 自由組手小遊戲與連段測試版（含 three.js 場景）。 |
 | `feedback/`、`api/feedback.js` | 試玩回饋表單與 Vercel 函式（存到 Vercel Blob）。 |
 | `a/` | 遊戲用的像素圖（主角、對手、場景）。 |
@@ -102,7 +102,7 @@
 
 ## 6. 待辦與已知事項
 
-- [ ] **弟子道場**還沒完成；完成後在官網加入口。
+- [x] **弟子道場**上架：測試版打擊特效併入正式版、修掉頁尾亂碼與缺圖、官網加入口。之後可考慮加段位關卡。
 - [ ] 遊戲畫面版本標示仍是 v2.7（官網頁尾已是 LIFE v2.8 / KUMITE v2.2），要不要統一。
 - [ ] `validation/verify-preview-mechanics.cjs` 需要 `optimized/v2-test-results.json`，目前缺檔，無法執行（其他驗證都正常）。
 - [ ] 部分 Wi-Fi 會擋舊網址 github.io：被擋的網路連轉址都做不到，請大家改用 vercel.app。

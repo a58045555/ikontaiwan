@@ -1,4 +1,4 @@
-import {KAI,LEVELS,STRIKES} from './kai.mjs?v=23';
+import {KAI,LEVELS,STRIKES} from './kai.mjs?v=25';
 export const ACTIONS={idle:{row:0,duration:.8,label:'架勢 / READY'},walk:{row:1,duration:.56,label:'架勢 / READY'},punch:{row:2,duration:.42,label:'直拳 / PUNCH',damage:10},kick:{row:3,duration:.64,label:'踢擊 / KICK',damage:18},block:{row:4,duration:.48,label:'格擋 / GUARD'},hit:{row:5,duration:.5,label:'受擊 / HIT'}};
 const guardKey=l=>'block'+l[0].toUpperCase()+l.slice(1);
 export class Dojo{
