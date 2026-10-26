@@ -565,7 +565,8 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
 .vss canvas{image-rendering:pixelated;height:70%;width:auto}.vss b{font-size:46px;font-weight:900;color:#ffe14a;text-shadow:0 3px 0 #26223b,0 0 8px #000;font-style:italic}
 .vss .vsn{position:absolute;bottom:6px;font-style:normal;font-weight:900;font-size:13px}.vss .vsn.me{left:8px;color:#fff}.vss .vsn.foe{right:8px;color:#26223b}
 .vss em{position:absolute;top:8px;left:50%;transform:translateX(-50%);font-style:normal;font-weight:900;font-size:22px;color:#fff;text-shadow:0 2px 0 #d9534f,0 0 6px #000;animation:vsGo 1.7s steps(1) forwards}@keyframes vsGo{0%,55%{opacity:0}56%,100%{opacity:1}}@keyframes vsIn{from{transform:scaleX(0)}to{transform:none}}
-#seedChip{display:none!important}</style>
+#seedChip{display:none!important}
+.bknudge{position:fixed;left:50%;top:max(10px,env(safe-area-inset-top));transform:translateX(-50%);z-index:60;width:min(94vw,420px);display:flex;align-items:center;gap:8px;padding:10px 12px;background:#26223b;color:#fff;font-size:13px;line-height:1.5;box-shadow:0 0 0 2px #ffe14a,0 6px 18px rgba(0,0,0,.35)}.bknudge span{flex:1}.bknudge button{flex:none;font:inherit;font-weight:900;border:0;padding:6px 10px;cursor:pointer}.bknudge .bkgo{background:#ffe14a;color:#26223b}.bknudge .bkx{background:transparent;color:#fff}</style>
 
 <div class="app">
   <div id="intro" class="intro" hidden>
@@ -579,6 +580,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
           <button class="opt primary" type="button" id="iSnd"><span class="l">開始（有音效）</span></button>
           <button class="opt" type="button" id="iMute"><span class="l">靜音開始</span></button>
           <a class="opt" id="iHanno" href="https://ikontaiwan.vercel.app/hanno/" target="_blank" rel="noopener" style="text-decoration:none;display:block;background:#f2c24f;color:#26223b"><span class="l" style="display:block">🥊 小遊戲：反應組手（15 秒）</span></a>
+          <button class="opt" type="button" id="iReplay" hidden><span class="l">🎬 重看片頭</span></button>
         </div>
       </div>
       <div id="iScene" class="istage" hidden>
@@ -4185,7 +4187,7 @@ function bgmVideo(){const s=.25,N={C5:523,D5:587,E5:659,G5:784,A5:880,C6:1047,G4
 function introShow(id){['iTap','iScene'].forEach(k=>{$('#'+k).hidden=k!==id;});}
 let iDone=null;
 function introHide(){const el=$('#intro');el.classList.add('out');setTimeout(()=>{el.hidden=true;el.classList.remove('out');document.body.classList.remove('introOn');window.scrollTo({top:0});},500);}
-function introFinish(){iTok++;iSpeed=1;$('.iscreen').classList.remove('vid');fanfare();
+function introFinish(){iTok++;try{localStorage.setItem('kl-introseen','1');}catch(e){}iSpeed=1;$('.iscreen').classList.remove('vid');fanfare();
   const f=iDone;iDone=null;introHide();if(f)setTimeout(f,350);setTimeout(firstVisitPop,700);}
 // First visit only: offer the tutorial once, then never ask again.
 function firstVisitPop(){if(G||document.querySelector('.firstpop'))return;try{if(localStorage.getItem('kl-firstpop'))return;localStorage.setItem('kl-firstpop','1');}catch(e){return;}
@@ -4373,7 +4375,7 @@ function drawStory(x,k,t){const im=SCNIMG[k];k=k.slice(0,2);const W=200,H=150;le
 function drawReel(x,vt){x.imageSmoothingEnabled=false;let t0=0;for(const s of REEL){if(vt<s.t){x.save();s.d(x,vt-t0,vt);x.restore();break;}t0=s.t;}if(vt>=REEL_DUR){x.save();REEL[REEL.length-1].d(x,REEL_DUR-REEL[REEL.length-2].t,vt);x.restore();}rUI(x,vt,REEL_DUR);}
 
 async function introPlay(){
-  const tk=++iTok;iSpeed=1;{const b=$('#iFast');b.textContent='▶▶ 加速';b.classList.remove('on');}{const sk=$('#iSkip');sk.hidden=true;sk.onclick=()=>{if(tk===iTok)introFinish();};setTimeout(()=>{if(tk===iTok)sk.hidden=false;},4000);}introShow('iScene');$('.iscreen').classList.remove('vid');introScene='room';if(!introRAF)introRAF=requestAnimationFrame(drawIntro);
+  const tk=++iTok;iSpeed=1;{const b=$('#iFast');b.textContent='▶▶ 加速';b.classList.remove('on');}{const sk=$('#iSkip');sk.hidden=true;sk.onclick=()=>{if(tk===iTok)introFinish();};sk.hidden=false;}introShow('iScene');$('.iscreen').classList.remove('vid');introScene='room';if(!introRAF)introRAF=requestAnimationFrame(drawIntro);
   const cap=$('#introCap');
   try{
     const NEW=scnAll();if(NEW)introScene='img:a1';
@@ -4404,8 +4406,12 @@ function showIntro(){
   const el=$('#intro');if(!el)return;ivfLoad();
   el.hidden=false;document.body.classList.add('introOn');introShow('iTap');
   const setSnd=on=>{try{localStorage.setItem('kl-snd',on?'1':'0');}catch(e){}applyDisp();};
-  $('#iSnd').onclick=()=>{setSnd(true);playOpening(null);};
-  $('#iMute').onclick=()=>{setSnd(false);playOpening(null);};
+  // Returning players skip the story reel; the tap still unlocks sound.
+  let seen=false;try{seen=!!localStorage.getItem('kl-introseen');}catch(e){}
+  const go=()=>{if(seen){iDone=null;introFinish();}else playOpening(null);};
+  $('#iSnd').onclick=()=>{setSnd(true);go();};
+  $('#iMute').onclick=()=>{setSnd(false);go();};
+  {const rp=$('#iReplay');rp.hidden=!seen;rp.onclick=()=>playOpening(null);}
   const fb=$('#iFast');fb.onclick=()=>{const on=iSpeed===1;iSpeed=on?4:1;fb.textContent=on?'▶ 正常速度':'▶▶ 加速';fb.classList.toggle('on',on);};
 }
 let G=null;
@@ -4413,8 +4419,22 @@ const KEY='kyokushin-life-v43';
 const $=s=>document.querySelector(s);
 function save(){
   if(!G||G.trial||(typeof GT!=='undefined'&&GT))return false;
-  try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));saveStatus('');return true;}
+  try{localStorage.setItem(KEY,JSON.stringify({setup:G.setup,choices:G.choices}));saveStatus('');backupNudge();return true;}
   catch(e){saveStatus('自動存檔失敗，請先複製「存檔碼」保留進度。');return false;}
+}
+// Progress lives only in this browser: every ~150 choices, offer a one-tap backup of the save code.
+const BACKUP_EVERY=150;
+function backupMark(){try{if(G)localStorage.setItem('kl-bkup',String(G.choices.length));}catch(e){}}
+function backupNudge(){
+  if(typeof document==='undefined'||!G||document.querySelector('.bknudge'))return;
+  let last=0;try{last=Number(localStorage.getItem('kl-bkup'))||0;}catch(e){return;}
+  if(G.choices.length<last)last=0;
+  if(G.choices.length-last<BACKUP_EVERY)return;
+  backupMark();
+  const d=document.createElement('div');d.className='bknudge';d.setAttribute('role','status');
+  d.innerHTML='<span>💾 進度只存在這台裝置的瀏覽器，備份一下存檔碼吧！</span><button type="button" class="bkgo">備份</button><button type="button" class="bkx" aria-label="關閉">✕</button>';
+  const off=()=>d.remove();d.querySelector('.bkx').onclick=off;d.querySelector('.bkgo').onclick=()=>{off();showCode();};
+  document.body.appendChild(d);setTimeout(off,15000);
 }
 function saveStatus(message){
   if(typeof document==='undefined')return;
@@ -4456,7 +4476,10 @@ async function readCode(t){
 }
 function confirmBox(title,msg,okLabel,cb){const d=document.createElement('div');d.className='kgame codem';d.innerHTML=`<div class="kgbox"><b>${title}</b><p style="margin:0;font-size:14px;line-height:1.6;text-align:left">${msg}</p><button type="button" class="opt wide cfok" style="background:#d9484f;color:#fff"><span class="l">${okLabel}</span></button><button type="button" class="opt wide cfno"><span class="l">取消，繼續玩</span></button></div>`;d.querySelector('.cfno').onclick=()=>d.remove();d.onclick=e=>{if(e.target===d)d.remove();};d.querySelector('.cfok').onclick=()=>{d.remove();cb();};document.body.appendChild(d);}
 function codeModal(html){const d=document.createElement('div');d.className='kgame codem';d.innerHTML=`<div class="kgbox">${html}<button type="button" class="opt wide cmx"><span class="l">關閉</span></button></div>`;d.querySelector('.cmx').onclick=()=>d.remove();d.onclick=e=>{if(e.target===d)d.remove();};document.body.appendChild(d);return d;}
-async function showCode(){if(!G||G.trial)return;const c=await mkCode();const d=codeModal(`<small>存檔碼</small><b>複製起來，換裝置時貼上</b><textarea readonly rows="5">${c}</textarea><button type="button" class="opt wide cmc"><span class="l">複製存檔碼</span><span class="s">建議貼到 LINE 的記事本或傳給自己</span></button>`);const ta=d.querySelector('textarea');ta.onclick=()=>ta.select();d.querySelector('.cmc').onclick=()=>{const ok=()=>{d.querySelector('.cmc .l').textContent='已複製 ✓';};try{navigator.clipboard.writeText(c).then(ok,()=>{ta.select();document.execCommand('copy');ok();});}catch(e){ta.select();try{document.execCommand('copy');ok();}catch(_){}}};}
+async function showCode(){if(!G||G.trial)return;const c=await mkCode();const d=codeModal(`<small>存檔碼</small><b>複製起來，換裝置時貼上</b><textarea readonly rows="5">${c}</textarea><button type="button" class="opt wide cmc"><span class="l">複製存檔碼</span><span class="s">建議貼到 LINE 的記事本或傳給自己</span></button><button type="button" class="opt wide cmsh"><span class="l">📤 分享到 LINE／其他 App</span><span class="s">傳給自己就能備份</span></button>`);backupMark();
+  d.querySelector('.cmsh').onclick=async()=>{const text='極真人生 存檔碼（在遊戲裡按「輸入存檔碼」貼上就能接著玩）\n'+c;
+    if(navigator.share){try{await navigator.share({text});}catch(e){}return;}
+    window.open('https://line.me/R/share?text='+encodeURIComponent(text),'_blank','noopener');};const ta=d.querySelector('textarea');ta.onclick=()=>ta.select();d.querySelector('.cmc').onclick=()=>{const ok=()=>{d.querySelector('.cmc .l').textContent='已複製 ✓';};try{navigator.clipboard.writeText(c).then(ok,()=>{ta.select();document.execCommand('copy');ok();});}catch(e){ta.select();try{document.execCommand('copy');ok();}catch(_){}}};}
 function importCode(){const d=codeModal(`<small>輸入存檔碼</small><b>貼上之前複製的存檔碼</b><textarea rows="5" placeholder="KLZ1.…"></textarea><p class="cmerr"></p><button type="button" class="opt wide cmgo"><span class="l">讀取並繼續</span><span class="s">會取代這台裝置上目前的存檔</span></button>`);
   d.querySelector('.cmgo').onclick=async()=>{const button=d.querySelector('.cmgo');if(button.disabled)return;button.disabled=true;try{const o=await readCode(d.querySelector('textarea').value);startGame(o.s,o.c);d.remove();window.scrollTo({top:0});}catch(e){d.querySelector('.cmerr').textContent='讀不出來：'+(e.message||'存檔碼不完整')+'。請確認整段都有貼上。';}finally{button.disabled=false;}};}
 function clearSave(){try{localStorage.removeItem(KEY);}catch(e){}}
@@ -5325,6 +5348,9 @@ if(typeof document!=='undefined'&&document.querySelector('#start')){
   window.claude?.hot?.snapshot?.(()=>G?{setup:G.setup,choices:G.choices}:{});
   window.claude?.hot?.ready?window.claude.hot.ready(boot):boot(window.claude?.hot?.data??{});
 }
+// Offline cache: once loaded, the game opens without a network (sw.js sits at the site root).
+if(typeof navigator!=='undefined'&&'serviceWorker' in navigator&&location.protocol==='https:')
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>
 
 </body>
