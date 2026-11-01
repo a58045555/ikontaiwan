@@ -164,6 +164,7 @@ button:focus-visible,input:focus-visible,label:focus-within,summary:focus-visibl
 .favst{font-style:normal;color:#e3aa45;margin-right:3px;text-shadow:0 1px 0 #26223b}
 .mvlegend{display:flex;flex-wrap:wrap;gap:2px 6px;align-items:center;margin:0 4px;font-size:11px;color:#f3ecdc;opacity:.9}.mvlegend .lg{display:inline-block;padding:0 4px;font-weight:800;border:2px solid;color:#f3ecdc}.mvlegend .lg.good{border-color:#3fbf63}.mvlegend .lg.bad{border-color:#b9b2a2}
 .meetday .mdhead{text-align:center;padding:10px 6px 4px}.meetday .mdhead small{font-size:12px;color:var(--muted);letter-spacing:.12em}.meetday .mdhead h2{font-size:26px;margin:6px 0}.meetday .mdhead p{margin:4px 0;font-size:14px;line-height:1.6}.meetday .mddesc{color:var(--muted)}.meetday .mdfoe{margin-top:10px!important;padding:6px;background:var(--paper2);font-size:13px}
+.quickstart{margin:4px 0 2px}.quickstart .l{font-size:18px}
 .tres{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:8px 12px;border:3px solid #26223b;margin:2px 0 4px}.tres b{font-size:22px;font-weight:900;letter-spacing:.1em}.tres span{font-size:13px;font-weight:700;color:#26223b}.tres.win{background:#ffe9a8}.tres.win b{color:#c8352b}.tres.silver{background:#eef0f4}.tres.silver b{color:#4a5070}.tres.lose{background:#e3e0ec}.tres.lose b{color:#3f4a7a}.rstamp{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-8deg);font-size:44px;font-weight:900;line-height:1.2;padding:2px 18px;border:5px solid;background:rgba(255,255,255,.88);letter-spacing:.12em;white-space:nowrap;z-index:5;animation:rstampIn .35s ease-out;pointer-events:none}.rstamp.win{color:#c8352b;border-color:#c8352b}.rstamp.lose{color:#3f4a7a;border-color:#3f4a7a}@keyframes rstampIn{from{transform:translate(-50%,-50%) rotate(-8deg) scale(1.8);opacity:0}}
 .lines.prev{margin:0 0 4px;border:2px solid #26223b;border-left:6px solid var(--gold,#e3aa45);background:#fff8e4;color:var(--ink)}.prevtag{display:block;font-size:15px;font-weight:900;letter-spacing:.06em;color:#26223b;padding-bottom:4px;border-bottom:2px dashed rgba(38,34,59,.2)}.prevtag small{display:block;font-size:11px;font-weight:500;letter-spacing:0;color:#6a6280;margin-top:1px}.prevsep{border-top:2px dashed rgba(0,0,0,.18);margin:10px 0 12px}
 .q{margin:0;font-size:15px}
@@ -708,6 +709,7 @@ footer .copy{font-size:11px;opacity:.75}.dnote{margin:4px 0 14px;border:2px dash
       </div>
     </div>
 
+<button class="opt primary quickstart" type="button" id="btnQuick"><span class="l">▶ 直接開始</span><span class="s">用預設角色馬上開始・名字、道場、量級可以在下面改</span></button>
 <form class="form" id="startForm">
       <div class="field">
         <label class="t">個性</label>
@@ -5264,6 +5266,7 @@ function renderStart(){
     $('#inBday').addEventListener('change',trSync);$('#inBday').addEventListener('input',trSync);
     $('#inSeed').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').slice(0,6);trSync();});
     document.querySelectorAll('input[name=sex]').forEach(r=>r.addEventListener('change',()=>{const f=document.querySelector('input[name=sex]:checked').value==='f';if($('#inName').value===autoNm){autoNm=$('#inName').value=randName(f);sync();}drawHero($('#startSpr'),0,64,f);document.querySelectorAll('[data-kg]').forEach(e=>e.textContent=f?WKG_F[e.dataset.kg]:WCLS[e.dataset.kg].kg);}));
+  {const q=$('#btnQuick');if(q)q.onclick=()=>{gc('直接開始',true);const fm=$('#startForm');if(fm.requestSubmit)fm.requestSubmit($('#btnStart'));else $('#btnStart').click();};}
     $('#startForm').addEventListener('submit',e=>{
       e.preventDefault();
       const seed=parseInt($('#inSeed').value,10)||randSeed();

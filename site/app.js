@@ -20,3 +20,5 @@ function closeMenu(){menu.setAttribute("aria-expanded","false");nav.classList.re
 menu.addEventListener("click",()=>{const open=menu.getAttribute("aria-expanded")!=="true";menu.setAttribute("aria-expanded",String(open));nav.classList.toggle("open",open);menu.querySelector("span").textContent=open?"－":"＋";});
 nav.querySelectorAll("a").forEach(a=>a.addEventListener("click",closeMenu));document.addEventListener("keydown",e=>{if(e.key==="Escape"&&menu.getAttribute("aria-expanded")==="true"){closeMenu();menu.focus();}});
 
+
+document.querySelectorAll('a[href*="ikontaiwan.vercel.app/?"],a[href*="/hanno/"]').forEach(function(l){l.addEventListener('click',function(){if(window.kstat)window.kstat(/hanno/.test(l.href)?'官網・點反應組手':'官網・點開始遊戲');});});
